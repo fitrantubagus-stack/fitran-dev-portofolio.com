@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SectionId } from '../types';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import { FitranLogo } from './FitranLogo';
 import {
   Menu,
   X,
@@ -64,9 +65,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           className="group flex items-center gap-2.5 text-left focus:outline-hidden"
           aria-label="Go to top of portfolio"
         >
-          <div className="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 flex items-center justify-center font-heading font-extrabold text-xs tracking-tighter shadow-xs group-hover:scale-105 transition-transform shrink-0">
-            TFB
-          </div>
+          <FitranLogo variant="badge" size="sm" />
           <div>
             <span className="font-heading font-bold text-sm sm:text-base text-zinc-900 dark:text-white block leading-tight">
               Tubagus Fitran Badruttamam
