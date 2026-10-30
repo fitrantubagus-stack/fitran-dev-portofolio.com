@@ -37,6 +37,7 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
     'cert-claude-capabilities-limitations.png',
     'cert-claude-101.png',
     'cert-claude-platform-101.png',
+    'badge-gdg-campus-member.svg',
     'cert-dicoding-microsoft-fabric.png',
     'cert-google-gemini-educator.png',
     'cert-google-gemini.png',
@@ -60,16 +61,30 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
       : null;
 
   if (directImageUrl && !imgError) {
+    const isBadge =
+      directImageUrl.includes('badge') ||
+      directImageUrl.endsWith('.svg') ||
+      cert.customImageFilename?.includes('badge') ||
+      cert.customImageFilename?.endsWith('.svg');
+
     return (
       <div
         className={`w-full bg-[#0D1117] rounded-xl overflow-hidden border border-zinc-200/90 dark:border-zinc-800 flex items-center justify-center relative shadow-sm ${
-          isFull ? 'p-2 sm:p-4 bg-zinc-950/40 min-h-[360px]' : 'aspect-[4/3] p-1.5'
+          isFull
+            ? 'p-6 sm:p-10 bg-gradient-to-b from-[#161B22] to-[#0D1117] min-h-[380px]'
+            : 'aspect-[4/3] p-2 bg-gradient-to-b from-[#161B22] to-[#0D1117]'
         }`}
       >
         <img
           src={directImageUrl}
           alt={cert.title}
-          className={`w-full h-full object-contain rounded-lg ${isFull ? 'max-h-[70vh]' : ''}`}
+          className={`${
+            isBadge
+              ? isFull
+                ? 'w-72 h-72 sm:w-96 sm:h-96 object-contain filter drop-shadow-[0_12px_28px_rgba(0,0,0,0.6)] transition-transform duration-300 hover:scale-105'
+                : 'w-40 h-40 sm:w-48 sm:h-48 object-contain filter drop-shadow-[0_8px_18px_rgba(0,0,0,0.5)] transition-transform duration-300 group-hover:scale-105'
+              : `w-full h-full object-contain rounded-lg ${isFull ? 'max-h-[70vh]' : ''}`
+          }`}
           loading="lazy"
           onError={() => setImgError(true)}
         />

@@ -411,22 +411,23 @@ export const PROJECTS_DATA: ProjectItem[] = [
 
 // USER REQUESTED CERTIFICATES & BADGES WITH VERIFIED URLS
 export const CERTIFICATES_DATA: CertificateItem[] = [
-  // 1. Google Developer Program
+  // 1. GDG on Campus Member (Google for Developers)
   {
-    id: 'google-developer-program-verified',
-    title: 'Google Developer Program Member — Verified Profile',
+    id: 'google-gdg-campus-member',
+    title: 'GDG on Campus Member',
     issuer: 'Google',
-    issuerFullName: 'Google for Developers / Google Developer Program',
+    issuerFullName: 'Google for Developers / GDG on Campus',
     category: 'cloud-ai',
     date: 'Active • 2026',
-    verifyUrl: 'https://me.developers.google.com/u/108601218527303855788',
+    verifyUrl: 'https://me.developers.google.com/badges/community/gdg/GDGoC/member',
     featured: true,
     highlightType: 'cloud-leader',
+    isVerifiedMatch: true,
     description:
-      'Official verified developer profile with tier privileges across the Google Cloud, Gemini AI, Firebase, and Google Maps Platform developer ecosystems.',
-    skillsLearned: ['Google Cloud', 'Gemini AI', 'Google Maps Platform', 'Firebase Studio', 'Developer Ecosystem'],
+      'Official Google Developer Groups on Campus (GDGoC) Member badge recognizing active participation in the campus developer community, collaborative technology workshops, hackathons, and Google developer ecosystem initiatives.',
+    skillsLearned: ['GDG on Campus', 'Google Developers', 'Community Leadership', 'Tech Ecosystem', 'Collaborative Coding'],
     imagePlaceholderColor: '#4285F4',
-    customImageFilename: 'cert-google-infra.png',
+    customImageFilename: 'badge-gdg-campus-member.svg',
   },
 
   // 2. Google Cloud x Google Skill (Badge: 26894567)
