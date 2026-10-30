@@ -9,23 +9,26 @@ import {
 export const PERSONAL_INFO = {
   name: 'Tubagus Fitran Badruttamam',
   nickname: 'Fitran',
+  initials: 'TF',
   title: 'Software Engineer (student)',
-  status: 'Open for projects, collaboration & tech roles',
+  titleId: 'Insinyur Perangkat Lunak (Mahasiswa)',
+  status: 'Open for engineering roles, projects & collaboration',
+  statusId: 'Terbuka untuk peran rekayasa, proyek & kolaborasi',
   location: 'Cilegon, Banten, Indonesia',
   timezone: 'Asia/Jakarta (GMT+7)',
   avatarUrl: '/aku foto cv new.jpeg',
   tagline: 'Bridging modern web engineering, industrial AI dashboards, and multi-cloud infrastructure.',
-  bio: 'I build web applications and explore how AI and cloud infrastructure can solve real-world problems — from industrial manufacturing dashboards to everyday apps for finance and worship. Currently studying Informatics while stacking hands-on certifications across AWS, Google Cloud, and NVIDIA.',
-  extendedBio:
-    'An early-career software engineer pursuing Informatics at Universitas Muhammadiyah Banten. Driven by high-output self-learning, I design and ship full-stack applications with an emphasis on crisp typography, accessible UX, and reliable cloud infrastructure. When not engineering apps or supervising codebases, I actively study cloud architecture and explore applied generative AI systems.',
+  taglineId: 'Menghubungkan rekayasa web modern, analitik AI industri, dan infrastruktur multi-cloud.',
+  bio: 'I build high-performance web applications and explore how AI and cloud infrastructure solve real-world problems — from industrial manufacturing dashboards to modern financial trackers and daily spiritual companions. Currently pursuing Informatics at Universitas Muhammadiyah Banten with hands-on certifications across Google Cloud, AWS, and NVIDIA.',
+  bioId: 'Saya merancang dan mengembangkan aplikasi web performa tinggi serta mengeksplorasi integrasi AI dan komputasi awan untuk memecahkan masalah nyata — mulai dari platform industri, sistem keuangan modern, hingga aplikasi penunjang ibadah harian. Sedang menempuh studi S1 Informatika di Universitas Muhammadiyah Banten dengan sertifikasi aktif di ekosistem Google Cloud, AWS, dan NVIDIA.',
   email: 'fitranbadrttmamtb@gmail.com',
   socialLinks: {
     github: 'https://github.com/fitrantubagus-stack',
     linkedin: 'https://www.linkedin.com/in/tubagus-fitran-badruttamam-05834737b/',
     instagram: 'https://www.instagram.com/iran_tbgs/',
     googleDev: 'https://me.developers.google.com/u/108601218527303855788',
-    certificatesDrive:
-      'https://drive.google.com/drive/folders/1qdWe_5nUkvtcnjRfZ1-cJ-x76OzOjCEH?usp=sharing',
+    googleSkillshopWallet: 'https://skillshop.credential.net/profile/tubagusfitranbadruttamam255480/wallet',
+    certificatesDrive: 'https://drive.google.com/drive/folders/1qdWe_5nUkvtcnjRfZ1-cJ-x76OzOjCEH?usp=sharing',
   },
 };
 
@@ -37,6 +40,7 @@ export const HIGHLIGHTS_METRICS = [
     id: 'gold-medals',
     value: '2× Gold Medalist',
     label: 'National Academic Competitions',
+    labelId: 'Olimpiade Sains Nasional',
     subtext: 'Mathematics & History (Grade A+)',
     icon: 'Medal',
     badge: 'National Rank #1',
@@ -44,26 +48,29 @@ export const HIGHLIGHTS_METRICS = [
   {
     id: 'perpusnas-author',
     value: 'Published Author',
-    label: 'Indonesian National Library (Perpusnas RI)',
+    label: 'National Library of Indonesia',
+    labelId: 'Perpustakaan Nasional RI (Perpusnas)',
     subtext: 'Official 46th Anniversary Book Selection',
     icon: 'BookOpen',
     badge: 'National Publication',
   },
   {
     id: 'google-tier',
-    value: 'Premium Tier',
+    value: 'Verified Profile',
     label: 'Google Developer Program',
-    subtext: '8 Verified Ecosystem & Cloud Badges',
+    labelId: 'Google Developer Program & Cloud',
+    subtext: 'Google Maps Innovators & Firebase Dev',
     icon: 'Award',
-    badge: 'Verified Member',
+    badge: 'Official Member',
   },
   {
     id: 'cloud-certifications',
-    value: '9+ Certifications',
-    label: 'Cloud, AI & Data Credentials',
-    subtext: 'AWS · Google Cloud · NVIDIA · Google',
+    value: '10+ Credentials',
+    label: 'Multi-Cloud & AI Certifications',
+    labelId: 'Sertifikasi Multi-Cloud & AI',
+    subtext: 'Google · AWS · NVIDIA · Skillshop',
     icon: 'Cpu',
-    badge: 'Multi-Cloud Verified',
+    badge: 'Verified Skills',
   },
 ];
 
@@ -84,23 +91,24 @@ export const SKILL_GROUPS = [
   {
     category: 'Cloud & Infrastructure',
     skills: [
+      { name: 'Google Cloud Infrastructure', level: 'Certified' },
+      { name: 'Google Workspace Skills', level: 'Certified' },
+      { name: 'Firebase Serverless', level: 'Certified' },
       { name: 'AWS IAM & Security', level: 'Certified' },
       { name: 'AWS API Gateway', level: 'Certified' },
-      { name: 'Google Cloud Infrastructure', level: 'Certified' },
       { name: 'NVIDIA DSX Air & CVT', level: 'Certified' },
-      { name: 'Serverless Systems', level: 'Practiced' },
-      { name: 'Vercel Deployment', level: 'Proficient' },
+      { name: 'Vercel Edge Deployment', level: 'Proficient' },
     ],
   },
   {
     category: 'AI & Data Engineering',
     skills: [
-      { name: 'Generative AI Apps', level: 'Practiced' },
+      { name: 'Gemini Multimodal LLMs', level: 'Certified' },
+      { name: 'Google BigQuery & Analytics', level: 'Certified' },
       { name: 'Amazon Bedrock Guardrails', level: 'Certified' },
       { name: 'Responsible AI Practices', level: 'Certified' },
-      { name: 'Google Gemini & LLMs', level: 'Certified' },
-      { name: 'Data Engineering on AWS', level: 'Certified' },
-      { name: 'Google Analytics & Campaign 360', level: 'Certified' },
+      { name: 'Campaign Manager 360', level: 'Certified' },
+      { name: 'Data Engineering Pipelines', level: 'Certified' },
     ],
   },
 ];
@@ -116,7 +124,7 @@ export const EDUCATION_DATA: EducationItem[] = [
     logoFilename: 'logo-umbanten.png',
     badgeColor: '#047857',
     highlights: [
-      'Informatics Undergraduate Program',
+      'Informatics Undergraduate Program (S1 Informatika)',
       'Focusing on Software Architecture, Cloud Infrastructure, and AI Integration',
       'Active developer and student researcher',
     ],
@@ -133,7 +141,7 @@ export const EDUCATION_DATA: EducationItem[] = [
     highlights: [
       'Gold Medalist in National Olympiads (OSHSP & KSHPI)',
       '10th OSN Tingkat Kota Champion — Geography',
-      'Published author in Perpusnas RI anniversary compilation',
+      'Published author in Perpusnas RI 46th anniversary compilation book',
     ],
   },
 ];
@@ -145,10 +153,10 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
     period: 'Apr 2020 – Present',
     type: 'Leadership & Architecture',
     description:
-      'Supervises and coordinates a developer team, enforces clean code standards and peer reviews, and leads the technical system architecture for high-concurrency gaming service platforms.',
+      'Supervises and coordinates developer workflows, enforces clean code standards and peer reviews, and leads the technical system architecture for high-concurrency gaming service platforms.',
     keyResponsibilities: [
       'Lead architectural decision-making and component reusability for core digital products',
-      'Oversee frontend performance, mobile responsiveness, and payment gateway integration stability',
+      'Oversee frontend performance, mobile responsiveness, and payment gateway stability',
       'Conduct regular code reviews to maintain repository maintainability and reliable deployment pipelines',
     ],
   },
@@ -162,36 +170,16 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
     keyResponsibilities: [
       'Deliver interactive workshops and technical presentations to student cohorts',
       'Provide 1-on-1 guidance on portfolio development and modern technology stacks',
-      'Advocate for cloud and AI literacy among high school and university students across Indonesia',
+      'Advocate for cloud and AI literacy among students across Indonesia',
     ],
   },
 ];
 
 export const GOOGLE_DEV_BADGES: GoogleBadge[] = [
   {
-    name: 'Learning',
-    iconName: 'GraduationCap',
-    description: 'Continuous technical skill acquisition & verification',
-  },
-  {
-    name: 'Gemini Enterprise Agent Ready',
-    iconName: 'Sparkles',
-    description: 'Autonomous AI agent patterns & Gemini enterprise workflows',
-  },
-  {
-    name: 'Google Skills',
-    iconName: 'ShieldCheck',
-    description: 'Verified cloud infrastructure and analytical computing',
-  },
-  {
-    name: 'GDG Events',
-    iconName: 'Users',
-    description: 'Google Developer Group community engagement & participation',
-  },
-  {
-    name: 'GDG on Campus BINUS University',
-    iconName: 'Building',
-    description: 'Campus developer community collaboration & hackathons',
+    name: 'Google Maps Platform Innovators',
+    iconName: 'MapPin',
+    description: 'Geospatial visualization & location-based service design',
   },
   {
     name: 'Firebase Studio Developer',
@@ -199,9 +187,29 @@ export const GOOGLE_DEV_BADGES: GoogleBadge[] = [
     description: 'Serverless backend, Firestore schemas & real-time sync',
   },
   {
-    name: 'Google Maps Platform Innovators',
-    iconName: 'MapPin',
-    description: 'Geospatial visualization & location-based service design',
+    name: 'Gemini Enterprise Agent Ready',
+    iconName: 'Sparkles',
+    description: 'Autonomous AI agent patterns & Gemini enterprise workflows',
+  },
+  {
+    name: 'Google Skills & Cloud Infrastructure',
+    iconName: 'ShieldCheck',
+    description: 'Verified cloud infrastructure and analytical computing',
+  },
+  {
+    name: 'Google Workspace Skills',
+    iconName: 'GraduationCap',
+    description: 'Enterprise productivity, cloud collaboration & administration',
+  },
+  {
+    name: 'Google for Education Certified',
+    iconName: 'BookOpen',
+    description: 'Digital classroom workflows, pedagogical tools & educational tech',
+  },
+  {
+    name: 'GDG on Campus BINUS University',
+    iconName: 'Building',
+    description: 'Campus developer community collaboration & hackathons',
   },
   {
     name: 'Google Cloud & NVIDIA Community',
@@ -210,14 +218,112 @@ export const GOOGLE_DEV_BADGES: GoogleBadge[] = [
   },
 ];
 
+// USER REQUESTED PROJECTS (PetroKnow, Ramadhan-Ku, Finansial-Ku prioritized)
 export const PROJECTS_DATA: ProjectItem[] = [
   {
+    id: 'petroknow',
+    name: 'PetroKnow Platform',
+    tagline: 'AI-Powered Manufacturing Knowledge Hub & Petrochemical Digital Twin',
+    role: 'Full Stack Engineer & UI Architect',
+    type: 'live',
+    liveUrl: 'https://petroknow-platform.vercel.app/',
+    githubUrl: 'https://github.com/fitrantubagus-stack',
+    featured: true,
+    category: 'AI & Data',
+    technologies: ['Next.js', 'React', 'Tailwind CSS', 'Vector Search', 'AI Assistants', 'Vercel'],
+    summary:
+      'Industrial AI knowledge platform uniting SOPs, tacit engineering expertise, and plant equipment data with real-time verification and digital twin traceability.',
+    fullDescription:
+      'PetroKnow tackles knowledge silos in heavy petrochemical industries. It digitizes engineering procedures, operator shift logs, and maintenance histories into a semantic retrieval engine backed by conversational AI assistants for instant plant troubleshooting.',
+    keyFeatures: [
+      'Semantic SOP Intelligence: Natural language search across thousands of technical manuals',
+      'Digital Twin Equipment Traceability: Instant timeline of part maintenance and operational wear',
+      'Field-Ready Mobile & Desktop UI: High-contrast responsive layout built for factory tablets',
+      'Multi-Role Knowledge Verification: Peer-reviewed signoff for updated standard procedures',
+    ],
+    architectureHighlights: [
+      'Next.js App Router with server-rendered streaming views for instant page responses',
+      'Strict TypeScript domain models ensuring rock-solid data integrity for safety parameters',
+      'Optimized client bundle with Framer Motion transitions for desktop and tablet users',
+    ],
+    impactOrContext:
+      'Deployed live on Vercel as a comprehensive showcase of modern industrial enterprise UX and AI retrieval architectures.',
+    logoInitial: 'PK',
+    themeColor: '#0D9488',
+    customLogoFilename: 'logo-petroknow.png',
+  },
+  {
+    id: 'myramadhan',
+    name: 'Ramadhan Ku',
+    tagline: 'Comprehensive Offline-Capable Islamic Companion & Daily Worship Suite',
+    role: 'Solo Creator & Full Stack Developer',
+    type: 'live',
+    liveUrl: 'https://ramadhan-ku-tubagus.vercel.app/',
+    githubUrl: 'https://github.com/fitrantubagus-stack',
+    featured: true,
+    category: 'Web & Mobile',
+    technologies: ['React', 'Tailwind CSS', 'RamaTalk AI', 'IndexedDB', 'PWA', 'Web Audio API'],
+    summary:
+      'All-in-one Islamic worship companion featuring offline Qur\'an reader, prayer times, gratitude journal, fiqh guides, digital zakat calculator, and RamaTalk AI companion.',
+    fullDescription:
+      'A holistic lifestyle and spiritual application built to accompany millions of Muslims during Ramadan and daily life. Designed with deep attention to typography, offline-first reliability, respectful color palettes, and empathetic AI guidance.',
+    keyFeatures: [
+      'Offline Qur\'an Reader with smooth Arabic calligraphy typography, translation & audio recitation',
+      'RamaTalk AI: Context-aware conversational guide for Ramadan questions, prayers, and reflections',
+      'Precise Prayer Schedules & Qibla Direction calculated with geolocation algorithms',
+      'Ramadan Habit Tracker & Gratitude Journal with streak visualization',
+      'Comprehensive Islamic Tools: Digital Tasbih, Zakat Calculator, Hadith repository, and Haid tracker',
+    ],
+    architectureHighlights: [
+      'Offline-first architecture with client-side caching for full functionality without active internet',
+      'Custom Arabic font rendering pipeline with optimized line heights and glyph ligatures',
+      'Responsive audio player integration with state restoration across sessions',
+    ],
+    impactOrContext:
+      'Shipped live on Vercel with high praise from daily community users for its serene aesthetic and comprehensive toolset.',
+    logoInitial: 'RK',
+    themeColor: '#15803D',
+    customLogoFilename: 'logo-myramadhan.png',
+  },
+  {
+    id: 'genz-finance',
+    name: 'Finansial Ku',
+    tagline: 'Modern Personal Finance Analytics, Wealth Dashboard & Expense Tracker',
+    role: 'Creator & Frontend Developer',
+    type: 'live',
+    liveUrl: 'https://finansial-ku-tubagus.vercel.app/',
+    githubUrl: 'https://github.com/fitrantubagus-stack',
+    featured: true,
+    category: 'Web & Mobile',
+    technologies: ['React', 'Tailwind CSS', 'Framer Motion', 'Chart.js', 'Local Storage Engine'],
+    summary:
+      'An approachable personal finance management dashboard ("Manage your cuan like a pro") with clean spending insights, multi-account management, and savings targets.',
+    fullDescription:
+      'Traditional banking tools are tedious and intimidating for young adults. Finansial Ku makes cash flow management engaging with conversational Indonesian copywriting ("Cuan", "Tabungan", "Nongkrong"), interactive spending breakdowns, and goal trackers.',
+    keyFeatures: [
+      'Executive Financial Dashboard: Real-time net worth calculation and cash-flow overview',
+      'Categorized Spending Analytics: Interactive visual breakdown of lifestyle vs essential expenses',
+      'Multi-Account & E-Wallet Aggregator: Track cash, bank balances, and digital wallets in one place',
+      'Gamified Savings Target Vaults: Set milestones with celebration animations upon completion',
+    ],
+    architectureHighlights: [
+      'Reactive state management providing instant recalculation on expense entry',
+      'Mobile-first responsive cards with micro-animations on transaction additions',
+      'Client-side privacy-first storage model keeping personal finances entirely on the device',
+    ],
+    impactOrContext:
+      'Deployed live on Vercel, serving as an approachable budgeting prototype for Indonesian youth and university students.',
+    logoInitial: 'FK',
+    themeColor: '#854D0E',
+    customLogoFilename: 'logo-genzfinance.png',
+  },
+  {
     id: 'plantpulse',
-    name: 'PlantPulse',
+    name: 'PlantPulse Command Center',
     tagline: 'AI-Powered Manufacturing Intelligence Command Center',
     role: 'Lead Architect & Prototype Designer',
     type: 'case-study',
-    featured: true,
+    featured: false,
     category: 'AI & Data',
     technologies: ['HTML5', 'CSS3', 'JavaScript', 'SVG Data Viz', 'Prototype UX', 'Industrial AI'],
     summary:
@@ -241,100 +347,6 @@ export const PROJECTS_DATA: ProjectItem[] = [
     logoInitial: 'PP',
     themeColor: '#0284C7',
     customLogoFilename: 'logo-plantpulse.png',
-  },
-  {
-    id: 'petroknow',
-    name: 'PetroKnow',
-    tagline: 'AI-Powered Manufacturing Knowledge Hub & Digital Twin',
-    role: 'Full Stack Engineer & UI Architect',
-    type: 'live',
-    liveUrl: 'https://petroknow-platform.vercel.app/',
-    featured: true,
-    category: 'AI & Data',
-    technologies: ['Next.js', 'React', 'Tailwind CSS', 'Vector Search', 'AI Assistants', 'Vercel'],
-    summary:
-      'Industrial AI knowledge hub uniting SOPs, tacit expert knowledge, and plant-floor equipment data with real-time verification and digital twin traceability.',
-    fullDescription:
-      'PetroKnow tackles knowledge silos in complex heavy industries. It digitizes engineering procedures, operator shift logs, and maintenance histories into a semantic retrieval engine backed by conversational AI assistants for instant plant troubleshooting.',
-    keyFeatures: [
-      'Semantic SOP Intelligence: Natural language search across thousands of technical manuals',
-      'Digital Twin Equipment Traceability: Instant timeline of part maintenance and operational wear',
-      'Field-Ready Mobile & Desktop UI: High-contrast responsive layout built for factory tablets',
-      'Multi-Role Knowledge Verification: Peer-reviewed signoff for updated standard procedures',
-    ],
-    architectureHighlights: [
-      'Next.js App Router with server-rendered streaming views for instant page responses',
-      'Strict TypeScript domain models ensuring rock-solid data integrity for safety parameters',
-      'Optimized client bundle with Framer Motion transitions for desktop and tablet users',
-    ],
-    impactOrContext:
-      'Live in production on Vercel as a comprehensive showcase of modern enterprise industrial UX and AI retrieval architectures.',
-    logoInitial: 'PK',
-    themeColor: '#0D9488',
-    customLogoFilename: 'logo-petroknow.png',
-  },
-  {
-    id: 'myramadhan',
-    name: 'MyRamadhan',
-    tagline: 'Comprehensive Offline-Capable Islamic Companion & RamaTalk AI',
-    role: 'Solo Creator & Full Stack Developer',
-    type: 'live',
-    liveUrl: 'https://ramadhan-ku-tubagus.vercel.app/',
-    featured: true,
-    category: 'Web & Mobile',
-    technologies: ['React', 'Tailwind CSS', 'RamaTalk AI', 'IndexedDB', 'PWA', 'Audio API'],
-    summary:
-      'All-in-one Islamic worship companion featuring offline Qur\'an reader, prayer times, gratitude journal, fiqh guides, digital zakat calculator, and RamaTalk AI companion.',
-    fullDescription:
-      'A holistic lifestyle and spiritual application built to accompany millions of Muslims during Ramadan and daily life. Designed with deep attention to typography, offline-first reliability, respectful color palettes, and empathetic AI guidance.',
-    keyFeatures: [
-      'Offline Qur\'an Reader with smooth Arabic calligraphy typography, translation & audio recitation',
-      'RamaTalk AI: Context-aware conversational guide for Ramadan questions, prayers, and reflections',
-      'Precise Prayer Schedules & Qibla Direction calculated with geolocation algorithms',
-      'Ramadan Habit Tracker & Gratitude Journal with streak visualization',
-      'Comprehensive Islamic Tools: Digital Tasbih, Zakat Calculator, Hadith repository, and Haid tracker',
-    ],
-    architectureHighlights: [
-      'Offline-first architecture with client-side caching for full functionality without active internet',
-      'Custom Arabic font rendering pipeline with optimized line heights and glyph ligatures',
-      'Responsive audio player integration with state restoration across sessions',
-    ],
-    impactOrContext:
-      'Shipped live on Vercel with high praise from daily community users for its serene aesthetic and comprehensive toolset.',
-    logoInitial: 'MR',
-    themeColor: '#15803D',
-    customLogoFilename: 'logo-myramadhan.png',
-  },
-  {
-    id: 'genz-finance',
-    name: 'GenZ Finance Tracker',
-    tagline: 'Approachable Personal Finance & Wealth Dashboard',
-    role: 'Creator & Frontend Developer',
-    type: 'live',
-    liveUrl: 'https://finansial-ku-tubagus.vercel.app/',
-    featured: false,
-    category: 'Web & Mobile',
-    technologies: ['React', 'Tailwind CSS', 'Framer Motion', 'Chart.js', 'Local Storage'],
-    summary:
-      'A casual, approachable personal finance management app ("Manage your cuan like a pro") with clean spending insights, multi-account management, and savings targets.',
-    fullDescription:
-      'Traditional banking tools are tedious and intimidating for young adults. GenZ Finance Tracker makes cash flow management engaging with conversational Indonesian copywriting ("Cuan", "Tabungan", "Nongkrong"), interactive spending breakdowns, and goal trackers.',
-    keyFeatures: [
-      'Executive Financial Dashboard: Real-time net worth calculation and cash-flow overview',
-      'Categorized Spending Analytics: Interactive visual breakdown of lifestyle vs essential expenses',
-      'Multi-Account & E-Wallet Aggregator: Track cash, bank balances, and digital wallets in one place',
-      'Gamified Savings Target Vaults: Set milestones with celebration animations upon completion',
-    ],
-    architectureHighlights: [
-      'Reactive state management providing instant recalculation on expense entry',
-      'Mobile-first responsive cards with micro-animations on transaction additions',
-      'Client-side privacy-first storage model keeping personal finances entirely on the device',
-    ],
-    impactOrContext:
-      'Deployed live on Vercel, serving as an approachable budgeting prototype for Indonesian youth and university students.',
-    logoInitial: 'GZ',
-    themeColor: '#854D0E',
-    customLogoFilename: 'logo-genzfinance.png',
   },
   {
     id: 'radja-topup',
@@ -376,7 +388,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
     category: 'Frontend Engineering',
     technologies: ['HTML5/Sass', 'JavaScript ES6+', 'Figma', 'Responsive Design', 'Animation'],
     summary:
-      'Niche gaming marketplace for the Naruto Shippuden / Boruto ecosystem with curated top-up services, custom digital assets, and franchise-inspired design language.',
+      'Niche gaming marketplace for anime gaming communities with curated top-up services, custom digital assets, and franchise-inspired design language.',
     fullDescription:
       'Designed and coded a high-immersion digital commerce storefront tailored to anime gaming communities. Created custom franchise iconography, dynamic card hover effects, and structured service menus that resonate with dedicated fandoms.',
     keyFeatures: [
@@ -397,8 +409,202 @@ export const PROJECTS_DATA: ProjectItem[] = [
   },
 ];
 
+// USER REQUESTED CERTIFICATES & BADGES WITH VERIFIED URLS
 export const CERTIFICATES_DATA: CertificateItem[] = [
-  // FEATURED HIGHLIGHTS (Top 3)
+  // 1. Google Developer Program
+  {
+    id: 'google-developer-program-verified',
+    title: 'Google Developer Program Member — Verified Profile',
+    issuer: 'Google',
+    issuerFullName: 'Google for Developers / Google Developer Program',
+    category: 'cloud-ai',
+    date: 'Active • 2026',
+    verifyUrl: 'https://me.developers.google.com/u/108601218527303855788',
+    featured: true,
+    highlightType: 'cloud-leader',
+    description:
+      'Official verified developer profile with tier privileges across the Google Cloud, Gemini AI, Firebase, and Google Maps Platform developer ecosystems.',
+    skillsLearned: ['Google Cloud', 'Gemini AI', 'Google Maps Platform', 'Firebase Studio', 'Developer Ecosystem'],
+    imagePlaceholderColor: '#4285F4',
+    customImageFilename: 'cert-google-infra.png',
+  },
+
+  // 2. Google Cloud x Google Skill (Badge: 26894567)
+  {
+    id: 'google-cloud-skills-26894567',
+    title: 'Essential Google Cloud Infrastructure: Foundation',
+    issuer: 'Google Skills',
+    issuerFullName: 'Google Cloud Training & Skills Boost',
+    category: 'cloud-ai',
+    date: 'Aug 2026',
+    certId: 'Badge-26894567',
+    verifyUrl: 'https://www.skills.google/public_profiles/19eb8264-5dd8-4e7c-a55e-f5e468ae6bcc/badges/26894567',
+    featured: true,
+    highlightType: 'cloud-leader',
+    description:
+      'Verified Google Cloud badge covering Compute Engine virtualization, Cloud VPC network topologies, Cloud Storage buckets, and Google IAM least-privilege security.',
+    skillsLearned: ['Google Compute Engine', 'Cloud VPC', 'Google Cloud Storage', 'IAM & Cloud Security'],
+    imagePlaceholderColor: '#4285F4',
+    customImageFilename: 'cert-google-infra.png',
+  },
+
+  // 3. Google Workspace X Google Skill (Exceed LMS QjkQ4gtDRZfqMZ9zS6SJA2Ee)
+  {
+    id: 'google-workspace-exceed',
+    title: 'Google Workspace & Productivity Cloud Specialization',
+    issuer: 'Google Skills',
+    issuerFullName: 'Google Skills / Exceed LMS Certification Program',
+    category: 'cloud-ai',
+    date: '2026',
+    certId: 'QjkQ4gtDRZfqMZ9zS6SJA2Ee',
+    verifyUrl: 'https://edu.exceedlms.com/student/award/QjkQ4gtDRZfqMZ9zS6SJA2Ee',
+    featured: true,
+    description:
+      'Official Google Exceed LMS Award validating proficiency in Google Workspace enterprise collaboration, domain administration, and cloud productivity workflows.',
+    skillsLearned: ['Google Workspace Admin', 'Cloud Collaboration', 'Enterprise Productivity', 'Cloud Security'],
+    imagePlaceholderColor: '#34A853',
+    customImageFilename: 'cert-google-infra.png',
+  },
+
+  // 4. Google Skill X Google Cloud (Badge: 26480644)
+  {
+    id: 'google-cloud-skills-26480644',
+    title: 'Gemini for Data Scientists and Analysts',
+    issuer: 'Google Skills',
+    issuerFullName: 'Google Cloud Training & Skills Boost',
+    category: 'cloud-ai',
+    date: 'Aug 2026',
+    certId: 'Badge-26480644',
+    verifyUrl: 'https://www.skills.google/public_profiles/ef22e3fc-d6e0-4023-af67-20d5351fa38a/badges/26480644',
+    featured: true,
+    highlightType: 'cloud-leader',
+    description:
+      'Verified Google Cloud badge demonstrating applied Gemini LLM workflows, BigQuery ML integration, automated predictive insights, and Python data pipelines.',
+    skillsLearned: ['Gemini LLM', 'BigQuery ML', 'Multimodal AI Analysis', 'Prompt Engineering'],
+    imagePlaceholderColor: '#4285F4',
+    customImageFilename: 'cert-google-gemini.png',
+  },
+
+  // 5. Google Skillshop Pathway Enrolment
+  {
+    id: 'google-skillshop-pathway',
+    title: 'Google Skillshop Enterprise Pathway Certification',
+    issuer: 'Google',
+    issuerFullName: 'Google Skillshop / Credential.net Verified Pathway',
+    category: 'marketing',
+    date: '2026',
+    certId: 'tubagusfitranbadruttamam255480',
+    verifyUrl: 'https://www.credential.net/issuer/89126/pathways/35849008-199e-11ef-a5aa-dfb03de2bd6b/enrolment/tubagusfitranbadruttamam255480',
+    featured: true,
+    description:
+      'Official Google Skillshop enterprise verified learning pathway covering digital platform measurement, campaign optimization, and Google ecosystem tools.',
+    skillsLearned: ['Google Skillshop', 'Enterprise Measurement', 'Digital Campaign Strategy', 'Data Analytics'],
+    imagePlaceholderColor: '#FBBC05',
+    customImageFilename: 'cert-google-analytics.png',
+  },
+
+  // 6. Google For Education Awards (Exceed LMS)
+  {
+    id: 'google-for-education-award-1',
+    title: 'Google for Education Certified Specialist — Track A',
+    issuer: 'Google',
+    issuerFullName: 'Google for Education / Exceed LMS Certification',
+    category: 'academic',
+    date: '2026',
+    certId: 'jpoqVmvn26ez9RaCJazgZvBr',
+    verifyUrl: 'https://edu.exceedlms.com/student/award/jpoqVmvn26ez9RaCJazgZvBr',
+    featured: false,
+    description:
+      'Google for Education official certification credential validating modern digital learning environments, classroom collaboration tools, and tech-enabled instruction.',
+    skillsLearned: ['Google for Education', 'Digital Learning Tools', 'Collaborative Instruction', 'Classroom Tech'],
+    imagePlaceholderColor: '#4285F4',
+    customImageFilename: 'cert-google-infra.png',
+  },
+  {
+    id: 'google-for-education-award-2',
+    title: 'Google for Education Certified Specialist — Track B',
+    issuer: 'Google',
+    issuerFullName: 'Google for Education / Exceed LMS Certification',
+    category: 'academic',
+    date: '2026',
+    certId: 'ACCAo9qnsKzqcQJuAM4Z955b',
+    verifyUrl: 'https://edu.exceedlms.com/student/award/ACCAo9qnsKzqcQJuAM4Z955b',
+    featured: false,
+    description:
+      'Advanced credential from Google for Education evaluating proficiency in digital pedagogy, student engagement systems, and cloud-based educational infrastructure.',
+    skillsLearned: ['Educational Technology', 'Cloud Pedagogy', 'Interactive Learning', 'Google Workspace for Edu'],
+    imagePlaceholderColor: '#34A853',
+    customImageFilename: 'cert-google-infra.png',
+  },
+  {
+    id: 'google-for-education-award-3',
+    title: 'Google for Education Certified Specialist — Track C',
+    issuer: 'Google',
+    issuerFullName: 'Google for Education / Exceed LMS Certification',
+    category: 'academic',
+    date: '2026',
+    certId: 'P6Fs6ausgea8ZS3CmN6zRsUc',
+    verifyUrl: 'https://edu.exceedlms.com/student/award/P6Fs6ausgea8ZS3CmN6zRsUc',
+    featured: false,
+    description:
+      'Certified completion of Google for Education leadership modules, focusing on secure digital learning environments, administrative policies, and accessibility.',
+    skillsLearned: ['Accessibility in Tech', 'Digital Security Policies', 'Educational Workflows', 'Student Privacy'],
+    imagePlaceholderColor: '#EA4335',
+    customImageFilename: 'cert-google-infra.png',
+  },
+
+  // 7. Google Skillshop Badge Wallet
+  {
+    id: 'google-skillshop-wallet',
+    title: 'Google Skillshop Credential Wallet (Complete Suite)',
+    issuer: 'Google',
+    issuerFullName: 'Google Skillshop / Credential.net Verified Wallet',
+    category: 'marketing',
+    date: '2026',
+    verifyUrl: 'https://skillshop.credential.net/profile/tubagusfitranbadruttamam255480/wallet',
+    featured: true,
+    description:
+      'Comprehensive public credential wallet verifying all Google Skillshop accreditations including Google Analytics 4 (GA4), Campaign Manager 360, and Google Marketing Platform.',
+    skillsLearned: ['GA4 Analytics', 'Campaign Manager 360', 'Marketing Platform', 'Credential Wallet'],
+    imagePlaceholderColor: '#EA4335',
+    customImageFilename: 'cert-google-analytics.png',
+  },
+
+  // 8. Meta Blueprint (Official Meta Platforms Accreditation)
+  {
+    id: 'meta-blueprint-facebook-page',
+    title: 'How to post on a Facebook Page',
+    issuer: 'Meta',
+    issuerFullName: 'Meta Blueprint / Meta Platforms, Inc.',
+    category: 'marketing',
+    date: 'Sep 12, 2026',
+    featured: true,
+    highlightType: 'cloud-leader',
+    description:
+      'Official Meta Blueprint accreditation validating professional mastery of Facebook Page management, content publishing, audience engagement strategies, and community development.',
+    skillsLearned: ['Meta Blueprint', 'Facebook Page Management', 'Content Publishing', 'Audience Growth', 'Social Marketing'],
+    imagePlaceholderColor: '#0081FB',
+    customImageFilename: 'cert-meta-blueprint.png',
+  },
+
+  // 9. Vercel Inc. Next.js App Router Certification
+  {
+    id: 'vercel-nextjs-app-router',
+    title: 'Next.js App Router Fundamentals',
+    issuer: 'Vercel',
+    issuerFullName: 'Vercel Inc. (Certified by Guillermo Rauch, CEO)',
+    category: 'cloud-ai',
+    date: 'Sep 12, 2026',
+    featured: true,
+    highlightType: 'cloud-leader',
+    description:
+      'Official Vercel certification validating Next.js App Router architectures, Server Components, Streaming SSR, Route Handlers, and Edge caching strategies.',
+    skillsLearned: ['Next.js App Router', 'React Server Components', 'Edge Functions', 'Streaming SSR', 'Vercel Deployment'],
+    imagePlaceholderColor: '#000000',
+    customImageFilename: 'cert-vercel-nextjs.jpg',
+  },
+
+  // ACADEMIC OLYMPIADS & PERPUSNAS PUBLICATION
   {
     id: 'oshsp-2024-gold',
     title: 'Gold Medal — Olimpiade Sains Hari Sumpah Pemuda (OSHSP) 2024',
@@ -416,7 +622,7 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
       'Awarded the prestigious Gold Medal with Grade A+ in the Mathematics category at the nationwide Olimpiade Sains Hari Sumpah Pemuda 2024, competing against top university students across Indonesia.',
     skillsLearned: ['Discrete Mathematics', 'Applied Logic', 'Algorithmic Problem Solving', 'Quantitative Analysis'],
     imagePlaceholderColor: '#B45309',
-    customImageFilename: 'award-oshsp-2024.png',
+    customImageFilename: 'cert-oshsp-2024.jpg',
   },
   {
     id: 'kshpi-2024-gold',
@@ -452,10 +658,10 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
     verifyUrl: 'https://press.perpusnas.go.id/files/flipbooks/1635/mobile/index.html#p=293',
     skillsLearned: ['Digital Productivity', 'Technology Ethics', 'Published Academic Writing', 'Information Literacy'],
     imagePlaceholderColor: '#0F766E',
-    customImageFilename: 'cert-perpusnas-press.png',
+    customImageFilename: 'cert-perpusnas-46th.png',
   },
 
-  // CLOUD & AI
+  // AWS & NVIDIA
   {
     id: 'aws-responsible-ai',
     title: 'Responsible Artificial Intelligence Practices',
@@ -548,68 +754,6 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
     customImageFilename: 'cert-nvidia-cvt.png',
   },
   {
-    id: 'google-skills-infra',
-    title: 'Essential Google Cloud Infrastructure: Foundation',
-    issuer: 'Google Skills',
-    issuerFullName: 'Google Cloud Training & Skills',
-    category: 'cloud-ai',
-    date: 'Aug 2026',
-    verifyUrl: 'https://www.skills.google/public_profiles/19eb8264-5dd8-4e7c-a55e-f5e468ae6bcc/badges/26894567',
-    description:
-      'Foundational architectural concepts on Google Cloud: Compute Engine, VPC networking, Cloud Storage, IAM roles, and deployment management.',
-    skillsLearned: ['Google Cloud Compute', 'VPC Networking', 'Cloud Storage', 'IAM Roles'],
-    imagePlaceholderColor: '#4285F4',
-    customImageFilename: 'cert-google-infra.png',
-  },
-  {
-    id: 'google-skills-gemini',
-    title: 'Gemini for Data Scientists and Analysts',
-    issuer: 'Google Skills',
-    issuerFullName: 'Google Cloud Training & Skills',
-    category: 'cloud-ai',
-    date: 'Aug 2026',
-    verifyUrl: 'https://www.skills.google/public_profiles/ef22e3fc-d6e0-4023-af67-20d5351fa38a/badges/26480644',
-    description:
-      'Harnessing Gemini multimodal models and BigQuery ML for data analysis, code generation, predictive workflows, and automated reporting.',
-    skillsLearned: ['Gemini Multimodal', 'BigQuery ML', 'Automated Insights', 'Prompt Engineering'],
-    imagePlaceholderColor: '#4285F4',
-    customImageFilename: 'cert-google-gemini.png',
-  },
-
-  // MARKETING & ANALYTICS
-  {
-    id: 'google-analytics',
-    title: 'Google Analytics Certification',
-    issuer: 'Google',
-    issuerFullName: 'Google Skillshop / Google Certified',
-    category: 'marketing',
-    date: 'Aug 08, 2026',
-    validUntil: 'Aug 08, 2027',
-    certId: '190978287',
-    description:
-      'Official Google certification validating proficiency in GA4 event tracking, cross-platform user journey attribution, conversion funnel optimization, and custom exploration reports.',
-    skillsLearned: ['Google Analytics 4 (GA4)', 'Conversion Tracking', 'Attribution Modeling', 'User Analytics'],
-    imagePlaceholderColor: '#EA4335',
-    customImageFilename: 'cert-google-analytics.png',
-  },
-  {
-    id: 'google-campaign-manager-360',
-    title: 'Campaign Manager 360 Certification',
-    issuer: 'Google',
-    issuerFullName: 'Google Marketing Platform / Skillshop',
-    category: 'marketing',
-    date: 'Aug 08, 2026',
-    validUntil: 'Aug 08, 2027',
-    certId: '191000751',
-    description:
-      'Comprehensive verification in enterprise digital advertising ad serving, Floodlight conversion tagging, creative trafficking, and cross-channel campaign measurement.',
-    skillsLearned: ['Campaign Manager 360', 'Floodlight Tagging', 'Ad Serving', 'Measurement Protocols'],
-    imagePlaceholderColor: '#FBBC05',
-    customImageFilename: 'cert-campaign-manager360.png',
-  },
-
-  // ACADEMIC & ADDITIONAL
-  {
     id: 'osn-geografi-10th',
     title: '10th OSN Tingkat Kota — Bidang Geografi (Champion/Winner)',
     issuer: 'OSN',
@@ -635,5 +779,158 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
     skillsLearned: ['Academic English', 'Technical Reading', 'Grammar & Syntax', 'Listening Comprehension'],
     imagePlaceholderColor: '#4F46E5',
     customImageFilename: 'cert-toefl.png',
+  },
+
+  // CLAUDE ACADEMY & ANTHROPIC (NEW VERIFIED CERTIFICATES)
+  {
+    id: 'claude-academy-badge-capabilities-limitations',
+    title: 'AI capabilities and limitations — Course Completion Badge',
+    issuer: 'Claude Academy',
+    issuerFullName: 'Claude Academy / Anthropic',
+    category: 'cloud-ai',
+    date: 'Sep 10, 2026',
+    certId: 'cd4bb5cc3b0fb83d807700bd5f41ba35',
+    verifyUrl: 'https://academy.claude.com/verify/cd4bb5cc3b0fb83d807700bd5f41ba35',
+    featured: true,
+    highlightType: 'cloud-leader',
+    description:
+      'Official verified Claude Academy Course Completion Badge covering AI capabilities, frontier model safety boundaries, operational limitations, and prompt reasoning strategies.',
+    skillsLearned: ['Claude Frontier AI', 'AI Capabilities', 'Model Limitations', 'Safety Boundaries', 'Prompt Optimization'],
+    imagePlaceholderColor: '#D97706',
+    customImageFilename: 'cert-claude-capabilities-limitations.png',
+  },
+  {
+    id: 'claude-101-completion',
+    title: 'Claude 101 — Certificate of Completion',
+    issuer: 'Anthropic',
+    issuerFullName: 'Anthropic AI Certification Program',
+    category: 'cloud-ai',
+    date: '2026',
+    featured: true,
+    highlightType: 'cloud-leader',
+    description:
+      'Official Certificate of Completion awarded by Anthropic for foundational mastery of Claude model family, conversational dynamics, and system prompt engineering.',
+    skillsLearned: ['Anthropic Claude', 'System Prompts', 'Conversational AI', 'Context Window Dynamics'],
+    imagePlaceholderColor: '#D97706',
+    customImageFilename: 'cert-claude-101.png',
+  },
+  {
+    id: 'claude-platform-101-completion',
+    title: 'Claude Platform 101 — Certificate of Completion',
+    issuer: 'Anthropic',
+    issuerFullName: 'Anthropic AI Certification Program',
+    category: 'cloud-ai',
+    date: '2026',
+    featured: true,
+    highlightType: 'cloud-leader',
+    description:
+      'Official Certificate of Completion awarded by Anthropic for mastery of the Claude developer platform, API access keys, rate limits, and enterprise integration patterns.',
+    skillsLearned: ['Claude Platform API', 'API Tokens', 'Enterprise Integrations', 'Developer Console'],
+    imagePlaceholderColor: '#2563EB',
+    customImageFilename: 'cert-claude-platform-101.png',
+  },
+
+  // DICODING INDONESIA X MICROSOFT
+  {
+    id: 'dicoding-microsoft-fabric',
+    title: 'Belajar Penerapan Data Science dengan Microsoft Fabric',
+    issuer: 'Dicoding',
+    issuerFullName: 'Dicoding Academy Indonesia x Microsoft Fabric',
+    category: 'cloud-ai',
+    date: 'Aug 06, 2026',
+    validUntil: 'Aug 06, 2029',
+    certId: 'EYX4QDWQWPDL',
+    verifyUrl: 'https://www.dicoding.com/certificates/EYX4QDWQWPDL',
+    featured: true,
+    description:
+      'Sertifikat Kompetensi Kelulusan Dicoding Academy (EYX4QDWQWPDL) memvalidasi penerapan end-to-end Data Science, data engineering, Lakehouse architecture, dan ML model training pada Microsoft Fabric.',
+    skillsLearned: ['Microsoft Fabric', 'Data Science', 'Lakehouse Architecture', 'Synapse Analytics', 'Machine Learning'],
+    imagePlaceholderColor: '#0284C7',
+    customImageFilename: 'cert-dicoding-microsoft-fabric.png',
+  },
+
+  // ADDITIONAL AWS & NVIDIA CERTIFICATES
+  {
+    id: 'nvidia-netq-deployment',
+    title: 'NetQ Deployment and Installation',
+    issuer: 'NVIDIA',
+    issuerFullName: 'NVIDIA Training / Global Education Services & Field Enablement',
+    category: 'cloud-ai',
+    date: 'Aug 08, 2026',
+    description:
+      'Verified completion of NVIDIA NetQ platform deployment and telemetry configuration for automated fabric validation, telemetry monitoring, and data center network visibility.',
+    skillsLearned: ['NVIDIA NetQ', 'Fabric Validation', 'Data Center Telemetry', 'Network Monitoring'],
+    imagePlaceholderColor: '#76B900',
+    customImageFilename: 'cert-nvidia-netq.png',
+  },
+  {
+    id: 'aws-security-bedrock-guardrails',
+    title: 'Increasing Application Security with Bedrock Guardrails and GenAI',
+    issuer: 'AWS',
+    issuerFullName: 'Amazon Web Services Training & Certification',
+    category: 'cloud-ai',
+    date: 'Aug 08, 2026',
+    description:
+      'Advanced implementation of generative AI enterprise security on AWS, establishing granular Bedrock Guardrails to prevent prompt injections and enforce strict organizational data policies.',
+    skillsLearned: ['AWS Bedrock Guardrails', 'Prompt Injection Defense', 'Data Privacy', 'Cloud AI Security'],
+    imagePlaceholderColor: '#FF9900',
+    customImageFilename: 'cert-aws-security-bedrock.png',
+  },
+
+  // EDUCATION & NATIONAL WEBINAR CERTIFICATES
+  {
+    id: 'bed-gamifikasi-32',
+    title: 'Webinar Series #32 — Ciptakan Gamifikasi Pembelajaran',
+    issuer: 'Belajar Era Digital',
+    issuerFullName: 'Belajar Era Digital / Kemdikbudristek Duta Teknologi',
+    category: 'academic',
+    date: 'Nov 02, 2024',
+    certId: 'No.13.246/BED/XI/2024',
+    description:
+      'Sertifikat Peserta Webinar Nasional "Ciptakan Gamifikasi Pembelajaran: Bermain, Terlibat, Unggul dalam Pendidikan" dengan pemanfaatan media interaktif.',
+    skillsLearned: ['Gamifikasi Edukasi', 'Interactive Pedagogy', 'Digital Learning', 'Student Engagement'],
+    imagePlaceholderColor: '#4F46E5',
+    customImageFilename: 'cert-bed-gamifikasi.png',
+  },
+  {
+    id: 'bed-diklat-literasi-numerasi',
+    title: 'Diklat 32 JP — Peningkatan Literasi & Numerasi di Sekolah',
+    issuer: 'Belajar Era Digital',
+    issuerFullName: 'Belajar Era Digital / Merdeka Belajar',
+    category: 'academic',
+    date: 'Nov 07–09, 2024',
+    certId: 'No.13.244/BED/XI/2024',
+    description:
+      'Sertifikat Kelulusan Diklat 32 Jam Pelajaran untuk penguatan Profil Pelajar Pancasila, gamifikasi PowerPoint, dan asesmen Quizizz terintegrasi belajar.id.',
+    skillsLearned: ['Literasi & Numerasi', 'Gamifikasi PowerPoint', 'Quizizz & belajar.id', 'Profil Pelajar Pancasila'],
+    imagePlaceholderColor: '#2563EB',
+    customImageFilename: 'cert-bed-literasi-numerasi.png',
+  },
+  {
+    id: 'bed-diklat-komunitas-belajar',
+    title: 'Diklat 32 JP — Pengimbasan Pemanfaatan belajar.id & Peralatan TIK',
+    issuer: 'Belajar Era Digital',
+    issuerFullName: 'Belajar Era Digital / Merdeka Belajar',
+    category: 'academic',
+    date: 'Nov 16–20, 2024',
+    certId: 'No.13.283/BED/XI/2024',
+    description:
+      'Sertifikat Kelulusan Diklat 32 Jam Pelajaran dalam rangka transformasi digital pembelajaran, optimalisasi akun belajar.id, dan fasilitas kelas interaktif.',
+    skillsLearned: ['Akun belajar.id', 'Transformasi Digital', 'Fasilitasi Kombel', 'Peralatan TIK'],
+    imagePlaceholderColor: '#3B82F6',
+    customImageFilename: 'cert-bed-komunitas-belajar.png',
+  },
+  {
+    id: 'sohib-bercerita-gen-z',
+    title: 'Menatap Masa Depan, Gen Z Bisa Apa? — SohIB Bercerita',
+    issuer: 'Indonesia Baik',
+    issuerFullName: 'Sobat Hebat Indonesia Baik / Direktorat Pengelolaan Media Kemkominfo RI',
+    category: 'academic',
+    date: 'Oct 19, 2024',
+    description:
+      'Sertifikat kepesertaan webinar nasional Kemkominfo RI dan Indonesia Baik membahas kesiapan generasi muda menyongsong era transformasi digital dan kecakapan masa depan.',
+    skillsLearned: ['Digital Literacy', 'Gen-Z Leadership', 'Future Tech Readiness', 'Public Communication'],
+    imagePlaceholderColor: '#EC4899',
+    customImageFilename: 'cert-sohib-bercerita.png',
   },
 ];

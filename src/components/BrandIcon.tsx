@@ -1,25 +1,41 @@
 import React from 'react';
 import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
+import { SMAN1CilegonLogo, UMBantenLogo } from './EducationLogos';
+
+export type BrandIconName =
+  | 'github'
+  | 'linkedin'
+  | 'instagram'
+  | 'aws'
+  | 'meta'
+  | 'vercel'
+  | 'google'
+  | 'google-dev'
+  | 'google-cloud'
+  | 'google-maps'
+  | 'google-maps-innovators'
+  | 'firebase'
+  | 'firebase-developer'
+  | 'nvidia'
+  | 'perpusnas'
+  | 'oshsp'
+  | 'kshpi'
+  | 'chandra-asri'
+  | 'nextjs'
+  | 'react'
+  | 'tailwind'
+  | 'figma'
+  | 'framer'
+  | 'typescript'
+  | 'python'
+  | 'vite'
+  | 'sman1-cilegon'
+  | 'sman1cilegon'
+  | 'um-banten'
+  | 'umbanten';
 
 interface BrandIconProps {
-  name:
-    | 'github'
-    | 'linkedin'
-    | 'instagram'
-    | 'aws'
-    | 'google'
-    | 'google-dev'
-    | 'google-cloud'
-    | 'nvidia'
-    | 'perpusnas'
-    | 'oshsp'
-    | 'kshpi'
-    | 'chandra-asri'
-    | 'nextjs'
-    | 'react'
-    | 'tailwind'
-    | 'figma'
-    | 'framer';
+  name: BrandIconName;
   className?: string;
   size?: number;
   colored?: boolean;
@@ -31,7 +47,7 @@ export const BrandIcon: React.FC<BrandIconProps> = ({
   size = 20,
   colored = true,
 }) => {
-  const baseClasses = 'transition-transform duration-200 ease-out hover:scale-105';
+  const baseClasses = 'transition-transform duration-200 ease-out hover:scale-105 shrink-0';
 
   switch (name) {
     case 'github':
@@ -93,24 +109,44 @@ export const BrandIcon: React.FC<BrandIconProps> = ({
 
     case 'aws':
       return (
+        <img
+          src="/official-aws.png"
+          alt="Amazon Web Services"
+          width={size * 1.3}
+          height={size}
+          style={{ width: `${size * 1.3}px`, height: `${size}px` }}
+          className={`object-contain inline-block shrink-0 ${baseClasses} ${className}`}
+        />
+      );
+
+    case 'meta':
+      return (
         <svg
           width={size}
           height={size}
           viewBox="0 0 24 24"
           fill="none"
           className={`${baseClasses} ${className}`}
+          aria-label="Meta"
         >
           <path
-            d="M8.2 9.5c-.8 0-1.4.2-1.8.6-.4.4-.6 1-.6 1.8 0 .8.2 1.4.6 1.8.4.4 1 .6 1.8.6.8 0 1.4-.2 1.8-.6.4-.4.6-1 .6-1.8 0-.8-.2-1.4-.6-1.8-.4-.4-1-.6-1.8-.6zm0 3.8c-.5 0-.8-.2-1-.5-.2-.3-.3-.7-.3-1.3 0-.6.1-1 .3-1.3.2-.3.5-.5 1-.5.5 0 .8.2 1 .5.2.3.3.7.3 1.3 0 .6-.1 1-.3 1.3-.2.3-.5.5-1 .5zM15.4 9.5c-.8 0-1.4.2-1.8.6-.4.4-.6 1-.6 1.8 0 .8.2 1.4.6 1.8.4.4 1 .6 1.8.6.8 0 1.4-.2 1.8-.6.4-.4.6-1 .6-1.8 0-.8-.2-1.4-.6-1.8-.4-.4-1-.6-1.8-.6zm0 3.8c-.5 0-.8-.2-1-.5-.2-.3-.3-.7-.3-1.3 0-.6.1-1 .3-1.3.2-.3.5-.5 1-.5.5 0 .8.2 1 .5.2.3.3.7.3 1.3 0 .6-.1 1-.3 1.3-.2.3-.5.5-1 .5z"
-            fill="#232F3E"
+            d="M16.96 4C14.77 4 13.06 5.15 12 6.55C10.94 5.15 9.23 4 7.04 4C3.15 4 0 7.33 0 11.45C0 16.48 4.67 20 8.5 20C10.63 20 11.78 18.9 12 18.66C12.22 18.9 13.37 20 15.5 20C19.33 20 24 16.48 24 11.45C24 7.33 20.85 4 16.96 4ZM7.04 17.65C4.74 17.65 2.35 15.17 2.35 11.45C2.35 8.63 4.45 6.35 7.04 6.35C9.27 6.35 10.96 8.16 11.48 10.5H9.5C9.09 9.92 8.16 9.47 7.23 9.47C5.85 9.47 4.74 10.58 4.74 11.96C4.74 13.34 5.85 14.45 7.23 14.45C8.36 14.45 9.17 13.84 9.5 13.15H11.52C11.08 15.7 9.38 17.65 7.04 17.65ZM16.96 17.65C14.62 17.65 12.92 15.7 12.48 13.15H14.5C14.83 13.84 15.64 14.45 16.77 14.45C18.15 14.45 19.26 13.34 19.26 11.96C19.26 10.58 18.15 9.47 16.77 9.47C15.84 9.47 14.91 9.92 14.5 10.5H12.52C13.04 8.16 14.73 6.35 16.96 6.35C19.55 6.35 21.65 8.63 21.65 11.45C21.65 15.17 19.26 17.65 16.96 17.65Z"
+            fill="#0081FB"
           />
-          <path
-            d="M3 17.5c4.5 3 13.5 3 18-2M18.8 13.8l2.2 1.7-1 2.5"
-            stroke="#FF9900"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
+        </svg>
+      );
+
+    case 'vercel':
+      return (
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill="none"
+          className={`${baseClasses} ${className}`}
+          aria-label="Vercel"
+        >
+          <path d="M12 2L22 20H2L12 2Z" fill="currentColor" />
         </svg>
       );
 
@@ -157,6 +193,48 @@ export const BrandIcon: React.FC<BrandIconProps> = ({
           <path
             d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"
             fill="#4285F4"
+          />
+        </svg>
+      );
+
+    case 'google-maps':
+    case 'google-maps-innovators':
+      return (
+        <img
+          src="/official-google-maps-innovators.png"
+          alt="Google Maps Platform Innovators"
+          width={size}
+          height={size}
+          style={{ width: size, height: size }}
+          className={`object-contain rounded-full shrink-0 ${baseClasses} ${className}`}
+        />
+      );
+
+    case 'firebase':
+    case 'firebase-developer':
+      return (
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 100 100"
+          fill="none"
+          className={`${baseClasses} ${className}`}
+          aria-label="Firebase Developer"
+        >
+          {/* Left Yellow Flame */}
+          <path
+            d="M18 73 L42 27 C43 25 46 25 47 27 L56 44 L18 73 Z"
+            fill="#FFA000"
+          />
+          {/* Middle Small Amber Flame */}
+          <path
+            d="M18 73 L58 13 C59 11 62 12 62 14 L82 73 L18 73 Z"
+            fill="#F57C00"
+          />
+          {/* Front Yellow Flame */}
+          <path
+            d="M56 44 L47 27 C46 25 43 25 42 27 L18 73 L50 91 C52 92 54 92 56 91 L82 73 L56 44 Z"
+            fill="#FFCA28"
           />
         </svg>
       );
@@ -210,11 +288,91 @@ export const BrandIcon: React.FC<BrandIconProps> = ({
         </svg>
       );
 
+    case 'sman1-cilegon':
+    case 'sman1cilegon':
+      return <SMAN1CilegonLogo size={size} className={className} />;
+
+    case 'um-banten':
+    case 'umbanten':
+      return <UMBantenLogo size={size} className={className} />;
+
+    case 'typescript':
+      return (
+        <div
+          style={{ width: size, height: size }}
+          className={`bg-[#3178C6] text-white flex items-center justify-center font-bold text-[10px] font-mono select-none ${baseClasses} ${className}`}
+        >
+          TS
+        </div>
+      );
+
+    case 'python':
+      return (
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill="none"
+          className={`${baseClasses} ${className}`}
+        >
+          <path
+            d="M11.9 2c-3.1 0-2.9 1.3-2.9 1.3v1.4h5.9v.9H6.6S4 5.3 4 8.5c0 3.1 2.3 3 2.3 3h1.4v-1.4c0-1.6 1.3-1.6 1.3-1.6h5.8c1.3 0 1.6-1.3 1.6-1.3V3.3S16.7 2 11.9 2zm-1.8 1.4c.4 0 .8.3.8.8s-.3.8-.8.8-.8-.3-.8-.8.4-.8.8-.8z"
+            fill="#3776AB"
+          />
+          <path
+            d="M12.1 22c3.1 0 2.9-1.3 2.9-1.3v-1.4H9.1v-.9h8.3s2.6.3 2.6-2.9c0-3.1-2.3-3-2.3-3h-1.4v1.4c0 1.6-1.3 1.6-1.3 1.6H9.2c-1.3 0-1.6 1.3-1.6 1.3v3.9s-.3 1.3 4.5 1.3zm1.8-1.4c-.4 0-.8-.3-.8-.8s.3-.8.8-.8.8.3.8.8-.4.8-.8.8z"
+            fill="#FFD43B"
+          />
+        </svg>
+      );
+
+    case 'nextjs':
+      return (
+        <div
+          style={{ width: size, height: size }}
+          className={`border border-zinc-700 bg-black text-white flex items-center justify-center font-bold text-[10px] font-mono ${baseClasses} ${className}`}
+        >
+          N
+        </div>
+      );
+
+    case 'react':
+      return (
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill="none"
+          className={`${baseClasses} ${className}`}
+        >
+          <circle cx="12" cy="12" r="2.2" fill="#61DAFB" />
+          <ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" strokeWidth="1.2" />
+          <ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" strokeWidth="1.2" transform="rotate(60 12 12)" />
+          <ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" strokeWidth="1.2" transform="rotate(120 12 12)" />
+        </svg>
+      );
+
+    case 'tailwind':
+      return (
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill="none"
+          className={`${baseClasses} ${className}`}
+        >
+          <path
+            d="M12 6c-2.4 0-3.9 1.2-4.5 3.6 1-.8 2.2-1.1 3.5-.8 1.1.3 1.9 1.1 2.8 2 1.4 1.4 3 3.2 6.2 3.2 2.4 0 3.9-1.2 4.5-3.6-1 .8-2.2 1.1-3.5.8-1.1-.3-1.9-1.1-2.8-2-1.4-1.4-3-3.2-6.2-3.2zm-8 6c-2.4 0-3.9 1.2-4.5 3.6 1-.8 2.2-1.1 3.5-.8 1.1.3 1.9 1.1 2.8 2 1.4 1.4 3 3.2 6.2 3.2 2.4 0 3.9-1.2 4.5-3.6-1 .8-2.2 1.1-3.5.8-1.1-.3-1.9-1.1-2.8-2-1.4-1.4-3-3.2-6.2-3.2z"
+            fill="#38BDF8"
+          />
+        </svg>
+      );
+
     default:
       return (
         <div
           style={{ width: size, height: size }}
-          className={`rounded flex items-center justify-center font-bold text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ${baseClasses} ${className}`}
+          className={`border border-zinc-700 flex items-center justify-center font-bold text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-mono ${baseClasses} ${className}`}
         >
           TF
         </div>

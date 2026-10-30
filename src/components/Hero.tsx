@@ -1,20 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { PERSONAL_INFO, HIGHLIGHTS_METRICS } from '../data/portfolioData';
 import { ProfileAvatar } from './ProfileAvatar';
+import { ScrambleText } from './ScrambleText';
+import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
+import { BrandIcon } from './BrandIcon';
+import { IsometricTFMonogram } from './IsometricTFMonogram';
+import { useLanguage } from '../context/LanguageContext';
 import {
-  ArrowDown,
-  ArrowUpRight,
-  Sparkles,
-  MapPin,
-  Clock,
-  Medal,
-  BookOpen,
+  ExternalLink,
+  ShieldCheck,
+  Copy,
+  Check,
+  ArrowRight,
   Award,
+  BookOpen,
   Cpu,
-  Mail,
-  FileCode,
+  Medal,
+  Terminal,
 } from 'lucide-react';
-import { motion } from 'motion/react';
 import { SectionId } from '../types';
 
 interface HeroProps {
@@ -22,169 +25,200 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
-  const [localTime, setLocalTime] = useState('');
+  const [copied, setCopied] = useState(false);
+  const { t, language } = useLanguage();
 
-  useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const options: Intl.DateTimeFormatOptions = {
-        timeZone: 'Asia/Jakarta',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-      };
-      setLocalTime(new Intl.DateTimeFormat('en-US', options).format(now));
-    };
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(PERSONAL_INFO.email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const getMetricIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'Medal':
-        return <Medal className="w-4 h-4 text-amber-500" />;
-      case 'BookOpen':
-        return <BookOpen className="w-4 h-4 text-teal-600" />;
-      case 'Award':
-        return <Award className="w-4 h-4 text-blue-500" />;
-      case 'Cpu':
-        return <Cpu className="w-4 h-4 text-emerald-500" />;
-      default:
-        return <Sparkles className="w-4 h-4 text-amber-500" />;
-    }
+  const metricIcons: Record<string, React.ReactNode> = {
+    'gold-medals': <Medal className="w-5 h-5 text-amber-500" />,
+    'perpusnas-author': <BookOpen className="w-5 h-5 text-emerald-500" />,
+    'google-tier': <Award className="w-5 h-5 text-blue-500" />,
+    'cloud-certifications': <Cpu className="w-5 h-5 text-purple-500" />,
   };
 
   return (
-    <section
-      id="home"
-      className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 overflow-hidden border-b border-zinc-200/60 dark:border-zinc-800/60"
-    >
-      {/* Subtle architectural background grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:28px_28px] pointer-events-none -z-10"></div>
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Top Badges & Location Bar */}
-        <div className="flex flex-wrap items-center gap-3 mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-medium border border-zinc-200/70 dark:border-zinc-700/70">
-            <span className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white"></span>
-            <span>{PERSONAL_INFO.title}</span>
-          </div>
-
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100/60 dark:bg-zinc-800/60 text-zinc-600 dark:text-zinc-400 text-xs font-mono border border-zinc-200/50 dark:border-zinc-700/50">
-            <MapPin className="w-3.5 h-3.5 text-zinc-500" />
-            <span>{PERSONAL_INFO.location}</span>
-          </div>
-
-          {localTime && (
-            <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100/40 dark:bg-zinc-800/40 text-zinc-500 text-xs font-mono border border-zinc-200/40 dark:border-zinc-700/40">
-              <Clock className="w-3.5 h-3.5 text-zinc-400" />
-              <span>Cilegon Time: {localTime} WIB</span>
-            </div>
-          )}
-        </div>
-
-        {/* Hero Content Grid with Profile Photo */}
+    <section id="home" className="relative w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-[#09090B]/60 backdrop-blur-xs">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14">
+        {/* Two-Column Responsive Hero: Left Specs / Right 3D Monogram */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Left Column: Text & CTAs */}
-          <div className="lg:col-span-8 space-y-4">
-            <h1 className="font-heading font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-zinc-900 dark:text-white tracking-tight leading-[1.08]">
-              Tubagus Fitran <br className="hidden sm:inline" />
-              <span className="text-zinc-500 dark:text-zinc-400 font-bold">Badruttamam</span>
-            </h1>
-
-            <p className="font-heading font-semibold text-lg sm:text-xl md:text-2xl text-zinc-800 dark:text-zinc-200 leading-snug">
-              {PERSONAL_INFO.tagline}
-            </p>
-
-            <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed pt-1">
-              {PERSONAL_INFO.bio}
-            </p>
-
-            {/* Action CTAs */}
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-4">
-              <button
-                id="hero-explore-work-btn"
-                onClick={() => onNavigate('work')}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#18181B] dark:bg-white text-white dark:text-zinc-900 rounded-xl font-semibold text-sm shadow-md hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+          {/* LEFT COLUMN: Identity, Bio, Badges & CTA (7 cols on lg) */}
+          <div className="lg:col-span-7 flex flex-col items-start">
+            {/* Top Verified Google Developer Program Pill */}
+            <div className="mb-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-200 dark:border-blue-900/60 bg-blue-50/80 dark:bg-blue-950/40 text-blue-900 dark:text-blue-300 font-mono text-xs shadow-2xs">
+              <GoogleDeveloperLogo size={16} />
+              <span className="font-semibold">{t.hero.verifiedDev}</span>
+              <span className="text-zinc-300 dark:text-zinc-700">•</span>
+              <a
+                href={PERSONAL_INFO.socialLinks.googleDev}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline flex items-center gap-1 font-bold text-blue-600 dark:text-blue-400"
               >
-                <span>Explore Shipped Work</span>
-                <ArrowDown className="w-4 h-4" />
-              </button>
-
-              <button
-                id="hero-view-certs-btn"
-                onClick={() => onNavigate('certificates')}
-                className="inline-flex items-center gap-2 px-5 py-3 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 rounded-xl font-semibold text-sm hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all"
-              >
-                <span>View Verified Credentials</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </button>
-
-              <button
-                id="hero-contact-btn"
-                onClick={() => onNavigate('contact')}
-                className="inline-flex items-center gap-2 px-4 py-3 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white text-sm font-medium transition-colors"
-              >
-                <Mail className="w-4 h-4" />
-                <span>Get in Touch</span>
-              </button>
+                <span>Profile</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
             </div>
-          </div>
 
-          {/* Right Column: Profile Photo Card */}
-          <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-center">
-            <div className="flex flex-col items-center gap-3">
+            {/* Profile Avatar + Scramble Headline */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 w-full">
               <ProfileAvatar size="hero" showBadge={true} />
-              <div className="text-center">
-                <p className="font-heading font-bold text-sm text-zinc-900 dark:text-white">
-                  Tubagus Fitran Badruttamam
-                </p>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
-                  Software Engineer • Informatics Student
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* High-Impact Stat & Recognition Highlights Strip */}
-        <div className="mt-14 pt-8 border-t border-zinc-200/80 dark:border-zinc-800/80">
-          <div className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-4 flex items-center gap-2">
-            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            <span>Verified Benchmarks & Credentials</span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {HIGHLIGHTS_METRICS.map((item) => (
-              <div
-                key={item.id}
-                onClick={() => onNavigate(item.id.includes('gold') || item.id.includes('perpusnas') || item.id.includes('cloud') ? 'certificates' : 'about')}
-                className="group relative p-4 rounded-xl bg-white dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800/80 hover:border-zinc-400 dark:hover:border-zinc-600 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 group-hover:scale-105 transition-transform">
-                    {getMetricIcon(item.icon)}
-                  </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
-                    {item.badge}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h1 className="font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl text-zinc-950 dark:text-white tracking-tight">
+                    <ScrambleText text={PERSONAL_INFO.name} scrambleSpeed={22} scrambleCycles={2} />
+                  </h1>
+                  <span
+                    title="Verified Developer Profile"
+                    className="inline-flex items-center text-blue-500"
+                  >
+                    <ShieldCheck className="w-5 h-5" />
                   </span>
                 </div>
 
-                <p className="font-heading font-extrabold text-lg text-zinc-900 dark:text-white leading-tight">
-                  {item.value}
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1.5 flex items-center gap-1.5 flex-wrap">
+                  <span className="text-emerald-500 font-bold">&gt;</span>
+                  <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                    {t.hero.softwareEngineer}
+                  </span>
+                  <span className="text-zinc-400">•</span>
+                  <span className="text-zinc-500 dark:text-zinc-400">Universitas Muhammadiyah Banten</span>
                 </p>
-                <p className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mt-1">
-                  {item.label}
+
+                {/* Ecosystem Badges: Google Maps Innovators & Firebase */}
+                <div className="flex flex-wrap items-center gap-1.5 mt-3 font-mono text-[11px]">
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-red-200/80 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/20 text-zinc-800 dark:text-zinc-200">
+                    <BrandIcon name="google-maps" size={13} />
+                    <span className="font-semibold text-red-600 dark:text-red-400">{t.hero.mapsInnovators}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-200/80 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20 text-zinc-800 dark:text-zinc-200">
+                    <BrandIcon name="firebase" size={13} />
+                    <span className="font-semibold text-amber-600 dark:text-amber-400">{t.hero.firebaseDev}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100/80 dark:bg-zinc-800/60 text-zinc-700 dark:text-zinc-300">
+                    <BrandIcon name="aws" size={13} />
+                    <span>AWS Certified</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100/80 dark:bg-zinc-800/60 text-zinc-700 dark:text-zinc-300">
+                    <BrandIcon name="nvidia" size={13} />
+                    <span>NVIDIA DLI</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-sky-200/80 dark:border-sky-900/50 bg-sky-50/50 dark:bg-sky-950/20 text-zinc-800 dark:text-zinc-200">
+                    <BrandIcon name="meta" size={13} />
+                    <span className="font-medium text-[#0081FB] dark:text-sky-400">Meta Blueprint</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100/80 dark:bg-zinc-800/60 text-zinc-700 dark:text-zinc-300">
+                    <BrandIcon name="vercel" size={13} />
+                    <span>Vercel Next.js</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bilingual Biography */}
+            <div className="mt-5 text-sm sm:text-base leading-relaxed text-zinc-600 dark:text-zinc-300 border-l-2 border-emerald-500 pl-4 py-1">
+              <p>{t.hero.bio}</p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-wrap items-center gap-2.5 mt-6 w-full">
+              <button
+                onClick={() => onNavigate('work')}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-zinc-950 font-mono text-xs font-semibold shadow-xs transition-all cursor-pointer"
+              >
+                <span>{t.hero.viewProjects}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+
+              <button
+                onClick={() => onNavigate('certificates')}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-mono text-xs font-medium transition-colors cursor-pointer"
+              >
+                <Award className="w-3.5 h-3.5 text-blue-500" />
+                <span>{t.hero.viewCredentials}</span>
+              </button>
+
+              <button
+                onClick={handleCopyEmail}
+                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-mono text-xs transition-colors cursor-pointer"
+                title="Copy Email Address"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-500" />
+                    <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+                      {t.hero.emailCopied}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>{t.hero.copyEmail}</span>
+                  </>
+                )}
+              </button>
+
+              <a
+                href={PERSONAL_INFO.socialLinks.googleDev}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-full border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/30 hover:bg-blue-100/80 text-blue-700 dark:text-blue-300 font-mono text-xs transition-colors"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>{t.hero.googleProfile}</span>
+              </a>
+            </div>
+
+            {/* Quick Status Bar */}
+            <div className="mt-5 flex items-center gap-2 font-mono text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block" />
+              <span>{t.hero.openForWork}</span>
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN: Interactive 3D Isometric "TF" Monogram (5 cols on lg) */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
+            {/* Background Radial Glow */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-blue-500/5 to-transparent rounded-full filter blur-3xl pointer-events-none" />
+
+            {/* The 3D Monogram Canvas */}
+            <IsometricTFMonogram className="w-full" />
+          </div>
+        </div>
+
+        {/* HIGHLIGHTS METRICS (Full Width 4-Card Responsive Grid) */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-10 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+          {HIGHLIGHTS_METRICS.map((metric) => (
+            <div
+              key={metric.id}
+              className="p-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/80 dark:bg-zinc-900/40 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-all flex flex-col justify-between"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800">
+                  {metricIcons[metric.id] || <Award className="w-4 h-4" />}
+                </span>
+                <span className="font-mono text-[10px] uppercase font-bold text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800">
+                  {metric.badge}
+                </span>
+              </div>
+              <div>
+                <p className="font-heading font-black text-lg sm:text-xl text-zinc-950 dark:text-white">
+                  {metric.value}
                 </p>
-                <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 line-clamp-1">
-                  {item.subtext}
+                <p className="font-mono text-xs font-semibold text-zinc-800 dark:text-zinc-200 mt-0.5">
+                  {language === 'id' && metric.labelId ? metric.labelId : metric.label}
+                </p>
+                <p className="font-mono text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                  {metric.subtext}
                 </p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

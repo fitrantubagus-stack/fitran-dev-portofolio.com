@@ -14,6 +14,167 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
   const isFull = size === 'full';
 
   // --------------------------------------------------------------------------
+  // High-Resolution Official Extracted Certificate Images
+  // --------------------------------------------------------------------------
+  const availableCertImages = new Set([
+    'cert-meta-blueprint.png',
+    'cert-vercel-nextjs.jpg',
+    'cert-vercel-nextjs.png',
+    'cert-oshsp-2024.jpg',
+    'cert-oshsp-2024.png',
+    'cert-oshsp-2024-filled.png',
+    'cert-perpusnas-46th.png',
+    'award-kshpi-2024.png',
+    'cert-aws-api-gateway.png',
+    'cert-aws-iam.png',
+    'cert-aws-responsible-ai.png',
+    'cert-aws-bedrock-guardrails.png',
+    'cert-aws-data-engineering.png',
+    'cert-aws-security-bedrock.png',
+    'cert-nvidia-dsx-air.png',
+    'cert-nvidia-cvt.png',
+    'cert-nvidia-netq.png',
+    'cert-claude-capabilities-limitations.png',
+    'cert-claude-101.png',
+    'cert-claude-platform-101.png',
+    'cert-dicoding-microsoft-fabric.png',
+    'cert-sohib-bercerita.png',
+    'cert-bed-gamifikasi.png',
+    'cert-bed-literasi-numerasi.png',
+    'cert-bed-komunitas-belajar.png',
+  ]);
+
+  const [imgError, setImgError] = React.useState(false);
+  const directImageUrl =
+    cert.customImageFilename && availableCertImages.has(cert.customImageFilename)
+      ? `/certificates/${cert.customImageFilename}`
+      : null;
+
+  if (directImageUrl && !imgError) {
+    return (
+      <div
+        className={`w-full bg-[#0D1117] rounded-xl overflow-hidden border border-zinc-200/90 dark:border-zinc-800 flex items-center justify-center relative shadow-sm ${
+          isFull ? 'p-2 sm:p-4 bg-zinc-950/40 min-h-[360px]' : 'aspect-[4/3] p-1.5'
+        }`}
+      >
+        <img
+          src={directImageUrl}
+          alt={cert.title}
+          className={`w-full h-full object-contain rounded-lg ${isFull ? 'max-h-[70vh]' : ''}`}
+          loading="lazy"
+          onError={() => setImgError(true)}
+        />
+      </div>
+    );
+  }
+
+  // --------------------------------------------------------------------------
+  // 0A. Meta Blueprint (Official Meta Platforms Accreditation)
+  // --------------------------------------------------------------------------
+  if (cert.issuer === 'Meta') {
+    return (
+      <div
+        className={`w-full aspect-[4/3] bg-white text-zinc-900 border border-zinc-200/90 dark:border-zinc-700 rounded-xl overflow-hidden shadow-sm relative flex flex-col justify-between select-none ${
+          isFull ? 'p-8 sm:p-12 md:p-14' : 'p-4 sm:p-5'
+        }`}
+      >
+        <div className="flex items-center justify-between border-b border-zinc-100 pb-3">
+          <div className="flex items-center gap-2">
+            <svg viewBox="0 0 120 40" className={isFull ? 'w-24 sm:w-28 h-auto' : 'w-16 h-auto'}>
+              <path
+                d="M19.2 12.8c-2.3 0-4.3 1.1-5.6 2.8-1.3-1.7-3.3-2.8-5.6-2.8C3.6 12.8 0 16.7 0 21.6c0 6.6 6 12 13.6 12 4.4 0 8.3-2.1 10.7-5.3 2.4 3.2 6.3 5.3 10.7 5.3 7.6 0 13.6-5.4 13.6-12 0-4.9-3.6-8.8-8-8.8-2.3 0-4.3 1.1-5.6 2.8-1.3-1.7-3.3-2.8-5.6-2.8-2.3 0-4.3 1.1-5.6 2.8-1.3-1.7-3.3-2.8-5.6-2.8zm-5.6 14.8c-3.8 0-6.9-3.2-6.9-7.2s3.1-7.2 6.9-7.2c2.8 0 5.2 1.7 6.3 4.2-.3.9-.5 1.9-.5 3s.2 2.1.5 3c-1.1 2.5-3.5 4.2-6.3 4.2zm21.3 0c-2.8 0-5.2-1.7-6.3-4.2.3-.9.5-1.9.5-3s-.2-2.1-.5-3c1.1-2.5 3.5-4.2 6.3-4.2 3.8 0 6.9 3.2 6.9 7.2s-3.1 7.2-6.9 7.2z"
+                fill="#0081FB"
+              />
+              <text x="52" y="27" fontSize="16" fontWeight="bold" fontFamily="sans-serif" fill="#1C2B33">
+                Meta
+              </text>
+            </svg>
+            <span className="text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded bg-sky-50 text-[#0081FB] border border-sky-200">
+              Blueprint
+            </span>
+          </div>
+          <span className="font-mono text-[9px] sm:text-[11px] text-zinc-500">Official Certificate</span>
+        </div>
+
+        <div className="my-auto py-2 sm:py-4 space-y-2">
+          <p className="font-mono text-[9px] sm:text-xs text-zinc-500 uppercase tracking-widest">
+            Course Completion
+          </p>
+          <h3
+            className={`font-sans font-black text-zinc-900 tracking-tight leading-snug ${
+              isFull ? 'text-2xl sm:text-3xl' : 'text-xs sm:text-sm'
+            }`}
+          >
+            {cert.title}
+          </h3>
+          <p className="font-sans text-[10px] sm:text-xs text-zinc-600">
+            Awarded to <span className="font-bold text-zinc-900">Tubagus Fitran Badruttamam</span>
+          </p>
+        </div>
+
+        <div className="flex items-end justify-between pt-2 border-t border-zinc-100 text-[9px] sm:text-xs text-zinc-500 font-mono">
+          <div>
+            <p className="text-zinc-400">Date Completed</p>
+            <p className="font-semibold text-zinc-800">{cert.date}</p>
+          </div>
+          <div className="text-right">
+            <span className="text-[#0081FB] font-bold">Meta Certified</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // --------------------------------------------------------------------------
+  // 0B. Vercel (Next.js App Router Fundamentals)
+  // --------------------------------------------------------------------------
+  if (cert.issuer === 'Vercel') {
+    return (
+      <div
+        className={`w-full aspect-[4/3] bg-black text-white border border-zinc-800 rounded-xl overflow-hidden shadow-sm relative flex flex-col justify-between select-none ${
+          isFull ? 'p-8 sm:p-12 md:p-14' : 'p-4 sm:p-5'
+        }`}
+      >
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center gap-2">
+            <svg viewBox="0 0 115 100" className={isFull ? 'w-6 h-6' : 'w-4 h-4'}>
+              <polygon points="57.5,0 115,100 0,100" fill="#FFFFFF" />
+            </svg>
+            <span className="font-sans font-bold tracking-tight text-sm">▲ Vercel</span>
+          </div>
+          <span className="font-mono text-[9px] sm:text-[11px] text-zinc-400">Next.js Certified</span>
+        </div>
+
+        <div className="my-auto py-2 sm:py-4 space-y-2">
+          <p className="font-mono text-[9px] sm:text-xs text-zinc-400 uppercase tracking-widest">
+            Certificate of Achievement
+          </p>
+          <h3
+            className={`font-sans font-extrabold text-white tracking-tight leading-snug ${
+              isFull ? 'text-2xl sm:text-3xl' : 'text-xs sm:text-sm'
+            }`}
+          >
+            {cert.title}
+          </h3>
+          <p className="font-sans text-[10px] sm:text-xs text-zinc-300">
+            Awarded to <span className="font-bold text-white">Tubagus Fitran Badruttamam</span>
+          </p>
+        </div>
+
+        <div className="flex items-end justify-between pt-2 border-t border-zinc-800 text-[9px] sm:text-xs text-zinc-400 font-mono">
+          <div>
+            <p className="text-zinc-500">Issued by</p>
+            <p className="font-semibold text-zinc-200">Guillermo Rauch, CEO</p>
+          </div>
+          <div className="text-right">
+            <span className="text-emerald-400 font-bold font-mono">VERIFIED</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // --------------------------------------------------------------------------
   // 1. AWS Training & Certification (Responsible AI & Bedrock Guardrails)
   // --------------------------------------------------------------------------
   if (cert.issuer === 'AWS') {

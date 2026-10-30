@@ -1,11 +1,27 @@
-export type SectionId = 'home' | 'about' | 'work' | 'certificates' | 'contact';
+export type SectionId = 'home' | 'about' | 'work' | 'certificates' | 'ecosystem' | 'craft-lab' | 'contact';
 
 export type CertificateCategory = 'all' | 'cloud-ai' | 'marketing' | 'academic' | 'publications';
 
 export interface CertificateItem {
   id: string;
   title: string;
-  issuer: 'AWS' | 'NVIDIA' | 'Google' | 'Google Skills' | 'Perpusnas' | 'OSHSP' | 'KSHPI' | 'OSN' | 'TOEFL';
+  issuer:
+    | 'AWS'
+    | 'NVIDIA'
+    | 'Google'
+    | 'Google Skills'
+    | 'Meta'
+    | 'Vercel'
+    | 'Perpusnas'
+    | 'OSHSP'
+    | 'KSHPI'
+    | 'OSN'
+    | 'TOEFL'
+    | 'Anthropic'
+    | 'Claude Academy'
+    | 'Dicoding'
+    | 'Belajar Era Digital'
+    | 'Indonesia Baik';
   issuerFullName: string;
   category: 'cloud-ai' | 'marketing' | 'academic' | 'publications';
   date: string;

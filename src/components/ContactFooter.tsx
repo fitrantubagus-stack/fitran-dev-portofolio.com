@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PERSONAL_INFO } from '../data/portfolioData';
-import { BrandIcon } from './BrandIcon';
 import { SectionId } from '../types';
-import { TechStackTerminal } from './TechStackTerminal';
+import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
+import { VibeCodingComputer } from './VibeCodingComputer';
+import { useLanguage } from '../context/LanguageContext';
 import {
   ArrowUp,
-  MapPin,
-  Sparkles,
+  Github,
+  Linkedin,
+  Instagram,
+  Copy,
+  Check,
+  FolderOpen,
+  Mail,
+  Heart,
 } from 'lucide-react';
 
 interface ContactFooterProps {
@@ -14,160 +21,122 @@ interface ContactFooterProps {
 }
 
 export const ContactFooter: React.FC<ContactFooterProps> = ({ onNavigate }) => {
+  const [copied, setCopied] = useState(false);
+  const { t, language } = useLanguage();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(PERSONAL_INFO.email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <footer
-      id="contact"
-      className="bg-zinc-900 text-white pt-16 pb-12 border-t border-zinc-800 relative overflow-hidden"
-    >
-      {/* Background accent glow */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-0"></div>
-      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none -z-0"></div>
+    <footer id="contact" className="w-full border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090B] py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* 3D Vibe Coding Desktop Workstation (360° Rotatable) */}
+        <VibeCodingComputer className="mb-10" />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 space-y-12">
-        {/* Main CTA Block */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start justify-between pb-12 border-b border-zinc-800">
-          <div className="lg:col-span-7 space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-800 text-zinc-300 text-xs font-semibold uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>Let's Build Something Together</span>
+        {/* Availability & Direct Connect Callout Card */}
+        <div className="p-6 sm:p-8 rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-gradient-to-r from-zinc-50 via-white to-zinc-50 dark:from-[#0D1117] dark:via-zinc-900/60 dark:to-[#0D1117] flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xs">
+          <div className="flex items-start gap-4">
+            <span className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
+              <Mail className="w-6 h-6" />
+            </span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <h3 className="font-heading font-bold text-lg sm:text-xl text-zinc-950 dark:text-white">
+                  {t.footer.readyToBuild}
+                </h3>
+              </div>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-xl">
+                {t.footer.getInTouch}
+              </p>
             </div>
-
-            <h2 className="font-heading font-extrabold text-3xl sm:text-5xl text-white tracking-tight leading-tight">
-              Open to collaboration, freelance & engineering opportunities.
-            </h2>
-
-            <p className="text-sm sm:text-base text-zinc-400 max-w-xl leading-relaxed">
-              Whether you are architecting a new web product, exploring industrial AI systems, or looking for a high-output self-driven engineer to join your technical team.
-            </p>
           </div>
 
-          {/* Interactive Typed Code Template Box */}
-          <div className="lg:col-span-5 w-full">
-            <TechStackTerminal />
-            <div className="mt-3 flex items-center justify-between text-[11px] text-zinc-400 px-1">
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-zinc-500" />
-                <span>Cilegon, Banten, Indonesia (GMT+7)</span>
-              </div>
-              <span className="text-zinc-500 font-mono">v2.4.0 • Node v20+</span>
-            </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              onClick={handleCopyEmail}
+              className="px-4 py-2.5 rounded-full bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-zinc-950 font-mono text-xs font-semibold flex items-center gap-2 transition-all shadow-xs cursor-pointer"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-emerald-400 dark:text-emerald-600" />
+                  <span>{t.hero.emailCopied}</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5" />
+                  <span>{PERSONAL_INFO.email}</span>
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={scrollToTop}
+              className="p-2.5 rounded-full border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition-colors"
+              title="Back to Top"
+              aria-label="Back to Top"
+            >
+              <ArrowUp className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
-        {/* Social Platforms Row with signature Grayscale-to-Color hover */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-2">
-          <div className="flex items-center gap-4">
-            <span className="text-xs text-zinc-400 font-medium mr-1">Connect on:</span>
-
-            {/* GitHub */}
+        {/* Social Links & Meta Footer */}
+        <div className="mt-8 pt-6 border-t border-zinc-100 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="flex flex-wrap items-center gap-4">
             <a
-              id="social-github-link"
               href={PERSONAL_INFO.socialLinks.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-800/80 hover:bg-zinc-800 border border-zinc-700/60 hover:border-zinc-500 transition-all transform hover:-translate-y-0.5"
-              title="GitHub Profile"
+              className="hover:text-zinc-950 dark:hover:text-white flex items-center gap-1.5 transition-colors"
             >
-              <BrandIcon name="github" size={18} className="text-white" />
-              <span className="text-xs font-semibold text-zinc-300 group-hover:text-white">
-                GitHub
-              </span>
+              <Github className="w-3.5 h-3.5" />
+              <span>GitHub</span>
             </a>
-
-            {/* LinkedIn */}
+            <span>•</span>
             <a
-              id="social-linkedin-link"
               href={PERSONAL_INFO.socialLinks.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-800/80 hover:bg-zinc-800 border border-zinc-700/60 hover:border-zinc-500 transition-all transform hover:-translate-y-0.5"
-              title="LinkedIn Profile"
+              className="hover:text-[#0A66C2] flex items-center gap-1.5 transition-colors"
             >
-              <BrandIcon name="linkedin" size={18} />
-              <span className="text-xs font-semibold text-zinc-300 group-hover:text-white">
-                LinkedIn
-              </span>
+              <Linkedin className="w-3.5 h-3.5 text-[#0A66C2]" />
+              <span>LinkedIn</span>
             </a>
-
-            {/* Instagram */}
+            <span>•</span>
             <a
-              id="social-instagram-link"
+              href={PERSONAL_INFO.socialLinks.googleDev}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-500 flex items-center gap-1.5 transition-colors"
+            >
+              <GoogleDeveloperLogo size={14} />
+              <span>Google Developer</span>
+            </a>
+            <span>•</span>
+            <a
               href={PERSONAL_INFO.socialLinks.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-800/80 hover:bg-zinc-800 border border-zinc-700/60 hover:border-zinc-500 transition-all transform hover:-translate-y-0.5"
-              title="Instagram Profile"
+              className="hover:text-pink-500 flex items-center gap-1.5 transition-colors"
             >
-              <BrandIcon name="instagram" size={18} />
-              <span className="text-xs font-semibold text-zinc-300 group-hover:text-white">
-                Instagram
-              </span>
-            </a>
-
-            {/* Google Drive Certificates */}
-            <a
-              id="social-drive-certs-link"
-              href={PERSONAL_INFO.socialLinks.certificatesDrive}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-2 px-3.5 py-2 rounded-xl bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/60 hover:border-blue-500 transition-all transform hover:-translate-y-0.5"
-              title="Google Drive Folder (All Certificates)"
-            >
-              <span className="text-blue-400 font-bold text-xs">Drive</span>
-              <span className="text-xs font-semibold text-blue-200 group-hover:text-white">
-                Certificates
-              </span>
+              <Instagram className="w-3.5 h-3.5" />
+              <span>Instagram</span>
             </a>
           </div>
 
-          {/* Quick Navigation Links */}
-          <div className="flex items-center gap-4 text-xs text-zinc-400">
-            <button
-              onClick={() => onNavigate('home')}
-              className="hover:text-white transition-colors"
-            >
-              Home
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => onNavigate('about')}
-              className="hover:text-white transition-colors"
-            >
-              About
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => onNavigate('work')}
-              className="hover:text-white transition-colors"
-            >
-              Work
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => onNavigate('certificates')}
-              className="hover:text-white transition-colors"
-            >
-              Certificates
-            </button>
+          <div className="flex items-center gap-2 text-center sm:text-right">
+            <span>© 2026 Tubagus Fitran Badruttamam.</span>
+            <span className="hidden sm:inline">•</span>
+            <span className="hidden sm:inline text-zinc-400">{t.footer.designedWith}</span>
           </div>
-        </div>
-
-        {/* Bottom copyright line & Back to top */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-zinc-800/80 text-xs text-zinc-500">
-          <p>© {new Date().getFullYear()} Tubagus Fitran Badruttamam. Designed with typography-first precision.</p>
-
-          <button
-            id="back-to-top-btn"
-            onClick={scrollToTop}
-            className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors group"
-          >
-            <span>Back to top</span>
-            <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-1 transition-transform" />
-          </button>
         </div>
       </div>
     </footer>

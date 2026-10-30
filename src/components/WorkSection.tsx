@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { ProjectItem } from '../types';
 import { PROJECTS_DATA } from '../data/portfolioData';
-import { ProjectLogo } from './ProjectLogos';
+import { ScrambleText } from './ScrambleText';
+import { useLanguage } from '../context/LanguageContext';
 import {
+  FolderGit2,
   ExternalLink,
+  ArrowUpRight,
+  GitBranch,
   Layers,
-  ArrowRight,
   Sparkles,
-  Code,
-  Eye,
-  CheckCircle,
-  FileText,
+  CheckCircle2,
 } from 'lucide-react';
 
 interface WorkSectionProps {
@@ -23,6 +23,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
   isHomePreview = false,
 }) => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'AI & Data' | 'Web & Mobile' | 'Frontend Engineering'>('all');
+  const { t, language } = useLanguage();
 
   const displayedProjects = isHomePreview
     ? PROJECTS_DATA.slice(0, 3)
@@ -31,133 +32,140 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
     : PROJECTS_DATA.filter((p) => p.category === activeFilter);
 
   const categories = [
-    { id: 'all', label: 'All Projects' },
-    { id: 'AI & Data', label: 'AI & Industrial Systems' },
-    { id: 'Web & Mobile', label: 'Web Applications' },
-    { id: 'Frontend Engineering', label: 'Client Engineering' },
+    { id: 'all', label: t.projects.all },
+    { id: 'AI & Data', label: t.projects.aiData },
+    { id: 'Web & Mobile', label: t.projects.webApps },
+    { id: 'Frontend Engineering', label: t.projects.frontend },
   ];
 
+  const getLanguageColor = (tech: string) => {
+    switch (tech.toLowerCase()) {
+      case 'typescript':
+        return 'bg-blue-500';
+      case 'javascript':
+        return 'bg-yellow-400';
+      case 'react':
+      case 'next.js':
+        return 'bg-cyan-500';
+      case 'python':
+        return 'bg-emerald-500';
+      case 'html5':
+      case 'css3':
+        return 'bg-orange-500';
+      default:
+        return 'bg-purple-500';
+    }
+  };
+
   return (
-    <section
-      id={isHomePreview ? 'featured-work' : 'work'}
-      className="py-16 sm:py-24 border-b border-zinc-200/60 dark:border-zinc-800/60"
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <section id="work" className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-[#09090B]/70 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8 border-b border-zinc-200 dark:border-zinc-800">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-semibold uppercase tracking-wider mb-3">
-              <Layers className="w-3.5 h-3.5 text-zinc-500" />
-              <span>{isHomePreview ? 'Featured Work' : 'Engineering Portfolio'}</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/70 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-300 font-mono text-xs mb-2">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>{t.projects.badge}</span>
             </div>
-            <h2 className="font-heading font-bold text-3xl sm:text-4xl text-zinc-900 dark:text-white">
-              {isHomePreview ? 'Featured Shipped Projects' : 'Selected Works & Case Studies'}
+            <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-zinc-950 dark:text-white tracking-tight">
+              <ScrambleText text={t.projects.title} scrambleSpeed={20} />
             </h2>
-            <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 mt-2 max-w-2xl">
-              Real shipped applications and high-impact industrial prototypes — demonstrating full lifecycle execution from UX architecture to cloud deployment.
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+              {t.projects.subtitle}
             </p>
           </div>
 
-          {!isHomePreview && (
-            <div className="flex flex-wrap gap-1.5 bg-zinc-100 dark:bg-zinc-900 p-1 rounded-xl border border-zinc-200/70 dark:border-zinc-800 self-start md:self-auto">
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveFilter(cat.id as any)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                    activeFilter === cat.id
-                      ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-xs font-semibold'
-                      : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-          )}
+          {/* Filter Pills */}
+          <div className="flex flex-wrap gap-1.5 font-mono text-xs">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveFilter(cat.id as any)}
+                className={`px-3.5 py-1.5 rounded-full transition-all cursor-pointer ${
+                  activeFilter === cat.id
+                    ? 'bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 font-semibold shadow-xs'
+                    : 'border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Projects Grid: 3 Columns on Large Screens */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-8">
           {displayedProjects.map((project) => (
             <div
               key={project.id}
-              id={`project-card-${project.id}`}
-              className="group flex flex-col justify-between bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 rounded-2xl p-5 sm:p-6 hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative"
+              className="group flex flex-col justify-between p-5 rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-[#0D1117] hover:border-zinc-400 dark:hover:border-zinc-600 transition-all shadow-xs hover:shadow-lg"
             >
-              {/* Top Header inside Card */}
               <div>
-                <div className="flex items-start justify-between gap-3 mb-4">
-                  <ProjectLogo id={project.id} size={48} />
-                  <div className="flex items-center gap-1.5">
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
-                      {project.category}
-                    </span>
-                    {project.type === 'live' && (
-                      <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                        Live
-                      </span>
-                    )}
+                {/* Header: Repo Icon + Status Tag */}
+                <div className="flex items-start justify-between gap-2 mb-3">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <FolderGit2 className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors shrink-0" />
+                    <h3
+                      onClick={() => onSelectProject(project)}
+                      className="font-bold text-base text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate cursor-pointer"
+                    >
+                      {project.name}
+                    </h3>
                   </div>
+
+                  <span
+                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold uppercase tracking-wider border shrink-0 ${
+                      project.type === 'live'
+                        ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800'
+                        : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700'
+                    }`}
+                  >
+                    {project.type === 'live' ? 'Live Web' : 'Case Study'}
+                  </span>
                 </div>
 
-                <h3 className="font-heading font-bold text-xl text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  {project.name}
-                </h3>
-                <p className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mt-1">
+                {/* Tagline / Subtitle */}
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-2 mb-4">
                   {project.tagline}
                 </p>
-                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-2.5 line-clamp-3 leading-relaxed">
-                  {project.summary}
-                </p>
+
+                {/* Architecture Highlights Pill */}
+                {project.architectureHighlights && project.architectureHighlights.length > 0 && (
+                  <div className="mb-4 p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/70 dark:border-zinc-800/80 font-mono text-[11px] text-zinc-500 dark:text-zinc-400 flex items-start gap-2">
+                    <Layers className="w-3.5 h-3.5 text-blue-500 shrink-0 mt-0.5" />
+                    <span className="line-clamp-1">{project.architectureHighlights[0]}</span>
+                  </div>
+                )}
               </div>
 
-              {/* Technologies & Actions */}
-              <div className="mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800 space-y-3">
-                <div className="flex flex-wrap gap-1">
-                  {project.technologies.slice(0, 4).map((tech, i) => (
-                    <span
-                      key={i}
-                      className="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 rounded text-[10px] font-mono font-medium"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                  {project.technologies.length > 4 && (
-                    <span className="px-1.5 py-0.5 text-zinc-400 text-[10px] font-mono">
-                      +{project.technologies.length - 4}
-                    </span>
-                  )}
+              {/* Card Footer: Tech Dots + Actions */}
+              <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between font-mono text-xs">
+                {/* Primary Tech Dot */}
+                <div className="flex items-center gap-2 text-[11px] text-zinc-600 dark:text-zinc-400">
+                  <span className={`w-2 h-2 rounded-full ${getLanguageColor(project.technologies[0])}`} />
+                  <span className="font-medium text-zinc-800 dark:text-zinc-200">{project.technologies[0]}</span>
                 </div>
 
-                <div className="flex items-center justify-between gap-2 pt-1">
+                {/* Action Buttons */}
+                <div className="flex items-center gap-1.5">
                   <button
-                    id={`view-study-${project.id}`}
                     onClick={() => onSelectProject(project)}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white py-1.5 transition-colors"
+                    className="px-2.5 py-1 rounded-lg border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-[11px] font-medium cursor-pointer"
                   >
-                    <FileText className="w-3.5 h-3.5" />
-                    <span>View Case Study</span>
+                    {t.projects.details}
                   </button>
 
-                  {project.liveUrl ? (
+                  {project.liveUrl && (
                     <a
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#18181B] dark:bg-white text-white dark:text-zinc-900 rounded-lg text-xs font-semibold hover:opacity-90 transition-opacity"
+                      className="px-3 py-1 rounded-lg bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 font-semibold hover:opacity-90 transition-opacity flex items-center gap-1 text-[11px] shadow-2xs"
+                      title={t.projects.liveDemo}
                     >
-                      <span>Visit Live Site</span>
-                      <ExternalLink className="w-3 h-3" />
+                      <span>{t.projects.liveDemo}</span>
+                      <ArrowUpRight className="w-3 h-3" />
                     </a>
-                  ) : (
-                    <button
-                      onClick={() => onSelectProject(project)}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg text-xs font-semibold hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
-                    >
-                      <span>Prototype Deliverable</span>
-                    </button>
                   )}
                 </div>
               </div>
