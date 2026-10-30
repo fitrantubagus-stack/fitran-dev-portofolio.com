@@ -158,7 +158,18 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-3 border-t border-zinc-200 dark:border-zinc-800">
               <div className="md:col-span-2 space-y-3">
                 <div>
-                  <h3 className="font-bold text-base sm:text-lg text-zinc-900 dark:text-white">
+                  <h3
+                    className={`font-bold text-base sm:text-lg ${
+                      cert.isVerifiedMatch
+                        ? 'text-yellow-600 dark:text-yellow-400'
+                        : 'text-zinc-900 dark:text-white'
+                    }`}
+                  >
+                    {cert.isVerifiedMatch && (
+                      <span className="inline-block px-2 py-0.5 mr-2 rounded text-xs font-mono font-bold bg-yellow-400/20 text-yellow-600 dark:text-yellow-400 border border-yellow-500/40">
+                        ✓ Sesuai PDF
+                      </span>
+                    )}
                     {cert.title}
                   </h3>
                   <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1.5 leading-relaxed font-sans">

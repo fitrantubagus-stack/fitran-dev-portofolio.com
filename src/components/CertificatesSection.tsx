@@ -152,13 +152,20 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
               <div>
                 {/* Issuer Badge + Date */}
                 <div className="flex items-center justify-between gap-2 mb-3">
-                  <span
-                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider border ${getIssuerBadgeClass(
-                      cert.issuer
-                    )}`}
-                  >
-                    {cert.issuer}
-                  </span>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span
+                      className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider border ${getIssuerBadgeClass(
+                        cert.issuer
+                      )}`}
+                    >
+                      {cert.issuer}
+                    </span>
+                    {cert.isVerifiedMatch && (
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-yellow-400/15 text-yellow-600 dark:text-yellow-400 border border-yellow-500/40">
+                        SESUAI
+                      </span>
+                    )}
+                  </div>
 
                   <span className="font-mono text-[11px] text-zinc-400">
                     {cert.date}
@@ -166,7 +173,19 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
                 </div>
 
                 {/* Title */}
-                <h3 className="font-bold text-sm sm:text-base text-zinc-950 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug line-clamp-2 mb-2">
+                <h3
+                  className={`font-bold text-sm sm:text-base leading-snug line-clamp-2 mb-2 transition-colors ${
+                    cert.isVerifiedMatch
+                      ? 'text-yellow-600 dark:text-yellow-400 group-hover:text-yellow-500 dark:group-hover:text-yellow-300'
+                      : 'text-zinc-950 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400'
+                  }`}
+                >
+                  {cert.isVerifiedMatch && (
+                    <span
+                      className="inline-block w-2 h-2 rounded-full bg-yellow-400 mr-1.5 align-middle animate-pulse"
+                      title="Sesuai PDF"
+                    />
+                  )}
                   {cert.title}
                 </h3>
 

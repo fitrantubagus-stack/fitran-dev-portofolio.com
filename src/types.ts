@@ -37,6 +37,7 @@ export interface CertificateItem {
   skillsLearned?: string[];
   imagePlaceholderColor?: string;
   customImageFilename?: string;
+  isVerifiedMatch?: boolean;
 }
 
 export interface ProjectItem {
