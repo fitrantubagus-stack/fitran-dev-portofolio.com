@@ -1,32 +1,38 @@
 import React from 'react';
 
 interface FitranPixelLogoProps {
-  size?: 'sm' | 'md' | 'lg' | 'hero';
-  variant?: 'card' | 'inline';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'hero';
+  variant?: 'transparent' | 'inline' | 'card';
   className?: string;
 }
 
 export const FitranPixelLogo: React.FC<FitranPixelLogoProps> = ({
-  size = 'md',
-  variant = 'inline',
+  size = 'sm',
   className = '',
 }) => {
-  const isHero = size === 'hero';
+  const isHero = size === 'hero' || size === 'lg';
   const isSm = size === 'sm';
+  const isXs = size === 'xs';
 
-  const content = (
+  const tealSize = isHero ? 28 : isSm ? 19 : isXs ? 15 : 23;
+  const blueW = isHero ? 30 : isSm ? 21 : isXs ? 16 : 25;
+  const blueH = isHero ? 20 : isSm ? 14 : isXs ? 11 : 17;
+  const orangeW = isHero ? 24 : isSm ? 17 : isXs ? 13 : 21;
+  const orangeH = isHero ? 19 : isSm ? 13 : isXs ? 10 : 16;
+
+  return (
     <div
-      className={`inline-flex items-end relative select-none ${
-        isHero ? 'pt-5' : isSm ? 'pt-2.5' : 'pt-4'
-      }`}
+      className={`inline-flex items-end relative select-none bg-transparent ${
+        isHero ? 'pt-5' : isSm ? 'pt-3' : isXs ? 'pt-2' : 'pt-3.5'
+      } ${className}`}
     >
       {/* Peeking Teal 8-Bit Mascot on Left */}
       <svg
-        width={isHero ? 30 : isSm ? 18 : 26}
-        height={isHero ? 30 : isSm ? 18 : 26}
+        width={tealSize}
+        height={tealSize}
         viewBox="0 0 16 16"
         shapeRendering="crispEdges"
-        className="-mr-1.5 mb-1 shrink-0"
+        className="-mr-1 mb-0.5 shrink-0"
       >
         <rect x="3" y="4" width="10" height="10" fill="#0D9488" />
         <rect x="2" y="6" width="12" height="6" fill="#14B8A6" />
@@ -37,12 +43,18 @@ export const FitranPixelLogo: React.FC<FitranPixelLogoProps> = ({
 
       {/* Peeking Blue 8-Bit Mascot on Top of Wordmark */}
       <svg
-        width={isHero ? 32 : isSm ? 20 : 28}
-        height={isHero ? 22 : isSm ? 14 : 20}
+        width={blueW}
+        height={blueH}
         viewBox="0 0 16 12"
         shapeRendering="crispEdges"
         className={`absolute pointer-events-none ${
-          isHero ? '-top-0.5 left-16' : isSm ? '-top-0.5 left-9' : '-top-0.5 left-14'
+          isHero
+            ? '-top-0.5 left-14'
+            : isSm
+            ? '-top-0.5 left-9'
+            : isXs
+            ? '-top-0.5 left-7'
+            : '-top-0.5 left-11'
         }`}
       >
         <rect x="3" y="2" width="10" height="8" fill="#2563EB" />
@@ -53,17 +65,16 @@ export const FitranPixelLogo: React.FC<FitranPixelLogoProps> = ({
         <rect x="10" y="6" width="1" height="1" fill="#0F172A" />
       </svg>
 
+      {/* Main Brand Wordmark: fitran */}
       <span
-        className={`font-heading font-black tracking-tight leading-none ${
+        className={`font-heading font-black tracking-tight leading-none text-zinc-950 dark:text-white ${
           isHero
-            ? 'text-4xl xl:text-[42px]'
+            ? 'text-4xl'
             : isSm
-            ? 'text-xl'
-            : 'text-3xl sm:text-4xl'
-        } ${
-          variant === 'card'
-            ? 'text-zinc-950'
-            : 'text-zinc-950 dark:text-white'
+            ? 'text-2xl'
+            : isXs
+            ? 'text-lg'
+            : 'text-3xl'
         }`}
       >
         fitran
@@ -72,21 +83,18 @@ export const FitranPixelLogo: React.FC<FitranPixelLogoProps> = ({
       {/* Peeking Orange 8-Bit Mascot on Right + .dev superscript */}
       <div className="flex flex-col items-start ml-0.5">
         <span
-          className={`font-mono font-black leading-none mb-0.5 ${
-            isHero ? 'text-xs' : isSm ? 'text-[9px]' : 'text-xs'
-          } ${
-            variant === 'card'
-              ? 'text-zinc-900'
-              : 'text-zinc-900 dark:text-yellow-300'
+          className={`font-mono font-black leading-none mb-0.5 text-zinc-800 dark:text-zinc-200 ${
+            isHero ? 'text-xs' : isSm ? 'text-[10px]' : isXs ? 'text-[8px]' : 'text-xs'
           }`}
         >
           .dev
         </span>
         <svg
-          width={isHero ? 26 : isSm ? 16 : 24}
-          height={isHero ? 20 : isSm ? 12 : 18}
+          width={orangeW}
+          height={orangeH}
           viewBox="0 0 16 12"
           shapeRendering="crispEdges"
+          className="shrink-0"
         >
           <rect x="2" y="2" width="12" height="10" fill="#EA580C" />
           <rect x="1" y="4" width="14" height="8" fill="#F97316" />
@@ -96,21 +104,4 @@ export const FitranPixelLogo: React.FC<FitranPixelLogoProps> = ({
       </div>
     </div>
   );
-
-  if (variant === 'card') {
-    return (
-      <div
-        className={`rounded-2xl border-2 border-[#1E2265] dark:border-indigo-400/60 bg-[#EDE6D3] px-4 py-3 shadow-[4px_4px_0px_#1E2265] flex items-center justify-center shrink-0 ${className}`}
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px)',
-          backgroundSize: '14px 14px',
-        }}
-      >
-        {content}
-      </div>
-    );
-  }
-
-  return <div className={`inline-flex items-center shrink-0 ${className}`}>{content}</div>;
 };

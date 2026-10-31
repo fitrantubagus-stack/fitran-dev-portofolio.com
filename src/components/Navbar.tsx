@@ -131,10 +131,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={() => handleNavClick('home')}
-            className="hidden lg:inline-flex items-center px-2.5 py-1 rounded-xl bg-[#EDE6D3]/95 border border-black/25 shadow-2xs hover:scale-105 transition-transform cursor-pointer"
+            className="hidden lg:inline-flex items-center hover:opacity-85 hover:scale-105 transition-all cursor-pointer bg-transparent border-0 p-0"
             title="fitran.dev — Beranda"
           >
-            <FitranPixelLogo size="sm" variant="inline" />
+            <FitranPixelLogo size="sm" />
           </button>
           <span>Asia/Jakarta</span>
         </div>
