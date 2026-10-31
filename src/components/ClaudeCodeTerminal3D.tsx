@@ -287,9 +287,9 @@ export const ClaudeCodeTerminal3D: React.FC<{ className?: string }> = ({ classNa
             </div>
 
             <div className="pt-2 text-zinc-400 text-xs">
-              <p>C:\Users\Hype GLK&gt;cd C:\web-kelurahan-bulakan</p>
+              <p>C:\Users\Hype GLK&gt;cd C:\fitran-portofolio</p>
               <p className="pt-1 text-white">
-                C:\web-kelurahan-bulakan&gt;<span className="text-[#D97757] font-bold">claude</span>
+                C:\fitran-portofolio&gt;<span className="text-[#D97757] font-bold">claude</span>
               </p>
               <p className="text-[#D97757] font-bold text-sm sm:text-base pt-1">
                 Welcome to Claude Code v2.1.268

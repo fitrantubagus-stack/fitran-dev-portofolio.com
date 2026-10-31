@@ -117,27 +117,6 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onNavigate }) => {
                 </p>
               </div>
             </div>
-
-            {/* Quick Copy Direct Email Button */}
-            <div className="flex items-center gap-2 shrink-0">
-              <button
-                onClick={handleCopyEmail}
-                className="px-4 py-2.5 rounded-full bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-zinc-950 font-mono text-xs font-semibold flex items-center gap-2 transition-all shadow-xs cursor-pointer"
-                title="Salin alamat email"
-              >
-                {copied ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 text-emerald-400 dark:text-emerald-600" />
-                    <span>{t.hero.emailCopied}</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-3.5 h-3.5" />
-                    <span>{PERSONAL_INFO.email}</span>
-                  </>
-                )}
-              </button>
-            </div>
           </div>
 
           {/* Form Body */}
@@ -248,18 +227,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onNavigate }) => {
                 </div>
 
                 {/* Action Row */}
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-                  <p className="font-mono text-[11px] text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                    <span>{t.footer.directEmail}</span>
-                    <a
-                      href={`mailto:${PERSONAL_INFO.email}`}
-                      className="font-bold text-zinc-800 dark:text-zinc-200 hover:text-blue-500 transition-colors"
-                    >
-                      {PERSONAL_INFO.email}
-                    </a>
-                  </p>
-
+                <div className="flex items-center justify-end pt-2">
                   <button
                     type="submit"
                     disabled={status === 'submitting'}

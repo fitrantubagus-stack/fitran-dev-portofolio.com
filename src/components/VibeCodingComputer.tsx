@@ -590,24 +590,6 @@ export const VibeCodingComputer: React.FC<VibeCodingComputerProps> = ({ classNam
         }
       `}</style>
 
-      {/* Top Section Badge & Instructions */}
-      <div className="text-center max-w-2xl mx-auto px-4 mb-2">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-orange-200 dark:border-orange-900/60 bg-orange-50/80 dark:bg-orange-950/30 text-orange-700 dark:text-orange-300 font-mono text-xs font-semibold mb-2">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Interactive 3D Mobile CLI • Claude Code &amp; Antigravity</span>
-        </div>
-        <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-zinc-950 dark:text-white tracking-tight">
-          {language === 'id'
-            ? 'Simulasi Terminal 3D Interaktif — Ketik Langsung di Layar HP'
-            : 'Interactive 3D Mobile Terminal — Type Directly on the Phone Screen'}
-        </h3>
-        <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-          {language === 'id'
-            ? 'Geser bodi iPhone untuk memutar 360°, atau klik kolom input di dalam layar untuk mengetik perintah Claude Code & Antigravity CLI.'
-            : 'Drag the iPhone chassis to rotate 360°, or click the input prompt inside the screen to run Claude Code & Antigravity CLI commands.'}
-        </p>
-      </div>
-
       {/* 3D Stage Viewport (Uncropped & Centered) */}
       <div
         ref={stageRef}
@@ -734,8 +716,9 @@ export const VibeCodingComputer: React.FC<VibeCodingComputerProps> = ({ classNam
                     /* ---------------- CLAUDE CODE CLI VIEW ---------------- */
                     <>
                       <div className="space-y-0.5 text-[9.5px] text-zinc-400">
-                        <p>
-                          C:\fitran-portfolio&gt;
+                        <p>C:\Users\Hype GLK&gt;cd C:\fitran-portofolio</p>
+                        <p className="text-white">
+                          C:\fitran-portofolio&gt;
                           <span className="text-[#D97757] font-bold">claude</span>
                         </p>
                         <p className="text-[#D97757] font-bold text-[11px]">
