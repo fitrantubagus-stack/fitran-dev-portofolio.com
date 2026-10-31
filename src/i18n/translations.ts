@@ -3,12 +3,12 @@ export type Language = 'id' | 'en';
 export const translations = {
   id: {
     nav: {
-      overview: 'Ikhtisar',
+      overview: 'Beranda',
+      about: 'About Me',
       projects: 'Proyek',
-      credentials: 'Kredensial & Sertifikat',
+      credentials: 'Sertifikat & Lisensi',
       ecosystem: 'Ekosistem',
       craftLab: 'Fitran CLI',
-      about: 'Tentang & Pendidikan',
       contact: 'Kontak',
       currentTime: 'Waktu Lokal',
     },
@@ -114,12 +114,12 @@ export const translations = {
   },
   en: {
     nav: {
-      overview: 'Overview',
+      overview: 'Home',
+      about: 'About Me',
       projects: 'Projects',
-      credentials: 'Credentials',
+      credentials: 'Certificates',
       ecosystem: 'Ecosystem',
       craftLab: 'Fitran CLI',
-      about: 'About & Education',
       contact: 'Contact',
       currentTime: 'Local Time',
     },

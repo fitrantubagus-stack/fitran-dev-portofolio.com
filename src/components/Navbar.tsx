@@ -17,6 +17,8 @@ import {
   Award,
   Globe,
   Terminal,
+  User,
+  Mail,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -59,10 +61,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navItems: { id: SectionId; label: string; icon: React.ReactNode }[] = [
     { id: 'home', label: t.nav.overview, icon: <LayoutGrid className="w-3.5 h-3.5" /> },
+    { id: 'about', label: t.nav.about, icon: <User className="w-3.5 h-3.5" /> },
     { id: 'work', label: t.nav.projects, icon: <FolderGit2 className="w-3.5 h-3.5" /> },
     { id: 'certificates', label: t.nav.credentials, icon: <Award className="w-3.5 h-3.5" /> },
     { id: 'ecosystem', label: t.nav.ecosystem, icon: <Globe className="w-3.5 h-3.5" /> },
     { id: 'craft-lab', label: t.nav.craftLab, icon: <Terminal className="w-3.5 h-3.5" /> },
+    { id: 'contact', label: t.nav.contact, icon: <Mail className="w-3.5 h-3.5" /> },
   ];
 
   const handleNavClick = (id: SectionId) => {

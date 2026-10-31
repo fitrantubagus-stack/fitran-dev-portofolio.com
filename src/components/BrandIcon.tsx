@@ -7,6 +7,7 @@ export type BrandIconName =
   | 'linkedin'
   | 'instagram'
   | 'aws'
+  | 'aws-skill-builder'
   | 'meta'
   | 'vercel'
   | 'google'
@@ -16,7 +17,10 @@ export type BrandIconName =
   | 'google-maps-innovators'
   | 'firebase'
   | 'firebase-developer'
+  | 'firebase-studio'
   | 'nvidia'
+  | 'nvidia-developer'
+  | 'gdg-campus'
   | 'perpusnas'
   | 'oshsp'
   | 'kshpi'
@@ -107,15 +111,36 @@ export const BrandIcon: React.FC<BrandIconProps> = ({
         </svg>
       );
 
-    case 'aws':
+    case 'aws': {
+      const logoH = Math.max(size * 1.45, 22);
+      return (
+        <span
+          className={`inline-flex items-center gap-1.5 bg-white px-2 py-0.5 rounded-md border border-zinc-200/90 shadow-2xs shrink-0 ${baseClasses} ${className}`}
+        >
+          <img
+            src="/official-aws-logo.png"
+            alt="Amazon Web Services"
+            style={{ height: `${logoH * 0.85}px`, width: 'auto' }}
+            className="object-contain shrink-0"
+          />
+          <span className="w-px h-3.5 bg-zinc-200 shrink-0" />
+          <img
+            src="/official-aws-skill-builder.png"
+            alt="AWS Skill Builder"
+            style={{ height: `${logoH * 1.15}px`, width: 'auto' }}
+            className="object-contain shrink-0 scale-125"
+          />
+        </span>
+      );
+    }
+
+    case 'aws-skill-builder':
       return (
         <img
-          src="/official-aws.png"
-          alt="Amazon Web Services"
-          width={size * 1.3}
-          height={size}
-          style={{ width: `${size * 1.3}px`, height: `${size}px` }}
-          className={`object-contain inline-block shrink-0 ${baseClasses} ${className}`}
+          src="/official-aws-skill-builder.png"
+          alt="AWS Skill Builder"
+          style={{ height: `${Math.max(size * 1.5, 26)}px`, width: 'auto' }}
+          className={`object-contain bg-white rounded-md px-1 inline-block shrink-0 ${baseClasses} ${className}`}
         />
       );
 
@@ -198,62 +223,79 @@ export const BrandIcon: React.FC<BrandIconProps> = ({
       );
 
     case 'google-maps':
-    case 'google-maps-innovators':
+    case 'google-maps-innovators': {
+      const badgeSize = Math.max(size * 1.6, 28);
       return (
         <img
-          src="/official-google-maps-innovators.png"
+          src="/certificates/badge-google-maps-innovators.svg"
           alt="Google Maps Platform Innovators"
-          width={size}
-          height={size}
-          style={{ width: size, height: size }}
-          className={`object-contain rounded-full shrink-0 ${baseClasses} ${className}`}
+          width={badgeSize}
+          height={badgeSize}
+          style={{ width: badgeSize, height: badgeSize }}
+          className={`object-contain shrink-0 ${baseClasses} ${className}`}
         />
       );
+    }
 
     case 'firebase':
     case 'firebase-developer':
+    case 'firebase-studio': {
+      const badgeSize = Math.max(size * 1.6, 28);
       return (
-        <svg
-          width={size}
-          height={size}
-          viewBox="0 0 100 100"
-          fill="none"
-          className={`${baseClasses} ${className}`}
-          aria-label="Firebase Developer"
-        >
-          {/* Left Yellow Flame */}
-          <path
-            d="M18 73 L42 27 C43 25 46 25 47 27 L56 44 L18 73 Z"
-            fill="#FFA000"
-          />
-          {/* Middle Small Amber Flame */}
-          <path
-            d="M18 73 L58 13 C59 11 62 12 62 14 L82 73 L18 73 Z"
-            fill="#F57C00"
-          />
-          {/* Front Yellow Flame */}
-          <path
-            d="M56 44 L47 27 C46 25 43 25 42 27 L18 73 L50 91 C52 92 54 92 56 91 L82 73 L56 44 Z"
-            fill="#FFCA28"
-          />
-        </svg>
+        <img
+          src="/certificates/badge-firebase-studio.svg"
+          alt="Firebase Studio"
+          width={badgeSize}
+          height={badgeSize}
+          style={{ width: badgeSize, height: badgeSize }}
+          className={`object-contain shrink-0 ${baseClasses} ${className}`}
+        />
       );
+    }
 
-    case 'nvidia':
+    case 'nvidia': {
+      const nvidiaH = Math.max(size * 1.5, 24);
       return (
-        <svg
-          width={size}
-          height={size}
-          viewBox="0 0 24 24"
-          fill="none"
-          className={`${baseClasses} ${className}`}
+        <span
+          className={`inline-flex items-center bg-white px-1.5 py-0.5 rounded-md border border-zinc-200/90 shadow-2xs shrink-0 ${baseClasses} ${className}`}
         >
-          <path
-            d="M8.9 4.5c4.7 0 8.5 3.8 8.5 8.5 0 2.2-.8 4.2-2.2 5.7-.3.3-.8.4-1.1.1-.3-.3-.4-.8-.1-1.1 1.1-1.3 1.8-3 1.8-4.7 0-3.8-3.1-6.9-6.9-6.9-3 0-5.6 1.9-6.5 4.7-.1.4-.6.7-1 .5-.4-.1-.7-.6-.5-1 1.2-3.4 4.3-5.8 7.9-5.8zm-1.8 3.5c3 0 5.4 2.4 5.4 5.4 0 1.4-.5 2.7-1.4 3.6-.3.3-.8.3-1.1 0-.3-.3-.3-.8 0-1.1.6-.7.9-1.6.9-2.5 0-2.1-1.7-3.8-3.8-3.8-1.7 0-3.1 1.1-3.6 2.7-.1.4-.6.6-1 .5-.4-.1-.6-.6-.5-1 .7-2.2 2.7-3.8 5.1-3.8zm-.8 3.2c1.4 0 2.5 1.1 2.5 2.5s-1.1 2.5-2.5 2.5-2.5-1.1-2.5-2.5 1.1-2.5 2.5-2.5z"
-            fill="#76B900"
+          <img
+            src="/official-nvidia-logo.png"
+            alt="NVIDIA"
+            style={{ height: `${nvidiaH}px`, width: 'auto' }}
+            className="object-contain shrink-0 scale-110"
           />
-        </svg>
+        </span>
       );
+    }
+
+    case 'nvidia-developer': {
+      const badgeSize = Math.max(size * 1.6, 28);
+      return (
+        <img
+          src="/certificates/badge-nvidia-developer.svg"
+          alt="NVIDIA Developer"
+          width={badgeSize}
+          height={badgeSize}
+          style={{ width: badgeSize, height: badgeSize }}
+          className={`object-contain shrink-0 ${baseClasses} ${className}`}
+        />
+      );
+    }
+
+    case 'gdg-campus': {
+      const badgeSize = Math.max(size * 1.6, 28);
+      return (
+        <img
+          src="/certificates/badge-gdg-campus-member.svg"
+          alt="GDG on Campus Member"
+          width={badgeSize}
+          height={badgeSize}
+          style={{ width: badgeSize, height: badgeSize }}
+          className={`object-contain shrink-0 ${baseClasses} ${className}`}
+        />
+      );
+    }
 
     case 'perpusnas':
       return (

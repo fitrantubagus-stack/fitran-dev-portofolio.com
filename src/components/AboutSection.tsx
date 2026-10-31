@@ -114,75 +114,198 @@ export const AboutSection: React.FC = () => {
           </p>
 
           {/* Ecosystem Badges 4-Column Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
-            {GOOGLE_DEV_BADGES.map((badge, idx) => (
-              <div
-                key={idx}
-                className="p-3 rounded-xl border border-zinc-200/70 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/40 flex items-start gap-2.5"
-              >
-                <div className="p-1.5 rounded-lg bg-white dark:bg-zinc-800 shrink-0 mt-0.5">
-                  {getBadgeIcon(badge.iconName)}
-                </div>
-                <div className="min-w-0">
-                  <p className="font-bold text-xs text-zinc-900 dark:text-zinc-100 truncate">
-                    {badge.name}
-                  </p>
-                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-0.5 leading-tight">
-                    {badge.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-5">
+            {GOOGLE_DEV_BADGES.map((badge, idx) => {
+              const CardWrapper: React.ElementType = badge.verifyUrl ? 'a' : 'div';
+              const wrapperProps = badge.verifyUrl
+                ? {
+                    href: badge.verifyUrl,
+                    target: '_blank',
+                    rel: 'noopener noreferrer',
+                  }
+                : {};
+              return (
+                <CardWrapper
+                  key={idx}
+                  {...wrapperProps}
+                  className="group p-3.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/70 dark:bg-zinc-900/40 hover:border-blue-400 dark:hover:border-blue-600 transition-all flex items-center gap-3"
+                >
+                  {badge.badgeImageUrl ? (
+                    <img
+                      src={badge.badgeImageUrl}
+                      alt={badge.name}
+                      className="w-14 h-14 object-contain shrink-0 group-hover:scale-110 transition-transform"
+                    />
+                  ) : (
+                    <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 shrink-0">
+                      {getBadgeIcon(badge.iconName)}
+                    </div>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5">
+                      <p className="font-bold text-xs text-zinc-900 dark:text-zinc-100 truncate">
+                        {badge.name}
+                      </p>
+                      {badge.verifyUrl && (
+                        <ExternalLink className="w-3 h-3 text-blue-500 shrink-0 opacity-75 group-hover:opacity-100" />
+                      )}
+                    </div>
+                    {badge.name.toUpperCase().includes('NVIDIA') && (
+                      <div className="my-1 inline-flex bg-white px-1.5 py-0.5 rounded border border-zinc-200">
+                        <img
+                          src="/official-nvidia-logo.png"
+                          alt="NVIDIA"
+                          className="h-4 w-auto object-contain"
+                        />
+                      </div>
+                    )}
+                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-0.5 leading-tight">
+                      {badge.description}
+                    </p>
+                  </div>
+                </CardWrapper>
+              );
+            })}
           </div>
         </div>
 
-        {/* 2. Side-by-Side: Google Maps Platform Innovators & Firebase Developer */}
+        {/* 2. Official Google Developer Badges Grid (Maps Innovators, Firebase Studio, NVIDIA Developer, GDG on Campus) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6">
           {/* Google Maps Innovators Card */}
-          <div className="p-6 rounded-2xl border border-red-200/80 dark:border-red-900/40 bg-gradient-to-br from-red-50/30 via-white to-white dark:from-red-950/20 dark:via-[#0D1117] dark:to-[#0D1117] shadow-xs">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="shrink-0 flex items-center justify-center">
-                <BrandIcon name="google-maps" size={54} />
-              </div>
+          <a
+            href="https://me.developers.google.com/badges/community/innovators/maps"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group p-6 rounded-2xl border border-red-200/80 dark:border-red-900/40 bg-gradient-to-br from-red-50/30 via-white to-white dark:from-red-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-red-400 transition-all shadow-xs"
+          >
+            <div className="flex items-center gap-4 mb-3">
+              <img
+                src="/certificates/badge-google-maps-innovators.svg"
+                alt="Google Maps Platform Innovators"
+                className="w-20 h-20 object-contain shrink-0 group-hover:scale-105 transition-transform"
+              />
               <div>
-                <div className="flex items-center gap-2">
-                  <h4 className="font-heading font-bold text-base text-zinc-950 dark:text-white">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
                     {t.about.mapsTitle}
                   </h4>
                   <span className="px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-mono text-[10px] font-semibold border border-red-200 dark:border-red-900">
-                    MEMBER
+                    INNOVATORS
                   </span>
                 </div>
-                <p className="font-mono text-[11px] text-zinc-500">Google Maps Platform Innovators Community</p>
+                <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-0.5">
+                  <span>me.developers.google.com/badges/community/innovators/maps</span>
+                  <ExternalLink className="w-3 h-3" />
+                </p>
               </div>
             </div>
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
               {t.about.mapsDesc}
             </p>
-          </div>
+          </a>
 
-          {/* Firebase Developer Card */}
-          <div className="p-6 rounded-2xl border border-amber-200/80 dark:border-amber-900/40 bg-gradient-to-br from-amber-50/30 via-white to-white dark:from-amber-950/20 dark:via-[#0D1117] dark:to-[#0D1117] shadow-xs">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-2.5 rounded-xl border border-amber-200 dark:border-amber-900/60 bg-white dark:bg-zinc-900 shadow-2xs">
-                <BrandIcon name="firebase" size={24} />
-              </div>
+          {/* Firebase Studio Developer Card */}
+          <a
+            href="https://me.developers.google.com/badges/community/firebasestudio/firebase-studio"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group p-6 rounded-2xl border border-amber-200/80 dark:border-amber-900/40 bg-gradient-to-br from-amber-50/30 via-white to-white dark:from-amber-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-amber-400 transition-all shadow-xs"
+          >
+            <div className="flex items-center gap-4 mb-3">
+              <img
+                src="/certificates/badge-firebase-studio.svg"
+                alt="Firebase Studio"
+                className="w-20 h-20 object-contain shrink-0 group-hover:scale-105 transition-transform"
+              />
               <div>
-                <div className="flex items-center gap-2">
-                  <h4 className="font-heading font-bold text-base text-zinc-950 dark:text-white">
-                    {t.about.firebaseTitle}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
+                    Firebase Studio Developer
                   </h4>
                   <span className="px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 font-mono text-[10px] font-semibold border border-amber-200 dark:border-amber-900">
-                    FULLSTACK
+                    OFFICIAL BADGE
                   </span>
                 </div>
-                <p className="font-mono text-[11px] text-zinc-500">Firebase Studio & Serverless Cloud</p>
+                <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-0.5">
+                  <span>me.developers.google.com/badges/community/firebasestudio</span>
+                  <ExternalLink className="w-3 h-3" />
+                </p>
               </div>
             </div>
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
               {t.about.firebaseDesc}
             </p>
-          </div>
+          </a>
+
+          {/* NVIDIA Developer Card */}
+          <a
+            href="https://me.developers.google.com/badges/nvidia-developer"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group p-6 rounded-2xl border border-emerald-200/80 dark:border-emerald-900/40 bg-gradient-to-br from-emerald-50/30 via-white to-white dark:from-emerald-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-emerald-400 transition-all shadow-xs"
+          >
+            <div className="flex items-center gap-4 mb-3">
+              <img
+                src="/certificates/badge-nvidia-developer.svg"
+                alt="NVIDIA Developer"
+                className="w-20 h-20 object-contain shrink-0 group-hover:scale-105 transition-transform"
+              />
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="bg-white px-2 py-0.5 rounded-md border border-zinc-200 inline-flex items-center">
+                    <img
+                      src="/official-nvidia-logo.png"
+                      alt="NVIDIA"
+                      className="h-6 w-auto object-contain"
+                    />
+                  </span>
+                  <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
+                    NVIDIA Developer
+                  </h4>
+                </div>
+                <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-1">
+                  <span>me.developers.google.com/badges/nvidia-developer</span>
+                  <ExternalLink className="w-3 h-3" />
+                </p>
+              </div>
+            </div>
+            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              Anggota terverifikasi ekosistem NVIDIA Developer pada Google Developer Program dan NVIDIA Deep Learning Institute (DLI).
+            </p>
+          </a>
+
+          {/* GDG on Campus & Dual AWS Cloud Ecosystem Card */}
+          <a
+            href="https://me.developers.google.com/badges/community/gdg/GDGoC/member"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group p-6 rounded-2xl border border-blue-200/80 dark:border-blue-900/40 bg-gradient-to-br from-blue-50/30 via-white to-white dark:from-blue-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-blue-400 transition-all shadow-xs"
+          >
+            <div className="flex items-center gap-4 mb-3">
+              <img
+                src="/certificates/badge-gdg-campus-member.svg"
+                alt="GDG on Campus Member"
+                className="w-20 h-20 object-contain shrink-0 group-hover:scale-105 transition-transform"
+              />
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
+                    GDG on Campus Member
+                  </h4>
+                  <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-mono text-[10px] font-semibold border border-blue-200 dark:border-blue-900">
+                    GDGoC
+                  </span>
+                </div>
+                <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-0.5">
+                  <span>me.developers.google.com/badges/community/gdg/GDGoC/member</span>
+                  <ExternalLink className="w-3 h-3" />
+                </p>
+              </div>
+            </div>
+            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              Anggota resmi komunitas Google Developer Groups on Campus (GDGoC) dalam kolaborasi pengembangan perangkat lunak modern dan multi-cloud.
+            </p>
+          </a>
         </div>
 
         {/* 3. Education: SMA Negeri 1 Cilegon & Universitas Muhammadiyah Banten */}

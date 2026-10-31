@@ -17,6 +17,8 @@ export interface CertificateItem {
     | 'KSHPI'
     | 'OSN'
     | 'TOEFL'
+    | 'Central Course'
+    | 'Firebase'
     | 'Anthropic'
     | 'Claude Academy'
     | 'Dicoding'
@@ -85,4 +87,6 @@ export interface GoogleBadge {
   name: string;
   iconName: string;
   description: string;
+  badgeImageUrl?: string;
+  verifyUrl?: string;
 }

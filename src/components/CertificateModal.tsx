@@ -3,7 +3,7 @@ import { CertificateItem } from '../types';
 import { CERTIFICATES_DRIVE_URL } from '../data/portfolioData';
 import { CertificatePreview } from './CertificatePreview';
 import {
-  X,
+  ArrowLeft,
   ExternalLink,
   Copy,
   Check,
@@ -14,8 +14,10 @@ import {
   ChevronLeft,
   ChevronRight,
   FolderOpen,
+  Link2,
+  UserCheck,
+  FileCheck2,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 
 interface CertificateModalProps {
   cert: CertificateItem | null;
@@ -31,6 +33,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
   onSelectCert,
 }) => {
   const [copiedId, setCopiedId] = useState(false);
+  const [copiedUrl, setCopiedUrl] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -44,12 +47,11 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
     };
 
     if (cert) {
-      document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [cert]);
@@ -81,203 +83,295 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
     }
   };
 
-  return (
-    <AnimatePresence>
-      <div
-        id="certificate-modal-overlay"
-        className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm overflow-y-auto font-mono text-xs"
-        onClick={(e) => {
-          if (e.target === e.currentTarget) onClose();
-        }}
-      >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98, y: 12 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.98, y: 12 }}
-          transition={{ duration: 0.18, ease: 'easeOut' }}
-          className="relative w-full max-w-4xl bg-white dark:bg-[#09090B] border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col my-auto max-h-[92vh]"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Header Controls */}
-          <div className="flex items-center justify-between px-5 py-3.5 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 border border-zinc-300 dark:border-zinc-700 bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-bold text-[10px]">
-                [{cert.category.toUpperCase().replace('-', ' & ')}]
-              </span>
-              {cert.featured && (
-                <span className="flex items-center gap-1 px-2 py-0.5 font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-[10px]">
-                  <Award className="w-3 h-3" />
-                  HIGHLIGHT
-                </span>
-              )}
-            </div>
+  const copyPageUrl = () => {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard.writeText(window.location.href);
+      setCopiedUrl(true);
+      setTimeout(() => setCopiedUrl(false), 2000);
+    }
+  };
 
-            <div className="flex items-center gap-2">
+  return (
+    <section className="w-full min-h-screen bg-[#FFFBEB] border-b-4 border-black py-8 sm:py-12 relative overflow-hidden">
+      {/* Formal Dot-Grid Pattern (Kelurahan Bulakan /pelayanan Aesthetic) */}
+      <div
+        className="absolute inset-0 opacity-25 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(#1E2265 1.25px, transparent 1.25px)',
+          backgroundSize: '22px 22px',
+        }}
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* TOP NAVIGATION & URL BAR */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <button
+            onClick={onClose}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-yellow-300 text-zinc-950 border-2 border-black font-mono text-xs font-black shadow-[4px_4px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000] transition-all cursor-pointer self-start"
+          >
+            <ArrowLeft className="w-4 h-4 stroke-[2.5]" />
+            <span>Kembali ke Daftar Sertifikat</span>
+          </button>
+
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Clean Dedicated Page Path Indicator */}
+            <button
+              onClick={copyPageUrl}
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white hover:bg-amber-50 border-2 border-black font-mono text-xs font-bold text-[#1E2265] shadow-[3px_3px_0px_#000] transition-all cursor-pointer"
+              title="Salin URL Halaman Sertifikat Ini"
+            >
+              <Link2 className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate max-w-[220px] sm:max-w-[340px]">/{cert.title}</span>
+              {copiedUrl ? (
+                <span className="px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-950 text-[10px] font-black border border-black">
+                  Tersalin!
+                </span>
+              ) : (
+                <Copy className="w-3 h-3 opacity-70" />
+              )}
+            </button>
+
+            {/* Prev / Next Controls */}
+            <div className="inline-flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-xl border-2 border-black shadow-[3px_3px_0px_#000] font-mono text-xs">
               <button
-                id="modal-prev-btn"
                 onClick={handlePrev}
-                aria-label="Previous certificate"
-                className="p-1 border border-zinc-300 dark:border-zinc-700 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-                title="Previous (Left Arrow)"
+                className="p-1 rounded-lg hover:bg-yellow-300 text-black font-black transition-colors cursor-pointer"
+                title="Sertifikat Sebelumnya"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
               </button>
-              <span className="text-xs text-zinc-400">
+              <span className="font-black text-zinc-900 px-1.5">
                 {currentIndex + 1} / {allCerts.length}
               </span>
               <button
-                id="modal-next-btn"
                 onClick={handleNext}
-                aria-label="Next certificate"
-                className="p-1 border border-zinc-300 dark:border-zinc-700 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-                title="Next (Right Arrow)"
+                className="p-1 rounded-lg hover:bg-yellow-300 text-black font-black transition-colors cursor-pointer"
+                title="Sertifikat Berikutnya"
               >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-              <div className="w-px h-4 bg-zinc-300 dark:border-zinc-700 mx-1"></div>
-              <button
-                id="modal-close-btn"
-                onClick={onClose}
-                aria-label="Close modal"
-                className="p-1 border border-zinc-300 dark:border-zinc-700 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-                title="Close (Escape)"
-              >
-                <X className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4 stroke-[2.5]" />
               </button>
             </div>
           </div>
+        </div>
 
-          {/* Modal Content Body */}
-          <div className="p-5 sm:p-7 overflow-y-auto space-y-5">
-            {/* Visual Certificate Graphic */}
-            <div
-              className={`max-w-3xl mx-auto w-full ${
-                cert.customImageFilename?.includes('badge') ||
-                cert.customImageFilename?.endsWith('.svg')
-                  ? 'flex justify-center border-0 shadow-none'
-                  : 'border border-zinc-300 dark:border-zinc-700 shadow-xs'
-              }`}
-            >
+        {/* FORMAL ROYAL NAVY HEADER BANNER */}
+        <div className="bg-gradient-to-br from-[#1E2265] via-blue-900 to-[#1E2265] text-white border-4 border-black rounded-3xl p-6 sm:p-8 shadow-[8px_8px_0px_#000] relative overflow-hidden mb-8">
+          <div
+            className="absolute inset-0 opacity-15 pointer-events-none"
+            style={{
+              backgroundImage: 'radial-gradient(#ffffff 1.5px, transparent 1.5px)',
+              backgroundSize: '18px 18px',
+            }}
+          />
+
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="space-y-3 max-w-3xl">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-yellow-300 text-black border-2 border-black font-mono text-xs font-black uppercase shadow-[3px_3px_0px_#000]">
+                  <FileCheck2 className="w-3.5 h-3.5 stroke-[2.5]" />
+                  <span>DOKUMEN SERTIFIKASI #{currentIndex + 1}</span>
+                </span>
+
+                {cert.isVerifiedMatch && (
+                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-300 text-black border-2 border-black font-mono text-xs font-black uppercase shadow-[3px_3px_0px_#000]">
+                    <ShieldCheck className="w-3.5 h-3.5 stroke-[2.5]" />
+                    <span>✓ SESUAI DOKUMEN ASLI</span>
+                  </span>
+                )}
+              </div>
+
+              <h1
+                className={`font-heading font-black text-2xl sm:text-3xl lg:text-4xl tracking-tight leading-tight ${
+                  cert.isVerifiedMatch ? 'text-yellow-300' : 'text-white'
+                }`}
+              >
+                {cert.title}
+              </h1>
+
+              <p className="font-mono text-xs sm:text-sm text-blue-100 font-bold">
+                Diterbitkan Resmi Oleh: <span className="text-yellow-300">{cert.issuerFullName}</span> • {cert.date}
+              </p>
+            </div>
+
+            {/* Right Partner Logo Box on Banner */}
+            <div className="bg-white text-zinc-900 p-4 rounded-2xl border-3 border-black shadow-[5px_5px_0px_#FACC15] flex items-center gap-3 self-start lg:self-center shrink-0">
+              {cert.issuer === 'AWS' ? (
+                <div className="flex items-center gap-3">
+                  <img
+                    src="/official-aws-logo.png"
+                    alt="AWS"
+                    className="h-10 sm:h-12 w-auto object-contain"
+                  />
+                  <span className="w-0.5 h-10 bg-zinc-300" />
+                  <img
+                    src="/official-aws-skill-builder.png"
+                    alt="AWS Skill Builder"
+                    className="h-12 sm:h-14 w-auto object-contain scale-115"
+                  />
+                </div>
+              ) : cert.issuer === 'NVIDIA' || cert.title.toUpperCase().includes('NVIDIA') ? (
+                <div className="flex items-center gap-3">
+                  <img
+                    src="/official-nvidia-logo.png"
+                    alt="NVIDIA"
+                    className="h-12 sm:h-14 w-auto object-contain"
+                  />
+                  <div className="pr-2">
+                    <p className="font-heading font-black text-sm text-[#1E2265]">NVIDIA</p>
+                    <p className="font-mono text-[10px] font-bold text-zinc-600">Official Partner</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2.5 px-2">
+                  <Award className="w-8 h-8 text-[#1E2265] stroke-[2.5]" />
+                  <div>
+                    <p className="font-heading font-black text-sm text-[#1E2265]">{cert.issuer}</p>
+                    <p className="font-mono text-[10px] font-bold text-zinc-600">Verified Credential</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* MAIN 2-COLUMN FORMAL DOSSIER LAYOUT */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* LEFT COLUMN (8 Cols): High-Resolution Certificate Preview & Competencies */}
+          <div className="lg:col-span-8 space-y-6">
+            {/* Certificate Visual Frame (Pure White Background, Bold Black Border, Navy Shadow) */}
+            <div className="bg-white border-4 border-black rounded-3xl p-4 sm:p-8 shadow-[8px_8px_0px_#1E2265]">
+              <div className="flex items-center justify-between pb-3 mb-4 border-b-2 border-black/10 font-mono text-xs">
+                <span className="font-black text-[#1E2265] uppercase">
+                  PRATINJAU DOKUMEN SERTIFIKAT & LENCANA RESMI
+                </span>
+                <span className="px-2.5 py-0.5 rounded-md bg-[#FFFBEB] border border-black font-bold text-zinc-800">
+                  Resolusi Tinggi
+                </span>
+              </div>
+
               <CertificatePreview cert={cert} size="full" />
             </div>
 
-            {/* Metadata & Details Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-3 border-t border-zinc-200 dark:border-zinc-800">
-              <div className="md:col-span-2 space-y-3">
-                <div>
-                  <h3
-                    className={`font-bold text-base sm:text-lg ${
-                      cert.isVerifiedMatch
-                        ? 'text-yellow-600 dark:text-yellow-400'
-                        : 'text-zinc-900 dark:text-white'
-                    }`}
-                  >
-                    {cert.isVerifiedMatch && (
-                      <span className="inline-block px-2 py-0.5 mr-2 rounded text-xs font-mono font-bold bg-yellow-400/20 text-yellow-600 dark:text-yellow-400 border border-yellow-500/40">
-                        ✓ Sesuai PDF
-                      </span>
-                    )}
-                    {cert.title}
-                  </h3>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1.5 leading-relaxed font-sans">
-                    {cert.description}
-                  </p>
-                </div>
-
-                {cert.skillsLearned && cert.skillsLearned.length > 0 && (
-                  <div>
-                    <h4 className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1.5">
-                      Verified Competencies & Domains
-                    </h4>
-                    <div className="flex flex-wrap gap-1">
-                      {cert.skillsLearned.map((skill, i) => (
-                        <span
-                          key={i}
-                          className="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-xs border border-zinc-300 dark:border-zinc-700"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
+            {/* Detailed Description & Verified Skills Card */}
+            <div className="bg-white border-3 border-black rounded-3xl p-6 sm:p-8 shadow-[6px_6px_0px_#000] space-y-5">
+              <div>
+                <h2 className="font-heading font-black text-lg sm:text-xl text-[#1E2265] mb-2">
+                  Deskripsi & Validasi Kompetensi
+                </h2>
+                <p className="text-sm sm:text-base text-zinc-800 leading-relaxed font-medium">
+                  {cert.description}
+                </p>
               </div>
 
-              {/* Sidebar Info Card */}
-              <div className="bg-zinc-50 dark:bg-zinc-900 p-4 border border-zinc-300 dark:border-zinc-800 space-y-3 text-xs">
-                <div className="flex items-start gap-2 text-zinc-600 dark:text-zinc-300">
-                  <Building className="w-4 h-4 text-zinc-400 shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-zinc-400 block text-[10px] uppercase">Issuer</span>
-                    <span className="font-bold text-zinc-900 dark:text-zinc-100">
-                      {cert.issuerFullName}
-                    </span>
+              {cert.skillsLearned && cert.skillsLearned.length > 0 && (
+                <div className="pt-4 border-t-2 border-black/10">
+                  <h3 className="font-mono text-xs font-black uppercase tracking-wider text-zinc-600 mb-3">
+                    Keahlian & Kurikulum Teknis yang Dikuasai:
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {cert.skillsLearned.map((skill, i) => (
+                      <span
+                        key={i}
+                        className="px-3.5 py-1.5 rounded-xl bg-[#FFFBEB] text-zinc-950 font-mono text-xs font-black border-2 border-black shadow-[2px_2px_0px_#000]"
+                      >
+                        {skill}
+                      </span>
+                    ))}
                   </div>
                 </div>
+              )}
+            </div>
+          </div>
 
-                <div className="flex items-start gap-2 text-zinc-600 dark:text-zinc-300">
-                  <Calendar className="w-4 h-4 text-zinc-400 shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-zinc-400 block text-[10px] uppercase">Issue Date</span>
-                    <span className="font-bold text-zinc-900 dark:text-zinc-100">
-                      {cert.date}
-                    </span>
-                  </div>
+          {/* RIGHT COLUMN (4 Cols): Official Registry Metadata & Verification Actions */}
+          <div className="lg:col-span-4 space-y-6">
+            <div className="bg-white border-3 border-black rounded-3xl p-6 shadow-[6px_6px_0px_#1E2265] space-y-4">
+              <div className="pb-3 border-b-2 border-black flex items-center justify-between">
+                <h3 className="font-heading font-black text-base text-[#1E2265] uppercase">
+                  Data Registrasi Resmi
+                </h3>
+                <ShieldCheck className="w-5 h-5 text-[#1E2265] stroke-[2.5]" />
+              </div>
+
+              {/* Recipient */}
+              <div className="p-3.5 rounded-2xl bg-[#FFFBEB] border-2 border-black">
+                <div className="flex items-center gap-2 text-zinc-600 font-mono text-[11px] font-bold uppercase">
+                  <UserCheck className="w-4 h-4 text-[#1E2265]" />
+                  <span>Penerima Sertifikat</span>
                 </div>
+                <p className="font-heading font-black text-sm sm:text-base text-zinc-950 mt-1">
+                  Tubagus Fitran Badruttamam
+                </p>
+              </div>
 
-                {cert.certId && (
-                  <div className="flex items-start gap-2 text-zinc-600 dark:text-zinc-300">
-                    <ShieldCheck className="w-4 h-4 text-zinc-400 shrink-0 mt-0.5" />
-                    <div className="w-full">
-                      <span className="text-zinc-400 block text-[10px] uppercase">Certificate ID</span>
-                      <div className="flex items-center justify-between gap-1 mt-0.5 bg-white dark:bg-zinc-950 px-2 py-1 border border-zinc-300 dark:border-zinc-700 text-[11px]">
-                        <span className="truncate text-zinc-800 dark:text-zinc-200">
-                          {cert.certId}
-                        </span>
-                        <button
-                          onClick={copyCertId}
-                          className="text-zinc-400 hover:text-zinc-900 dark:hover:text-white p-0.5"
-                          title="Copy Certificate ID"
-                        >
-                          {copiedId ? (
-                            <Check className="w-3 h-3 text-emerald-600" />
-                          ) : (
-                            <Copy className="w-3 h-3" />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
+              {/* Issuer */}
+              <div className="p-3.5 rounded-2xl bg-[#FFFBEB] border-2 border-black">
+                <div className="flex items-center gap-2 text-zinc-600 font-mono text-[11px] font-bold uppercase">
+                  <Building className="w-4 h-4 text-[#1E2265]" />
+                  <span>Lembaga Penerbit</span>
+                </div>
+                <p className="font-heading font-black text-sm text-zinc-950 mt-1">
+                  {cert.issuerFullName}
+                </p>
+              </div>
 
-                <div className="pt-2 space-y-1.5">
-                  {cert.verifyUrl && (
-                    <a
-                      href={cert.verifyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center justify-center gap-1.5 py-2 px-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold text-xs hover:opacity-90 transition-opacity"
+              {/* Issue Date */}
+              <div className="p-3.5 rounded-2xl bg-[#FFFBEB] border-2 border-black">
+                <div className="flex items-center gap-2 text-zinc-600 font-mono text-[11px] font-bold uppercase">
+                  <Calendar className="w-4 h-4 text-[#1E2265]" />
+                  <span>Tanggal Penerbitan</span>
+                </div>
+                <p className="font-mono font-black text-sm text-zinc-950 mt-1">{cert.date}</p>
+              </div>
+
+              {/* Credential ID */}
+              {cert.certId && (
+                <div className="p-3.5 rounded-2xl bg-[#FFFBEB] border-2 border-black">
+                  <span className="font-mono text-[11px] font-bold uppercase text-zinc-600 block mb-1">
+                    Nomor / ID Sertifikat
+                  </span>
+                  <div className="flex items-center justify-between gap-2 bg-white px-3 py-2 rounded-xl border-2 border-black font-mono text-xs font-black">
+                    <span className="truncate text-zinc-950">{cert.certId}</span>
+                    <button
+                      onClick={copyCertId}
+                      className="px-2 py-1 rounded-lg bg-yellow-300 hover:bg-yellow-400 border border-black text-black text-[10px] font-black cursor-pointer"
                     >
-                      <span>[ VERIFY PUBLIC RECORD ]</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
+                      {copiedId ? 'Tersalin!' : 'Salin'}
+                    </button>
+                  </div>
+                </div>
+              )}
 
+              {/* Action Buttons */}
+              <div className="pt-2 space-y-3 font-mono text-xs">
+                {cert.verifyUrl && (
                   <a
-                    href={CERTIFICATES_DRIVE_URL}
+                    href={cert.verifyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-1.5 py-2 px-3 bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/60 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-800 font-bold text-xs transition-colors"
+                    className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-yellow-300 hover:bg-yellow-400 text-black border-2 border-black font-black uppercase shadow-[4px_4px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000] transition-all"
                   >
-                    <FolderOpen className="w-3 h-3" />
-                    <span>[ GOOGLE DRIVE ARCHIVE ]</span>
+                    <ShieldCheck className="w-4 h-4 stroke-[2.5]" />
+                    <span>Verifikasi Kredensial Resmi</span>
+                    <ExternalLink className="w-3.5 h-3.5 stroke-[2.5]" />
                   </a>
-                </div>
+                )}
+
+                <a
+                  href={CERTIFICATES_DRIVE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#1E2265] hover:bg-blue-950 text-white border-2 border-black font-black uppercase shadow-[4px_4px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000] transition-all"
+                >
+                  <FolderOpen className="w-4 h-4 stroke-[2.5]" />
+                  <span>Buka Arsip Google Drive</span>
+                  <ExternalLink className="w-3.5 h-3.5 stroke-[2.5]" />
+                </a>
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
-    </AnimatePresence>
+    </section>
   );
 };

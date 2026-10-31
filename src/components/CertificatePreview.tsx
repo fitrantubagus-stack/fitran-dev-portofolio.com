@@ -38,6 +38,9 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
     'cert-claude-101.png',
     'cert-claude-platform-101.png',
     'badge-gdg-campus-member.svg',
+    'badge-firebase-studio.svg',
+    'badge-nvidia-developer.svg',
+    'badge-google-maps-innovators.svg',
     'badge-google-cloud-infra-foundation.png',
     'cert-central-course-toefl.png',
     'cert-dicoding-microsoft-fabric.png',
@@ -74,12 +77,12 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
         className={`w-full flex items-center justify-center relative transition-colors ${
           isBadge
             ? isFull
-              ? 'bg-transparent border-0 shadow-none py-3 sm:py-6'
-              : 'bg-transparent border-0 shadow-none py-1 h-36'
-            : `bg-[#0D1117] rounded-xl overflow-hidden border border-zinc-200/90 dark:border-zinc-800 shadow-sm ${
+              ? 'bg-transparent border-0 shadow-none py-4 sm:py-8'
+              : 'bg-transparent border-0 shadow-none py-1 h-40'
+            : `bg-white rounded-xl overflow-hidden ${
                 isFull
-                  ? 'p-2 sm:p-4 bg-zinc-950/40 min-h-[360px]'
-                  : 'h-36 p-1.5'
+                  ? 'p-2 sm:p-4 min-h-[360px]'
+                  : 'h-40 p-1'
               }`
         }`}
       >
@@ -89,9 +92,9 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
           className={`${
             isBadge
               ? isFull
-                ? 'w-72 h-72 sm:w-96 sm:h-96 md:w-[420px] md:h-[420px] object-contain filter drop-shadow-[0_12px_28px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_16px_36px_rgba(0,0,0,0.6)] transition-transform duration-300 hover:scale-105'
-                : 'h-32 max-w-full object-contain filter drop-shadow-[0_6px_14px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_8px_20px_rgba(0,0,0,0.5)] transition-transform duration-300 group-hover:scale-105'
-              : `w-full h-full object-contain rounded-lg ${isFull ? 'max-h-[70vh]' : 'max-h-34'}`
+                ? 'w-72 h-72 sm:w-96 sm:h-96 md:w-[420px] md:h-[420px] object-contain filter drop-shadow-[0_12px_24px_rgba(30,34,101,0.18)] transition-transform duration-300 hover:scale-105'
+                : 'h-36 sm:h-38 w-auto max-w-full object-contain filter drop-shadow-[0_6px_14px_rgba(30,34,101,0.16)] transition-transform duration-300 group-hover:scale-105'
+              : `w-full h-full object-contain rounded-lg ${isFull ? 'max-h-[72vh]' : 'max-h-38'}`
           }`}
           loading="lazy"
           onError={() => setImgError(true)}

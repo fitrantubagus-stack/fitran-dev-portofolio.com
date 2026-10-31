@@ -95,31 +95,74 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                   <span className="text-zinc-500 dark:text-zinc-400">Universitas Muhammadiyah Banten</span>
                 </p>
 
-                {/* Ecosystem Badges: Google Maps Innovators & Firebase */}
-                <div className="flex flex-wrap items-center gap-1.5 mt-3 font-mono text-[11px]">
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-red-200/80 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/20 text-zinc-800 dark:text-zinc-200">
-                    <BrandIcon name="google-maps" size={13} />
-                    <span className="font-semibold text-red-600 dark:text-red-400">{t.hero.mapsInnovators}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-200/80 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20 text-zinc-800 dark:text-zinc-200">
-                    <BrandIcon name="firebase" size={13} />
-                    <span className="font-semibold text-amber-600 dark:text-amber-400">{t.hero.firebaseDev}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100/80 dark:bg-zinc-800/60 text-zinc-700 dark:text-zinc-300">
-                    <BrandIcon name="aws" size={13} />
-                    <span>AWS Certified</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100/80 dark:bg-zinc-800/60 text-zinc-700 dark:text-zinc-300">
-                    <BrandIcon name="nvidia" size={13} />
-                    <span>NVIDIA DLI</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-sky-200/80 dark:border-sky-900/50 bg-sky-50/50 dark:bg-sky-950/20 text-zinc-800 dark:text-zinc-200">
-                    <BrandIcon name="meta" size={13} />
-                    <span className="font-medium text-[#0081FB] dark:text-sky-400">Meta Blueprint</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100/80 dark:bg-zinc-800/60 text-zinc-700 dark:text-zinc-300">
-                    <BrandIcon name="vercel" size={13} />
-                    <span>Vercel Next.js</span>
+                {/* Ecosystem Badges: Official Google Developer Badges, Dual AWS Logos, NVIDIA Logo */}
+                <div className="flex flex-wrap items-center gap-2 mt-3.5 font-mono text-[11px]">
+                  <a
+                    href="https://me.developers.google.com/badges/community/innovators/maps"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-red-200/90 dark:border-red-900/50 bg-white dark:bg-zinc-900 hover:border-red-400 text-zinc-800 dark:text-zinc-200 shadow-2xs transition-all"
+                  >
+                    <img
+                      src="/certificates/badge-google-maps-innovators.svg"
+                      alt="Google Maps Platform Innovators"
+                      className="w-7 h-7 object-contain shrink-0"
+                    />
+                    <span className="font-bold text-red-600 dark:text-red-400">{t.hero.mapsInnovators}</span>
+                  </a>
+
+                  <a
+                    href="https://me.developers.google.com/badges/community/firebasestudio/firebase-studio"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-200/90 dark:border-amber-900/50 bg-white dark:bg-zinc-900 hover:border-amber-400 text-zinc-800 dark:text-zinc-200 shadow-2xs transition-all"
+                  >
+                    <img
+                      src="/certificates/badge-firebase-studio.svg"
+                      alt="Firebase Studio"
+                      className="w-7 h-7 object-contain shrink-0"
+                    />
+                    <span className="font-bold text-amber-600 dark:text-amber-400">Firebase Studio</span>
+                  </a>
+
+                  <a
+                    href="https://me.developers.google.com/badges/nvidia-developer"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-200/90 dark:border-emerald-900/50 bg-white dark:bg-zinc-900 hover:border-emerald-400 text-zinc-800 dark:text-zinc-200 shadow-2xs transition-all"
+                  >
+                    <img
+                      src="/certificates/badge-nvidia-developer.svg"
+                      alt="NVIDIA Developer Badge"
+                      className="w-7 h-7 object-contain shrink-0"
+                    />
+                    <span className="bg-white px-1.5 py-0.5 rounded border border-zinc-200 inline-flex items-center">
+                      <img
+                        src="/official-nvidia-logo.png"
+                        alt="NVIDIA"
+                        className="h-5 w-auto object-contain"
+                      />
+                    </span>
+                    <span className="font-bold text-emerald-700 dark:text-emerald-400">NVIDIA Developer</span>
+                  </a>
+
+                  <a
+                    href="https://me.developers.google.com/badges/community/gdg/GDGoC/member"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-blue-200/90 dark:border-blue-900/50 bg-white dark:bg-zinc-900 hover:border-blue-400 text-zinc-800 dark:text-zinc-200 shadow-2xs transition-all"
+                  >
+                    <img
+                      src="/certificates/badge-gdg-campus-member.svg"
+                      alt="GDG on Campus Member"
+                      className="w-7 h-7 object-contain shrink-0"
+                    />
+                    <span className="font-bold text-blue-600 dark:text-blue-400">GDG on Campus</span>
+                  </a>
+
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow-2xs">
+                    <BrandIcon name="aws" size={16} />
+                    <span className="font-bold">AWS Certified</span>
                   </div>
                 </div>
               </div>
