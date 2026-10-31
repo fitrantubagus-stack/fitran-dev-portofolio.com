@@ -453,11 +453,17 @@ export const AboutSection: React.FC = () => {
                     alt="SohIB Indonesia.go.id"
                     className="h-10 w-auto object-contain scale-115 group-hover:scale-125 transition-transform"
                   />
+                  <span className="w-px h-8 bg-zinc-200" />
+                  <img
+                    src="/official-central-course-logo.png"
+                    alt="Central Course TOEFL"
+                    className="h-10 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
-                      OSN Nasional, Perpusnas Press, Belajar Era Digital &amp; SohIB
+                      OSN, Perpusnas Press, Belajar Era Digital, SohIB &amp; Central Course (TOEFL 630)
                     </h4>
                     <span className="px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-mono text-[10px] font-semibold border border-indigo-200 dark:border-indigo-900">
                       PRESTASI &amp; PUBLIKASI NASIONAL

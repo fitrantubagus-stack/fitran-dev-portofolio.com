@@ -301,6 +301,18 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
                     className="h-12 sm:h-14 w-auto object-contain scale-115"
                   />
                 </div>
+              ) : cert.issuer === 'Central Course' ? (
+                <div className="flex items-center gap-3 px-1">
+                  <img
+                    src="/official-central-course-logo.png"
+                    alt="Central Course TOEFL"
+                    className="h-12 sm:h-14 w-auto object-contain"
+                  />
+                  <div className="pr-1">
+                    <p className="font-heading font-black text-sm text-[#854D0E]">Central Course</p>
+                    <p className="font-mono text-[10px] font-bold text-zinc-600">TOEFL Score 630</p>
+                  </div>
+                </div>
               ) : (
                 <div className="flex items-center gap-2.5 px-2">
                   <Award className="w-8 h-8 text-[#1E2265] stroke-[2.5]" />

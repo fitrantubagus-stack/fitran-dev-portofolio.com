@@ -21,6 +21,7 @@ const MARQUEE_ITEMS: MarqueeItem[] = [
   { id: 'perpusnas', name: 'Perpusnas Press', badge: 'Published Author', icon: 'perpusnas' },
   { id: 'sohib', name: 'SohIB Indonesia.go.id', badge: 'Kemkomdigi RI', icon: 'sohib' },
   { id: 'bed', name: 'Belajar Era Digital', badge: '4× Certified', icon: 'belajar-era-digital' },
+  { id: 'cc', name: 'Central Course (TOEFL 630)', badge: 'English Certified', icon: 'central-course' },
   { id: 'maps', name: 'Google Maps Platform', badge: 'Innovators', icon: 'google-maps-innovators' },
   { id: 'firebase', name: 'Firebase Studio', badge: 'Developer', icon: 'firebase-developer' },
   { id: 'meta', name: 'Meta Blueprint', badge: 'Certified', icon: 'meta' },

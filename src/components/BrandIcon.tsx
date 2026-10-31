@@ -30,6 +30,7 @@ export type BrandIconName =
   | 'osn'
   | 'sohib'
   | 'belajar-era-digital'
+  | 'central-course'
   | 'oshsp'
   | 'kshpi'
   | 'chandra-asri'
@@ -456,6 +457,22 @@ export const BrandIcon: React.FC<BrandIconProps> = ({
           style={{ width: bedSize, height: bedSize }}
           className={`object-contain rounded-md shrink-0 ${baseClasses} ${className}`}
         />
+      );
+    }
+
+    case 'central-course': {
+      const ccSize = Math.max(size * 1.5, 26);
+      return (
+        <span
+          className={`inline-flex items-center bg-white px-1.5 py-0.5 rounded-md border border-zinc-200/90 shadow-2xs shrink-0 ${baseClasses} ${className}`}
+        >
+          <img
+            src="/official-central-course-logo.png"
+            alt="Central Course TOEFL"
+            style={{ height: `${ccSize}px`, width: 'auto' }}
+            className="object-contain shrink-0"
+          />
+        </span>
       );
     }
 

@@ -99,21 +99,21 @@ export const Navbar: React.FC<NavbarProps> = ({
   const themes: { id: DesignTheme; name: string; desc: string; dotClass: string }[] = [
     {
       id: 'modern',
-      name: '1. Modern Cyan',
-      desc: 'Minimalist Clean Glow (Eka Style)',
+      name: '1. Modern Tech',
+      desc: 'Clean Blueprint & Isometric 3D (Default)',
       dotClass: 'bg-cyan-400',
     },
     {
       id: 'clipboard',
-      name: '2. Pixel Clipboard',
-      desc: 'Scrapbook & Grid Note (Amru Style)',
-      dotClass: 'bg-blue-600',
+      name: '2. Full Animasi Desain',
+      desc: 'Interactive Kinetic Bento & Motion UI/UX',
+      dotClass: 'bg-indigo-500',
     },
     {
       id: 'arcade',
-      name: '3. Gold Arcade',
-      desc: 'Retro Gold Cyber 2025 (Kanoen Style)',
-      dotClass: 'bg-amber-400',
+      name: '3. Klasik & Elegan',
+      desc: 'Profesional Editorial & Executive Dossier',
+      dotClass: 'bg-[#B48A3E]',
     },
   ];
 
@@ -208,8 +208,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {designTheme === 'modern'
                     ? 'Modern'
                     : designTheme === 'clipboard'
-                      ? 'Clipboard'
-                      : 'Arcade'}
+                      ? 'Animasi'
+                      : 'Klasik'}
                 </span>
               </button>
 

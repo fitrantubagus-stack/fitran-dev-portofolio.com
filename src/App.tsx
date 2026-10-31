@@ -10,6 +10,7 @@ import { AboutSection } from './components/AboutSection';
 import { ContactFooter } from './components/ContactFooter';
 import { CertificateModal } from './components/CertificateModal';
 import { ProjectModal } from './components/ProjectModal';
+import { CVModal } from './components/CVModal';
 import { CommandMenu } from './components/CommandMenu';
 import { ClaudeCodeTerminal3D } from './components/ClaudeCodeTerminal3D';
 import { ScrollReveal } from './components/ScrollReveal';
@@ -118,6 +119,7 @@ export default function App() {
     () => resolveRouteFromWindow().cert
   );
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+  const [isCVModalOpen, setIsCVModalOpen] = useState(false);
 
   // Sync dark class on <html> and persist
   useEffect(() => {
@@ -183,23 +185,23 @@ export default function App() {
   // Root theme background styles for the 3 Website Design Themes
   const rootThemeClass =
     designTheme === 'clipboard'
-      ? 'bg-[#2563EB] text-zinc-900 dark:text-zinc-100'
+      ? 'bg-gradient-to-br from-[#EEF2FF] via-[#F8FAFC] to-[#E0E7FF] dark:from-[#070913] dark:via-[#0F172A] dark:to-[#090D16] text-slate-900 dark:text-slate-100'
       : designTheme === 'arcade'
-        ? 'bg-[#141109] text-zinc-100'
+        ? 'bg-[#FAF7F0] dark:bg-[#111110] text-[#141413] dark:text-[#F5F2EB]'
         : 'bg-[#FAFAFA] dark:bg-[#09090B] bg-dot-grid text-zinc-900 dark:text-zinc-100';
 
   const rootThemeInlineStyle: React.CSSProperties | undefined =
     designTheme === 'clipboard'
       ? {
           backgroundImage:
-            'linear-gradient(90deg, rgba(255,255,255,0.14) 50%, transparent 50%), linear-gradient(rgba(255,255,255,0.14) 50%, transparent 50%)',
-          backgroundSize: '36px 36px',
+            'radial-gradient(rgba(79, 70, 229, 0.12) 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
         }
       : designTheme === 'arcade'
         ? {
             backgroundImage:
-              'radial-gradient(circle at 50% 0%, rgba(212, 160, 56, 0.22), transparent 65%), radial-gradient(#D4A038 0.75px, transparent 0.75px)',
-            backgroundSize: '100% 100%, 28px 28px',
+              'radial-gradient(rgba(180, 138, 62, 0.14) 1px, transparent 1px)',
+            backgroundSize: '32px 32px',
           }
         : undefined;
 
@@ -244,6 +246,7 @@ export default function App() {
                         onNavigate={handleNavigate}
                         designTheme={designTheme}
                         onChangeDesignTheme={handleChangeDesignTheme}
+                        onOpenCV={() => setIsCVModalOpen(true)}
                       />
 
                       <ScrollReveal variant="fade-up" delay={40}>
@@ -289,7 +292,10 @@ export default function App() {
                         </div>
                       </ScrollReveal>
 
-                      <WorkSection onSelectProject={(p) => setSelectedProject(p)} />
+                      <WorkSection
+                        onSelectProject={(p) => setSelectedProject(p)}
+                        designTheme={designTheme}
+                      />
 
                       <CertificatesSection onSelectCert={handleSelectCertificate} />
                     </div>
@@ -302,6 +308,7 @@ export default function App() {
                         onNavigate={handleNavigate}
                         designTheme={designTheme}
                         onChangeDesignTheme={handleChangeDesignTheme}
+                        onOpenCV={() => setIsCVModalOpen(true)}
                       />
                       <ScrollReveal variant="fade-up" delay={50}>
                         <LogoMarquee />
@@ -319,7 +326,10 @@ export default function App() {
 
                   {/* PAGE 3: PROJECTS CATALOG (/projects) */}
                   {activeTab === 'work' && (
-                    <WorkSection onSelectProject={(p) => setSelectedProject(p)} />
+                    <WorkSection
+                      onSelectProject={(p) => setSelectedProject(p)}
+                      designTheme={designTheme}
+                    />
                   )}
 
                   {/* PAGE 4: CERTIFICATES & LICENSES (/certificates) */}
@@ -385,7 +395,16 @@ export default function App() {
         </main>
 
         {/* Full-Width Footer with 3D Interactive Phone & Collaboration Form */}
-        <ContactFooter onNavigate={handleNavigate} />
+        <ContactFooter
+          onNavigate={handleNavigate}
+          onOpenCV={() => setIsCVModalOpen(true)}
+        />
+
+        {/* Official CV Viewer & PDF Download Modal */}
+        <CVModal
+          isOpen={isCVModalOpen}
+          onClose={() => setIsCVModalOpen(false)}
+        />
 
         {/* Project Modal */}
         <ProjectModal

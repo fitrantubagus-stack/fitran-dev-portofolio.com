@@ -219,6 +219,21 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
       );
     }
 
+    if (cert.issuer === 'Central Course') {
+      return (
+        <div className="inline-flex items-center gap-2 bg-white px-2.5 py-1 rounded-xl border-2 border-black shadow-[2px_2px_0px_#000]">
+          <img
+            src="/official-central-course-logo.png"
+            alt="Central Course TOEFL"
+            className="h-6 sm:h-7 w-auto object-contain"
+          />
+          <span className="font-mono font-black text-[10px] text-[#854D0E] uppercase tracking-wider">
+            CENTRAL COURSE • TOEFL
+          </span>
+        </div>
+      );
+    }
+
     if (cert.issuer === 'Google Developer Program') {
       return (
         <span className="px-3 py-1 rounded-xl text-[10px] font-mono font-black uppercase tracking-wider bg-blue-100 text-[#1E2265] border-2 border-black shadow-[2px_2px_0px_#000]">
@@ -276,7 +291,7 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
 
               <div className="font-mono text-xs text-yellow-200 flex items-center gap-1.5 mb-1.5 select-none">
                 <span className="text-pink-300 font-bold">type</span>
-                <span className="text-sky-300 font-bold">OfficialCredentialsRegistry</span>
+                <span className="text-sky-300 font-bold">LearningArchive</span>
                 <span className="text-white">=</span>
               </div>
 
@@ -678,6 +693,11 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
                       alt="SohIB"
                       className="h-4 w-auto object-contain scale-115"
                     />
+                    <img
+                      src="/official-central-course-logo.png"
+                      alt="Central Course TOEFL"
+                      className="h-4 w-auto object-contain"
+                    />
                   </span>
                 )}
                 <span>{issuer.label}</span>
@@ -828,6 +848,13 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
                       src="/official-sohib-logo.png"
                       alt="SohIB Indonesia.go.id"
                       className="h-5 w-auto object-contain scale-115 shrink-0"
+                    />
+                  )}
+                  {cert.issuer === 'Central Course' && (
+                    <img
+                      src="/official-central-course-logo.png"
+                      alt="Central Course TOEFL"
+                      className="h-5 w-auto object-contain shrink-0"
                     />
                   )}
                   <p className="font-mono text-[11px] font-bold text-[#1E2265] line-clamp-1">
