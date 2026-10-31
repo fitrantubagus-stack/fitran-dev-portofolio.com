@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PERSONAL_INFO, HIGHLIGHTS_METRICS } from '../data/portfolioData';
-import { ProfileAvatar } from './ProfileAvatar';
+import { FitranPixelLogo } from './FitranPixelLogo';
 import { ScrambleText } from './ScrambleText';
 import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
 import { BrandIcon } from './BrandIcon';
@@ -191,12 +191,17 @@ export const Hero: React.FC<HeroProps> = ({
     },
     {
       id: 'vercel',
-      label: 'Vercel Certified',
-      sublabel: 'Vercel Next.js App Router Architecture',
+      label: 'Vercel & Meta',
+      sublabel: 'Vercel Next.js & Meta Blueprint Certified',
       pillClass:
         'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-500',
       textClass: 'text-zinc-900 dark:text-zinc-100',
-      logoRender: <BrandIcon name="vercel" size={18} />,
+      logoRender: (
+        <span className="inline-flex items-center gap-1">
+          <BrandIcon name="vercel" size={18} />
+          <BrandIcon name="meta" size={18} />
+        </span>
+      ),
     },
     {
       id: 'aws',
@@ -288,11 +293,9 @@ export const Hero: React.FC<HeroProps> = ({
                     <motion.div
                       animate={{ y: [0, -6, 0], rotate: [0, 2, -2, 0] }}
                       transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                      className="p-1.5 rounded-2xl bg-gradient-to-tr from-indigo-600 via-blue-500 to-emerald-400 shadow-lg shrink-0"
+                      className="hidden md:flex shrink-0"
                     >
-                      <div className="bg-white dark:bg-slate-900 rounded-xl p-0.5">
-                        <ProfileAvatar size="hero" showBadge={true} />
-                      </div>
+                      <FitranPixelLogo size="md" variant="card" />
                     </motion.div>
 
                     <div>
@@ -593,10 +596,10 @@ export const Hero: React.FC<HeroProps> = ({
             {/* LEFT COLUMN (3 Cols): Formal Framed Portrait & Academic Pedigree */}
             <div className="lg:col-span-3 flex flex-col justify-between p-6 bg-white dark:bg-[#181816] border border-[#141413]/25 dark:border-[#B48A3E]/40 shadow-xs">
               <div>
-                <div className="p-3 border-2 border-[#B48A3E] bg-[#FAF7F0] dark:bg-[#141413] flex flex-col items-center text-center mb-5">
-                  <ProfileAvatar size="hero" showBadge={true} />
+                <div className="hidden md:flex p-3 border-2 border-[#B48A3E] bg-[#FAF7F0] dark:bg-[#141413] flex-col items-center text-center mb-5">
+                  <FitranPixelLogo size="md" variant="inline" />
                   <p className="font-mono text-[10px] tracking-widest uppercase text-[#855E1E] dark:text-[#D4AF37] font-bold mt-3">
-                    POTRET RESMI • 2026
+                    IDENTITAS RESMI • 2026
                   </p>
                 </div>
 
@@ -815,15 +818,15 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* LEFT COLUMN: Identity, Bio, Badges & CTA (7 cols on lg) */}
           <div className="lg:col-span-7 flex flex-col items-start">
-            {/* Profile Avatar + Auto-Typing Headline */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 w-full">
+            {/* Desktop fitran.dev Pixel Logo + Auto-Typing Headline */}
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-5 md:gap-6 w-full">
               <motion.div
                 initial={{ opacity: 0, scale: 0.6, rotate: -6 }}
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 18 }}
-                className="shrink-0"
+                className="hidden md:flex shrink-0"
               >
-                <ProfileAvatar size="hero" showBadge={true} />
+                <FitranPixelLogo size="md" variant="card" />
               </motion.div>
 
               <div className="flex-1 min-w-0">

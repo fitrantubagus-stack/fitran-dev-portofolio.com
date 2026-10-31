@@ -459,24 +459,30 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ designTheme = 'moder
                     alt="Vercel"
                     className="h-9 w-auto object-contain scale-115 group-hover:scale-125 transition-transform"
                   />
+                  <span className="w-px h-8 bg-zinc-200" />
+                  <img
+                    src="/official-meta-logo.png"
+                    alt="Meta"
+                    className="h-9 w-auto object-contain scale-125 group-hover:scale-135 transition-transform"
+                  />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
-                      Claude, Anthropic &amp; Vercel
+                      Claude, Anthropic, Vercel &amp; Meta
                     </h4>
                     <span className="px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-300 font-mono text-[10px] font-semibold border border-orange-200 dark:border-orange-900">
-                      AI &amp; EDGE CLOUD
+                      AI &amp; CLOUD ECOSYSTEM
                     </span>
                   </div>
                   <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-0.5">
-                    <span>academy.claude.com • Vercel Next.js Certified</span>
+                    <span>academy.claude.com • Vercel • Meta Blueprint</span>
                     <ExternalLink className="w-3 h-3" />
                   </p>
                 </div>
               </div>
               <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                Memegang 3 sertifikasi resmi Anthropic &amp; Claude Academy (Claude 101, Claude Platform 101, AI Capabilities &amp; Limitations) serta sertifikasi Next.js App Router oleh Vercel Inc.
+                Memegang 3 sertifikasi resmi Anthropic &amp; Claude Academy (Claude 101, Claude Platform 101, AI Capabilities &amp; Limitations), sertifikasi Next.js App Router oleh Vercel Inc., serta Meta Blueprint.
               </p>
             </a>
           </ScrollReveal>

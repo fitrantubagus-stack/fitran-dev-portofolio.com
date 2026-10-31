@@ -116,15 +116,11 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
       >
         <div className="flex items-center justify-between border-b border-zinc-100 pb-3">
           <div className="flex items-center gap-2">
-            <svg viewBox="0 0 120 40" className={isFull ? 'w-24 sm:w-28 h-auto' : 'w-16 h-auto'}>
-              <path
-                d="M19.2 12.8c-2.3 0-4.3 1.1-5.6 2.8-1.3-1.7-3.3-2.8-5.6-2.8C3.6 12.8 0 16.7 0 21.6c0 6.6 6 12 13.6 12 4.4 0 8.3-2.1 10.7-5.3 2.4 3.2 6.3 5.3 10.7 5.3 7.6 0 13.6-5.4 13.6-12 0-4.9-3.6-8.8-8-8.8-2.3 0-4.3 1.1-5.6 2.8-1.3-1.7-3.3-2.8-5.6-2.8-2.3 0-4.3 1.1-5.6 2.8-1.3-1.7-3.3-2.8-5.6-2.8zm-5.6 14.8c-3.8 0-6.9-3.2-6.9-7.2s3.1-7.2 6.9-7.2c2.8 0 5.2 1.7 6.3 4.2-.3.9-.5 1.9-.5 3s.2 2.1.5 3c-1.1 2.5-3.5 4.2-6.3 4.2zm21.3 0c-2.8 0-5.2-1.7-6.3-4.2.3-.9.5-1.9.5-3s-.2-2.1-.5-3c1.1-2.5 3.5-4.2 6.3-4.2 3.8 0 6.9 3.2 6.9 7.2s-3.1 7.2-6.9 7.2z"
-                fill="#0081FB"
-              />
-              <text x="52" y="27" fontSize="16" fontWeight="bold" fontFamily="sans-serif" fill="#1C2B33">
-                Meta
-              </text>
-            </svg>
+            <img
+              src="/official-meta-logo.png"
+              alt="Meta"
+              className={isFull ? 'h-8 sm:h-10 w-auto object-contain scale-125' : 'h-6 w-auto object-contain scale-125'}
+            />
             <span className="text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded bg-sky-50 text-[#0081FB] border border-sky-200">
               Blueprint
             </span>

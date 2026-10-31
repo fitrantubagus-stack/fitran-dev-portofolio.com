@@ -1,0 +1,20 @@
+{
+  "name": "fitran.dev — Tubagus Fitran Badruttamam Portfolio",
+  "short_name": "fitran.dev",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#EDE6D3",
+  "theme_color": "#1E2265",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "256x256",
+      "type": "image/x-icon"
+    }
+  ]
+}

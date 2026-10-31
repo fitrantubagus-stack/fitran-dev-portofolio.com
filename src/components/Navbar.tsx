@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SectionId } from '../types';
 import { useLanguage } from '../context/LanguageContext';
+import { FitranPixelLogo } from './FitranPixelLogo';
 import {
   Menu,
   X,
@@ -125,8 +126,16 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="sticky top-0 z-50 w-full py-2.5 px-4 sm:px-8 transition-all pointer-events-none">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
-        {/* LEFT: Minimalist Timezone Label (matches Eka Revandi reference) */}
-        <div className="hidden sm:flex items-center gap-2 text-xs font-sans font-medium text-zinc-700 dark:text-zinc-300 pointer-events-auto shrink-0">
+        {/* LEFT: Desktop fitran.dev Pixel Logo + Timezone Label */}
+        <div className="hidden sm:flex items-center gap-3 text-xs font-sans font-medium text-zinc-700 dark:text-zinc-300 pointer-events-auto shrink-0">
+          <button
+            type="button"
+            onClick={() => handleNavClick('home')}
+            className="hidden lg:inline-flex items-center px-2.5 py-1 rounded-xl bg-[#EDE6D3]/95 border border-black/25 shadow-2xs hover:scale-105 transition-transform cursor-pointer"
+            title="fitran.dev — Beranda"
+          >
+            <FitranPixelLogo size="sm" variant="inline" />
+          </button>
           <span>Asia/Jakarta</span>
         </div>
 

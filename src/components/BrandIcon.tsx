@@ -153,22 +153,21 @@ export const BrandIcon: React.FC<BrandIconProps> = ({
         />
       );
 
-    case 'meta':
+    case 'meta': {
+      const metaH = Math.max(size * 1.45, 24);
       return (
-        <svg
-          width={size}
-          height={size}
-          viewBox="0 0 24 24"
-          fill="none"
-          className={`${baseClasses} ${className}`}
-          aria-label="Meta"
+        <span
+          className={`inline-flex items-center bg-white px-2 py-0.5 rounded-md border border-zinc-200/90 shadow-2xs shrink-0 overflow-hidden ${baseClasses} ${className}`}
         >
-          <path
-            d="M16.96 4C14.77 4 13.06 5.15 12 6.55C10.94 5.15 9.23 4 7.04 4C3.15 4 0 7.33 0 11.45C0 16.48 4.67 20 8.5 20C10.63 20 11.78 18.9 12 18.66C12.22 18.9 13.37 20 15.5 20C19.33 20 24 16.48 24 11.45C24 7.33 20.85 4 16.96 4ZM7.04 17.65C4.74 17.65 2.35 15.17 2.35 11.45C2.35 8.63 4.45 6.35 7.04 6.35C9.27 6.35 10.96 8.16 11.48 10.5H9.5C9.09 9.92 8.16 9.47 7.23 9.47C5.85 9.47 4.74 10.58 4.74 11.96C4.74 13.34 5.85 14.45 7.23 14.45C8.36 14.45 9.17 13.84 9.5 13.15H11.52C11.08 15.7 9.38 17.65 7.04 17.65ZM16.96 17.65C14.62 17.65 12.92 15.7 12.48 13.15H14.5C14.83 13.84 15.64 14.45 16.77 14.45C18.15 14.45 19.26 13.34 19.26 11.96C19.26 10.58 18.15 9.47 16.77 9.47C15.84 9.47 14.91 9.92 14.5 10.5H12.52C13.04 8.16 14.73 6.35 16.96 6.35C19.55 6.35 21.65 8.63 21.65 11.45C21.65 15.17 19.26 17.65 16.96 17.65Z"
-            fill="#0081FB"
+          <img
+            src="/official-meta-logo.png"
+            alt="Meta"
+            style={{ height: `${metaH}px`, width: 'auto' }}
+            className="object-contain shrink-0 scale-125"
           />
-        </svg>
+        </span>
       );
+    }
 
     case 'vercel': {
       const vercelH = Math.max(size * 1.4, 24);

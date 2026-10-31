@@ -165,6 +165,21 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
       );
     }
 
+    if (cert.issuer === 'Meta') {
+      return (
+        <div className="inline-flex items-center gap-2 bg-white px-2.5 py-1 rounded-xl border-2 border-black shadow-[2px_2px_0px_#000] overflow-hidden">
+          <img
+            src="/official-meta-logo.png"
+            alt="Meta"
+            className="h-6 sm:h-7 w-auto object-contain scale-125"
+          />
+          <span className="font-mono font-black text-[10px] text-[#0081FB] uppercase tracking-wider">
+            BLUEPRINT
+          </span>
+        </div>
+      );
+    }
+
     if (
       cert.issuer === 'Google Skills' ||
       cert.issuerFullName.toLowerCase().includes('google cloud') ||
@@ -674,19 +689,27 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
               </div>
             </a>
 
-            {/* 7. Official Vercel Logo */}
-            <div className="flex items-center justify-between gap-2.5 p-3 rounded-2xl border-2 border-black bg-white shadow-[3px_3px_0px_#000] overflow-hidden">
-              <img
-                src="/official-vercel-logo.png"
-                alt="Vercel"
-                className="h-9 sm:h-10 w-auto object-contain scale-120 shrink-0"
-              />
+            {/* 7. Official Vercel & Meta Logos */}
+            <div className="flex items-center justify-between gap-2 p-3 rounded-2xl border-2 border-black bg-white shadow-[3px_3px_0px_#000] overflow-hidden">
+              <div className="flex items-center gap-2 shrink-0">
+                <img
+                  src="/official-vercel-logo.png"
+                  alt="Vercel"
+                  className="h-8 sm:h-9 w-auto object-contain scale-115 shrink-0"
+                />
+                <span className="w-0.5 h-7 bg-zinc-300 shrink-0" />
+                <img
+                  src="/official-meta-logo.png"
+                  alt="Meta"
+                  className="h-8 sm:h-9 w-auto object-contain scale-125 shrink-0"
+                />
+              </div>
               <div className="min-w-0 text-right">
-                <p className="font-heading font-black text-xs text-zinc-950 leading-tight">
-                  Vercel Inc.
+                <p className="font-heading font-black text-[11px] text-zinc-950 leading-tight">
+                  Vercel &amp; Meta
                 </p>
-                <p className="font-mono text-[10px] text-zinc-700 font-bold mt-0.5">
-                  Next.js Certified
+                <p className="font-mono text-[10px] text-[#0081FB] font-bold mt-0.5">
+                  Next.js &amp; Blueprint
                 </p>
               </div>
             </div>
@@ -863,6 +886,11 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
                       src="/official-vercel-logo.png"
                       alt="Vercel"
                       className="h-4 w-auto object-contain scale-115"
+                    />
+                    <img
+                      src="/official-meta-logo.png"
+                      alt="Meta"
+                      className="h-4 w-auto object-contain scale-125"
                     />
                   </span>
                 )}
@@ -1057,6 +1085,13 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
                           src="/official-vercel-logo.png"
                           alt="Vercel"
                           className="h-4 w-auto object-contain scale-115 shrink-0"
+                        />
+                      )}
+                      {cert.issuer === 'Meta' && (
+                        <img
+                          src="/official-meta-logo.png"
+                          alt="Meta"
+                          className="h-4 w-auto object-contain scale-125 shrink-0"
                         />
                       )}
                       {(cert.issuer === 'Google Skills' ||
