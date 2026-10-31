@@ -3,6 +3,7 @@ import { CertificateItem } from '../types';
 import { CERTIFICATES_DATA, CERTIFICATES_DRIVE_URL, PERSONAL_INFO } from '../data/portfolioData';
 import { ScrambleText } from './ScrambleText';
 import { CertificatePreview } from './CertificatePreview';
+import { ScrollReveal } from './ScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
 import {
   ExternalLink,
@@ -379,10 +380,10 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
         {/* CREDENTIALS GRID: Formal White Cards with Navy Offset Shadows */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCerts.map((cert, index) => (
+            <ScrollReveal key={cert.id} variant="fade-up" delay={(index % 3) * 65}>
             <div
-              key={cert.id}
               onClick={() => onSelectCert(cert)}
-              className="group flex flex-col justify-between p-5 rounded-3xl border-3 border-black bg-white shadow-[6px_6px_0px_#1E2265] hover:shadow-[8px_8px_0px_#000] hover:-translate-y-1 transition-all cursor-pointer relative overflow-hidden"
+              className="group h-full flex flex-col justify-between p-5 rounded-3xl border-3 border-black bg-white shadow-[6px_6px_0px_#1E2265] hover:shadow-[8px_8px_0px_#000] hover:-translate-y-1 transition-all cursor-pointer relative overflow-hidden"
             >
               {/* Top Accent Bar */}
               <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#1E2265] via-blue-700 to-yellow-400 border-b border-black" />
@@ -537,6 +538,7 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
                 </div>
               </div>
             </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

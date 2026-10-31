@@ -8,6 +8,7 @@ import {
 import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
 import { BrandIcon } from './BrandIcon';
 import { ScrambleText } from './ScrambleText';
+import { ScrollReveal } from './ScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
 import {
   GraduationCap,
@@ -77,239 +78,250 @@ export const AboutSection: React.FC = () => {
         </div>
 
         {/* 1. Google Developer Program Featured Banner */}
-        <div className="mt-8 p-6 rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-[#0D1117] shadow-xs">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-100 dark:border-zinc-800">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-2xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/40 flex items-center justify-center">
-                <GoogleDeveloperLogo size={32} />
-              </div>
-              <div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="font-heading font-bold text-lg sm:text-xl text-zinc-950 dark:text-white">
-                    {t.about.googleDevProgram}
-                  </h3>
-                  <span className="px-2.5 py-0.5 rounded-full bg-blue-500 text-white font-mono text-[10px] font-bold">
-                    Official Member
-                  </span>
+        <ScrollReveal variant="fade-up">
+          <div className="mt-8 p-6 rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-[#0D1117] shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-100 dark:border-zinc-800">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-2xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/40 flex items-center justify-center">
+                  <GoogleDeveloperLogo size={32} />
                 </div>
-                <p className="text-xs font-mono text-zinc-500 dark:text-zinc-400 mt-0.5">
-                  Member ID: 108601218527303855788 • Active Verified Profile
-                </p>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="font-heading font-bold text-lg sm:text-xl text-zinc-950 dark:text-white">
+                      {t.about.googleDevProgram}
+                    </h3>
+                    <span className="px-2.5 py-0.5 rounded-full bg-blue-500 text-white font-mono text-[10px] font-bold">
+                      Official Member
+                    </span>
+                  </div>
+                  <p className="text-xs font-mono text-zinc-500 dark:text-zinc-400 mt-0.5">
+                    Member ID: 108601218527303855788 • Active Verified Profile
+                  </p>
+                </div>
               </div>
+
+              <a
+                href={PERSONAL_INFO.socialLinks.googleDev}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-mono text-xs font-semibold transition-colors self-start sm:self-auto shadow-xs"
+              >
+                <span>{language === 'id' ? 'Buka Profil Resmi' : 'Open Official Profile'}</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
             </div>
 
-            <a
-              href={PERSONAL_INFO.socialLinks.googleDev}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-mono text-xs font-semibold transition-colors self-start sm:self-auto shadow-xs"
-            >
-              <span>{language === 'id' ? 'Buka Profil Resmi' : 'Open Official Profile'}</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-          </div>
+            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-4 leading-relaxed">
+              {t.about.googleDevDesc}
+            </p>
 
-          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-4 leading-relaxed">
-            {t.about.googleDevDesc}
-          </p>
-
-          {/* Ecosystem Badges 4-Column Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-5">
-            {GOOGLE_DEV_BADGES.map((badge, idx) => {
-              const CardWrapper: React.ElementType = badge.verifyUrl ? 'a' : 'div';
-              const wrapperProps = badge.verifyUrl
-                ? {
-                    href: badge.verifyUrl,
-                    target: '_blank',
-                    rel: 'noopener noreferrer',
-                  }
-                : {};
-              return (
-                <CardWrapper
-                  key={idx}
-                  {...wrapperProps}
-                  className="group p-3.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/70 dark:bg-zinc-900/40 hover:border-blue-400 dark:hover:border-blue-600 transition-all flex items-center gap-3"
-                >
-                  {badge.badgeImageUrl ? (
-                    <img
-                      src={badge.badgeImageUrl}
-                      alt={badge.name}
-                      className="w-14 h-14 object-contain shrink-0 group-hover:scale-110 transition-transform"
-                    />
-                  ) : (
-                    <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 shrink-0">
-                      {getBadgeIcon(badge.iconName)}
-                    </div>
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5">
-                      <p className="font-bold text-xs text-zinc-900 dark:text-zinc-100 truncate">
-                        {badge.name}
-                      </p>
-                      {badge.verifyUrl && (
-                        <ExternalLink className="w-3 h-3 text-blue-500 shrink-0 opacity-75 group-hover:opacity-100" />
-                      )}
-                    </div>
-                    {badge.name.toUpperCase().includes('NVIDIA') && (
-                      <div className="my-1 inline-flex bg-white px-1.5 py-0.5 rounded border border-zinc-200">
+            {/* Ecosystem Badges 4-Column Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-5">
+              {GOOGLE_DEV_BADGES.map((badge, idx) => {
+                const CardWrapper: React.ElementType = badge.verifyUrl ? 'a' : 'div';
+                const wrapperProps = badge.verifyUrl
+                  ? {
+                      href: badge.verifyUrl,
+                      target: '_blank',
+                      rel: 'noopener noreferrer',
+                    }
+                  : {};
+                return (
+                  <ScrollReveal key={idx} delayMs={(idx % 4) * 60} variant="zoom-in">
+                    <CardWrapper
+                      {...wrapperProps}
+                      className="h-full group p-3.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/70 dark:bg-zinc-900/40 hover:border-blue-400 dark:hover:border-blue-600 transition-all flex items-center gap-3"
+                    >
+                      {badge.badgeImageUrl ? (
                         <img
-                          src="/official-nvidia-logo.png"
-                          alt="NVIDIA"
-                          className="h-4 w-auto object-contain"
+                          src={badge.badgeImageUrl}
+                          alt={badge.name}
+                          className="w-14 h-14 object-contain shrink-0 group-hover:scale-110 transition-transform"
                         />
+                      ) : (
+                        <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 shrink-0">
+                          {getBadgeIcon(badge.iconName)}
+                        </div>
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5">
+                          <p className="font-bold text-xs text-zinc-900 dark:text-zinc-100 truncate">
+                            {badge.name}
+                          </p>
+                          {badge.verifyUrl && (
+                            <ExternalLink className="w-3 h-3 text-blue-500 shrink-0 opacity-75 group-hover:opacity-100" />
+                          )}
+                        </div>
+                        {badge.name.toUpperCase().includes('NVIDIA') && (
+                          <div className="my-1 inline-flex bg-white px-1.5 py-0.5 rounded border border-zinc-200">
+                            <img
+                              src="/official-nvidia-logo.png"
+                              alt="NVIDIA"
+                              className="h-4 w-auto object-contain"
+                            />
+                          </div>
+                        )}
+                        <p className="text-[10px] text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-0.5 leading-tight">
+                          {badge.description}
+                        </p>
                       </div>
-                    )}
-                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-0.5 leading-tight">
-                      {badge.description}
-                    </p>
-                  </div>
-                </CardWrapper>
-              );
-            })}
+                    </CardWrapper>
+                  </ScrollReveal>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* 2. Official Google Developer Badges Grid (Maps Innovators, Firebase Studio, NVIDIA Developer, GDG on Campus) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6">
           {/* Google Maps Innovators Card */}
-          <a
-            href="https://me.developers.google.com/badges/community/innovators/maps"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group p-6 rounded-2xl border border-red-200/80 dark:border-red-900/40 bg-gradient-to-br from-red-50/30 via-white to-white dark:from-red-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-red-400 transition-all shadow-xs"
-          >
-            <div className="flex items-center gap-4 mb-3">
-              <img
-                src="/certificates/badge-google-maps-innovators.svg"
-                alt="Google Maps Platform Innovators"
-                className="w-20 h-20 object-contain shrink-0 group-hover:scale-105 transition-transform"
-              />
-              <div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
-                    {t.about.mapsTitle}
-                  </h4>
-                  <span className="px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-mono text-[10px] font-semibold border border-red-200 dark:border-red-900">
-                    INNOVATORS
-                  </span>
+          <ScrollReveal delayMs={0} variant="fade-up">
+            <a
+              href="https://me.developers.google.com/badges/community/innovators/maps"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block h-full group p-6 rounded-2xl border border-red-200/80 dark:border-red-900/40 bg-gradient-to-br from-red-50/30 via-white to-white dark:from-red-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-red-400 transition-all shadow-xs"
+            >
+              <div className="flex items-center gap-4 mb-3">
+                <img
+                  src="/certificates/badge-google-maps-innovators.svg"
+                  alt="Google Maps Platform Innovators"
+                  className="w-20 h-20 object-contain shrink-0 group-hover:scale-105 transition-transform"
+                />
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
+                      {t.about.mapsTitle}
+                    </h4>
+                    <span className="px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-mono text-[10px] font-semibold border border-red-200 dark:border-red-900">
+                      INNOVATORS
+                    </span>
+                  </div>
+                  <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-0.5">
+                    <span>me.developers.google.com/badges/community/innovators/maps</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </p>
                 </div>
-                <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-0.5">
-                  <span>me.developers.google.com/badges/community/innovators/maps</span>
-                  <ExternalLink className="w-3 h-3" />
-                </p>
               </div>
-            </div>
-            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              {t.about.mapsDesc}
-            </p>
-          </a>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                {t.about.mapsDesc}
+              </p>
+            </a>
+          </ScrollReveal>
 
           {/* Firebase Studio Developer Card */}
-          <a
-            href="https://me.developers.google.com/badges/community/firebasestudio/firebase-studio"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group p-6 rounded-2xl border border-amber-200/80 dark:border-amber-900/40 bg-gradient-to-br from-amber-50/30 via-white to-white dark:from-amber-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-amber-400 transition-all shadow-xs"
-          >
-            <div className="flex items-center gap-4 mb-3">
-              <img
-                src="/certificates/badge-firebase-studio.svg"
-                alt="Firebase Studio"
-                className="w-20 h-20 object-contain shrink-0 group-hover:scale-105 transition-transform"
-              />
-              <div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
-                    Firebase Studio Developer
-                  </h4>
-                  <span className="px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 font-mono text-[10px] font-semibold border border-amber-200 dark:border-amber-900">
-                    OFFICIAL BADGE
-                  </span>
+          <ScrollReveal delayMs={70} variant="fade-up">
+            <a
+              href="https://me.developers.google.com/badges/community/firebasestudio/firebase-studio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block h-full group p-6 rounded-2xl border border-amber-200/80 dark:border-amber-900/40 bg-gradient-to-br from-amber-50/30 via-white to-white dark:from-amber-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-amber-400 transition-all shadow-xs"
+            >
+              <div className="flex items-center gap-4 mb-3">
+                <img
+                  src="/certificates/badge-firebase-studio.svg"
+                  alt="Firebase Studio"
+                  className="w-20 h-20 object-contain shrink-0 group-hover:scale-105 transition-transform"
+                />
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
+                      Firebase Studio Developer
+                    </h4>
+                    <span className="px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 font-mono text-[10px] font-semibold border border-amber-200 dark:border-amber-900">
+                      OFFICIAL BADGE
+                    </span>
+                  </div>
+                  <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-0.5">
+                    <span>me.developers.google.com/badges/community/firebasestudio</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </p>
                 </div>
-                <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-0.5">
-                  <span>me.developers.google.com/badges/community/firebasestudio</span>
-                  <ExternalLink className="w-3 h-3" />
-                </p>
               </div>
-            </div>
-            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              {t.about.firebaseDesc}
-            </p>
-          </a>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                {t.about.firebaseDesc}
+              </p>
+            </a>
+          </ScrollReveal>
 
           {/* NVIDIA Developer Card */}
-          <a
-            href="https://me.developers.google.com/badges/nvidia-developer"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group p-6 rounded-2xl border border-emerald-200/80 dark:border-emerald-900/40 bg-gradient-to-br from-emerald-50/30 via-white to-white dark:from-emerald-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-emerald-400 transition-all shadow-xs"
-          >
-            <div className="flex items-center gap-4 mb-3">
-              <img
-                src="/certificates/badge-nvidia-developer.svg"
-                alt="NVIDIA Developer"
-                className="w-20 h-20 object-contain shrink-0 group-hover:scale-105 transition-transform"
-              />
-              <div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="bg-white px-2 py-0.5 rounded-md border border-zinc-200 inline-flex items-center">
-                    <img
-                      src="/official-nvidia-logo.png"
-                      alt="NVIDIA"
-                      className="h-6 w-auto object-contain"
-                    />
-                  </span>
-                  <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
-                    NVIDIA Developer
-                  </h4>
+          <ScrollReveal delayMs={140} variant="fade-up">
+            <a
+              href="https://me.developers.google.com/badges/nvidia-developer"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block h-full group p-6 rounded-2xl border border-emerald-200/80 dark:border-emerald-900/40 bg-gradient-to-br from-emerald-50/30 via-white to-white dark:from-emerald-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-emerald-400 transition-all shadow-xs"
+            >
+              <div className="flex items-center gap-4 mb-3">
+                <img
+                  src="/certificates/badge-nvidia-developer.svg"
+                  alt="NVIDIA Developer"
+                  className="w-20 h-20 object-contain shrink-0 group-hover:scale-105 transition-transform"
+                />
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="bg-white px-2 py-0.5 rounded-md border border-zinc-200 inline-flex items-center">
+                      <img
+                        src="/official-nvidia-logo.png"
+                        alt="NVIDIA"
+                        className="h-6 w-auto object-contain"
+                      />
+                    </span>
+                    <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
+                      NVIDIA Developer
+                    </h4>
+                  </div>
+                  <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-1">
+                    <span>me.developers.google.com/badges/nvidia-developer</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </p>
                 </div>
-                <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-1">
-                  <span>me.developers.google.com/badges/nvidia-developer</span>
-                  <ExternalLink className="w-3 h-3" />
-                </p>
               </div>
-            </div>
-            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Anggota terverifikasi ekosistem NVIDIA Developer pada Google Developer Program dan NVIDIA Deep Learning Institute (DLI).
-            </p>
-          </a>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                Anggota terverifikasi ekosistem NVIDIA Developer pada Google Developer Program dan NVIDIA Deep Learning Institute (DLI).
+              </p>
+            </a>
+          </ScrollReveal>
 
           {/* GDG on Campus & Dual AWS Cloud Ecosystem Card */}
-          <a
-            href="https://me.developers.google.com/badges/community/gdg/GDGoC/member"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group p-6 rounded-2xl border border-blue-200/80 dark:border-blue-900/40 bg-gradient-to-br from-blue-50/30 via-white to-white dark:from-blue-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-blue-400 transition-all shadow-xs"
-          >
-            <div className="flex items-center gap-4 mb-3">
-              <img
-                src="/certificates/badge-gdg-campus-member.svg"
-                alt="GDG on Campus Member"
-                className="w-20 h-20 object-contain shrink-0 group-hover:scale-105 transition-transform"
-              />
-              <div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
-                    GDG on Campus Member
-                  </h4>
-                  <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-mono text-[10px] font-semibold border border-blue-200 dark:border-blue-900">
-                    GDGoC
-                  </span>
+          <ScrollReveal delayMs={210} variant="fade-up">
+            <a
+              href="https://me.developers.google.com/badges/community/gdg/GDGoC/member"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block h-full group p-6 rounded-2xl border border-blue-200/80 dark:border-blue-900/40 bg-gradient-to-br from-blue-50/30 via-white to-white dark:from-blue-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-blue-400 transition-all shadow-xs"
+            >
+              <div className="flex items-center gap-4 mb-3">
+                <img
+                  src="/certificates/badge-gdg-campus-member.svg"
+                  alt="GDG on Campus Member"
+                  className="w-20 h-20 object-contain shrink-0 group-hover:scale-105 transition-transform"
+                />
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
+                      GDG on Campus Member
+                    </h4>
+                    <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-mono text-[10px] font-semibold border border-blue-200 dark:border-blue-900">
+                      GDGoC
+                    </span>
+                  </div>
+                  <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-0.5">
+                    <span>me.developers.google.com/badges/community/gdg/GDGoC/member</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </p>
                 </div>
-                <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-0.5">
-                  <span>me.developers.google.com/badges/community/gdg/GDGoC/member</span>
-                  <ExternalLink className="w-3 h-3" />
-                </p>
               </div>
-            </div>
-            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Anggota resmi komunitas Google Developer Groups on Campus (GDGoC) dalam kolaborasi pengembangan perangkat lunak modern dan multi-cloud.
-            </p>
-          </a>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                Anggota resmi komunitas Google Developer Groups on Campus (GDGoC) dalam kolaborasi pengembangan perangkat lunak modern dan multi-cloud.
+              </p>
+            </a>
+          </ScrollReveal>
         </div>
 
         {/* 3. Education: SMA Negeri 1 Cilegon & Universitas Muhammadiyah Banten */}
-        <div className="mt-10 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+        <ScrollReveal variant="fade-up" className="mt-10 pt-8 border-t border-zinc-200 dark:border-zinc-800">
           <div className="flex items-center gap-2 mb-6">
             <GraduationCap className="w-5 h-5 text-blue-500" />
             <h3 className="font-heading font-extrabold text-xl text-zinc-950 dark:text-white">
@@ -390,10 +402,10 @@ export const AboutSection: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* 4. Experience Highlights */}
-        <div className="mt-10 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+        <ScrollReveal variant="fade-up" className="mt-10 pt-8 border-t border-zinc-200 dark:border-zinc-800">
           <div className="flex items-center gap-2 mb-6">
             <Briefcase className="w-5 h-5 text-indigo-500" />
             <h3 className="font-heading font-extrabold text-xl text-zinc-950 dark:text-white">
@@ -403,37 +415,36 @@ export const AboutSection: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {EXPERIENCE_DATA.map((exp, idx) => (
-              <div
-                key={idx}
-                className="p-5 rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-[#0D1117] shadow-xs"
-              >
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <div>
-                    <h4 className="font-bold text-base text-zinc-950 dark:text-white">
-                      {exp.role}
-                    </h4>
-                    <p className="font-mono text-xs font-semibold text-blue-600 dark:text-blue-400">
-                      {exp.organization}
-                    </p>
+              <ScrollReveal key={idx} delayMs={(idx % 2) * 80} variant="fade-up">
+                <div className="h-full p-5 rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-[#0D1117] shadow-xs">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div>
+                      <h4 className="font-bold text-base text-zinc-950 dark:text-white">
+                        {exp.role}
+                      </h4>
+                      <p className="font-mono text-xs font-semibold text-blue-600 dark:text-blue-400">
+                        {exp.organization}
+                      </p>
+                    </div>
+                    <span className="px-2.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 font-mono text-[11px] text-zinc-500">
+                      {exp.period}
+                    </span>
                   </div>
-                  <span className="px-2.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 font-mono text-[11px] text-zinc-500">
-                    {exp.period}
-                  </span>
+
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-3">
+                    {exp.description}
+                  </p>
+
+                  <ul className="space-y-1 text-[11px] text-zinc-500 dark:text-zinc-400 list-disc list-inside">
+                    {exp.keyResponsibilities.map((resp, i) => (
+                      <li key={i}>{resp}</li>
+                    ))}
+                  </ul>
                 </div>
-
-                <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-3">
-                  {exp.description}
-                </p>
-
-                <ul className="space-y-1 text-[11px] text-zinc-500 dark:text-zinc-400 list-disc list-inside">
-                  {exp.keyResponsibilities.map((resp, i) => (
-                    <li key={i}>{resp}</li>
-                  ))}
-                </ul>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ProjectItem } from '../types';
 import { PROJECTS_DATA } from '../data/portfolioData';
 import { ScrambleText } from './ScrambleText';
+import { ScrollReveal } from './ScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
 import {
   FolderGit2,
@@ -95,11 +96,9 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
 
         {/* Projects Grid: 3 Columns on Large Screens */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-8">
-          {displayedProjects.map((project) => (
-            <div
-              key={project.id}
-              className="group flex flex-col justify-between p-5 rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-[#0D1117] hover:border-zinc-400 dark:hover:border-zinc-600 transition-all shadow-xs hover:shadow-lg"
-            >
+          {displayedProjects.map((project, idx) => (
+            <ScrollReveal key={project.id} variant="fade-up" delay={(idx % 3) * 60}>
+              <div className="group h-full flex flex-col justify-between p-5 rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-[#0D1117] hover:border-zinc-400 dark:hover:border-zinc-600 transition-all shadow-xs hover:shadow-lg">
               <div>
                 {/* Header: Repo Icon + Status Tag */}
                 <div className="flex items-start justify-between gap-2 mb-3">
@@ -170,6 +169,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                 </div>
               </div>
             </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>
