@@ -69,9 +69,14 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               <ProfileAvatar size="hero" showBadge={true} />
 
               <div className="flex-1 min-w-0">
+                <div className="font-mono text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 mb-1 select-none">
+                  <span className="text-purple-500 dark:text-purple-400 font-bold">const</span>
+                  <span className="text-blue-500 dark:text-blue-400 font-bold">softwareEngineer</span>
+                  <span className="text-zinc-400 dark:text-zinc-500">=</span>
+                </div>
                 <div className="flex items-center gap-2 flex-wrap">
                   <h1 className="font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl text-zinc-950 dark:text-white tracking-tight">
-                    <ScrambleText text={PERSONAL_INFO.name} scrambleSpeed={22} scrambleCycles={2} />
+                    <ScrambleText text={PERSONAL_INFO.name} />
                   </h1>
                   <span
                     title="Verified Developer Profile"

@@ -90,8 +90,13 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
               <Award className="w-3.5 h-3.5" />
               <span>{t.credentials.badge}</span>
             </div>
+            <div className="font-mono text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 mb-1 select-none">
+              <span className="text-purple-500 dark:text-purple-400 font-bold">type</span>
+              <span className="text-blue-500 dark:text-blue-400 font-bold">Credentials</span>
+              <span className="text-zinc-400 dark:text-zinc-500">=</span>
+            </div>
             <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-zinc-950 dark:text-white tracking-tight">
-              <ScrambleText text={t.credentials.title} scrambleSpeed={20} />
+              <ScrambleText text={t.credentials.title} />
             </h2>
             <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
               {t.credentials.subtitle}

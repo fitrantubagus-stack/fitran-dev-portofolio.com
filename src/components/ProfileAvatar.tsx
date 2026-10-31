@@ -34,7 +34,7 @@ export const ProfileAvatar: React.FC<ProfileAvatarProps> = ({
               src={PERSONAL_INFO.avatarUrl}
               alt={PERSONAL_INFO.name}
               onError={() => setImageError(true)}
-              className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
+              className="w-full h-full object-cover object-[center_20%] transition-transform duration-300 hover:scale-105"
             />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center font-mono text-zinc-800 dark:text-zinc-200 font-bold bg-gradient-to-br from-zinc-100 to-zinc-300 dark:from-zinc-800 dark:to-zinc-900">
