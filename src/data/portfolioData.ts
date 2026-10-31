@@ -181,28 +181,28 @@ export const GOOGLE_DEV_BADGES: GoogleBadge[] = [
     iconName: 'MapPin',
     description: 'Geospatial visualization & location-based service design',
     badgeImageUrl: '/certificates/badge-google-maps-innovators.svg',
-    verifyUrl: 'https://fitran-dev-portofolio-com.vercel.app/preview?title=Software%20Engineer%20(student)&url=https%3A%2F%2Fme.developers.google.com%2Fbadges%2Fcommunity%2Finnovators%2Fmaps',
+    verifyUrl: 'https://fitran-dev-portofolio-com.vercel.app/preview?title=Google%20Maps%20Platform%20Innovators&url=https%3A%2F%2Fme.developers.google.com%2Fbadges%2Fcommunity%2Finnovators%2Fmaps',
   },
   {
     name: 'Firebase Studio',
     iconName: 'Flame',
     description: 'Serverless backend, Firestore schemas & real-time sync',
     badgeImageUrl: '/certificates/badge-firebase-studio.svg',
-    verifyUrl: 'https://fitran-dev-portofolio-com.vercel.app/preview?title=Software%20Engineer%20(student)&url=https%3A%2F%2Fme.developers.google.com%2Fbadges%2Fcommunity%2Ffirebasestudio%2Ffirebase-studio',
+    verifyUrl: 'https://fitran-dev-portofolio-com.vercel.app/preview?title=Firebase%20Studio&url=https%3A%2F%2Fme.developers.google.com%2Fbadges%2Fcommunity%2Ffirebasestudio%2Ffirebase-studio',
   },
   {
     name: 'Nvidia Developer',
     iconName: 'Cpu',
     description: 'NVIDIA Developer Program — GPU accelerated computing & AI pipelines',
     badgeImageUrl: '/certificates/badge-nvidia-developer.svg',
-    verifyUrl: 'https://fitran-dev-portofolio-com.vercel.app/preview?title=Software%20Engineer%20(student)&url=https%3A%2F%2Fme.developers.google.com%2Fbadges%2Fnvidia-developer',
+    verifyUrl: 'https://fitran-dev-portofolio-com.vercel.app/preview?title=Nvidia%20Developer&url=https%3A%2F%2Fme.developers.google.com%2Fbadges%2Fnvidia-developer',
   },
   {
     name: 'GDG on Campus Member',
     iconName: 'Building',
     description: 'Google Developer Groups on Campus community collaboration & hackathons',
     badgeImageUrl: '/certificates/badge-gdg-campus-member.svg',
-    verifyUrl: 'https://fitran-dev-portofolio-com.vercel.app/preview?title=Software%20Engineer%20(student)&url=https%3A%2F%2Fme.developers.google.com%2Fbadges%2Fcommunity%2Fgdg%2FGDGoC%2Fmember',
+    verifyUrl: 'https://fitran-dev-portofolio-com.vercel.app/preview?title=GDG%20on%20Campus%20Member&url=https%3A%2F%2Fme.developers.google.com%2Fbadges%2Fcommunity%2Fgdg%2FGDGoC%2Fmember',
   },
   {
     name: 'Gemini Enterprise Agent Ready',
@@ -214,7 +214,7 @@ export const GOOGLE_DEV_BADGES: GoogleBadge[] = [
     iconName: 'ShieldCheck',
     description: 'Verified Google Cloud infrastructure and analytical computing',
     badgeImageUrl: '/certificates/badge-google-cloud-infra-foundation.png',
-    verifyUrl: 'https://fitran-dev-portofolio-com.vercel.app/preview?title=Software%20Engineer%20(student)&url=https%3A%2F%2Fwww.skills.google%2Fpublic_profiles%2F19eb8264-5dd8-4e7c-a55e-f5e468ae6bcc%2Fbadges%2F26894567',
+    verifyUrl: 'https://fitran-dev-portofolio-com.vercel.app/preview?title=Essential%20Google%20Cloud%20Infrastructure%3A%20Foundation&url=https%3A%2F%2Fwww.skills.google%2Fpublic_profiles%2F19eb8264-5dd8-4e7c-a55e-f5e468ae6bcc%2Fbadges%2F26894567',
   },
   {
     name: 'Google Workspace Skills',
@@ -1036,3 +1036,31 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
     customImageFilename: 'cert-sohib-bercerita.png',
   },
 ];
+
+export const getCertPreviewPath = (cert: CertificateItem): string => {
+  if (cert.verifyUrl && cert.verifyUrl.includes('/preview?')) {
+    try {
+      const parsed = new URL(cert.verifyUrl);
+      return parsed.pathname + parsed.search;
+    } catch {
+      return cert.verifyUrl;
+    }
+  }
+  const params = new URLSearchParams();
+  params.set('title', cert.title);
+  if (cert.verifyUrl) {
+    params.set('url', cert.verifyUrl);
+  }
+  return '/preview?' + params.toString();
+};
+
+export const getCertShareUrl = (cert: CertificateItem): string => {
+  if (cert.verifyUrl && cert.verifyUrl.startsWith('http')) {
+    return cert.verifyUrl;
+  }
+  const origin =
+    typeof window !== 'undefined'
+      ? window.location.origin
+      : 'https://fitran-dev-portofolio-com.vercel.app';
+  return origin + getCertPreviewPath(cert);
+};

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CertificateItem } from '../types';
-import { CERTIFICATES_DRIVE_URL } from '../data/portfolioData';
+import { CERTIFICATES_DRIVE_URL, getCertPreviewPath, getCertShareUrl } from '../data/portfolioData';
 import { CertificatePreview } from './CertificatePreview';
 import { DesignTheme } from './Navbar';
 import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
@@ -104,8 +104,9 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
   };
 
   const copyPageUrl = () => {
-    if (typeof window !== 'undefined') {
-      navigator.clipboard.writeText(window.location.href);
+    if (typeof window !== 'undefined' && cert) {
+      const shareUrl = getCertShareUrl(cert);
+      navigator.clipboard.writeText(shareUrl);
       setCopiedUrl(true);
       setTimeout(() => setCopiedUrl(false), 2000);
     }
@@ -328,7 +329,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
                 className="inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-slate-900/80 border border-indigo-500/40 font-mono text-xs font-bold text-cyan-300 backdrop-blur-md cursor-pointer"
               >
                 <Link2 className="w-3.5 h-3.5 shrink-0" />
-                <span className="truncate max-w-[220px] sm:max-w-[340px]">/{cert.title}</span>
+                <span className="truncate max-w-[220px] sm:max-w-[340px]">{getCertPreviewPath(cert)}</span>
                 {copiedUrl ? (
                   <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px]">
                     Tersalin!
@@ -596,7 +597,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
                 className="inline-flex items-center gap-2 px-3.5 py-2 bg-white dark:bg-[#181816] border border-[#141413]/40 dark:border-[#B48A3E]/50 text-[#1B2A4A] dark:text-[#D4AF37] font-bold cursor-pointer"
               >
                 <Link2 className="w-3.5 h-3.5 shrink-0" />
-                <span className="truncate max-w-[220px] sm:max-w-[340px]">/{cert.title}</span>
+                <span className="truncate max-w-[220px] sm:max-w-[340px]">{getCertPreviewPath(cert)}</span>
                 {copiedUrl ? <span>(Tersalin)</span> : <Copy className="w-3 h-3 opacity-70" />}
               </button>
 
@@ -817,7 +818,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
               title="Salin URL Halaman Sertifikat Ini"
             >
               <Link2 className="w-3.5 h-3.5 shrink-0" />
-              <span className="truncate max-w-[220px] sm:max-w-[340px]">/{cert.title}</span>
+              <span className="truncate max-w-[220px] sm:max-w-[340px]">{getCertPreviewPath(cert)}</span>
               {copiedUrl ? (
                 <span className="px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-950 text-[10px] font-black border border-black">
                   Tersalin!

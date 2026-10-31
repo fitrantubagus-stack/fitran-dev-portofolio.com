@@ -14,7 +14,7 @@ import { CVModal } from './components/CVModal';
 import { CommandMenu } from './components/CommandMenu';
 import { ClaudeCodeTerminal3D } from './components/ClaudeCodeTerminal3D';
 import { ScrollReveal } from './components/ScrollReveal';
-import { CERTIFICATES_DATA } from './data/portfolioData';
+import { CERTIFICATES_DATA, getCertPreviewPath } from './data/portfolioData';
 import { LanguageProvider } from './context/LanguageContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { Terminal, ArrowRight } from 'lucide-react';
@@ -104,6 +104,9 @@ function resolveRouteFromWindow(): { tab: SectionId; cert: CertificateItem | nul
   );
 
   if (matchedCert) {
+    if (typeof window !== 'undefined') {
+      window.history.replaceState(null, '', getCertPreviewPath(matchedCert));
+    }
     return { tab: 'certificates', cert: matchedCert };
   }
 
@@ -187,8 +190,8 @@ export default function App() {
   const handleSelectCertificate = (cert: CertificateItem) => {
     setSelectedCertificate(cert);
     setActiveTab('certificates');
-    const cleanCertPath = `/${encodeURIComponent(cert.title).replace(/%20/g, ' ')}`;
-    window.history.pushState(null, '', cleanCertPath);
+    const longCertPath = getCertPreviewPath(cert);
+    window.history.pushState(null, '', longCertPath);
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   };
 
