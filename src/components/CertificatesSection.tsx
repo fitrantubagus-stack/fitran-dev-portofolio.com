@@ -100,6 +100,68 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
       );
     }
 
+    if (
+      cert.issuer === 'Anthropic' ||
+      cert.issuer === 'Claude Academy' ||
+      cert.title.toLowerCase().includes('claude')
+    ) {
+      return (
+        <div className="inline-flex items-center gap-2 bg-white px-2.5 py-1 rounded-xl border-2 border-black shadow-[2px_2px_0px_#000] overflow-hidden">
+          <img
+            src="/official-claude-logo.png"
+            alt="Claude"
+            className="h-6 sm:h-7 w-auto object-contain scale-135"
+          />
+          <span className="w-0.5 h-4 bg-zinc-300" />
+          <img
+            src="/official-anthropic-logo.png"
+            alt="Anthropic"
+            className="h-5 sm:h-5.5 w-auto object-contain"
+          />
+          <span className="font-mono font-black text-[10px] text-zinc-900 uppercase tracking-wider">
+            ANTHROPIC
+          </span>
+        </div>
+      );
+    }
+
+    if (cert.issuer === 'Vercel') {
+      return (
+        <div className="inline-flex items-center gap-2 bg-white px-2.5 py-1 rounded-xl border-2 border-black shadow-[2px_2px_0px_#000] overflow-hidden">
+          <img
+            src="/official-vercel-logo.png"
+            alt="Vercel"
+            className="h-6 sm:h-7 w-auto object-contain scale-120"
+          />
+        </div>
+      );
+    }
+
+    if (
+      cert.issuer === 'Google Skills' ||
+      cert.issuerFullName.toLowerCase().includes('google cloud') ||
+      cert.title.toLowerCase().includes('google cloud')
+    ) {
+      return (
+        <div className="inline-flex items-center gap-2 bg-white px-2.5 py-1 rounded-xl border-2 border-black shadow-[2px_2px_0px_#000]">
+          <img
+            src="/official-google-cloud-logo.png"
+            alt="Google Cloud"
+            className="h-6 sm:h-7 w-auto object-contain"
+          />
+          <span className="w-0.5 h-4 bg-zinc-300" />
+          <img
+            src="/official-gcp-logo.png"
+            alt="Google Cloud Platform"
+            className="h-6 sm:h-7 w-auto object-contain"
+          />
+          <span className="font-mono font-black text-[10px] text-[#1E2265] uppercase tracking-wider">
+            GOOGLE CLOUD
+          </span>
+        </div>
+      );
+    }
+
     if (cert.issuer === 'Google Developer Program') {
       return (
         <span className="px-3 py-1 rounded-xl text-[10px] font-mono font-black uppercase tracking-wider bg-blue-100 text-[#1E2265] border-2 border-black shadow-[2px_2px_0px_#000]">
@@ -108,17 +170,9 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
       );
     }
 
-    if (cert.issuer === 'Google' || cert.issuer === 'Google Skills') {
+    if (cert.issuer === 'Google') {
       return (
         <span className="px-3 py-1 rounded-xl text-[10px] font-mono font-black uppercase tracking-wider bg-sky-100 text-blue-950 border-2 border-black shadow-[2px_2px_0px_#000]">
-          {cert.issuer}
-        </span>
-      );
-    }
-
-    if (cert.issuer === 'Anthropic' || cert.issuer === 'Claude Academy') {
-      return (
-        <span className="px-3 py-1 rounded-xl text-[10px] font-mono font-black uppercase tracking-wider bg-amber-100 text-amber-950 border-2 border-black shadow-[2px_2px_0px_#000]">
           {cert.issuer}
         </span>
       );
@@ -226,7 +280,7 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
             {/* 1. GDG on Campus Member */}
             <a
               href="https://me.developers.google.com/badges/community/gdg/GDGoC/member"
@@ -321,7 +375,84 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
               </div>
             </a>
 
-            {/* 5. Dual AWS Official Logos */}
+            {/* 5. Official Google Cloud & Google Cloud Platform (GCP) Logos */}
+            <a
+              href="https://www.skills.google/public_profiles/19eb8264-5dd8-4e7c-a55e-f5e468ae6bcc/badges/26894567"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-between gap-2.5 p-3 rounded-2xl border-2 border-black bg-white hover:bg-sky-50 shadow-[3px_3px_0px_#000] transition-all"
+            >
+              <div className="flex items-center gap-2 shrink-0">
+                <img
+                  src="/official-google-cloud-logo.png"
+                  alt="Google Cloud"
+                  className="h-9 sm:h-10 w-auto object-contain group-hover:scale-110 transition-transform"
+                />
+                <span className="w-0.5 h-7 bg-zinc-300 shrink-0" />
+                <img
+                  src="/official-gcp-logo.png"
+                  alt="Google Cloud Platform"
+                  className="h-9 sm:h-10 w-auto object-contain group-hover:scale-110 transition-transform"
+                />
+              </div>
+              <div className="min-w-0 text-right">
+                <p className="font-heading font-black text-xs text-zinc-950 leading-tight">
+                  Google Cloud &amp; GCP
+                </p>
+                <p className="font-mono text-[10px] text-blue-700 font-bold mt-0.5">
+                  Verified Cloud
+                </p>
+              </div>
+            </a>
+
+            {/* 6. Official Claude & Anthropic Logos */}
+            <a
+              href="https://academy.claude.com/verify/cd4bb5cc3b0fb83d807700bd5f41ba35"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-between gap-2.5 p-3 rounded-2xl border-2 border-black bg-white hover:bg-orange-50 shadow-[3px_3px_0px_#000] transition-all overflow-hidden"
+            >
+              <div className="flex items-center gap-2 shrink-0">
+                <img
+                  src="/official-claude-logo.png"
+                  alt="Claude"
+                  className="h-9 sm:h-10 w-auto object-contain scale-135 group-hover:scale-145 transition-transform"
+                />
+                <span className="w-0.5 h-7 bg-zinc-300 shrink-0" />
+                <img
+                  src="/official-anthropic-logo.png"
+                  alt="Anthropic"
+                  className="h-7 sm:h-8 w-auto object-contain group-hover:scale-110 transition-transform"
+                />
+              </div>
+              <div className="min-w-0 text-right">
+                <p className="font-heading font-black text-xs text-zinc-950 leading-tight">
+                  Claude &amp; Anthropic
+                </p>
+                <p className="font-mono text-[10px] text-orange-700 font-bold mt-0.5">
+                  3× AI Certified
+                </p>
+              </div>
+            </a>
+
+            {/* 7. Official Vercel Logo */}
+            <div className="flex items-center justify-between gap-2.5 p-3 rounded-2xl border-2 border-black bg-white shadow-[3px_3px_0px_#000] overflow-hidden">
+              <img
+                src="/official-vercel-logo.png"
+                alt="Vercel"
+                className="h-9 sm:h-10 w-auto object-contain scale-120 shrink-0"
+              />
+              <div className="min-w-0 text-right">
+                <p className="font-heading font-black text-xs text-zinc-950 leading-tight">
+                  Vercel Inc.
+                </p>
+                <p className="font-mono text-[10px] text-zinc-700 font-bold mt-0.5">
+                  Next.js Certified
+                </p>
+              </div>
+            </div>
+
+            {/* 8. Dual AWS Official Logos */}
             <div className="flex items-center justify-center gap-2.5 p-3 rounded-2xl border-2 border-black bg-white shadow-[3px_3px_0px_#000]">
               <img
                 src="/official-aws-logo.png"
@@ -352,8 +483,22 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
                     : 'bg-white text-zinc-900 hover:bg-yellow-100 shadow-[3px_3px_0px_#000]'
                 }`}
               >
-                {issuer.id === 'CloudAI' && (
+                {issuer.id === 'Google' && (
                   <span className="inline-flex items-center gap-1.5 bg-white px-1.5 py-0.5 rounded-md border border-black">
+                    <img
+                      src="/official-google-cloud-logo.png"
+                      alt="Google Cloud"
+                      className="h-4 w-auto object-contain"
+                    />
+                    <img
+                      src="/official-gcp-logo.png"
+                      alt="Google Cloud Platform"
+                      className="h-4 w-auto object-contain"
+                    />
+                  </span>
+                )}
+                {issuer.id === 'CloudAI' && (
+                  <span className="inline-flex items-center gap-1.5 bg-white px-1.5 py-0.5 rounded-md border border-black overflow-hidden">
                     <img
                       src="/official-aws-logo.png"
                       alt="AWS"
@@ -368,6 +513,21 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
                       src="/official-nvidia-logo.png"
                       alt="NVIDIA"
                       className="h-4 w-auto object-contain"
+                    />
+                    <img
+                      src="/official-claude-logo.png"
+                      alt="Claude"
+                      className="h-4 w-auto object-contain scale-135"
+                    />
+                    <img
+                      src="/official-anthropic-logo.png"
+                      alt="Anthropic"
+                      className="h-3.5 w-auto object-contain"
+                    />
+                    <img
+                      src="/official-vercel-logo.png"
+                      alt="Vercel"
+                      className="h-4 w-auto object-contain scale-115"
                     />
                   </span>
                 )}
@@ -434,7 +594,7 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
                   </h3>
                 </div>
 
-                {/* Issuer Organization with Large NVIDIA / Dual AWS Logos if applicable */}
+                {/* Issuer Organization with Large Official Logos */}
                 <div className="flex items-center gap-2 mb-2.5">
                   {cert.issuer === 'NVIDIA' && (
                     <img
@@ -453,6 +613,42 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
                       <img
                         src="/official-aws-skill-builder.png"
                         alt="AWS Skill Builder"
+                        className="h-5 w-auto object-contain"
+                      />
+                    </span>
+                  )}
+                  {(cert.issuer === 'Anthropic' || cert.issuer === 'Claude Academy') && (
+                    <span className="inline-flex items-center gap-1.5 shrink-0">
+                      <img
+                        src="/official-claude-logo.png"
+                        alt="Claude"
+                        className="h-5 w-auto object-contain scale-130"
+                      />
+                      <img
+                        src="/official-anthropic-logo.png"
+                        alt="Anthropic"
+                        className="h-4 w-auto object-contain"
+                      />
+                    </span>
+                  )}
+                  {cert.issuer === 'Vercel' && (
+                    <img
+                      src="/official-vercel-logo.png"
+                      alt="Vercel"
+                      className="h-5 w-auto object-contain scale-115 shrink-0"
+                    />
+                  )}
+                  {(cert.issuer === 'Google Skills' ||
+                    cert.issuerFullName.toLowerCase().includes('google cloud')) && (
+                    <span className="inline-flex items-center gap-1 shrink-0">
+                      <img
+                        src="/official-google-cloud-logo.png"
+                        alt="Google Cloud"
+                        className="h-5 w-auto object-contain"
+                      />
+                      <img
+                        src="/official-gcp-logo.png"
+                        alt="Google Cloud Platform"
                         className="h-5 w-auto object-contain"
                       />
                     </span>

@@ -194,7 +194,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
             </div>
 
             {/* Right Partner Logo Box on Banner */}
-            <div className="bg-white text-zinc-900 p-4 rounded-2xl border-3 border-black shadow-[5px_5px_0px_#FACC15] flex items-center gap-3 self-start lg:self-center shrink-0">
+            <div className="bg-white text-zinc-900 p-4 rounded-2xl border-3 border-black shadow-[5px_5px_0px_#FACC15] flex items-center gap-3 self-start lg:self-center shrink-0 overflow-hidden">
               {cert.issuer === 'AWS' ? (
                 <div className="flex items-center gap-3">
                   <img
@@ -220,6 +220,46 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
                     <p className="font-heading font-black text-sm text-[#1E2265]">NVIDIA</p>
                     <p className="font-mono text-[10px] font-bold text-zinc-600">Official Partner</p>
                   </div>
+                </div>
+              ) : cert.issuer === 'Anthropic' ||
+                cert.issuer === 'Claude Academy' ||
+                cert.title.toLowerCase().includes('claude') ? (
+                <div className="flex items-center gap-3">
+                  <img
+                    src="/official-claude-logo.png"
+                    alt="Claude"
+                    className="h-11 sm:h-13 w-auto object-contain scale-135"
+                  />
+                  <span className="w-0.5 h-10 bg-zinc-300" />
+                  <img
+                    src="/official-anthropic-logo.png"
+                    alt="Anthropic"
+                    className="h-9 sm:h-11 w-auto object-contain"
+                  />
+                </div>
+              ) : cert.issuer === 'Vercel' ? (
+                <div className="flex items-center gap-3 px-1">
+                  <img
+                    src="/official-vercel-logo.png"
+                    alt="Vercel"
+                    className="h-11 sm:h-13 w-auto object-contain scale-120"
+                  />
+                </div>
+              ) : cert.issuer === 'Google Skills' ||
+                cert.issuerFullName.toLowerCase().includes('google cloud') ||
+                cert.title.toLowerCase().includes('google cloud') ? (
+                <div className="flex items-center gap-3">
+                  <img
+                    src="/official-google-cloud-logo.png"
+                    alt="Google Cloud"
+                    className="h-11 sm:h-13 w-auto object-contain"
+                  />
+                  <span className="w-0.5 h-10 bg-zinc-300" />
+                  <img
+                    src="/official-gcp-logo.png"
+                    alt="Google Cloud Platform"
+                    className="h-11 sm:h-13 w-auto object-contain"
+                  />
                 </div>
               ) : (
                 <div className="flex items-center gap-2.5 px-2">

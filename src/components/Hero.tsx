@@ -47,12 +47,12 @@ export const Hero: React.FC<HeroProps> = ({
   const [activeWaveIdx, setActiveWaveIdx] = useState<number | null>(null);
   const { t, language } = useLanguage();
 
-  // Non-blocking in-place wave pop animation across the 5 logos on page load
+  // Non-blocking in-place wave pop animation across the 8 logos on page load
   useEffect(() => {
-    const timers = [0, 1, 2, 3, 4].map((idx) =>
-      setTimeout(() => setActiveWaveIdx(idx), 700 + idx * 450)
+    const timers = [0, 1, 2, 3, 4, 5, 6, 7].map((idx) =>
+      setTimeout(() => setActiveWaveIdx(idx), 600 + idx * 350)
     );
-    const clearTimer = setTimeout(() => setActiveWaveIdx(null), 3200);
+    const clearTimer = setTimeout(() => setActiveWaveIdx(null), 3800);
     return () => {
       timers.forEach(clearTimeout);
       clearTimeout(clearTimer);
@@ -145,6 +145,35 @@ export const Hero: React.FC<HeroProps> = ({
           className="w-9 h-9 object-contain shrink-0"
         />
       ),
+    },
+    {
+      id: 'gcloud',
+      label: 'Google Cloud & GCP',
+      sublabel: 'Google Cloud Platform Infrastructure & Skills Boost',
+      href: 'https://www.skills.google/public_profiles/19eb8264-5dd8-4e7c-a55e-f5e468ae6bcc/badges/26894567',
+      pillClass:
+        'border-sky-200/90 dark:border-sky-900/50 bg-white dark:bg-zinc-900 hover:border-sky-400',
+      textClass: 'text-sky-700 dark:text-sky-400',
+      logoRender: <BrandIcon name="google-cloud-platform" size={18} />,
+    },
+    {
+      id: 'claude-anthropic',
+      label: 'Claude & Anthropic',
+      sublabel: 'Claude Academy & Anthropic AI Certified',
+      href: 'https://academy.claude.com/verify/cd4bb5cc3b0fb83d807700bd5f41ba35',
+      pillClass:
+        'border-orange-200/90 dark:border-orange-900/50 bg-white dark:bg-zinc-900 hover:border-orange-400',
+      textClass: 'text-orange-700 dark:text-orange-400',
+      logoRender: <BrandIcon name="claude-anthropic" size={18} />,
+    },
+    {
+      id: 'vercel',
+      label: 'Vercel Certified',
+      sublabel: 'Vercel Next.js App Router Architecture',
+      pillClass:
+        'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-500',
+      textClass: 'text-zinc-900 dark:text-zinc-100',
+      logoRender: <BrandIcon name="vercel" size={18} />,
     },
     {
       id: 'aws',

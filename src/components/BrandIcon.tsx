@@ -13,6 +13,11 @@ export type BrandIconName =
   | 'google'
   | 'google-dev'
   | 'google-cloud'
+  | 'gcp'
+  | 'google-cloud-platform'
+  | 'claude'
+  | 'anthropic'
+  | 'claude-anthropic'
   | 'google-maps'
   | 'google-maps-innovators'
   | 'firebase'
@@ -161,19 +166,76 @@ export const BrandIcon: React.FC<BrandIconProps> = ({
         </svg>
       );
 
-    case 'vercel':
+    case 'vercel': {
+      const vercelH = Math.max(size * 1.4, 24);
       return (
-        <svg
-          width={size}
-          height={size}
-          viewBox="0 0 24 24"
-          fill="none"
-          className={`${baseClasses} ${className}`}
-          aria-label="Vercel"
+        <span
+          className={`inline-flex items-center bg-white px-2 py-0.5 rounded-md border border-zinc-200/90 shadow-2xs shrink-0 ${baseClasses} ${className}`}
         >
-          <path d="M12 2L22 20H2L12 2Z" fill="currentColor" />
-        </svg>
+          <img
+            src="/official-vercel-logo.png"
+            alt="Vercel"
+            style={{ height: `${vercelH}px`, width: 'auto' }}
+            className="object-contain shrink-0 scale-115"
+          />
+        </span>
       );
+    }
+
+    case 'claude': {
+      const claudeH = Math.max(size * 1.5, 26);
+      return (
+        <span
+          className={`inline-flex items-center bg-white px-2 py-0.5 rounded-md border border-zinc-200/90 shadow-2xs shrink-0 overflow-hidden ${baseClasses} ${className}`}
+        >
+          <img
+            src="/official-claude-logo.png"
+            alt="Claude"
+            style={{ height: `${claudeH}px`, width: 'auto' }}
+            className="object-contain shrink-0 scale-135"
+          />
+        </span>
+      );
+    }
+
+    case 'anthropic': {
+      const anthH = Math.max(size * 1.35, 22);
+      return (
+        <span
+          className={`inline-flex items-center bg-white px-1.5 py-0.5 rounded-md border border-zinc-200/90 shadow-2xs shrink-0 ${baseClasses} ${className}`}
+        >
+          <img
+            src="/official-anthropic-logo.png"
+            alt="Anthropic"
+            style={{ height: `${anthH}px`, width: 'auto' }}
+            className="object-contain shrink-0"
+          />
+        </span>
+      );
+    }
+
+    case 'claude-anthropic': {
+      const logoH = Math.max(size * 1.45, 24);
+      return (
+        <span
+          className={`inline-flex items-center gap-1.5 bg-white px-2 py-0.5 rounded-md border border-zinc-200/90 shadow-2xs shrink-0 overflow-hidden ${baseClasses} ${className}`}
+        >
+          <img
+            src="/official-claude-logo.png"
+            alt="Claude"
+            style={{ height: `${logoH * 1.1}px`, width: 'auto' }}
+            className="object-contain shrink-0 scale-135"
+          />
+          <span className="w-px h-3.5 bg-zinc-200 shrink-0" />
+          <img
+            src="/official-anthropic-logo.png"
+            alt="Anthropic"
+            style={{ height: `${logoH * 0.85}px`, width: 'auto' }}
+            className="object-contain shrink-0"
+          />
+        </span>
+      );
+    }
 
     case 'google-dev':
       return <GoogleDeveloperLogo size={size} className={`${baseClasses} ${className}`} />;
@@ -206,21 +268,56 @@ export const BrandIcon: React.FC<BrandIconProps> = ({
         </svg>
       );
 
-    case 'google-cloud':
+    case 'google-cloud': {
+      const gcSize = Math.max(size * 1.45, 24);
       return (
-        <svg
-          width={size}
-          height={size}
-          viewBox="0 0 24 24"
-          fill="none"
-          className={`${baseClasses} ${className}`}
-        >
-          <path
-            d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"
-            fill="#4285F4"
-          />
-        </svg>
+        <img
+          src="/official-google-cloud-logo.png"
+          alt="Google Cloud"
+          width={gcSize}
+          height={gcSize}
+          style={{ width: gcSize, height: gcSize }}
+          className={`object-contain shrink-0 ${baseClasses} ${className}`}
+        />
       );
+    }
+
+    case 'gcp': {
+      const gcpSize = Math.max(size * 1.45, 24);
+      return (
+        <img
+          src="/official-gcp-logo.png"
+          alt="Google Cloud Platform"
+          width={gcpSize}
+          height={gcpSize}
+          style={{ width: gcpSize, height: gcpSize }}
+          className={`object-contain shrink-0 ${baseClasses} ${className}`}
+        />
+      );
+    }
+
+    case 'google-cloud-platform': {
+      const logoH = Math.max(size * 1.45, 24);
+      return (
+        <span
+          className={`inline-flex items-center gap-1.5 bg-white px-2 py-0.5 rounded-md border border-zinc-200/90 shadow-2xs shrink-0 ${baseClasses} ${className}`}
+        >
+          <img
+            src="/official-google-cloud-logo.png"
+            alt="Google Cloud"
+            style={{ height: `${logoH}px`, width: 'auto' }}
+            className="object-contain shrink-0"
+          />
+          <span className="w-px h-3.5 bg-zinc-200 shrink-0" />
+          <img
+            src="/official-gcp-logo.png"
+            alt="Google Cloud Platform"
+            style={{ height: `${logoH}px`, width: 'auto' }}
+            className="object-contain shrink-0"
+          />
+        </span>
+      );
+    }
 
     case 'google-maps':
     case 'google-maps-innovators': {

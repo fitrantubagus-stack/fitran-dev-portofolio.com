@@ -161,6 +161,20 @@ export const AboutSection: React.FC = () => {
                             />
                           </div>
                         )}
+                        {badge.name.toUpperCase().includes('GOOGLE CLOUD') && (
+                          <div className="my-1 inline-flex items-center gap-1.5 bg-white px-1.5 py-0.5 rounded border border-zinc-200">
+                            <img
+                              src="/official-google-cloud-logo.png"
+                              alt="Google Cloud"
+                              className="h-4 w-auto object-contain"
+                            />
+                            <img
+                              src="/official-gcp-logo.png"
+                              alt="Google Cloud Platform"
+                              className="h-4 w-auto object-contain"
+                            />
+                          </div>
+                        )}
                         <p className="text-[10px] text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-0.5 leading-tight">
                           {badge.description}
                         </p>
@@ -315,6 +329,98 @@ export const AboutSection: React.FC = () => {
               </div>
               <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
                 Anggota resmi komunitas Google Developer Groups on Campus (GDGoC) dalam kolaborasi pengembangan perangkat lunak modern dan multi-cloud.
+              </p>
+            </a>
+          </ScrollReveal>
+
+          {/* Google Cloud & Google Cloud Platform (GCP) Card */}
+          <ScrollReveal delayMs={240} variant="fade-up">
+            <a
+              href="https://www.skills.google/public_profiles/19eb8264-5dd8-4e7c-a55e-f5e468ae6bcc/badges/26894567"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block h-full group p-6 rounded-2xl border border-sky-200/80 dark:border-sky-900/40 bg-gradient-to-br from-sky-50/30 via-white to-white dark:from-sky-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-sky-400 transition-all shadow-xs"
+            >
+              <div className="flex items-center gap-4 mb-3">
+                <div className="flex items-center gap-2 bg-white p-2.5 rounded-2xl border border-zinc-200 shrink-0 shadow-2xs">
+                  <img
+                    src="/official-google-cloud-logo.png"
+                    alt="Google Cloud"
+                    className="w-12 h-12 object-contain group-hover:scale-105 transition-transform"
+                  />
+                  <span className="w-px h-10 bg-zinc-200" />
+                  <img
+                    src="/official-gcp-logo.png"
+                    alt="Google Cloud Platform"
+                    className="w-12 h-12 object-contain group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
+                      Google Cloud &amp; GCP
+                    </h4>
+                    <span className="px-2 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-300 font-mono text-[10px] font-semibold border border-sky-200 dark:border-sky-900">
+                      CLOUD INFRASTRUCTURE
+                    </span>
+                  </div>
+                  <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-0.5">
+                    <span>skills.google/public_profiles • Badge 26894567</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                Tersertifikasi resmi pada ekosistem Google Cloud &amp; Google Cloud Platform (Essential Google Cloud Infrastructure: Foundation, Compute Engine, VPC, IAM, dan BigQuery).
+              </p>
+            </a>
+          </ScrollReveal>
+
+          {/* Claude, Anthropic & Vercel Ecosystem Card */}
+          <ScrollReveal delayMs={280} variant="fade-up">
+            <a
+              href="https://academy.claude.com/verify/cd4bb5cc3b0fb83d807700bd5f41ba35"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block h-full group p-6 rounded-2xl border border-orange-200/80 dark:border-orange-900/40 bg-gradient-to-br from-orange-50/30 via-white to-white dark:from-orange-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-orange-400 transition-all shadow-xs"
+            >
+              <div className="flex items-center gap-3.5 mb-3 flex-wrap">
+                <div className="flex items-center gap-2.5 bg-white px-3 py-2 rounded-2xl border border-zinc-200 shrink-0 shadow-2xs overflow-hidden">
+                  <img
+                    src="/official-claude-logo.png"
+                    alt="Claude"
+                    className="h-10 w-auto object-contain scale-135 group-hover:scale-145 transition-transform"
+                  />
+                  <span className="w-px h-8 bg-zinc-200" />
+                  <img
+                    src="/official-anthropic-logo.png"
+                    alt="Anthropic"
+                    className="h-8 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
+                  <span className="w-px h-8 bg-zinc-200" />
+                  <img
+                    src="/official-vercel-logo.png"
+                    alt="Vercel"
+                    className="h-9 w-auto object-contain scale-115 group-hover:scale-125 transition-transform"
+                  />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
+                      Claude, Anthropic &amp; Vercel
+                    </h4>
+                    <span className="px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-300 font-mono text-[10px] font-semibold border border-orange-200 dark:border-orange-900">
+                      AI &amp; EDGE CLOUD
+                    </span>
+                  </div>
+                  <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-0.5">
+                    <span>academy.claude.com • Vercel Next.js Certified</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                Memegang 3 sertifikasi resmi Anthropic &amp; Claude Academy (Claude 101, Claude Platform 101, AI Capabilities &amp; Limitations) serta sertifikasi Next.js App Router oleh Vercel Inc.
               </p>
             </a>
           </ScrollReveal>
