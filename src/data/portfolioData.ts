@@ -743,6 +743,7 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
     certId: 'HMP.05/ 674 /2026',
     featured: true,
     highlightType: 'publication',
+    isVerifiedMatch: true,
     description:
       'Selected essay "Gawai dalam Genggaman, Dunia dalam Kebutaan: Menciptakan Produktivitas Positif Melalui Jendela Digital Perpusnas" published in the official Perpusnas Press flipbook celebrating the 46th anniversary of the National Library of Indonesia.',
     verifyUrl: 'https://press.perpusnas.go.id/files/flipbooks/1635/mobile/index.html#p=293',
@@ -851,15 +852,19 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
   },
   {
     id: 'osn-geografi-10th',
-    title: '10th OSN Tingkat Kota — Bidang Geografi (Champion/Winner)',
+    title: 'Peringkat 10 Olimpiade Sains Nasional (OSN) SMA Tingkat Kota Cilegon & Peserta OSN Tingkat Provinsi Banten — Geografi',
     issuer: 'OSN',
-    issuerFullName: 'Olimpiade Sains Nasional (OSN) Tingkat Kota Cilegon',
+    issuerFullName: 'Dinas Pendidikan dan Kebudayaan Provinsi Banten / Olimpiade Sains Nasional (OSN)',
     category: 'academic',
-    date: '2024',
-    field: 'Geography & Geospatial Analysis',
+    date: '2023',
+    field: 'Mata Pelajaran Geografi (SMAN 1 Cilegon)',
+    level: 'Tingkat Kota Cilegon & Peserta Tingkat Provinsi Banten',
+    featured: true,
+    highlightType: 'gold-medal',
+    isVerifiedMatch: true,
     description:
-      'Winner in the municipal level of the National Science Olympiad in Geography, showcasing deep mastery of GIS concepts, climate systems, and physical-human geography.',
-    skillsLearned: ['Spatial Analysis', 'Geomorphology', 'Resource Management', 'Climatology'],
+      'Sertifikat resmi Dinas Pendidikan dan Kebudayaan Provinsi Banten diberikan kepada Tubagus Fitran Badruttamam (SMAN 1 Cilegon) sebagai Peringkat 10 Olimpiade Sains Nasional (OSN) Tahun 2023 jenjang SMA Tingkat Kota Cilegon dan menjadi peserta OSN Tingkat Provinsi Banten Mata Pelajaran Geografi.',
+    skillsLearned: ['Olimpiade Sains Nasional (OSN)', 'Geografi SMA', 'Peserta OSN Provinsi Banten', 'Spatial & Climate Analysis'],
     imagePlaceholderColor: '#059669',
     customImageFilename: 'cert-osn-geografi.png',
   },
@@ -974,6 +979,7 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
     category: 'academic',
     date: 'Nov 02, 2024',
     certId: 'No.13.246/BED/XI/2024',
+    isVerifiedMatch: true,
     description:
       'Sertifikat Peserta Webinar Nasional "Ciptakan Gamifikasi Pembelajaran: Bermain, Terlibat, Unggul dalam Pendidikan" dengan pemanfaatan media interaktif.',
     skillsLearned: ['Gamifikasi Edukasi', 'Interactive Pedagogy', 'Digital Learning', 'Student Engagement'],
@@ -988,6 +994,7 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
     category: 'academic',
     date: 'Nov 07–09, 2024',
     certId: 'No.13.244/BED/XI/2024',
+    isVerifiedMatch: true,
     description:
       'Sertifikat Kelulusan Diklat 32 Jam Pelajaran untuk penguatan Profil Pelajar Pancasila, gamifikasi PowerPoint, dan asesmen Quizizz terintegrasi belajar.id.',
     skillsLearned: ['Literasi & Numerasi', 'Gamifikasi PowerPoint', 'Quizizz & belajar.id', 'Profil Pelajar Pancasila'],
@@ -1002,6 +1009,7 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
     category: 'academic',
     date: 'Nov 16–20, 2024',
     certId: 'No.13.283/BED/XI/2024',
+    isVerifiedMatch: true,
     description:
       'Sertifikat Kelulusan Diklat 32 Jam Pelajaran dalam rangka transformasi digital pembelajaran, optimalisasi akun belajar.id, dan fasilitas kelas interaktif.',
     skillsLearned: ['Akun belajar.id', 'Transformasi Digital', 'Fasilitasi Kombel', 'Peralatan TIK'],
@@ -1015,6 +1023,7 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
     issuerFullName: 'Sobat Hebat Indonesia Baik / Direktorat Pengelolaan Media Kemkominfo RI',
     category: 'academic',
     date: 'Oct 19, 2024',
+    isVerifiedMatch: true,
     description:
       'Sertifikat kepesertaan webinar nasional Kemkominfo RI dan Indonesia Baik membahas kesiapan generasi muda menyongsong era transformasi digital dan kecakapan masa depan.',
     skillsLearned: ['Digital Literacy', 'Gen-Z Leadership', 'Future Tech Readiness', 'Public Communication'],

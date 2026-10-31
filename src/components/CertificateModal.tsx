@@ -261,6 +261,46 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
                     className="h-11 sm:h-13 w-auto object-contain"
                   />
                 </div>
+              ) : cert.issuer === 'Perpusnas' ? (
+                <div className="flex items-center gap-3 px-1">
+                  <img
+                    src="/official-perpusnas-press-logo.png"
+                    alt="Perpusnas Press"
+                    className="h-11 sm:h-13 w-auto object-contain"
+                  />
+                </div>
+              ) : cert.issuer === 'OSN' ? (
+                <div className="flex items-center gap-3 px-1">
+                  <img
+                    src="/official-osn-logo.png"
+                    alt="Olimpiade Sains Nasional (OSN)"
+                    className="h-12 sm:h-14 w-auto object-contain"
+                  />
+                  <div className="pr-1">
+                    <p className="font-heading font-black text-sm text-[#1E2265]">OSN 2023</p>
+                    <p className="font-mono text-[10px] font-bold text-zinc-600">Provinsi Banten</p>
+                  </div>
+                </div>
+              ) : cert.issuer === 'Belajar Era Digital' ? (
+                <div className="flex items-center gap-3 px-1">
+                  <img
+                    src="/official-belajar-era-digital-logo.png"
+                    alt="Belajar Era Digital"
+                    className="h-12 sm:h-14 w-12 sm:w-14 rounded-xl object-cover border border-black/15"
+                  />
+                  <div className="pr-1">
+                    <p className="font-heading font-black text-sm text-[#053B50]">Belajar Era Digital</p>
+                    <p className="font-mono text-[10px] font-bold text-zinc-600">Diklat Nasional</p>
+                  </div>
+                </div>
+              ) : cert.issuer === 'Indonesia Baik' ? (
+                <div className="flex items-center gap-3 px-1">
+                  <img
+                    src="/official-sohib-logo.png"
+                    alt="SohIB Indonesia.go.id"
+                    className="h-12 sm:h-14 w-auto object-contain scale-115"
+                  />
+                </div>
               ) : (
                 <div className="flex items-center gap-2.5 px-2">
                   <Award className="w-8 h-8 text-[#1E2265] stroke-[2.5]" />

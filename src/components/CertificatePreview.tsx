@@ -57,6 +57,7 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
     'cert-bed-gamifikasi.png',
     'cert-bed-literasi-numerasi.png',
     'cert-bed-komunitas-belajar.png',
+    'cert-osn-geografi.png',
   ]);
 
   const [imgError, setImgError] = React.useState(false);

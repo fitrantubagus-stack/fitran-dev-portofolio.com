@@ -424,6 +424,55 @@ export const AboutSection: React.FC = () => {
               </p>
             </a>
           </ScrollReveal>
+
+          {/* OSN, Perpusnas Press, Belajar Era Digital & SohIB National Ecosystem Card */}
+          <ScrollReveal delayMs={320} variant="fade-up" className="md:col-span-2">
+            <div className="block h-full group p-6 rounded-2xl border border-indigo-200/80 dark:border-indigo-900/40 bg-gradient-to-br from-indigo-50/30 via-white to-white dark:from-indigo-950/20 dark:via-[#0D1117] dark:to-[#0D1117] hover:border-indigo-400 transition-all shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
+                <div className="flex items-center gap-3 bg-white px-3.5 py-2.5 rounded-2xl border border-zinc-200 shrink-0 shadow-2xs flex-wrap">
+                  <img
+                    src="/official-osn-logo.png"
+                    alt="Olimpiade Sains Nasional (OSN)"
+                    className="h-10 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
+                  <span className="w-px h-8 bg-zinc-200" />
+                  <img
+                    src="/official-perpusnas-press-logo.png"
+                    alt="Perpusnas Press"
+                    className="h-9 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
+                  <span className="w-px h-8 bg-zinc-200" />
+                  <img
+                    src="/official-belajar-era-digital-logo.png"
+                    alt="Belajar Era Digital"
+                    className="h-10 w-10 rounded-lg object-cover border border-zinc-200 group-hover:scale-105 transition-transform"
+                  />
+                  <span className="w-px h-8 bg-zinc-200" />
+                  <img
+                    src="/official-sohib-logo.png"
+                    alt="SohIB Indonesia.go.id"
+                    className="h-10 w-auto object-contain scale-115 group-hover:scale-125 transition-transform"
+                  />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className="font-heading font-bold text-base sm:text-lg text-zinc-950 dark:text-white">
+                      OSN Nasional, Perpusnas Press, Belajar Era Digital &amp; SohIB
+                    </h4>
+                    <span className="px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-mono text-[10px] font-semibold border border-indigo-200 dark:border-indigo-900">
+                      PRESTASI &amp; PUBLIKASI NASIONAL
+                    </span>
+                  </div>
+                  <p className="font-mono text-[11px] text-blue-600 dark:text-blue-400 mt-0.5">
+                    Dinas Pendidikan &amp; Kebudayaan Prov. Banten • Perpustakaan Nasional RI • Kemkomdigi RI
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                Peraih Peringkat 10 Olimpiade Sains Nasional (OSN) SMA Tingkat Kota Cilegon &amp; Peserta OSN Tingkat Provinsi Banten (Geografi), Penulis Buku Terbitan Resmi Perpusnas Press (HUT Ke-46 Perpustakaan Nasional RI), 4× Lulusan Diklat Nasional Belajar Era Digital (32 JP), serta Kontributor SohIB Indonesia.go.id.
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
 
         {/* 3. Education: SMA Negeri 1 Cilegon & Universitas Muhammadiyah Banten */}
@@ -456,18 +505,26 @@ export const AboutSection: React.FC = () => {
                 {t.about.highschoolDesc}
               </p>
 
-              <div className="space-y-1.5 pt-3 border-t border-zinc-100 dark:border-zinc-800 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
+              <div className="space-y-2 pt-3 border-t border-zinc-100 dark:border-zinc-800 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
                 <div className="flex items-center gap-2">
                   <Award className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                  <span>2× National Gold Medalist (OSHSP & KSHPI 2024)</span>
+                  <span>2× National Gold Medalist (OSHSP &amp; KSHPI 2024)</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <BookOpen className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span>Published Author Perpustakaan Nasional RI (HUT Ke-46)</span>
+                  <img
+                    src="/official-perpusnas-press-logo.png"
+                    alt="Perpusnas Press"
+                    className="h-4 w-auto object-contain shrink-0 bg-white px-1 py-0.5 rounded border border-zinc-200"
+                  />
+                  <span>Published Author Perpusnas Press — Perpustakaan Nasional RI (HUT Ke-46)</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Award className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                  <span>10th OSN Tingkat Kota Champion — Geografi</span>
+                  <img
+                    src="/official-osn-logo.png"
+                    alt="OSN"
+                    className="h-4.5 w-auto object-contain shrink-0 bg-white p-0.5 rounded border border-zinc-200"
+                  />
+                  <span>Peringkat 10 OSN Tingkat Kota Cilegon &amp; Peserta OSN Provinsi Banten — Geografi</span>
                 </div>
               </div>
             </div>

@@ -162,6 +162,63 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
       );
     }
 
+    if (cert.issuer === 'Perpusnas') {
+      return (
+        <div className="inline-flex items-center gap-2 bg-white px-2.5 py-1 rounded-xl border-2 border-black shadow-[2px_2px_0px_#000]">
+          <img
+            src="/official-perpusnas-press-logo.png"
+            alt="Perpusnas Press"
+            className="h-6 sm:h-7 w-auto object-contain"
+          />
+        </div>
+      );
+    }
+
+    if (cert.issuer === 'OSN') {
+      return (
+        <div className="inline-flex items-center gap-2 bg-white px-2.5 py-1 rounded-xl border-2 border-black shadow-[2px_2px_0px_#000]">
+          <img
+            src="/official-osn-logo.png"
+            alt="Olimpiade Sains Nasional (OSN)"
+            className="h-6 sm:h-7 w-auto object-contain"
+          />
+          <span className="font-mono font-black text-[10px] text-[#1E2265] uppercase tracking-wider">
+            OSN NASIONAL
+          </span>
+        </div>
+      );
+    }
+
+    if (cert.issuer === 'Belajar Era Digital') {
+      return (
+        <div className="inline-flex items-center gap-2 bg-white px-2.5 py-1 rounded-xl border-2 border-black shadow-[2px_2px_0px_#000]">
+          <img
+            src="/official-belajar-era-digital-logo.png"
+            alt="Belajar Era Digital"
+            className="h-6 sm:h-7 w-6 sm:w-7 rounded-md object-cover border border-black/20"
+          />
+          <span className="font-mono font-black text-[10px] text-[#053B50] uppercase tracking-wider">
+            BELAJAR ERA DIGITAL
+          </span>
+        </div>
+      );
+    }
+
+    if (cert.issuer === 'Indonesia Baik') {
+      return (
+        <div className="inline-flex items-center gap-2 bg-white px-2.5 py-1 rounded-xl border-2 border-black shadow-[2px_2px_0px_#000]">
+          <img
+            src="/official-sohib-logo.png"
+            alt="SohIB Indonesia.go.id"
+            className="h-6 sm:h-7 w-auto object-contain scale-115"
+          />
+          <span className="font-mono font-black text-[10px] text-[#0066A2] uppercase tracking-wider">
+            SOHIB • INDONESIAGOID
+          </span>
+        </div>
+      );
+    }
+
     if (cert.issuer === 'Google Developer Program') {
       return (
         <span className="px-3 py-1 rounded-xl text-[10px] font-mono font-black uppercase tracking-wider bg-blue-100 text-[#1E2265] border-2 border-black shadow-[2px_2px_0px_#000]">
@@ -466,6 +523,74 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
                 className="h-11 sm:h-12 w-auto object-contain scale-115 shrink-0"
               />
             </div>
+
+            {/* 9. Official Olimpiade Sains Nasional (OSN) Logo */}
+            <div className="flex items-center justify-between gap-2.5 p-3 rounded-2xl border-2 border-black bg-white shadow-[3px_3px_0px_#000] overflow-hidden">
+              <img
+                src="/official-osn-logo.png"
+                alt="Olimpiade Sains Nasional (OSN)"
+                className="h-11 sm:h-12 w-auto object-contain shrink-0"
+              />
+              <div className="min-w-0 text-right">
+                <p className="font-heading font-black text-xs text-zinc-950 leading-tight">
+                  OSN Nasional
+                </p>
+                <p className="font-mono text-[10px] text-blue-700 font-bold mt-0.5">
+                  Peringkat 10 &amp; Prov.
+                </p>
+              </div>
+            </div>
+
+            {/* 10. Official Perpusnas Press Logo */}
+            <div className="flex items-center justify-between gap-2.5 p-3 rounded-2xl border-2 border-black bg-white shadow-[3px_3px_0px_#000] overflow-hidden">
+              <img
+                src="/official-perpusnas-press-logo.png"
+                alt="Perpusnas Press"
+                className="h-9 sm:h-10 w-auto object-contain shrink-0"
+              />
+              <div className="min-w-0 text-right">
+                <p className="font-heading font-black text-xs text-zinc-950 leading-tight">
+                  Perpusnas Press
+                </p>
+                <p className="font-mono text-[10px] text-emerald-700 font-bold mt-0.5">
+                  Penulis Buku
+                </p>
+              </div>
+            </div>
+
+            {/* 11. Official Belajar Era Digital Logo */}
+            <div className="flex items-center justify-between gap-2.5 p-3 rounded-2xl border-2 border-black bg-white shadow-[3px_3px_0px_#000] overflow-hidden">
+              <img
+                src="/official-belajar-era-digital-logo.png"
+                alt="Belajar Era Digital"
+                className="h-10 sm:h-11 w-10 sm:w-11 rounded-lg object-cover border border-black/15 shrink-0"
+              />
+              <div className="min-w-0 text-right">
+                <p className="font-heading font-black text-xs text-zinc-950 leading-tight">
+                  Belajar Era Digital
+                </p>
+                <p className="font-mono text-[10px] text-[#053B50] font-bold mt-0.5">
+                  4× Diklat Nasional
+                </p>
+              </div>
+            </div>
+
+            {/* 12. Official SohIB (Powered by INDONESIAGOID) Logo */}
+            <div className="flex items-center justify-between gap-2.5 p-3 rounded-2xl border-2 border-black bg-white shadow-[3px_3px_0px_#000] overflow-hidden">
+              <img
+                src="/official-sohib-logo.png"
+                alt="SohIB Indonesia.go.id"
+                className="h-10 sm:h-11 w-auto object-contain scale-115 shrink-0"
+              />
+              <div className="min-w-0 text-right">
+                <p className="font-heading font-black text-xs text-zinc-950 leading-tight">
+                  SohIB Indonesia.go.id
+                </p>
+                <p className="font-mono text-[10px] text-sky-700 font-bold mt-0.5">
+                  Kemkomdigi RI
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -527,6 +652,30 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
                     <img
                       src="/official-vercel-logo.png"
                       alt="Vercel"
+                      className="h-4 w-auto object-contain scale-115"
+                    />
+                  </span>
+                )}
+                {issuer.id === 'Academic' && (
+                  <span className="inline-flex items-center gap-1.5 bg-white px-1.5 py-0.5 rounded-md border border-black overflow-hidden">
+                    <img
+                      src="/official-osn-logo.png"
+                      alt="OSN"
+                      className="h-4 w-auto object-contain"
+                    />
+                    <img
+                      src="/official-perpusnas-press-logo.png"
+                      alt="Perpusnas Press"
+                      className="h-3.5 w-auto object-contain"
+                    />
+                    <img
+                      src="/official-belajar-era-digital-logo.png"
+                      alt="Belajar Era Digital"
+                      className="h-4 w-4 rounded-xs object-cover"
+                    />
+                    <img
+                      src="/official-sohib-logo.png"
+                      alt="SohIB"
                       className="h-4 w-auto object-contain scale-115"
                     />
                   </span>
@@ -652,6 +801,34 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
                         className="h-5 w-auto object-contain"
                       />
                     </span>
+                  )}
+                  {cert.issuer === 'Perpusnas' && (
+                    <img
+                      src="/official-perpusnas-press-logo.png"
+                      alt="Perpusnas Press"
+                      className="h-5 w-auto object-contain shrink-0"
+                    />
+                  )}
+                  {cert.issuer === 'OSN' && (
+                    <img
+                      src="/official-osn-logo.png"
+                      alt="Olimpiade Sains Nasional (OSN)"
+                      className="h-5 w-auto object-contain shrink-0"
+                    />
+                  )}
+                  {cert.issuer === 'Belajar Era Digital' && (
+                    <img
+                      src="/official-belajar-era-digital-logo.png"
+                      alt="Belajar Era Digital"
+                      className="h-5 w-5 rounded object-cover shrink-0 border border-black/20"
+                    />
+                  )}
+                  {cert.issuer === 'Indonesia Baik' && (
+                    <img
+                      src="/official-sohib-logo.png"
+                      alt="SohIB Indonesia.go.id"
+                      className="h-5 w-auto object-contain scale-115 shrink-0"
+                    />
                   )}
                   <p className="font-mono text-[11px] font-bold text-[#1E2265] line-clamp-1">
                     {cert.issuerFullName}

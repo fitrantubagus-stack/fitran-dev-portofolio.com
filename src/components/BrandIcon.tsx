@@ -27,6 +27,9 @@ export type BrandIconName =
   | 'nvidia-developer'
   | 'gdg-campus'
   | 'perpusnas'
+  | 'osn'
+  | 'sohib'
+  | 'belajar-era-digital'
   | 'oshsp'
   | 'kshpi'
   | 'chandra-asri'
@@ -394,22 +397,67 @@ export const BrandIcon: React.FC<BrandIconProps> = ({
       );
     }
 
-    case 'perpusnas':
+    case 'perpusnas': {
+      const perpusH = Math.max(size * 1.45, 24);
       return (
-        <svg
-          width={size}
-          height={size}
-          viewBox="0 0 24 24"
-          fill="none"
-          className={`${baseClasses} ${className}`}
+        <span
+          className={`inline-flex items-center bg-white px-2 py-0.5 rounded-md border border-zinc-200/90 shadow-2xs shrink-0 ${baseClasses} ${className}`}
         >
-          <path
-            d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20v-14H6.5A2.5 2.5 0 0 0 4 5.5v14zM4 19.5A2.5 2.5 0 0 0 6.5 22H20v-2H6.5a.5.5 0 0 1-.5-.5z"
-            fill="#0F766E"
+          <img
+            src="/official-perpusnas-press-logo.png"
+            alt="Perpusnas Press"
+            style={{ height: `${perpusH}px`, width: 'auto' }}
+            className="object-contain shrink-0"
           />
-          <path d="M12 7l1.5 3 3.5.5-2.5 2.5.5 3.5-3-1.5-3 1.5.5-3.5-2.5-2.5 3.5-.5L12 7z" fill="#F59E0B" />
-        </svg>
+        </span>
       );
+    }
+
+    case 'osn': {
+      const osnH = Math.max(size * 1.5, 26);
+      return (
+        <span
+          className={`inline-flex items-center bg-white px-2 py-0.5 rounded-md border border-zinc-200/90 shadow-2xs shrink-0 ${baseClasses} ${className}`}
+        >
+          <img
+            src="/official-osn-logo.png"
+            alt="Olimpiade Sains Nasional"
+            style={{ height: `${osnH}px`, width: 'auto' }}
+            className="object-contain shrink-0"
+          />
+        </span>
+      );
+    }
+
+    case 'sohib': {
+      const sohibH = Math.max(size * 1.5, 26);
+      return (
+        <span
+          className={`inline-flex items-center bg-white px-1.5 py-0.5 rounded-md border border-zinc-200/90 shadow-2xs shrink-0 overflow-hidden ${baseClasses} ${className}`}
+        >
+          <img
+            src="/official-sohib-logo.png"
+            alt="SohIB Indonesia.go.id"
+            style={{ height: `${sohibH}px`, width: 'auto' }}
+            className="object-contain shrink-0 scale-120"
+          />
+        </span>
+      );
+    }
+
+    case 'belajar-era-digital': {
+      const bedSize = Math.max(size * 1.45, 24);
+      return (
+        <img
+          src="/official-belajar-era-digital-logo.png"
+          alt="Belajar Era Digital"
+          width={bedSize}
+          height={bedSize}
+          style={{ width: bedSize, height: bedSize }}
+          className={`object-contain rounded-md shrink-0 ${baseClasses} ${className}`}
+        />
+      );
+    }
 
     case 'oshsp':
     case 'kshpi':
