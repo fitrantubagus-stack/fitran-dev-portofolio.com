@@ -69,10 +69,14 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
 
     return (
       <div
-        className={`w-full bg-[#0D1117] rounded-xl overflow-hidden border border-zinc-200/90 dark:border-zinc-800 flex items-center justify-center relative shadow-sm ${
-          isFull
-            ? 'p-6 sm:p-10 bg-gradient-to-b from-[#161B22] to-[#0D1117] min-h-[380px]'
-            : 'aspect-[4/3] p-2 bg-gradient-to-b from-[#161B22] to-[#0D1117]'
+        className={`w-full flex items-center justify-center relative transition-colors ${
+          isBadge
+            ? 'bg-transparent border-0 shadow-none py-3 sm:py-6'
+            : `bg-[#0D1117] rounded-xl overflow-hidden border border-zinc-200/90 dark:border-zinc-800 shadow-sm ${
+                isFull
+                  ? 'p-2 sm:p-4 bg-zinc-950/40 min-h-[360px]'
+                  : 'aspect-[4/3] p-1.5'
+              }`
         }`}
       >
         <img
@@ -81,8 +85,8 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
           className={`${
             isBadge
               ? isFull
-                ? 'w-72 h-72 sm:w-96 sm:h-96 object-contain filter drop-shadow-[0_12px_28px_rgba(0,0,0,0.6)] transition-transform duration-300 hover:scale-105'
-                : 'w-40 h-40 sm:w-48 sm:h-48 object-contain filter drop-shadow-[0_8px_18px_rgba(0,0,0,0.5)] transition-transform duration-300 group-hover:scale-105'
+                ? 'w-72 h-72 sm:w-96 sm:h-96 md:w-[420px] md:h-[420px] object-contain filter drop-shadow-[0_12px_28px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_16px_36px_rgba(0,0,0,0.6)] transition-transform duration-300 hover:scale-105'
+                : 'w-44 h-44 sm:w-52 sm:h-52 object-contain filter drop-shadow-[0_8px_18px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_12px_24px_rgba(0,0,0,0.5)] transition-transform duration-300 group-hover:scale-105'
               : `w-full h-full object-contain rounded-lg ${isFull ? 'max-h-[70vh]' : ''}`
           }`}
           loading="lazy"

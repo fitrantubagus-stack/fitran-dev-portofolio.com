@@ -150,7 +150,14 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
           {/* Modal Content Body */}
           <div className="p-5 sm:p-7 overflow-y-auto space-y-5">
             {/* Visual Certificate Graphic */}
-            <div className="border border-zinc-300 dark:border-zinc-700 shadow-xs max-w-3xl mx-auto w-full">
+            <div
+              className={`max-w-3xl mx-auto w-full ${
+                cert.customImageFilename?.includes('badge') ||
+                cert.customImageFilename?.endsWith('.svg')
+                  ? 'flex justify-center border-0 shadow-none'
+                  : 'border border-zinc-300 dark:border-zinc-700 shadow-xs'
+              }`}
+            >
               <CertificatePreview cert={cert} size="full" />
             </div>
 
