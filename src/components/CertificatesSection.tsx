@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CertificateItem } from '../types';
 import { CERTIFICATES_DATA, CERTIFICATES_DRIVE_URL, PERSONAL_INFO } from '../data/portfolioData';
 import { ScrambleText } from './ScrambleText';
+import { CertificatePreview } from './CertificatePreview';
 import { useLanguage } from '../context/LanguageContext';
 import {
   ExternalLink,
@@ -155,6 +156,11 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ onSele
               className="group flex flex-col justify-between p-5 rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-[#0D1117] hover:border-zinc-400 dark:hover:border-zinc-600 transition-all shadow-xs hover:shadow-lg cursor-pointer"
             >
               <div>
+                {/* Visual Certificate / Badge Thumbnail on Card */}
+                <div className="w-full h-44 rounded-xl overflow-hidden mb-4 bg-zinc-50/80 dark:bg-zinc-950/80 border border-zinc-200/80 dark:border-zinc-800/80 flex items-center justify-center p-2 relative group-hover:border-blue-400/60 dark:group-hover:border-blue-500/60 transition-all">
+                  <CertificatePreview cert={cert} size="compact" />
+                </div>
+
                 {/* Issuer Badge + Date */}
                 <div className="flex items-center justify-between gap-2 mb-3">
                   <div className="flex items-center gap-1.5 flex-wrap">
