@@ -442,11 +442,12 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
     verifyUrl: 'https://www.skills.google/public_profiles/19eb8264-5dd8-4e7c-a55e-f5e468ae6bcc/badges/26894567',
     featured: true,
     highlightType: 'cloud-leader',
+    isVerifiedMatch: true,
     description:
-      'Verified Google Cloud badge covering Compute Engine virtualization, Cloud VPC network topologies, Cloud Storage buckets, and Google IAM least-privilege security.',
+      'Official Google Cloud Completion Badge validating foundational mastery of Compute Engine virtualization, Cloud VPC network topologies, Cloud Storage buckets, and Google IAM least-privilege security.',
     skillsLearned: ['Google Compute Engine', 'Cloud VPC', 'Google Cloud Storage', 'IAM & Cloud Security'],
     imagePlaceholderColor: '#4285F4',
-    customImageFilename: 'cert-google-infra.png',
+    customImageFilename: 'badge-google-cloud-infra-foundation.png',
   },
 
   // 3. Google Workspace X Google Skill (Exceed LMS QjkQ4gtDRZfqMZ9zS6SJA2Ee)
@@ -820,16 +821,20 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
   },
   {
     id: 'toefl-prediction',
-    title: 'TOEFL Prediction Test — Certificate of Completion',
-    issuer: 'TOEFL',
-    issuerFullName: 'Standardized English Language Assessment',
+    title: 'TOEFL Prediction Test — Certificate of Achievement (Skor 630)',
+    issuer: 'Central Course',
+    issuerFullName: 'Central Course (SK DIKNAS NO 421.9/7845/418.20/2024)',
     category: 'academic',
-    date: '2025',
+    date: 'February 28, 2026',
+    certId: '2602227013',
+    featured: true,
+    highlightType: 'gold-medal',
+    isVerifiedMatch: true,
     description:
-      'Demonstrated high English language proficiency across listening comprehension, structural grammar, and academic reading analysis for global technical discourse.',
-    skillsLearned: ['Academic English', 'Technical Reading', 'Grammar & Syntax', 'Listening Comprehension'],
-    imagePlaceholderColor: '#4F46E5',
-    customImageFilename: 'cert-toefl.png',
+      'Sertifikat resmi Central Course (Pare, Kediri) atas pencapaian skor 630 pada tes TOEFL Prediction (Listening: 54, Structure & Written Expression: 68, Reading: 67). Berlaku hingga 28 Februari 2028.',
+    skillsLearned: ['TOEFL Skor 630', 'Structure & Written Expression (68)', 'Reading Comprehension (67)', 'Listening Comprehension (54)', 'Academic English'],
+    imagePlaceholderColor: '#1E3A8A',
+    customImageFilename: 'cert-central-course-toefl.png',
   },
 
   // CLAUDE ACADEMY & ANTHROPIC (NEW VERIFIED CERTIFICATES)

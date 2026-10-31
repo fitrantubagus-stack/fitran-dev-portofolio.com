@@ -38,6 +38,8 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
     'cert-claude-101.png',
     'cert-claude-platform-101.png',
     'badge-gdg-campus-member.svg',
+    'badge-google-cloud-infra-foundation.png',
+    'cert-central-course-toefl.png',
     'cert-dicoding-microsoft-fabric.png',
     'cert-google-gemini-educator.png',
     'cert-google-gemini.png',
