@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PERSONAL_INFO, HIGHLIGHTS_METRICS } from '../data/portfolioData';
 import { ProfileAvatar } from './ProfileAvatar';
-import { FitranPixelLogo } from './FitranPixelLogo';
 import { ScrambleText } from './ScrambleText';
 import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
 import { BrandIcon } from './BrandIcon';
@@ -288,24 +287,18 @@ export const Hero: React.FC<HeroProps> = ({
               <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-indigo-500/10 via-cyan-500/5 to-transparent rounded-bl-full pointer-events-none" />
 
               <div>
-                {/* Floating Avatar Column (with fitran.dev logo above) + Live Status Pill */}
+                {/* Floating Avatar + Live Status Pill */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                   <div className="flex items-center gap-4">
-                    <div className="flex flex-col items-center sm:items-start gap-2 shrink-0">
-                      {/* Logo placed directly ABOVE the photo (no background) */}
-                      <div className="hidden md:flex">
-                        <FitranPixelLogo size="xs" />
+                    <motion.div
+                      animate={{ y: [0, -6, 0], rotate: [0, 2, -2, 0] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                      className="p-1.5 rounded-2xl bg-gradient-to-tr from-indigo-600 via-blue-500 to-emerald-400 shadow-lg shrink-0"
+                    >
+                      <div className="bg-white dark:bg-slate-900 rounded-xl p-0.5">
+                        <ProfileAvatar size="hero" showBadge={true} />
                       </div>
-                      <motion.div
-                        animate={{ y: [0, -6, 0], rotate: [0, 2, -2, 0] }}
-                        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                        className="p-1.5 rounded-2xl bg-gradient-to-tr from-indigo-600 via-blue-500 to-emerald-400 shadow-lg shrink-0"
-                      >
-                        <div className="bg-white dark:bg-slate-900 rounded-xl p-0.5">
-                          <ProfileAvatar size="hero" showBadge={true} />
-                        </div>
-                      </motion.div>
-                    </div>
+                    </motion.div>
 
                     <div>
                       <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-mono text-[10px] font-bold mb-1.5">
@@ -606,10 +599,6 @@ export const Hero: React.FC<HeroProps> = ({
             <div className="lg:col-span-3 flex flex-col justify-between p-6 bg-white dark:bg-[#181816] border border-[#141413]/25 dark:border-[#B48A3E]/40 shadow-xs">
               <div>
                 <div className="flex flex-col items-center text-center mb-5">
-                  {/* Logo placed directly ABOVE the photo (no background) */}
-                  <div className="hidden md:flex mb-3">
-                    <FitranPixelLogo size="sm" />
-                  </div>
                   <div className="p-3 border-2 border-[#B48A3E] bg-[#FAF7F0] dark:bg-[#141413] flex flex-col items-center">
                     <ProfileAvatar size="hero" showBadge={true} />
                   </div>
@@ -833,29 +822,16 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* LEFT COLUMN: Identity, Bio, Badges & CTA (7 cols on lg) */}
           <div className="lg:col-span-7 flex flex-col items-start">
-            {/* Desktop fitran.dev Logo (ABOVE photo) + Profile Avatar + Auto-Typing Headline */}
+            {/* Profile Avatar + Auto-Typing Headline */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 w-full">
-              <div className="flex flex-col items-center sm:items-start gap-2 shrink-0">
-                {/* Desktop fitran.dev Pixel Logo placed directly ABOVE the photo (no background!) */}
-                <motion.div
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="hidden md:flex shrink-0 mb-0.5"
-                >
-                  <FitranPixelLogo size="sm" />
-                </motion.div>
-
-                {/* Restored User Photo */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 18 }}
-                  className="shrink-0"
-                >
-                  <ProfileAvatar size="hero" showBadge={true} />
-                </motion.div>
-              </div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+                className="shrink-0"
+              >
+                <ProfileAvatar size="hero" showBadge={true} />
+              </motion.div>
 
               <div className="flex-1 min-w-0">
                 <div className="font-mono text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 mb-1 select-none">
