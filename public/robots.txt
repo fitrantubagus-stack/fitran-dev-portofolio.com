@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fitran-dev-portofolio-com.vercel.app/sitemap.xml
