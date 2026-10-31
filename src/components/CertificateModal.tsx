@@ -31,6 +31,20 @@ interface CertificateModalProps {
   designTheme?: DesignTheme;
 }
 
+const getTargetUrl = (url?: string): string | undefined => {
+  if (!url) return undefined;
+  if (url.includes('/preview?') && url.includes('url=')) {
+    try {
+      const parsed = new URL(url);
+      const target = parsed.searchParams.get('url');
+      if (target) return target;
+    } catch {
+      // fallback
+    }
+  }
+  return url;
+};
+
 export const CertificateModal: React.FC<CertificateModalProps> = ({
   cert,
   allCerts,
@@ -515,7 +529,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
                   {cert.verifyUrl && (
                     <motion.a
                       whileHover={{ scale: 1.03 }}
-                      href={cert.verifyUrl}
+                      href={getTargetUrl(cert.verifyUrl)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 text-slate-950 font-black uppercase shadow-lg transition-all"
@@ -529,7 +543,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
                   {cert.secondaryVerifyUrl && (
                     <motion.a
                       whileHover={{ scale: 1.03 }}
-                      href={cert.secondaryVerifyUrl}
+                      href={getTargetUrl(cert.secondaryVerifyUrl)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-400 text-slate-950 font-black uppercase shadow-lg transition-all"
@@ -727,7 +741,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
                 <div className="pt-2 space-y-2.5 font-mono text-xs">
                   {cert.verifyUrl && (
                     <a
-                      href={cert.verifyUrl}
+                      href={getTargetUrl(cert.verifyUrl)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-[#1B2A4A] hover:bg-[#121D33] text-white border border-[#B48A3E] font-bold uppercase tracking-wider transition-colors"
@@ -740,7 +754,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
 
                   {cert.secondaryVerifyUrl && (
                     <a
-                      href={cert.secondaryVerifyUrl}
+                      href={getTargetUrl(cert.secondaryVerifyUrl)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-[#FAF7F0] dark:bg-zinc-900 hover:bg-[#B48A3E]/20 text-[#1B2A4A] dark:text-[#D4AF37] border border-[#B48A3E] font-bold uppercase tracking-wider transition-colors"
@@ -994,7 +1008,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
               <div className="pt-2 space-y-3 font-mono text-xs">
                 {cert.verifyUrl && (
                   <a
-                    href={cert.verifyUrl}
+                    href={getTargetUrl(cert.verifyUrl)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-yellow-300 hover:bg-yellow-400 text-black border-2 border-black font-black uppercase shadow-[4px_4px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000] transition-all"
@@ -1007,7 +1021,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
 
                 {cert.secondaryVerifyUrl && (
                   <a
-                    href={cert.secondaryVerifyUrl}
+                    href={getTargetUrl(cert.secondaryVerifyUrl)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-300 hover:bg-emerald-400 text-black border-2 border-black font-black uppercase shadow-[4px_4px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000] transition-all"

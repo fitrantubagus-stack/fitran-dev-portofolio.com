@@ -80,6 +80,23 @@ function resolveRouteFromWindow(): { tab: SectionId; cert: CertificateItem | nul
     return { tab: 'contact', cert: null };
   }
 
+  if (lowerPath === 'preview') {
+    const params = new URLSearchParams(window.location.search);
+    const titleParam = params.get('title') || '';
+    const urlParam = params.get('url') || '';
+
+    const matchedCert = CERTIFICATES_DATA.find((c) => {
+      if (titleParam && normalizeStr(c.title) === normalizeStr(titleParam)) return true;
+      if (urlParam && c.verifyUrl && (c.verifyUrl.includes(encodeURIComponent(urlParam)) || c.verifyUrl.includes(urlParam))) return true;
+      return false;
+    });
+
+    if (matchedCert) {
+      return { tab: 'certificates', cert: matchedCert };
+    }
+    return { tab: 'certificates', cert: null };
+  }
+
   const matchedCert = CERTIFICATES_DATA.find(
     (c) =>
       normalizeStr(c.title) === normalizeStr(rawPath) ||

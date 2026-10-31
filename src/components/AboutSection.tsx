@@ -31,6 +31,20 @@ interface AboutSectionProps {
   designTheme?: DesignTheme;
 }
 
+const getTargetUrl = (url?: string): string | undefined => {
+  if (!url) return undefined;
+  if (url.includes('/preview?') && url.includes('url=')) {
+    try {
+      const parsed = new URL(url);
+      const target = parsed.searchParams.get('url');
+      if (target) return target;
+    } catch {
+      // fallback
+    }
+  }
+  return url;
+};
+
 export const AboutSection: React.FC<AboutSectionProps> = ({ designTheme = 'modern' }) => {
   const { t, language } = useLanguage();
   const isAnimasi = designTheme === 'clipboard';
@@ -177,7 +191,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ designTheme = 'moder
                 const CardWrapper: React.ElementType = badge.verifyUrl ? 'a' : 'div';
                 const wrapperProps = badge.verifyUrl
                   ? {
-                      href: badge.verifyUrl,
+                      href: getTargetUrl(badge.verifyUrl),
                       target: '_blank',
                       rel: 'noopener noreferrer',
                     }

@@ -46,6 +46,20 @@ const toRoman = (num: number): string => {
   return result;
 };
 
+const getTargetUrl = (url?: string): string | undefined => {
+  if (!url) return undefined;
+  if (url.includes('/preview?') && url.includes('url=')) {
+    try {
+      const parsed = new URL(url);
+      const target = parsed.searchParams.get('url');
+      if (target) return target;
+    } catch {
+      // fallback
+    }
+  }
+  return url;
+};
+
 export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
   onSelectCert,
   designTheme = 'modern',
@@ -1244,7 +1258,7 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
                   <div className="flex flex-wrap items-center gap-1.5">
                     {cert.verifyUrl && (
                       <a
-                        href={cert.verifyUrl}
+                        href={getTargetUrl(cert.verifyUrl)}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
@@ -1264,7 +1278,7 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
 
                     {cert.secondaryVerifyUrl && (
                       <a
-                        href={cert.secondaryVerifyUrl}
+                        href={getTargetUrl(cert.secondaryVerifyUrl)}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
