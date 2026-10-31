@@ -233,7 +233,7 @@ export default function App() {
         />
 
         {/* Smooth GPU-Accelerated Page Transition + Scroll Reveal Content */}
-        <main className="flex-1 w-full max-w-full overflow-x-hidden">
+        <main className="flex-1 w-full max-w-full">
           <AnimatePresence mode="wait">
             <motion.div
               key={pageTransitionKey}
@@ -244,32 +244,28 @@ export default function App() {
             >
               {/* DEDICATED CERTIFICATE PAGE (/<Certificate Title>) */}
               {selectedCertificate ? (
-                <ScrollReveal variant="zoom-in">
-                  <CertificateModal
-                    cert={selectedCertificate}
-                    allCerts={CERTIFICATES_DATA}
-                    onClose={handleCloseCertificate}
-                    onSelectCert={handleSelectCertificate}
-                  />
-                </ScrollReveal>
+                <CertificateModal
+                  cert={selectedCertificate}
+                  allCerts={CERTIFICATES_DATA}
+                  onClose={handleCloseCertificate}
+                  onSelectCert={handleSelectCertificate}
+                />
               ) : (
                 <>
                   {/* PAGE 1: BERANDA (/) */}
                   {activeTab === 'home' && (
                     <div>
-                      <ScrollReveal variant="fade-up">
-                        <Hero
-                          onNavigate={handleNavigate}
-                          designTheme={designTheme}
-                          onChangeDesignTheme={handleChangeDesignTheme}
-                        />
-                      </ScrollReveal>
+                      <Hero
+                        onNavigate={handleNavigate}
+                        designTheme={designTheme}
+                        onChangeDesignTheme={handleChangeDesignTheme}
+                      />
 
-                      <ScrollReveal variant="fade-up" delay={60}>
+                      <ScrollReveal variant="fade-up" delay={40}>
                         <LogoMarquee />
                       </ScrollReveal>
 
-                      <ScrollReveal variant="zoom-in" delay={80}>
+                      <ScrollReveal variant="zoom-in" delay={60}>
                         <section className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-[#09090B]/95 py-14">
                           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
@@ -308,33 +304,25 @@ export default function App() {
                         </div>
                       </ScrollReveal>
 
-                      <ScrollReveal variant="fade-up" delay={80}>
-                        <WorkSection onSelectProject={(p) => setSelectedProject(p)} isHomePreview={true} />
-                      </ScrollReveal>
+                      <WorkSection onSelectProject={(p) => setSelectedProject(p)} />
 
-                      <ScrollReveal variant="fade-up" delay={80}>
-                        <CertificatesSection onSelectCert={handleSelectCertificate} />
-                      </ScrollReveal>
+                      <CertificatesSection onSelectCert={handleSelectCertificate} />
                     </div>
                   )}
 
                   {/* PAGE 2: ABOUT ME (/about-me) */}
                   {activeTab === 'about' && (
                     <div>
-                      <ScrollReveal variant="fade-up">
-                        <Hero
-                          onNavigate={handleNavigate}
-                          designTheme={designTheme}
-                          onChangeDesignTheme={handleChangeDesignTheme}
-                        />
-                      </ScrollReveal>
+                      <Hero
+                        onNavigate={handleNavigate}
+                        designTheme={designTheme}
+                        onChangeDesignTheme={handleChangeDesignTheme}
+                      />
                       <ScrollReveal variant="fade-up" delay={50}>
                         <LogoMarquee />
                       </ScrollReveal>
+                      <AboutSection />
                       <ScrollReveal variant="fade-up" delay={80}>
-                        <AboutSection />
-                      </ScrollReveal>
-                      <ScrollReveal variant="fade-up" delay={100}>
                         <div className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/90 dark:bg-zinc-950/80 py-10">
                           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                             <GitHubContributionGraph />
@@ -346,23 +334,17 @@ export default function App() {
 
                   {/* PAGE 3: PROJECTS CATALOG (/projects) */}
                   {activeTab === 'work' && (
-                    <ScrollReveal variant="fade-up">
-                      <WorkSection onSelectProject={(p) => setSelectedProject(p)} />
-                    </ScrollReveal>
+                    <WorkSection onSelectProject={(p) => setSelectedProject(p)} />
                   )}
 
                   {/* PAGE 4: CERTIFICATES & LICENSES (/certificates) */}
                   {activeTab === 'certificates' && (
-                    <ScrollReveal variant="fade-up">
-                      <CertificatesSection onSelectCert={handleSelectCertificate} />
-                    </ScrollReveal>
+                    <CertificatesSection onSelectCert={handleSelectCertificate} />
                   )}
 
                   {/* PAGE 5: ECOSYSTEM & COMMUNITY (/ecosystem) */}
                   {activeTab === 'ecosystem' && (
-                    <ScrollReveal variant="fade-up">
-                      <AboutSection />
-                    </ScrollReveal>
+                    <AboutSection />
                   )}
 
                   {/* PAGE 6: CRAFT LAB & FITRAN CLI (/craft-lab) */}
@@ -419,9 +401,7 @@ export default function App() {
         </main>
 
         {/* Full-Width Footer with 3D Interactive Phone & Collaboration Form */}
-        <ScrollReveal variant="fade-up">
-          <ContactFooter onNavigate={handleNavigate} />
-        </ScrollReveal>
+        <ContactFooter onNavigate={handleNavigate} />
 
         {/* Project Modal */}
         <ProjectModal

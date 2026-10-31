@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { SectionId } from '../types';
 import { VibeCodingComputer } from './VibeCodingComputer';
+import { ScrollReveal } from './ScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
 import {
   ArrowUp,
@@ -95,10 +96,13 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onNavigate }) => {
     <footer id="contact" className="w-full border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090B] py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* 3D Vibe Coding Desktop Workstation (360° Rotatable) */}
-        <VibeCodingComputer className="mb-12" />
+        <ScrollReveal variant="zoom-in">
+          <VibeCodingComputer className="mb-12" />
+        </ScrollReveal>
 
         {/* Interactive Collaboration Card & Contact Form */}
-        <div className="rounded-3xl border border-zinc-200/90 dark:border-zinc-800/90 bg-gradient-to-b from-zinc-50/80 via-white to-zinc-50/40 dark:from-[#0D1117] dark:via-zinc-900/60 dark:to-[#0D1117] p-6 sm:p-10 shadow-sm transition-all">
+        <ScrollReveal variant="fade-up" delay={60}>
+          <div className="rounded-3xl border border-zinc-200/90 dark:border-zinc-800/90 bg-gradient-to-b from-zinc-50/80 via-white to-zinc-50/40 dark:from-[#0D1117] dark:via-zinc-900/60 dark:to-[#0D1117] p-6 sm:p-10 shadow-sm transition-all">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-zinc-200/80 dark:border-zinc-800/80">
             <div className="flex items-start gap-4">
@@ -249,7 +253,8 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onNavigate }) => {
               </form>
             )}
           </div>
-        </div>
+          </div>
+        </ScrollReveal>
 
         {/* Social Links & Meta Footer */}
         <div className="mt-10 pt-6 border-t border-zinc-100 dark:border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-zinc-500 dark:text-zinc-400">
