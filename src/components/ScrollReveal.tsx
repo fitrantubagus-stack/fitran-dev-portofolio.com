@@ -19,66 +19,77 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
 }) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(true);
-  const [hasMounted, setHasMounted] = useState(false);
 
-  const effectiveDelay = delayMs ?? delay ?? 0;
+  const effectiveDelay = Math.min(delayMs ?? delay ?? 0, 120);
 
   useEffect(() => {
-    setHasMounted(true);
     const el = ref.current;
     if (!el) return;
 
-    if (typeof IntersectionObserver === 'undefined') {
-      setIsVisible(true);
-      return;
-    }
+    const checkPosition = () => {
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight || 800;
 
-    // Check immediately if element is already in or above the viewport
-    const rect = el.getBoundingClientRect();
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    if (rect.top < vh - 10) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting || entry.boundingClientRect.top < vh * 0.92) {
-          setIsVisible(true);
-          if (once) observer.unobserve(el);
-        } else if (!once && entry.boundingClientRect.top >= vh) {
-          // Only reset when the element is completely below the viewport,
-          // so sections/cards NEVER turn blank while scrolling down or while partially visible.
-          setIsVisible(false);
-        }
-      },
-      {
-        threshold: 0,
-        rootMargin: '40px 0px -10px 0px',
+      // Trigger reveal slightly before the element enters the bottom of the screen
+      if (rect.top <= vh + 60) {
+        setIsVisible(true);
+      } else if (!once && rect.top > vh + 120) {
+        setIsVisible(false);
       }
-    );
+    };
 
-    observer.observe(el);
-    return () => observer.disconnect();
+    checkPosition();
+    const rafId = window.requestAnimationFrame(checkPosition);
+    const t1 = window.setTimeout(checkPosition, 120);
+    const t2 = window.setTimeout(checkPosition, 420);
+
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            if (once && el) observer?.unobserve(el);
+          } else {
+            checkPosition();
+          }
+        },
+        {
+          threshold: 0,
+          rootMargin: '80px 0px 80px 0px',
+        }
+      );
+      observer.observe(el);
+    }
+
+    window.addEventListener('scroll', checkPosition, { passive: true, capture: true });
+    window.addEventListener('resize', checkPosition, { passive: true });
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+      observer?.disconnect();
+      window.removeEventListener('scroll', checkPosition, true);
+      window.removeEventListener('resize', checkPosition);
+    };
   }, [once]);
 
   const hiddenTransform = {
-    'fade-up': 'translate3d(0, 24px, 0) scale(0.985)',
-    'zoom-in': 'translate3d(0, 14px, 0) scale(0.94)',
-    'slide-left': 'translate3d(-24px, 0, 0)',
-    'slide-right': 'translate3d(24px, 0, 0)',
+    'fade-up': 'translate3d(0, 22px, 0) scale(0.985)',
+    'zoom-in': 'translate3d(0, 14px, 0) scale(0.95)',
+    'slide-left': 'translate3d(-22px, 0, 0)',
+    'slide-right': 'translate3d(22px, 0, 0)',
   }[variant];
-
-  const show = !hasMounted || isVisible;
 
   return (
     <div
       ref={ref}
       style={{
-        opacity: show ? 1 : 0,
-        transform: show ? 'translate3d(0, 0, 0) scale(1)' : hiddenTransform,
-        transition: `opacity 450ms cubic-bezier(0.22, 1, 0.36, 1) ${effectiveDelay}ms, transform 480ms cubic-bezier(0.22, 1, 0.36, 1) ${effectiveDelay}ms`,
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translate3d(0, 0, 0) scale(1)' : hiddenTransform,
+        transition: `opacity 380ms cubic-bezier(0.22, 1, 0.36, 1) ${effectiveDelay}ms, transform 420ms cubic-bezier(0.22, 1, 0.36, 1) ${effectiveDelay}ms`,
         willChange: 'opacity, transform',
       }}
       className={className}

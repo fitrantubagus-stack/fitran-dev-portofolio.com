@@ -34,8 +34,66 @@ const normalizeStr = (s: string) =>
     .toLowerCase()
     .replace(/\s+/g, ' ');
 
+function resolveRouteFromWindow(): { tab: SectionId; cert: CertificateItem | null } {
+  if (typeof window === 'undefined') {
+    return { tab: 'home', cert: null };
+  }
+
+  if (window.location.hash) {
+    const legacyHash = window.location.hash.replace(/^#\/?/, '').trim();
+    if (legacyHash) {
+      window.history.replaceState(null, '', `/${legacyHash}`);
+    } else {
+      window.history.replaceState(null, '', window.location.pathname || '/');
+    }
+  }
+
+  const rawPath = decodeURIComponent(window.location.pathname || '/').replace(/^\/+|\/+$/g, '');
+
+  if (!rawPath || rawPath === 'home' || rawPath === 'overview' || rawPath === 'beranda') {
+    return { tab: 'home', cert: null };
+  }
+
+  const lowerPath = rawPath.toLowerCase();
+
+  if (lowerPath === 'about-me' || lowerPath === 'about' || lowerPath === 'tentang') {
+    return { tab: 'about', cert: null };
+  }
+  if (lowerPath === 'projects' || lowerPath === 'work' || lowerPath === 'proyek') {
+    return { tab: 'work', cert: null };
+  }
+  if (
+    lowerPath === 'certificates' ||
+    lowerPath === 'credentials' ||
+    lowerPath === 'sertifikat'
+  ) {
+    return { tab: 'certificates', cert: null };
+  }
+  if (lowerPath === 'ecosystem' || lowerPath === 'ekosistem') {
+    return { tab: 'ecosystem', cert: null };
+  }
+  if (lowerPath === 'craft-lab' || lowerPath === 'cli' || lowerPath === 'fitran-cli') {
+    return { tab: 'craft-lab', cert: null };
+  }
+  if (lowerPath === 'contact' || lowerPath === 'kontak') {
+    return { tab: 'contact', cert: null };
+  }
+
+  const matchedCert = CERTIFICATES_DATA.find(
+    (c) =>
+      normalizeStr(c.title) === normalizeStr(rawPath) ||
+      normalizeStr(c.id) === normalizeStr(rawPath)
+  );
+
+  if (matchedCert) {
+    return { tab: 'certificates', cert: matchedCert };
+  }
+
+  return { tab: 'home', cert: null };
+}
+
 export default function App() {
-  const [activeTab, setActiveTab] = useState<SectionId>('home');
+  const [activeTab, setActiveTab] = useState<SectionId>(() => resolveRouteFromWindow().tab);
   const [isCommandMenuOpen, setIsCommandMenuOpen] = useState(false);
   const [designTheme, setDesignTheme] = useState<DesignTheme>(() => {
     if (typeof window !== 'undefined') {
@@ -56,7 +114,9 @@ export default function App() {
     }
     return false;
   });
-  const [selectedCertificate, setSelectedCertificate] = useState<CertificateItem | null>(null);
+  const [selectedCertificate, setSelectedCertificate] = useState<CertificateItem | null>(
+    () => resolveRouteFromWindow().cert
+  );
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
 
   // Sync dark class on <html> and persist
@@ -81,80 +141,12 @@ export default function App() {
 
   // Resolve pathname (and legacy hash if present) into activeTab or selectedCertificate
   const syncRouteFromLocation = useCallback(() => {
-    if (typeof window === 'undefined') return;
-
-    if (window.location.hash) {
-      const legacyHash = window.location.hash.replace(/^#\/?/, '').trim();
-      if (legacyHash) {
-        window.history.replaceState(null, '', `/${legacyHash}`);
-      } else {
-        window.history.replaceState(null, '', window.location.pathname || '/');
-      }
-    }
-
-    const rawPath = decodeURIComponent(window.location.pathname || '/').replace(/^\/+|\/+$/g, '');
-
-    if (!rawPath || rawPath === 'home' || rawPath === 'overview' || rawPath === 'beranda') {
-      setSelectedCertificate(null);
-      setActiveTab('home');
-      return;
-    }
-
-    const lowerPath = rawPath.toLowerCase();
-
-    if (lowerPath === 'about-me' || lowerPath === 'about' || lowerPath === 'tentang') {
-      setSelectedCertificate(null);
-      setActiveTab('about');
-      return;
-    }
-    if (lowerPath === 'projects' || lowerPath === 'work' || lowerPath === 'proyek') {
-      setSelectedCertificate(null);
-      setActiveTab('work');
-      return;
-    }
-    if (
-      lowerPath === 'certificates' ||
-      lowerPath === 'credentials' ||
-      lowerPath === 'sertifikat'
-    ) {
-      setSelectedCertificate(null);
-      setActiveTab('certificates');
-      return;
-    }
-    if (lowerPath === 'ecosystem' || lowerPath === 'ekosistem') {
-      setSelectedCertificate(null);
-      setActiveTab('ecosystem');
-      return;
-    }
-    if (lowerPath === 'craft-lab' || lowerPath === 'cli' || lowerPath === 'fitran-cli') {
-      setSelectedCertificate(null);
-      setActiveTab('craft-lab');
-      return;
-    }
-    if (lowerPath === 'contact' || lowerPath === 'kontak') {
-      setSelectedCertificate(null);
-      setActiveTab('contact');
-      return;
-    }
-
-    const matchedCert = CERTIFICATES_DATA.find(
-      (c) =>
-        normalizeStr(c.title) === normalizeStr(rawPath) ||
-        normalizeStr(c.id) === normalizeStr(rawPath)
-    );
-
-    if (matchedCert) {
-      setSelectedCertificate(matchedCert);
-      setActiveTab('certificates');
-      return;
-    }
-
-    setSelectedCertificate(null);
-    setActiveTab('home');
+    const resolved = resolveRouteFromWindow();
+    setSelectedCertificate(resolved.cert);
+    setActiveTab(resolved.tab);
   }, []);
 
   useEffect(() => {
-    syncRouteFromLocation();
     window.addEventListener('popstate', syncRouteFromLocation);
     return () => window.removeEventListener('popstate', syncRouteFromLocation);
   }, [syncRouteFromLocation]);
@@ -170,7 +162,7 @@ export default function App() {
     setActiveTab(sectionId);
     const nextPath = SECTION_TO_PATH[sectionId] || '/';
     window.history.pushState(null, '', nextPath);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   };
 
   const handleSelectCertificate = (cert: CertificateItem) => {
@@ -178,14 +170,14 @@ export default function App() {
     setActiveTab('certificates');
     const cleanCertPath = `/${encodeURIComponent(cert.title).replace(/%20/g, ' ')}`;
     window.history.pushState(null, '', cleanCertPath);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   };
 
   const handleCloseCertificate = () => {
     setSelectedCertificate(null);
     setActiveTab('certificates');
     window.history.pushState(null, '', '/certificates');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   };
 
   // Root theme background styles for the 3 Website Design Themes
@@ -219,7 +211,7 @@ export default function App() {
     <LanguageProvider>
       <div
         style={rootThemeInlineStyle}
-        className={`min-h-screen w-full max-w-full overflow-x-hidden transition-colors duration-300 selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-zinc-900 flex flex-col ${rootThemeClass}`}
+        className={`min-h-screen w-full max-w-full transition-colors duration-300 selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-zinc-900 flex flex-col ${rootThemeClass}`}
       >
         {/* Minimalist Floating Pill Navbar */}
         <Navbar
@@ -234,14 +226,7 @@ export default function App() {
 
         {/* Smooth GPU-Accelerated Page Transition + Scroll Reveal Content */}
         <main className="flex-1 w-full max-w-full">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={pageTransitionKey}
-              initial={{ opacity: 0, y: 18, scale: 0.99 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -12, scale: 0.99 }}
-              transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
-            >
+          <div key={pageTransitionKey} className="animate-page-enter">
               {/* DEDICATED CERTIFICATE PAGE (/<Certificate Title>) */}
               {selectedCertificate ? (
                 <CertificateModal
@@ -396,8 +381,7 @@ export default function App() {
                   {activeTab === 'contact' && <div className="py-2" />}
                 </>
               )}
-            </motion.div>
-          </AnimatePresence>
+          </div>
         </main>
 
         {/* Full-Width Footer with 3D Interactive Phone & Collaboration Form */}
