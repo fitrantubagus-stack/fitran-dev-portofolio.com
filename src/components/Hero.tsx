@@ -865,9 +865,11 @@ export const Hero: React.FC<HeroProps> = ({
                   <span className="opacity-50">•</span>
                   <span>Universitas Muhammadiyah Banten</span>
                 </p>
+              </div>
+            </div>
 
-                {/* ECOSYSTEM BADGE LOGOS: IN-PLACE POP-UP */}
-                <div className="flex flex-wrap items-center gap-2.5 mt-4 font-mono text-[11px]">
+            {/* ECOSYSTEM BADGE LOGOS: IN-PLACE POP-UP */}
+            <div className="flex flex-wrap items-center gap-2.5 mt-5 font-mono text-[11px] w-full">
                   {heroBadges.map((badge, idx) => {
                     const isWaveActive = activeWaveIdx === idx;
                     const PillTag: React.ElementType = badge.href ? motion.a : motion.div;
@@ -931,8 +933,6 @@ export const Hero: React.FC<HeroProps> = ({
                     );
                   })}
                 </div>
-              </div>
-            </div>
 
             {/* Bilingual Biography */}
             <div className="mt-5 text-sm sm:text-base leading-relaxed border-l-2 border-emerald-500 pl-4 py-1 text-zinc-600 dark:text-zinc-300">
