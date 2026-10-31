@@ -10,6 +10,7 @@ import { BrandIcon } from './BrandIcon';
 import { ScrambleText } from './ScrambleText';
 import { ScrollReveal } from './ScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
+import { DesignTheme } from './Navbar';
 import {
   GraduationCap,
   Briefcase,
@@ -26,8 +27,14 @@ import {
   Calendar,
 } from 'lucide-react';
 
-export const AboutSection: React.FC = () => {
+interface AboutSectionProps {
+  designTheme?: DesignTheme;
+}
+
+export const AboutSection: React.FC<AboutSectionProps> = ({ designTheme = 'modern' }) => {
   const { t, language } = useLanguage();
+  const isAnimasi = designTheme === 'clipboard';
+  const isKlasik = designTheme === 'arcade';
 
   const getBadgeIcon = (iconName: string) => {
     switch (iconName) {
@@ -61,25 +68,74 @@ export const AboutSection: React.FC = () => {
   };
 
   return (
-    <section id="about" className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-[#09090B]/50 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      id="about"
+      className={`w-full py-12 relative overflow-hidden transition-colors duration-500 ${
+        isAnimasi
+          ? 'bg-gradient-to-b from-[#070B18] via-[#0B1120] to-[#060913] text-white border-b border-indigo-500/30'
+          : isKlasik
+          ? 'bg-[#F7F3E8] dark:bg-[#121110] text-zinc-900 dark:text-stone-100 border-b-2 border-[#B48A3E]'
+          : 'border-b border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-[#09090B]/50'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="pb-8 border-b border-zinc-200 dark:border-zinc-800">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-200 dark:border-purple-900/60 bg-purple-50/70 dark:bg-purple-950/30 text-purple-800 dark:text-purple-300 font-mono text-xs mb-2">
+        <div
+          className={`pb-8 border-b ${
+            isAnimasi
+              ? 'border-indigo-500/30'
+              : isKlasik
+              ? 'border-[#B48A3E]/50'
+              : 'border-zinc-200 dark:border-zinc-800'
+          }`}
+        >
+          <div
+            className={`inline-flex items-center gap-2 px-3 py-1 font-mono text-xs mb-2 ${
+              isAnimasi
+                ? 'rounded-full border border-cyan-400/40 bg-indigo-500/20 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.2)]'
+                : isKlasik
+                ? 'rounded-none border border-[#B48A3E] bg-[#1C1917] text-[#E5C158] uppercase tracking-widest'
+                : 'rounded-full border border-purple-200 dark:border-purple-900/60 bg-purple-50/70 dark:bg-purple-950/30 text-purple-800 dark:text-purple-300'
+            }`}
+          >
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>{t.about.badge}</span>
           </div>
-          <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-zinc-950 dark:text-white tracking-tight">
+          <h2
+            className={`font-heading font-extrabold text-2xl sm:text-3xl tracking-tight ${
+              isAnimasi
+                ? 'text-white'
+                : isKlasik
+                ? 'font-serif text-zinc-950 dark:text-stone-100'
+                : 'text-zinc-950 dark:text-white'
+            }`}
+          >
             <ScrambleText text={t.about.title} scrambleSpeed={20} />
           </h2>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+          <p
+            className={`text-sm mt-1 max-w-2xl ${
+              isAnimasi
+                ? 'text-slate-300'
+                : isKlasik
+                ? 'text-zinc-700 dark:text-stone-300 font-serif italic'
+                : 'text-zinc-600 dark:text-zinc-400'
+            }`}
+          >
             {t.about.subtitle}
           </p>
         </div>
 
         {/* 1. Google Developer Program Featured Banner */}
         <ScrollReveal variant="fade-up">
-          <div className="mt-8 p-6 rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-[#0D1117] shadow-xs">
+          <div
+            className={`mt-8 p-6 transition-all ${
+              isAnimasi
+                ? 'rounded-3xl border-2 border-indigo-500/40 bg-slate-900/90 shadow-[0_12px_35px_rgba(79,70,229,0.2)]'
+                : isKlasik
+                ? 'rounded-none border-2 border-[#B48A3E] bg-[#FDFBF7] dark:bg-[#1A1816] shadow-sm'
+                : 'rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-[#0D1117] shadow-xs'
+            }`}
+          >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-100 dark:border-zinc-800">
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-2xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/40 flex items-center justify-center">
@@ -474,9 +530,41 @@ export const AboutSection: React.FC = () => {
                   </p>
                 </div>
               </div>
-              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mb-4">
                 Peraih Peringkat 10 Olimpiade Sains Nasional (OSN) SMA Tingkat Kota Cilegon &amp; Peserta OSN Tingkat Provinsi Banten (Geografi), Penulis Buku Terbitan Resmi Perpusnas Press (HUT Ke-46 Perpustakaan Nasional RI), 4× Lulusan Diklat Nasional Belajar Era Digital (32 JP), serta Kontributor SohIB Indonesia.go.id.
               </p>
+
+              <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-indigo-100 dark:border-zinc-800 font-mono text-[11px]">
+                <a
+                  href="https://press.perpusnas.go.id/files/flipbooks/1635/files/basic-html/page293.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-bold transition-colors"
+                >
+                  <span>Flipbook Perpusnas Press (Hal. 293)</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+
+                <a
+                  href="https://cilacap.pikiran-rakyat.com/nasional/pr-2396690049/deretan-sma-terbaik-di-kota-cilegon-yang-juara-pada-osn-sma-2023-selain-sman-2-krakatau-steel-ada-siapa-saja?page=all"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-100 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800 font-bold transition-colors"
+                >
+                  <span>Berita OSN (Pikiran Rakyat)</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+
+                <a
+                  href="https://www.rbg.id/pendidikan/9448967509/ayo-cek-pengumuman-osn-sma-dan-ma-2023-tingkat-kabupaten-dan-kota-di-provinsi-banten"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 text-indigo-800 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 font-bold transition-colors"
+                >
+                  <span>Pengumuman OSN Banten (RBG.id)</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
             </div>
           </ScrollReveal>
         </div>
@@ -516,21 +604,37 @@ export const AboutSection: React.FC = () => {
                   <Award className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                   <span>2× National Gold Medalist (OSHSP &amp; KSHPI 2024)</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <img
                     src="/official-perpusnas-press-logo.png"
                     alt="Perpusnas Press"
                     className="h-4 w-auto object-contain shrink-0 bg-white px-1 py-0.5 rounded border border-zinc-200"
                   />
-                  <span>Published Author Perpusnas Press — Perpustakaan Nasional RI (HUT Ke-46)</span>
+                  <a
+                    href="https://press.perpusnas.go.id/files/flipbooks/1635/files/basic-html/page293.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1"
+                  >
+                    <span>Published Author Perpusnas Press — Perpustakaan Nasional RI (Hal. 293)</span>
+                    <ExternalLink className="w-3 h-3 shrink-0" />
+                  </a>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <img
                     src="/official-osn-logo.png"
                     alt="OSN"
                     className="h-4.5 w-auto object-contain shrink-0 bg-white p-0.5 rounded border border-zinc-200"
                   />
-                  <span>Peringkat 10 OSN Tingkat Kota Cilegon &amp; Peserta OSN Provinsi Banten — Geografi</span>
+                  <a
+                    href="https://cilacap.pikiran-rakyat.com/nasional/pr-2396690049/deretan-sma-terbaik-di-kota-cilegon-yang-juara-pada-osn-sma-2023-selain-sman-2-krakatau-steel-ada-siapa-saja?page=all"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1"
+                  >
+                    <span>Peringkat 10 OSN Kota Cilegon &amp; Peserta OSN Provinsi Banten — Geografi</span>
+                    <ExternalLink className="w-3 h-3 shrink-0" />
+                  </a>
                 </div>
               </div>
             </div>

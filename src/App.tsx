@@ -236,6 +236,7 @@ export default function App() {
                   allCerts={CERTIFICATES_DATA}
                   onClose={handleCloseCertificate}
                   onSelectCert={handleSelectCertificate}
+                  designTheme={designTheme}
                 />
               ) : (
                 <>
@@ -297,7 +298,10 @@ export default function App() {
                         designTheme={designTheme}
                       />
 
-                      <CertificatesSection onSelectCert={handleSelectCertificate} />
+                      <CertificatesSection
+                        onSelectCert={handleSelectCertificate}
+                        designTheme={designTheme}
+                      />
                     </div>
                   )}
 
@@ -313,7 +317,7 @@ export default function App() {
                       <ScrollReveal variant="fade-up" delay={50}>
                         <LogoMarquee />
                       </ScrollReveal>
-                      <AboutSection />
+                      <AboutSection designTheme={designTheme} />
                       <ScrollReveal variant="fade-up" delay={80}>
                         <div className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/90 dark:bg-zinc-950/80 py-10">
                           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -334,12 +338,15 @@ export default function App() {
 
                   {/* PAGE 4: CERTIFICATES & LICENSES (/certificates) */}
                   {activeTab === 'certificates' && (
-                    <CertificatesSection onSelectCert={handleSelectCertificate} />
+                    <CertificatesSection
+                      onSelectCert={handleSelectCertificate}
+                      designTheme={designTheme}
+                    />
                   )}
 
                   {/* PAGE 5: ECOSYSTEM & COMMUNITY (/ecosystem) */}
                   {activeTab === 'ecosystem' && (
-                    <AboutSection />
+                    <AboutSection designTheme={designTheme} />
                   )}
 
                   {/* PAGE 6: CRAFT LAB & FITRAN CLI (/craft-lab) */}
@@ -398,6 +405,7 @@ export default function App() {
         <ContactFooter
           onNavigate={handleNavigate}
           onOpenCV={() => setIsCVModalOpen(true)}
+          designTheme={designTheme}
         />
 
         {/* Official CV Viewer & PDF Download Modal */}

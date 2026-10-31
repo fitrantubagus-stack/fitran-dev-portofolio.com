@@ -34,6 +34,9 @@ export interface CertificateItem {
   level?: string;
   description: string;
   verifyUrl?: string;
+  verifyLabel?: string;
+  secondaryVerifyUrl?: string;
+  secondaryVerifyLabel?: string;
   featured?: boolean;
   highlightType?: 'gold-medal' | 'publication' | 'cloud-leader';
   skillsLearned?: string[];

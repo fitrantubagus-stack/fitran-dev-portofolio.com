@@ -746,7 +746,8 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
     isVerifiedMatch: true,
     description:
       'Selected essay "Gawai dalam Genggaman, Dunia dalam Kebutaan: Menciptakan Produktivitas Positif Melalui Jendela Digital Perpusnas" published in the official Perpusnas Press flipbook celebrating the 46th anniversary of the National Library of Indonesia.',
-    verifyUrl: 'https://press.perpusnas.go.id/files/flipbooks/1635/mobile/index.html#p=293',
+    verifyUrl: 'https://press.perpusnas.go.id/files/flipbooks/1635/files/basic-html/page293.html',
+    verifyLabel: 'Flipbook Perpusnas (Hal. 293)',
     skillsLearned: ['Digital Productivity', 'Technology Ethics', 'Published Academic Writing', 'Information Literacy'],
     imagePlaceholderColor: '#0F766E',
     customImageFilename: 'cert-perpusnas-46th.png',
@@ -864,6 +865,10 @@ export const CERTIFICATES_DATA: CertificateItem[] = [
     isVerifiedMatch: true,
     description:
       'Sertifikat resmi Dinas Pendidikan dan Kebudayaan Provinsi Banten diberikan kepada Tubagus Fitran Badruttamam (SMAN 1 Cilegon) sebagai Peringkat 10 Olimpiade Sains Nasional (OSN) Tahun 2023 jenjang SMA Tingkat Kota Cilegon dan menjadi peserta OSN Tingkat Provinsi Banten Mata Pelajaran Geografi.',
+    verifyUrl: 'https://cilacap.pikiran-rakyat.com/nasional/pr-2396690049/deretan-sma-terbaik-di-kota-cilegon-yang-juara-pada-osn-sma-2023-selain-sman-2-krakatau-steel-ada-siapa-saja?page=all',
+    verifyLabel: 'Berita Pikiran Rakyat',
+    secondaryVerifyUrl: 'https://www.rbg.id/pendidikan/9448967509/ayo-cek-pengumuman-osn-sma-dan-ma-2023-tingkat-kabupaten-dan-kota-di-provinsi-banten',
+    secondaryVerifyLabel: 'Pengumuman RBG.id',
     skillsLearned: ['Olimpiade Sains Nasional (OSN)', 'Geografi SMA', 'Peserta OSN Provinsi Banten', 'Spatial & Climate Analysis'],
     imagePlaceholderColor: '#059669',
     customImageFilename: 'cert-osn-geografi.png',
