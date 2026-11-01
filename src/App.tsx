@@ -14,6 +14,7 @@ import { CVModal } from './components/CVModal';
 import { CommandMenu } from './components/CommandMenu';
 import { ClaudeCodeTerminal3D } from './components/ClaudeCodeTerminal3D';
 import { ScrollReveal } from './components/ScrollReveal';
+import { SpotifyPlaylist } from './components/SpotifyPlaylist';
 import { CERTIFICATES_DATA, getCertPreviewPath } from './data/portfolioData';
 import { LanguageProvider } from './context/LanguageContext';
 import { motion, AnimatePresence } from 'motion/react';
@@ -311,6 +312,10 @@ export default function App() {
                             <GitHubContributionGraph />
                           </div>
                         </div>
+                      </ScrollReveal>
+
+                      <ScrollReveal variant="fade-up" delay={60}>
+                        <SpotifyPlaylist designTheme={designTheme} />
                       </ScrollReveal>
 
                       <WorkSection
