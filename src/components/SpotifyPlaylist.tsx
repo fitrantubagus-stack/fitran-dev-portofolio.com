@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ChevronDown, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { DesignTheme } from './Navbar';
+import { FitranPixelLogo } from './FitranPixelLogo';
 
 const SPOTIFY_PLAYLIST_ID = '23FnVlpQrsfbNVogBhoNAD';
 const SPOTIFY_EMBED_URL = `https://open.spotify.com/embed/playlist/${SPOTIFY_PLAYLIST_ID}?utm_source=generator&theme=0`;
@@ -19,39 +20,17 @@ export const SpotifyPlaylist: React.FC<SpotifyPlaylistProps> = ({ designTheme = 
   const [expanded, setExpanded] = useState(false);
   const isId = language === 'id';
   const isKlasik = designTheme === 'arcade';
-  const isAnimasi = designTheme === 'clipboard';
 
-  const accent = isKlasik ? '#D4AF37' : isAnimasi ? '#22D3EE' : '#1DB954';
   const radius = isKlasik ? 'rounded-none' : 'rounded-2xl';
 
   return (
     <section className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-[#09090B]/95 py-8">
-      <style>{`
-        @keyframes sp-spin { to { transform: rotate(360deg); } }
-        .sp-vinyl { animation: sp-spin 8s linear infinite; }
-        @media (prefers-reduced-motion: reduce) { .sp-vinyl { animation: none; } }
-      `}</style>
-
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-3 mb-3">
-          <div className="flex items-center gap-3 min-w-0">
-            <div
-              aria-hidden="true"
-              className="sp-vinyl relative w-9 h-9 shrink-0 rounded-full"
-              style={{
-                background:
-                  'repeating-radial-gradient(circle at center, #0b0b0b 0px, #0b0b0b 2px, #1c1c1c 3px, #0b0b0b 4px)',
-                border: '1px solid #2a2a2a',
-              }}
-            >
-              <span
-                className="absolute inset-[34%] rounded-full"
-                style={{ background: accent }}
-              />
-              <span className="absolute inset-[46%] rounded-full bg-zinc-950" />
-            </div>
+          <div className="flex items-center gap-2 min-w-0">
+            <FitranPixelLogo size="sm" />
             <h2 className="font-heading font-bold text-lg text-zinc-950 dark:text-white tracking-tight truncate">
-              Fitran Playlist
+              Playlist
             </h2>
           </div>
 
