@@ -15,6 +15,7 @@ import { CommandMenu } from './components/CommandMenu';
 import { ClaudeCodeTerminal3D } from './components/ClaudeCodeTerminal3D';
 import { ScrollReveal } from './components/ScrollReveal';
 import { SpotifyPlaylist } from './components/SpotifyPlaylist';
+import { KlasikEcosystemView } from './components/KlasikEcosystemView';
 import { CERTIFICATES_DATA, getCertPreviewPath } from './data/portfolioData';
 import { LanguageProvider } from './context/LanguageContext';
 import { TextStyleProvider } from './context/TextStyleContext';
@@ -260,6 +261,12 @@ export default function App() {
                   onClose={handleCloseCertificate}
                   onSelectCert={handleSelectCertificate}
                   designTheme={designTheme}
+                />
+              ) : designTheme === 'arcade' ? (
+                <KlasikEcosystemView
+                  onOpenCV={() => setIsCVModalOpen(true)}
+                  onSelectCertificate={handleSelectCertificate}
+                  onSelectProject={(p) => setSelectedProject(p)}
                 />
               ) : (
                 <>
