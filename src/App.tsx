@@ -17,6 +17,7 @@ import { ScrollReveal } from './components/ScrollReveal';
 import { SpotifyPlaylist } from './components/SpotifyPlaylist';
 import { CERTIFICATES_DATA, getCertPreviewPath } from './data/portfolioData';
 import { LanguageProvider } from './context/LanguageContext';
+import { TextStyleProvider } from './context/TextStyleContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { Terminal, ArrowRight } from 'lucide-react';
 
@@ -232,7 +233,8 @@ export default function App() {
 
   return (
     <LanguageProvider>
-      <div
+      <TextStyleProvider>
+        <div
         style={rootThemeInlineStyle}
         className={`min-h-screen w-full max-w-full transition-colors duration-300 selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-zinc-900 flex flex-col ${rootThemeClass}`}
       >
@@ -455,6 +457,7 @@ export default function App() {
           onSelectCert={handleSelectCertificate}
         />
       </div>
+      </TextStyleProvider>
     </LanguageProvider>
   );
 }

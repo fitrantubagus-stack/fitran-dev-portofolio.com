@@ -5,6 +5,7 @@ import { ScrambleText } from './ScrambleText';
 import { CertificatePreview } from './CertificatePreview';
 import { ScrollReveal } from './ScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
+import { useTextStyle } from '../context/TextStyleContext';
 import { DesignTheme } from './Navbar';
 import {
   ExternalLink,
@@ -67,6 +68,7 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
   const [selectedIssuer, setSelectedIssuer] = useState<string>('all');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const { t, language } = useLanguage();
+  const { isCodingMode } = useTextStyle();
 
   const issuers = [
     { id: 'all', label: t.credentials.all },
@@ -409,12 +411,12 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
                 <span>{t.credentials.badge}</span>
               </div>
 
-              {!isKlasik && (
+              {!isKlasik && isCodingMode && (
                 <div className="font-mono text-xs text-yellow-200 flex items-center gap-1.5 mb-1.5 select-none">
                   <span className={isAnimasi ? 'text-cyan-400 font-bold' : 'text-pink-300 font-bold'}>
                     type
                   </span>
-                  <span className="text-sky-300 font-bold">LearningArchive</span>
+                  <span className="text-sky-300 font-bold">HonorArchive</span>
                   <span className="text-white">=</span>
                 </div>
               )}
@@ -425,7 +427,7 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
                     ? 'inline-block bg-gradient-to-r from-indigo-950/90 via-slate-900 to-cyan-950/80 px-5 py-2.5 rounded-2xl border border-cyan-400/40 shadow-[0_0_25px_rgba(6,182,212,0.2)] mb-3'
                     : isKlasik
                     ? 'block border-b-2 border-[#B48A3E]/50 pb-3 mb-3'
-                    : 'inline-block bg-zinc-950/90 px-4 py-2 rounded-2xl border-2 border-black shadow-[4px_4px_0px_#FACC15] mb-3'
+                    : 'inline-block bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border-2 border-yellow-300/60 shadow-[4px_4px_0px_rgba(250,204,21,0.3)] mb-3'
                 }
               >
                 <h2

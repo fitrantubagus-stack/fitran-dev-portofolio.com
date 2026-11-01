@@ -6,6 +6,7 @@ import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
 import { BrandIcon } from './BrandIcon';
 import { IsometricTFMonogram } from './IsometricTFMonogram';
 import { useLanguage } from '../context/LanguageContext';
+import { useTextStyle } from '../context/TextStyleContext';
 import { DesignTheme } from './Navbar';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -60,6 +61,7 @@ export const Hero: React.FC<HeroProps> = ({
   const [activeWaveIdx, setActiveWaveIdx] = useState<number | null>(null);
   const [roleIdx, setRoleIdx] = useState(0);
   const { t, language } = useLanguage();
+  const { isCodingMode, isFormalMode } = useTextStyle();
 
   // Non-blocking wave pop animation across the 8 logos
   useEffect(() => {
@@ -834,13 +836,20 @@ export const Hero: React.FC<HeroProps> = ({
               </motion.div>
 
               <div className="flex-1 min-w-0">
-                <div className="font-mono text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 mb-1 select-none">
-                  <span className="text-purple-600 dark:text-purple-400 font-bold">const</span>
-                  <span className="text-blue-600 dark:text-blue-400 font-bold">
-                    softwareEngineer
-                  </span>
-                  <span className="text-zinc-400 dark:text-zinc-500">=</span>
-                </div>
+                {isCodingMode && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="font-mono text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 mb-1 select-none overflow-hidden"
+                  >
+                    <span className="text-purple-600 dark:text-purple-400 font-bold">const</span>
+                    <span className="text-blue-600 dark:text-blue-400 font-bold">
+                      softwareEngineer
+                    </span>
+                    <span className="text-zinc-400 dark:text-zinc-500">=</span>
+                  </motion.div>
+                )}
 
                 <div className="flex items-center gap-2 flex-wrap">
                   <h1 className="font-heading font-black text-2xl sm:text-3xl lg:text-4xl text-zinc-950 dark:text-white tracking-tight">
@@ -858,7 +867,7 @@ export const Hero: React.FC<HeroProps> = ({
                 </div>
 
                 <p className="text-xs sm:text-sm mt-1.5 flex items-center gap-1.5 flex-wrap text-zinc-600 dark:text-zinc-400">
-                  <span className="text-emerald-500 font-bold">&gt;</span>
+                  {isCodingMode && <span className="text-emerald-500 font-bold">&gt;</span>}
                   <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                     {t.hero.softwareEngineer}
                   </span>
