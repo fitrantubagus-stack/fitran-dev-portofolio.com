@@ -1,6 +1,6 @@
 // =============================================================================
 // KLASIK & ELEGAN ECOSYSTEM DATA (Inspired by Fikran Dev & Tailored for Fitran)
-// Tubagus Fitran Badruttamam — Software Engineer & AI System Integrator
+// Tubagus Fitran Badruttamam — Fullstack Developer & AI Engineer
 // =============================================================================
 
 export interface ServicePackage {
@@ -30,23 +30,35 @@ export interface SecurityLayer {
   icon: string;
 }
 
+export interface SubchapterItem {
+  id: string;
+  num: string;
+  title: string;
+  situation: string;
+  explanation: string;
+  practice: string;
+  mistakes: string;
+  checklist: string[];
+}
+
 export interface LearningChapter {
   id: string;
+  trackId: 'ai' | 'digital-marketing' | 'vibe-coding';
   code: string;
   title: string;
   kicker: string;
   summary: string;
   audience: string;
-  subchapters: {
-    id: string;
-    num: string;
-    title: string;
-    situation: string;
-    explanation: string;
-    practice: string;
-    mistakes: string;
-    checklist: string[];
-  }[];
+  subchapters: SubchapterItem[];
+}
+
+export interface LearningTrack {
+  id: 'ai' | 'digital-marketing' | 'vibe-coding';
+  name: string;
+  badge: string;
+  tagline: string;
+  description: string;
+  chaptersCount: number;
 }
 
 export interface KamusTerm {
@@ -54,6 +66,14 @@ export interface KamusTerm {
   category: 'AI & Machine Learning' | 'Web & Arsitektur' | 'Cloud & DevOps' | 'Keamanan & Tracking';
   definition: string;
   practicalTip: string;
+}
+
+export interface ToolItem {
+  name: string;
+  category: 'Frontend & Web' | 'AI & LLMs' | 'Backend & Data' | 'Cloud & Security' | 'Marketing & Analytics';
+  tagline: string;
+  description: string;
+  badge?: string;
 }
 
 export interface BlogPost {
@@ -78,7 +98,40 @@ export interface BlogPost {
 }
 
 // -----------------------------------------------------------------------------
-// 1. ARSITEKTUR SISTEM KEAMANAN TERSTRUKTUR (5 LAYERS OF SECURITY)
+// 1. DAFTAR TRACK PEMBELAJARAN (LEARNING TRACKS)
+// -----------------------------------------------------------------------------
+export const KLASIK_LEARNING_TRACKS: LearningTrack[] = [
+  {
+    id: 'ai',
+    name: 'Peta Belajar AI untuk Bisnis',
+    badge: '8 BAB LENGKAP',
+    tagline: 'Dari fondasi, prompt engineering, konteks bisnis, hingga AI agent WhatsApp produksi.',
+    description:
+      'AI bukan tujuan. AI adalah cara mempercepat pekerjaan yang sudah jelas ukuran berhasilnya. Materi ini disusun untuk membantu Anda mengambil keputusan praktis, bukan sekadar menghafal istilah.',
+    chaptersCount: 8,
+  },
+  {
+    id: 'digital-marketing',
+    name: 'Peta Belajar Technical Marketing & Tracking',
+    badge: '8 BAB LENGKAP',
+    tagline: 'Lelang iklan, Meta Ads, Google Ads, GTM, GA4, dan Meta Conversions API (CAPI).',
+    description:
+      'Menghubungkan landing page, server-side tracking, dan algoritma lelang iklan supaya setiap rupiah budget promosi memiliki data atribusi yang akurat dan terbebas dari ad-blocker.',
+    chaptersCount: 8,
+  },
+  {
+    id: 'vibe-coding',
+    name: 'Peta Belajar Vibe Coding & Tooling Modern',
+    badge: '6 BAB LENGKAP',
+    tagline: 'Claude Code CLI, Cursor, MCP Server, dan arsitektur pengembangan berbasis AI.',
+    description:
+      'Metodologi rekayasa modern di mana insinyur perangkat lunak bertindak sebagai arsitek orkestrator yang mengarahkan LLM untuk menulis kode bersih, aman, dan langsung deploy ke cloud.',
+    chaptersCount: 6,
+  },
+];
+
+// -----------------------------------------------------------------------------
+// 2. ARSITEKTUR SISTEM KEAMANAN TERSTRUKTUR (5 LAYERS OF SECURITY)
 // -----------------------------------------------------------------------------
 export const KLASIK_SECURITY_LAYERS: SecurityLayer[] = [
   {
@@ -98,35 +151,35 @@ export const KLASIK_SECURITY_LAYERS: SecurityLayer[] = [
     level: 'LAPISAN 02',
     title: 'Hardening Server VPS & Zero-Trust Private Network',
     description:
-      'Server mandiri dikonfigurasi dengan prinsip Zero-Trust: port SSH publik ditutup rapat dan hanya dapat diakses melalui jaringan privat virtual WireGuard Tailscale terenkripsi.',
+      'Konfigurasi sistem operasi Linux yang diperketat: akses login SSH tanpa password (hanya kunci publik kriptografi), isolasi port publik, dan jaringan privat VPN Tailscale.',
     measures: [
-      'Non-aktifkan login SSH berbasis password (hanya Public Key Cryptography)',
-      'Firewall UFW minimalis: hanya membuka port 80 & 443 ke internet publik',
-      'Port manajemen SSH dialihkan ke jaringan privat Tailscale VPN',
-      'Pemasangan fail2ban untuk pemblokiran otomatis IP yang melakukan brute force',
+      'Akses root dinonaktifkan total; login hanya melalui Ed25519 SSH Keys pribadi',
+      'Firewall UFW memblokir seluruh port publik kecuali HTTP/HTTPS standar',
+      'Fail2ban aktif memantau dan memblokir otomatis IP yang mencoba brute-force',
+      'Mesh VPN Tailscale WireGuard: kelola server dari mana saja tanpa membuka port SSH ke publik',
     ],
     icon: 'Server',
   },
   {
     level: 'LAPISAN 03',
-    title: 'Keamanan Aplikasi, Validasi Input & Proteksi Database',
+    title: 'Keamanan Aplikasi & Integritas Data (Sanitasi Input)',
     description:
-      'Pemberantasan celah keamanan klasik OWASP Top 10 melalui sanitasi parameter ketat, parameterized query (anti-SQL Injection), dan proteksi Cross-Site Scripting (XSS).',
+      'Aplikasi web dibangun dengan arsitektur tahan tembus terhadap ancaman OWASP Top 10, terutama SQL Injection dan Cross-Site Scripting (XSS).',
     measures: [
-      'Sanitasi menyeluruh data form untuk membasmi injeksi script (XSS) & SQLi',
-      'Autentikasi sesi aman dengan token HTTP-only SameSite cookies & CSRF protection',
-      'Role-Based Access Control (RBAC) ketat untuk mencegah akses privilege tak sah',
-      'Penyimpanan kata sandi terenkripsi menggunakan algoritma modern bcrypt / argon2',
+      'Parameterized Queries (Prepared Statements) 100% kebal terhadap SQL Injection',
+      'Validasi skema input ketat dengan Zod / Pydantic di sisi server',
+      'Sanitasi otomatis output untuk mencegah eksekusi skrip berbahaya (XSS)',
+      'Token CSRF dan cookie sesi terproteksi dengan atribut SameSite & HttpOnly',
     ],
     icon: 'Lock',
   },
   {
     level: 'LAPISAN 04',
-    title: 'Tata Kelola AI (AI Guardrails & Human-in-the-Loop)',
+    title: 'Pengamanan AI Agent & Guardrails Konteks (Anti-Halusinasi)',
     description:
-      'Sistem otomasi dan AI Agent dibatasi dengan guardrails ketat agar tidak pernah membocorkan data sensitif perusahaan atau mengambil keputusan finansial tanpa persetujuan manusia.',
+      'Arsitektur agent cerdas dengan batasan ketat (Guardrails) agar AI tidak berhalusinasi, tidak membocorkan data rahasia perusahaan, dan tidak dapat dimanipulasi melalui Prompt Injection.',
     measures: [
-      'Isolasi prompt (Prompt Sandboxing) untuk menangkal serangan Prompt Injection',
+      'Isolasi System Prompt dengan pemisahan tegas antara instruksi sistem dan input pengguna',
       'Penyaringan data sensitif (API key, password, PII) sebelum payload dikirim ke LLM',
       'Wajibkan konfirmasi otorisasi staf manusia untuk setiap aksi pengubahan data / order',
       'Audit logging lengkap untuk setiap pemanggilan fungsi eksternal oleh model AI',
@@ -141,7 +194,7 @@ export const KLASIK_SECURITY_LAYERS: SecurityLayer[] = [
     measures: [
       'Pencadangan database otomatis berkala setiap 24 jam',
       'Enkripsi cadangan data (AES-256) sebelum ditransfer ke cloud storage (AWS S3 / R2)',
-      'Prosedur Restore Teruji: sistem dapat dipulihkan dalam waktu kurang dari 30 menit',
+      'Prosedur Restore Teruji: sistem dapat dipulihkan dalam waktu kurang dari 15 menit',
       'Penyimpanan cadangan di zona geografis terpisah untuk mengantisipasi insiden data center',
     ],
     icon: 'Database',
@@ -149,16 +202,16 @@ export const KLASIK_SECURITY_LAYERS: SecurityLayer[] = [
 ];
 
 // -----------------------------------------------------------------------------
-// 2. KATALOG LAYANAN RESMI DENGAN HARGA RINCI (MULAI 500 RIBUAN)
+// 3. KATALOG 8 LAYANAN RESMI DENGAN HARGA RINCI (MULAI 500 RIBUAN)
 // -----------------------------------------------------------------------------
 export const KLASIK_SERVICES: ServicePackage[] = [
   {
     id: 'website-starter',
-    code: 'SRV-01',
+    code: '01',
     title: 'Website Online Kilat / Landing Page Starter',
     price: 'Rp 500.000',
     originalPrice: 'Rp 850.000',
-    tagline: 'Solusi website online cepat, aman, responsif, dan siap terima leads chat.',
+    tagline: 'Landing page dan website bisnis yang cepat, mudah di-tracking, dan disusun mengikuti kebutuhan pengunjung Anda.',
     category: 'Website Online',
     badge: 'Mulai Rp 500 Ribuan',
     description:
@@ -182,57 +235,23 @@ export const KLASIK_SERVICES: ServicePackage[] = [
       'Uptime server 99.9% tanpa biaya hosting bulanan mahal',
     ],
     techStack: ['Astro / React', 'Tailwind CSS', 'Cloudflare Pages / Vercel', 'SSL HTTPS'],
-    duration: '2 - 4 Hari Kerja',
+    duration: '1 - 2 Hari Kerja',
     idealFor: 'Pemilik usaha baru, pekerja lepas, konsultan, dan penjual produk yang ingin segera memiliki website kredibel dengan biaya terjangkau.',
     featured: true,
   },
   {
-    id: 'website-business',
-    code: 'SRV-02',
-    title: 'Website Bisnis & Profil Perusahaan Profesional',
-    price: 'Rp 1.500.000',
-    originalPrice: 'Rp 2.500.000',
-    tagline: 'Multi-page website berstandar korporat dengan skor Google PageSpeed 95+ dan SEO on-page.',
-    category: 'Website Online',
-    badge: 'Paling Populer',
-    description:
-      'Pengembangan website perusahaan lengkap (Multi-Page: Beranda, Tentang Kami, Katalog Layanan/Produk, Galeri/Portofolio, Kontak). Didesain dengan estetika berkelas, struktur SEO siap ranking, dan analitik pengunjung.',
-    scope: [
-      'Hingga 5-7 halaman web kustom sesuai identitas brand perusahaan',
-      'Optimasi performa Core Web Vitals (skor Google PageSpeed 95+, LCP < 1.2 detik)',
-      'Optimasi SEO On-Page teknis (Sitemap XML, Robots.txt, Schema JSON-LD, Open Graph)',
-      'Formulir penawaran/inquiry interaktif dengan validasi data aman',
-      'Integrasi Google Tag Manager, Google Analytics 4 (GA4), & Search Console',
-      'Setup email bisnis profesional (nama@perusahaananda.com)',
-    ],
-    deliverables: [
-      'Website multi-halaman live dengan performa ultra-cepat',
-      'Hak cipta source code penuh dan akses dashboard hosting',
-      'Garansi perbaikan bug & pendampingan teknis selama 30 hari',
-    ],
-    securityHighlights: [
-      'Proteksi Content Security Policy (CSP) ketat',
-      'Sanitasi formulir anti-injeksi script XSS',
-      'Backup data berkala dan mitigasi DDoS otomatis',
-    ],
-    techStack: ['Astro / Next.js', 'React', 'Tailwind CSS', 'TypeScript', 'Google Analytics 4'],
-    duration: '7 - 14 Hari Kerja',
-    idealFor: 'Perusahaan berkembang, klinik, kantor hukum, kontraktor, dan agensi yang ingin membangun otoritas dan dipercaya klien korporat.',
-    featured: true,
-  },
-  {
     id: 'web-app-dashboard',
-    code: 'SRV-03',
-    title: 'Aplikasi Web, Portal Klien & Dashboard Internal',
+    code: '02',
+    title: 'Web App, Portal Klien & Dashboard Internal',
     price: 'Rp 3.500.000',
     originalPrice: 'Rp 5.500.000',
-    tagline: 'Sistem operasional web terstruktur untuk menggantikan spreadsheet manual yang berantakan.',
+    tagline: 'Dashboard, portal klien, dan aplikasi internal custom yang mengikuti alur kerja tim Anda — menggantikan kerja manual.',
     category: 'Aplikasi & Dashboard',
     badge: 'Solusi Sistem',
     description:
       'Pembangunan sistem aplikasi web khusus untuk operasional bisnis Anda: manajemen inventori gudang, sistem approval cuti/keuangan, portal klien mandiri, atau CRM pencatatan prospek terpusat.',
     scope: [
-      'Perancangan skema database relasional terstruktur (PostgreSQL / MySQL / Supabase)',
+      'Perancangan skema database relasional terstruktur (PostgreSQL / Supabase)',
       'Sistem login autentikasi aman dengan Role-Based Access Control (Admin, Staf, Klien)',
       'Dashboard manajemen data dengan tabel dinamis, pencarian instan, dan sorting',
       'Fitur ekspor laporan transaksi/data ke format Excel & PDF resmi berlogo',
@@ -250,51 +269,114 @@ export const KLASIK_SERVICES: ServicePackage[] = [
       'Pencadangan database otomatis harian ke cloud storage',
     ],
     techStack: ['React', 'Next.js / Node.js', 'PostgreSQL / Supabase', 'Prisma ORM', 'Tailwind CSS'],
-    duration: '2 - 4 Minggu Kerja',
+    duration: '7 - 14 Hari Kerja',
     idealFor: 'Bisnis dengan alur kerja internal yang rumit dan ingin beralih dari Excel manual ke sistem terintegrasi yang rapi dan terukur.',
     featured: true,
   },
   {
-    id: 'ai-automation-agent',
-    code: 'SRV-04',
-    title: 'Integrasi AI Agent & Otomasi Alur Kerja WhatsApp',
+    id: 'ai-agent-custom',
+    code: '03',
+    title: 'AI Agent Custom & Asisten Sistem',
     price: 'Rp 2.000.000',
-    originalPrice: 'Rp 3.500.000',
-    tagline: 'Asisten cerdas terkoneksi knowledge base bisnis dengan batas eskalasi aman ke manusia.',
+    originalPrice: 'Rp 3.200.000',
+    tagline: 'Agent AI custom untuk menjawab pertanyaan, membantu tim, dan mengerjakan tugas berulang sesuai alur kerja Anda.',
     category: 'AI & Otomasi',
-    badge: 'Teknologi AI Modern',
+    badge: 'Kecerdasan Buatan',
     description:
-      'Membangun alur otomasi cerdas yang menghubungkan chat WhatsApp bisnis, formulir web, dan spreadsheet menggunakan LLM (OpenAI / Claude) dengan guardrails ketat agar tidak berhalusinasi atau menjanjikan hal ngawur.',
+      'Merancang agen AI mandiri yang terhubung dengan basis pengetahuan internal (RAG). Agen dapat memanggil API, membaca dokumen panduan, dan memproses data kompleks secara konsisten.',
     scope: [
-      'Penyusunan Knowledge Base bisnis (FAQ, profil produk, aturan harga resmi)',
-      'Desain prompt 4 pilar ber-guardrails (AI dilarang berhalusinasi / janji diskon palsu)',
-      'Alur kualifikasi leads otomatis: kumpulkan nama, kebutuhan, dan budget sebelum dialihkan ke sales',
-      'Integrasi webhook n8n / Make untuk sinkronisasi otomatis ke Google Sheets / CRM',
-      'Mekanisme Handoff Manusia: otomatis serahkan percakapan ke CS saat pelanggan meminta komplain khusus',
+      'Penyusunan Knowledge Base cerdas dari dokumen PDF / Excel / SOP perusahaan',
+      'Integrasi Tool Calling / Function Calling untuk membaca database live',
+      'Guardrails ketat anti-halusinasi dan pembatasan konteks bisnis',
+      'Pengujian akurasi jawaban dengan dataset percakapan nyata',
     ],
     deliverables: [
-      'Sistem bot/agent aktif terkoneksi ke WhatsApp Business API / webhook',
-      'Dokumen SOP instruksi AI & alur flowchart eskalasi',
-      'Notifikasi peringatan darurat ke Telegram/WhatsApp developer saat ada error API',
+      'Sistem AI Agent mandiri yang siap dihubungkan ke antarmuka web / API',
+      'Dokumentasi konfigurasi prompt & skema pemanggilan fungsi',
+      'Akses pengelolaan dokumen knowledge base secara mandiri',
     ],
     securityHighlights: [
-      'Isolasi prompt mencegah Prompt Injection',
-      'Data sensitif disaring sebelum diproses model AI',
-      'Akses sistem bersifat Read-Only untuk memitigasi risiko manipulasi data',
+      'Sandbox eksekusi fungsi terisolasi',
+      'Sensor otomatis informasi identitas pribadi (PII)',
+      'Rate-limiting API untuk pencegahan lonjakan biaya token',
     ],
-    techStack: ['Claude / OpenAI API', 'n8n Workflow', 'Python / Node.js', 'Webhooks', 'Google Sheets API'],
-    duration: '10 - 18 Hari Kerja',
-    idealFor: 'Bisnis yang kebanjiran chat tanya-jawab berulang setiap hari dan ingin menjaga respon cepat 24 jam tanpa kehilangan kontrol kualitas.',
+    techStack: ['Claude 3.7 Sonnet', 'OpenAI API', 'Python / Node.js', 'LangChain', 'pgvector'],
+    duration: '5 - 10 Hari Kerja',
+    idealFor: 'Perusahaan yang membutuhkan asisten riset, verifikasi data internal, atau asisten otomatisasi yang cerdas dan patuh aturan.',
+  },
+  {
+    id: 'whatsapp-ai-agent',
+    code: '04',
+    title: 'WhatsApp AI Agent & Customer Care Otomatis',
+    price: 'Rp 2.000.000',
+    originalPrice: 'Rp 3.500.000',
+    tagline: 'Alur FAQ dan pengumpulan kebutuhan awal dengan sumber yang disetujui serta handoff ke tim.',
+    category: 'AI & Otomasi',
+    badge: 'Paling Diminati',
+    description:
+      'Asisten WhatsApp 24 jam yang merespons pertanyaan calon pembeli seketika menggunakan bahasa Indonesia yang luwes, mengumpulkan kualifikasi leads, dan mengalihkan ke CS manusia saat dibutuhkan.',
+    scope: [
+      'Koneksi WhatsApp Business Cloud API resmi tanpa risiko banned akun',
+      'Penyesuaian gaya bicara AI agar ramah, sopan, dan sesuai brand Anda',
+      'Kualifikasi prospek otomatis: nama, lokasi, produk yang diminati, dan budget',
+      'Mekanisme Handoff Manusia: notifikasi langsung ke admin saat ada chat penting',
+      'Sinkronisasi otomatis percakapan ke Google Sheets / CRM',
+    ],
+    deliverables: [
+      'Nomor WhatsApp bisnis aktif dengan bot AI cerdas beroperasi 24/7',
+      'Spreadsheet rekap data leads yang masuk secara realtime',
+      'Panduan tim CS untuk memantau dan mengambil alih obrolan',
+    ],
+    securityHighlights: [
+      'Guardrail tegas: bot dilarang menjanjikan diskon di luar aturan',
+      'Data nomor pelanggan terenkripsi',
+      'Webhook terverifikasi dengan tanda tangan digital HMAC',
+    ],
+    techStack: ['WhatsApp Cloud API', 'Claude / Gemini Flash', 'n8n Workflow', 'Google Sheets API'],
+    duration: '3 - 5 Hari Kerja',
+    idealFor: 'Bisnis online, klinik, agen properti, dan jasa yang sering kehilangan prospek karena admin telat membalas chat di luar jam kerja.',
+    featured: true,
+  },
+  {
+    id: 'automation-workflow',
+    code: '05',
+    title: 'Otomasi Workflow Bisnis (Automation)',
+    price: 'Rp 1.200.000',
+    originalPrice: 'Rp 1.800.000',
+    tagline: 'Otomasi workflow bisnis — follow-up leads, laporan, integrasi antar tools, dan pekerjaan berulang — supaya tim Anda fokus ke hal penting.',
+    category: 'AI & Otomasi',
+    badge: 'Efisiensi Waktu',
+    description:
+      'Menghilangkan pekerjaan ketik-ulang manual antar aplikasi. Alur kerja berjalan otomatis: dari formulir masuk, data tercatat ke CRM, invoice PDF terkirim, hingga notifikasi ke Telegram tim.',
+    scope: [
+      'Audit proses operasional manual yang paling menyita waktu staf',
+      'Pembuatan alur otomatisasi n8n / Make dengan penanganan error teruji',
+      'Integrasi multi-aplikasi: Google Workspace, WhatsApp, Telegram, Email, Notion',
+      'Pembuatan template laporan penjualan harian/mingguan otomatis',
+    ],
+    deliverables: [
+      'Skenario alur kerja otomasi aktif dan berjalan stabil 24/7',
+      'Dokumentasi diagram alur kerja dan petunjuk penanganan kendala',
+      'Garansi pendampingan operasional selama 30 hari',
+    ],
+    securityHighlights: [
+      'Enkripsi penyimpanan token API dan kredensial',
+      'Pemisahan lingkungan kerja staging dan produksi',
+      'Pemberitahuan darurat instan jika terjadi gangguan koneksi server',
+    ],
+    techStack: ['n8n Self-Hosted', 'Make.com', 'Webhooks', 'REST API', 'Google APIs'],
+    duration: '2 - 4 Hari Kerja',
+    idealFor: 'Pemilik bisnis dan tim operasional yang lelah dengan copy-paste data manual setiap hari.',
   },
   {
     id: 'cloud-server-vps',
-    code: 'SRV-05',
-    title: 'Setup Server VPS Cloud, Docker & Hardening Server',
+    code: '06',
+    title: 'Setup Server Cloud VPS & Hardening Keamanan',
     price: 'Rp 750.000',
     originalPrice: 'Rp 1.200.000',
-    tagline: 'Arsitektur cloud mandiri yang tangguh, hemat biaya bulanan, dan terisolasi aman.',
+    tagline: 'Arsitektur cloud mandiri yang tangguh, hemat biaya bulanan, dan terisolasi aman dengan Zero-Trust.',
     category: 'Infrastruktur Cloud',
-    badge: 'Infrastruktur Mandiri',
+    badge: 'Mulai Rp 750rb',
     description:
       'Konfigurasi server cloud VPS Linux (Ubuntu/Debian) siap produksi dengan container Docker, reverse proxy Caddy (SSL otomatis), dan jaringan privat VPN Tailscale agar server Anda aman dari intaian hacker publik.',
     scope: [
@@ -316,66 +398,95 @@ export const KLASIK_SERVICES: ServicePackage[] = [
       'Firewall UFW memblokir seluruh lalu lintas yang tidak sah',
     ],
     techStack: ['Ubuntu Linux', 'Docker', 'Caddy Server', 'Tailscale WireGuard', 'fail2ban', 'UFW'],
-    duration: '3 - 5 Hari Kerja',
+    duration: '1 Hari Kerja',
     idealFor: 'Developer, startup, atau pemilik bisnis yang ingin memiliki server mandiri hemat biaya tanpa terikat tagihan platform PaaS mahal.',
   },
   {
-    id: 'tracking-audit-capi',
-    code: 'SRV-06',
-    title: 'Audit Keamanan Web & Server-Side Tracking (CAPI / GA4)',
+    id: 'meta-capi-tracking',
+    code: '07',
+    title: 'Setup Meta Conversions API (CAPI) & Tracking Akurat',
     price: 'Rp 650.000',
-    originalPrice: 'Rp 1.100.000',
-    tagline: 'Perbaikan akurasi data tracking konversi dan audit celah keamanan formulir.',
+    originalPrice: 'Rp 1.000.000',
+    tagline: 'Pemetaan Pixel dan server events, event deduplication, consent, serta pemeriksaan kualitas tracking.',
     category: 'Keamanan & Tracking',
-    badge: 'Akurasi Data',
+    badge: 'Solusi Data Akurat',
     description:
-      'Pemasangan pelacakan dataLayer Google Tag Manager, GA4, dan Meta Conversions API (CAPI) server-side untuk memastikan data transaksi tidak hilang akibat adblocker atau perlindungan privasi browser iOS.',
+      'Solusi server-side tracking untuk pengiklan Facebook & Instagram Ads. Mengirim data pembelian dan leads langsung dari server ke Meta untuk memintas pemblokiran browser iOS, dengan skor Event Match Quality 8.5+.',
     scope: [
-      'Audit kebocoran event tracking dan perbedaan angka dashboard iklan vs penjualan nyata',
-      'Pemasangan dataLayer standar industri untuk event ViewContent, Lead, dan Purchase',
-      'Implementasi Meta Conversions API (CAPI) server-side via Cloudflare Workers',
-      'Pengujian event deduplication dengan Event ID matching yang presisi',
-      'Pemeriksaan keamanan formulir web untuk mencegah pengiriman data palsu / spam',
+      'Konfigurasi Google Tag Manager (GTM) Server-Side via Cloud / Stape',
+      'Implementasi deduplikasi event browser pixel vs server event (Event ID match)',
+      'Setup standar event esensial: PageView, ViewContent, Lead, AddToCart, Purchase',
+      'Verifikasi domain resmi Meta Events Manager & konfigurasi Aggregated Event Measurement',
+      'Audit kesehatan tracking dan optimalisasi parameter pengguna (hash email, no HP)',
     ],
     deliverables: [
-      'Skor Event Match Quality (EMQ) di atas 8.5/10 pada dashboard iklan',
-      'Dokumentasi kamus event tracking dan panduan membaca laporan mingguan',
+      'Sistem CAPI aktif dengan status event terverifikasi hijau di Events Manager',
+      'Laporan Event Match Quality Score minimal 8.0 - 9.0+',
+      'Panduan pembacaan data atribusi pada Ads Manager',
     ],
     securityHighlights: [
-      'Hanya mengirimkan parameter data yang telah di-hash (SHA-256)',
-      'Kepatuhan regulasi privasi data pengunjung',
+      'Data pengguna di-hash dengan algoritma SHA-256 sebelum dikirim',
+      'Kepatuhan privasi data dan perlindungan cookie pihak pertama',
     ],
-    techStack: ['Google Tag Manager', 'Google Analytics 4', 'Meta CAPI', 'Cloudflare Workers', 'dataLayer'],
-    duration: '4 - 7 Hari Kerja',
+    techStack: ['Meta Conversions API', 'Google Tag Manager', 'Stape.io / Cloud Run', 'Meta Pixel'],
+    duration: '1 - 2 Hari Kerja',
     idealFor: 'Pengiklan Meta & Google Ads yang ingin memaksimalkan ROAS dengan data konversi yang akurat dan terhindar dari sinyal hilang.',
+  },
+  {
+    id: 'google-ads-tracking',
+    code: '08',
+    title: 'Google Ads & Google Analytics 4 (GA4) Tracking Terukur',
+    price: 'Rp 850.000',
+    originalPrice: 'Rp 1.400.000',
+    tagline: 'Search, Performance Max, dan YouTube Ads untuk menangkap orang yang sedang mencari produk Anda. Fokus pada intent, bukan impresi.',
+    category: 'Keamanan & Tracking',
+    badge: 'Marketing Terukur',
+    description:
+      'Setup kampanye Google Ads berbasis kata kunci niat beli tinggi (high-intent), dikombinasikan dengan pelacakan konversi presisi di GA4 dan Google Tag Manager.',
+    scope: [
+      'Riset kata kunci niat beli (Transactional Keywords) vs kata kunci informasi',
+      'Struktur kampanye Google Search / Performance Max yang rapi',
+      'Pemasangan Conversion Tracking Google Ads & integrasi GA4',
+      'Negative Keywords list untuk mencegah pemborosan budget klik tak berguna',
+    ],
+    deliverables: [
+      'Akun Google Ads tersetup rapi dengan tracking konversi teruji',
+      'Dashboard ringkasan metrik di Google Looker Studio',
+      'Dokumentasi kata kunci potensial untuk scaling',
+    ],
+    securityHighlights: [
+      'Perlindungan dari click fraud (klik bot fiktif)',
+      'Batasan alokasi budget harian yang terkontrol ketat',
+    ],
+    techStack: ['Google Ads', 'GA4', 'Google Tag Manager', 'Google Looker Studio'],
+    duration: '2 - 3 Hari Kerja',
+    idealFor: 'Bisnis jasa, B2B, rental, klinik, atau produk yang sering dicari orang secara aktif di Google Search.',
   },
 ];
 
 // -----------------------------------------------------------------------------
-// 3. KURIKULUM PEMBELAJARAN INTERAKTIF & LENGKAP (LEARNING CURRICULUM)
+// 4. KURIKULUM LENGKAP 3 TRACK (AI, DIGITAL MARKETING, VIBE CODING)
 // -----------------------------------------------------------------------------
 export const KLASIK_LEARNING_CHAPTERS: LearningChapter[] = [
+  // ===================== TRACK 1: AI (8 BAB) =====================
   {
     id: 'ai-00',
+    trackId: 'ai',
     code: 'Bab 00',
     title: 'Peta Belajar AI untuk Bisnis',
     kicker: 'Prinsip Kerja & Fondasi',
     summary:
-      'AI bukan tujuan. AI adalah cara mempercepat pekerjaan yang sudah jelas ukuran berhasilnya. Jangan mulai dari tools atau tren, melainkan dari masalah nyata yang memakan waktu.',
-    audience: 'Pemilik bisnis, developer, dan tim yang ingin membedakan antara pakai AI, membuat otomasi, atau membangun agent mandiri.',
+      'AI bukan tujuan. AI adalah cara mempercepat pekerjaan yang sudah jelas ukuran berhasilnya. Materi ini dibuat untuk membantu pembaca mengambil keputusan praktis, bukan sekadar mengenal istilah AI.',
+    audience: 'Pemilik bisnis, developer, dan tim yang baru mulai memakai AI dan belum tahu harus mulai dari mana.',
     subchapters: [
       {
         id: 'ai-00-1',
         num: '00.1',
         title: 'Cara Menggunakan Materi Pembelajaran Ini',
-        situation:
-          'Banyak orang menghabiskan berminggu-minggu menonton tutorial tools AI terbaru, tetapi saat kembali ke laptop, pekerjaan harian mereka tidak berubah dan waktu tetap habis.',
-        explanation:
-          'Urutan yang benar adalah: kenali alur kerja berulang -> perjelas standar input dan output yang diinginkan -> tulis instruksi eksplisit -> baru pilih alat. Belajarlah bab per bab dan langsung uji pada satu pekerjaan nyata hari ini.',
-        practice:
-          'Pilih satu pekerjaan kecil yang paling sering Anda kerjakan berulang (misal: merangkum email klien, menulis balasan komplain, atau menyusun laporan mingguan). Terapkan pola brief 4 bagian.',
-        mistakes:
-          'Mengira AI tahu konteks bisnis Anda secara gaib tanpa pernah diberi dokumen profil, batasan, atau contoh format output yang diinginkan.',
+        situation: 'Banyak orang membaca tutorial AI namun saat kembali ke pekerjaan, waktu mereka tetap habis untuk tugas manual.',
+        explanation: 'Urutan yang benar: kenali alur kerja berulang -> tentukan standar input & output -> tulis instruksi eksplisit -> baru pilih tools. Pelajari bab per bab dan terapkan ke 1 pekerjaan nyata.',
+        practice: 'Pilih satu pekerjaan kecil yang paling sering Anda kerjakan berulang (misal: merangkum email klien, membalas komplain, atau menyusun laporan mingguan). Terapkan pola brief 4 pilar.',
+        mistakes: 'Mengira AI tahu konteks bisnis Anda secara gaib tanpa pernah diberi dokumen profil, batasan, atau contoh format output yang diinginkan.',
         checklist: [
           'Sudah menentukan satu pekerjaan nyata untuk diuji minggu ini.',
           'Tidak menghafal prompt internet mentah-mentah tanpa menyesuaikan konteks.',
@@ -386,14 +497,10 @@ export const KLASIK_LEARNING_CHAPTERS: LearningChapter[] = [
         id: 'ai-00-2',
         num: '00.2',
         title: 'Tiga Jalur: Pakai AI, Bikin Otomasi, atau Bangun Agent',
-        situation:
-          'Banyak yang latah ingin langsung membuat "AI Agent" serba otomatis padahal kebutuhan sebenarnya hanyalah template chat atau workflow integrasi 2 tools.',
-        explanation:
-          'Jalur 1 (Pakai AI): Cukup pakai ChatGPT/Claude untuk tugas sekali jalan atau draf awal.\nJalur 2 (Otomasi): Gunakan n8n/Make untuk alur teratur berulang (Trigger -> Action) tanpa perlu penalaran kompleks.\nJalur 3 (AI Agent): Gunakan agent jika sistem perlu membuat keputusan mandiri, memanggil tools eksternal (API/database), dan mengumpulkan konteks dinamis.',
-        practice:
-          'Petakan tugas Anda ke dalam diagram 3 jalur. Jika alurnya kaku (contoh: "setiap ada form masuk, kirim ke WhatsApp"), jangan pakai AI Agent — gunakan otomasi webhook biasa.',
-        mistakes:
-          'Memaksa agent mengerjakan alur yang seharusnya memakai otomasi deterministik pasti berhasil, sehingga memicu halusinasi dan boros biaya token API.',
+        situation: 'Banyak yang ingin langsung membuat AI Agent serba otomatis padahal kebutuhan sebenarnya hanyalah template chat atau workflow integrasi 2 tools.',
+        explanation: 'Jalur 1 (Pakai AI): Cukup pakai ChatGPT/Claude untuk tugas sekali jalan.\nJalur 2 (Otomasi): Gunakan n8n/Make untuk alur teratur (Trigger -> Action).\nJalur 3 (AI Agent): Gunakan agent jika butuh keputusan mandiri, pemanggilan tools eksternal (API/database), dan konteks dinamis.',
+        practice: 'Petakan tugas Anda ke dalam diagram 3 jalur. Jika alurnya kaku (contoh: "setiap form masuk, kirim ke WhatsApp"), gunakan webhook biasa tanpa AI.',
+        mistakes: 'Memaksa agent mengerjakan alur deterministik pasti berhasil, sehingga memicu halusinasi dan boros biaya token API.',
         checklist: [
           'Bisa membedakan pekerjaan sekali jalan vs pekerjaan terstruktur.',
           'Memilih solusi paling sederhana sebelum melompat ke arsitektur rumit.',
@@ -404,17 +511,13 @@ export const KLASIK_LEARNING_CHAPTERS: LearningChapter[] = [
         id: 'ai-00-3',
         num: '00.3',
         title: 'Checklist Kesiapan Sebelum Memakai AI di Sistem Bisnis',
-        situation:
-          'Ingin mengintegrasikan AI ke dalam layanan pelanggan atau dashboard bisnis, tetapi dokumen SOP dan batasan privasi belum pernah ditulis.',
-        explanation:
-          'AI tidak bisa merapikan kekacauan proses internal. Jika SOP manusia saja masih ambigu dan sering berubah-ubah, AI hanya akan mempercepat penyebaran kekeliruan ke pelanggan.',
-        practice:
-          'Tulis lembar batasan wewenang: apa yang boleh dijawab langsung oleh AI, dan kata kunci apa yang WAJIB dialihkan ke staf manusia (misal: komplain hukum, pembatalan kontrak, tawar harga di luar batas).',
-        mistakes:
-          'Memberikan wewenang kepada AI untuk menjanjikan komitmen finansial atau teknis tanpa persetujuan manusia.',
+        situation: 'Ingin mengintegrasikan AI ke layanan pelanggan, namun dokumen SOP dan batasan privasi belum pernah ditulis.',
+        explanation: 'AI tidak bisa merapikan kekacauan proses internal. Jika SOP manusia masih ambigu, AI hanya akan mempercepat penyebaran kekeliruan ke pelanggan.',
+        practice: 'Tulis lembar batasan wewenang: apa yang boleh dijawab langsung oleh AI, dan kata kunci apa yang WAJIB dialihkan ke staf manusia.',
+        mistakes: 'Memberikan wewenang kepada AI untuk menjanjikan komitmen finansial atau teknis tanpa persetujuan manusia.',
         checklist: [
           'Memiliki dokumen profil bisnis dan FAQ resmi yang disepakati.',
-          'Menandai data rahasia (password, data pribadi) agar tidak dimasukkan ke prompt.',
+          'Menandai data rahasia agar tidak dimasukkan ke prompt publik.',
           'Menyiapkan kanal eskalasi darurat ke staf tim.',
         ],
       },
@@ -422,6 +525,7 @@ export const KLASIK_LEARNING_CHAPTERS: LearningChapter[] = [
   },
   {
     id: 'ai-01',
+    trackId: 'ai',
     code: 'Bab 01',
     title: 'Fondasi: AI Itu Bisa Apa dan Tidak Bisa Apa',
     kicker: 'Prinsip Kerja LLM',
@@ -433,40 +537,27 @@ export const KLASIK_LEARNING_CHAPTERS: LearningChapter[] = [
         id: 'ai-01-1',
         num: '01.1',
         title: 'AI Bukan Karyawan Baru, Melainkan Pekerja Magang Super Cepat',
-        situation:
-          'Sering merasa kecewa karena hasil AI terasa hambar, tidak sesuai ekspektasi, atau terdengar seperti basa-basi internet umum.',
-        explanation:
-          'Perlakukan AI seperti pekerja magang yang sangat cerdas dan membaca jutaan buku, tetapi belum pernah magang satu hari pun di kantor Anda. Ia butuh brief tertulis, referensi contoh gaya bahasa, batasan, dan review sebelum hasilnya disebar ke publik.',
-        practice:
-          'Setiap kali meminta draf, sertakan 2 contoh paragraf yang menurut Anda "bagus" sebagai patokan tone of voice.',
-        mistakes:
-          'Memberikan instruksi satu kalimat pendek lalu heran mengapa hasilnya generik.',
-        checklist: [
-          'Menyertakan contoh input-output (Few-shot prompting).',
-          'Meluangkan waktu 2 menit untuk meninjau draf sebelum dipakai.',
-        ],
+        situation: 'Sering merasa kecewa karena hasil AI terasa hambar atau generik.',
+        explanation: 'Perlakukan AI seperti pekerja magang cerdas yang membaca jutaan buku namun belum pernah magang di kantor Anda. Ia butuh brief tertulis, referensi gaya bahasa, batasan, dan review.',
+        practice: 'Sertakan 2 contoh paragraf yang menurut Anda ideal sebagai patokan tone of voice.',
+        mistakes: 'Memberikan instruksi 1 kalimat pendek lalu heran mengapa hasilnya generik.',
+        checklist: ['Menyertakan contoh input-output (Few-shot prompting).', 'Meninjau draf sebelum dipublikasikan.'],
       },
       {
         id: 'ai-01-2',
         num: '01.2',
         title: 'Halusinasi: Kenapa Jawaban Salah Terdengar Begitu Yakin',
-        situation:
-          'AI mengutip pasal hukum palsu, mengarang angka riset fiktif, atau merekomendasikan fungsi kode pemrograman yang tidak pernah ada di dokumentasi.',
-        explanation:
-          'LLM dirancang untuk menghasilkan kalimat yang runtut dan meyakinkan secara gramatikal, bukan memverifikasi kebenaran ontologis. Ketika tidak memiliki data pasti, model akan mengisi kekosongan dengan tebakan yang terdengar paling masuk akal secara probabilitas.',
-        practice:
-          'Gunakan teknik "Grounded Prompting": perintahkan model untuk HANYA menjawab berdasarkan teks referensi yang Anda lampirkan di dalam tanda kutip / XML tag. Jika tidak ada di teks, perintahkan untuk menjawab "Saya tidak menemukan informasi tersebut di dokumen acuan."',
-        mistakes:
-          'Meminta AI menganalisis data atau angka spesifik tanpa melampirkan file sumber data aslinya.',
-        checklist: [
-          'Memberikan data sumber di dalam prompt (RAG pattern).',
-          'Memerintahkan secara tegas untuk menolak mengarang saat data kurang.',
-        ],
+        situation: 'AI mengutip pasal hukum palsu atau angka riset fiktif dengan nada sangat meyakinkan.',
+        explanation: 'LLM dirancang untuk menghasilkan kalimat yang runtut, bukan memverifikasi kebenaran ontologis. Ketika kekurangan data pasti, model mengisi kekosongan dengan tebakan probabilistik.',
+        practice: 'Gunakan Grounded Prompting: perintahkan model HANYA menjawab berdasarkan teks referensi yang dilampirkan di dalam XML tag. Jika tidak ada di teks, jawab: "Data tidak tersedia di dokumen acuan."',
+        mistakes: 'Meminta AI menganalisis angka tanpa melampirkan file sumber data aslinya.',
+        checklist: ['Memberikan data sumber di dalam prompt (RAG pattern).', 'Tegas melarang AI mengarang saat data kurang.'],
       },
     ],
   },
   {
     id: 'ai-02',
+    trackId: 'ai',
     code: 'Bab 02',
     title: 'Prompt yang Menghasilkan Output Layak Pakai',
     kicker: 'Prompt Engineering Praktis',
@@ -477,226 +568,651 @@ export const KLASIK_LEARNING_CHAPTERS: LearningChapter[] = [
       {
         id: 'ai-02-1',
         num: '02.1',
-        title: 'Kerangka 4 Pilar: Konteks, Tugas, Batasan, Format',
-        situation:
-          'Prompt Anda sering menghasilkan jawaban yang terlalu panjang, keluar jalur, atau menggunakan bahasa kaku yang tidak enak dibaca.',
-        explanation:
-          'Struktur formula standar industri:\n1. Konteks: Siapa Anda, siapa audiens Anda, dan apa situasi bisnis saat ini.\n2. Tugas: Kata kerja aktif yang sangat spesifik (misal: "Tulis 3 variasi hook pembuka").\n3. Batasan: Apa yang TIDAK boleh dilakukan (misal: "Jangan gunakan kata \'revolusioner\', maksimal 20 kata per hook").\n4. Format: Tampilan akhir yang diharapkan (JSON, Markdown tabel, atau bullet points singkat).',
-        practice:
-          'Terapkan template 4 bagian ini untuk membuat pengumuman rilis fitur baru atau draf email penawaran kerja sama.',
-        mistakes:
-          'Mencampurkan tugas dan batasan dalam satu paragraf panjang tanpa pemisah visual.',
-        checklist: [
-          'Memisahkan konteks, tugas, batasan, dan format dengan jelas.',
-          'Menentukan batasan kata atau format keluaran secara tegas.',
-        ],
+        title: 'Kerangka 4 Bagian: Konteks, Tugas, Batasan, Format',
+        situation: 'Prompt yang sama kadang menghasilkan jawaban panjang, kadang ringkas, dan formatnya sering berubah-ubah.',
+        explanation: 'Struktur baku 4 bagian menghilangkan ambiguitas:\n1. Konteks: Siapa Anda, siapa audiensnya.\n2. Tugas: Kata kerja tindakan spesifik.\n3. Batasan: Apa yang TIDAK boleh dilakukan.\n4. Format: JSON, Markdown table, atau bullet list.',
+        practice: 'Format template prompt:\n```markdown\n<context>Perusahaan logistik di Banten</context>\n<task>Buat draf email penawaran armada</task>\n<constraints>Maksimal 150 kata, jangan tawarkan diskon</constraints>\n<format>Format: Subjek, Pembuka, Poin Nilai, CTA WhatsApp</format>\n```',
+        mistakes: 'Mencampuradukkan perintah tugas dengan batasan larangan dalam satu paragraf panjang.',
+        checklist: ['Ada pemisahan eksplisit dengan tag XML.', 'Format output dispesifikasikan secara kaku.'],
       },
     ],
   },
   {
     id: 'ai-03',
+    trackId: 'ai',
     code: 'Bab 03',
-    title: 'Memberi Konteks dari Bisnis Sendiri',
-    kicker: 'Context Injection & Knowledge Base',
+    title: 'Konteks Bisnis: Cara Menyuapi AI Data Perusahaan',
+    kicker: 'Knowledge Base & RAG Sederhana',
     summary:
-      'Tanpa konteks bisnis Anda, AI hanyalah ensiklopedia umum internet. Bangun dokumen profil bisnis satu halaman yang dapat disematkan ke dalam setiap sistem asisten AI Anda.',
-    audience: 'Founder dan tim pengembang yang ingin AI berbicara layaknya representasi resmi perusahaan.',
+      'Model AI tercerdas di dunia tidak berguna jika tidak tahu harga paket, kebijakan retur, dan spesifikasi produk Anda. Masukkan data ke jendela konteks secara rapi.',
+    audience: 'Tim yang ingin AI menjawab sesuai SOP perusahaan tanpa harus melatih ulang model (fine-tuning).',
     subchapters: [
       {
         id: 'ai-03-1',
         num: '03.1',
-        title: 'Dokumen Profil Bisnis Satu Halaman (One-Page Business Profile)',
-        situation:
-          'Setiap kali tim Anda membuka obrolan AI baru, mereka harus mengetik ulang profil produk, daftar harga, dan keunggulan dari awal.',
-        explanation:
-          'Rangkum bisnis Anda ke dalam 1 dokumen ringkas: (1) Nama & Niche, (2) Masalah yang diselesaikan, (3) Target pembeli utama, (4) Daftar layanan/paket & rentang harga, (5) Nilai pembeda (USP), dan (6) Hal yang dilarang dijanjikan. Simpan file ini sebagai system prompt atau lampiran permanen.',
-        practice:
-          'Buat file markdown bernama `BUSINESS_CONTEXT.md` dan salin ke system instruction ChatGPT / Claude Projects / custom system prompt.',
-        mistakes:
-          'Mengunggah ratusan halaman PDF acak yang membingungkan model daripada 1 lembar ringkasan yang terstruktur rapi.',
-        checklist: [
-          'Dokumen profil bisnis selesai dibuat dalam 1-2 halaman.',
-          'Daftar harga dan paket sudah terverifikasi valid.',
-          'Aturan komunikasi dan tone of voice tertulis eksplisit.',
-        ],
+        title: 'Menyusun Dokumen Profil Perusahaan yang Mudah Dibaca Mesin',
+        situation: 'Menyuapi AI dengan brosur gambar desain PDF penuh hiasan yang susah diekstrak teksnya.',
+        explanation: 'Format terbaik untuk AI adalah Markdown atau JSON terstruktur. Buat dokumen `sop_faq.md` yang memuat pertanyaan, jawaban pasti, aturan garansi, dan harga resmi.',
+        practice: 'Susun file `knowledge.md` sederhana dengan heading yang jelas untuk setiap topik bisnis.',
+        mistakes: 'Membiarkan dokumen acuan memuat harga lama yang bertentangan dengan promo baru.',
+        checklist: ['Dokumen berbentuk teks bersih Markdown.', 'Hanya ada 1 versi kebenaran yang valid.'],
+      },
+    ],
+  },
+  {
+    id: 'ai-04',
+    trackId: 'ai',
+    code: 'Bab 04',
+    title: 'AI untuk Marketing: Dari Copywriting Hingga Leads',
+    kicker: 'Akuisisi Pelanggan dengan AI',
+    summary:
+      'Gunakan AI untuk membedah sudut pandang nyeri pelanggan (pain points), variasi headline iklan, dan kualifikasi prospek di chat.',
+    audience: 'Pemasar digital, pemilik toko online, dan tim penjualan.',
+    subchapters: [
+      {
+        id: 'ai-04-1',
+        num: '04.1',
+        title: 'Menganalisis Review Kompetitor untuk Menemukan Sudut Iklan',
+        situation: 'Kehabisan ide sudut pandang penulisan iklan (angle copy) untuk produk yang sudah umum.',
+        explanation: 'Kumpulkan 50 ulasan bintang 1-3 dari produk kompetitor, masukkan ke AI, lalu minta: "Kelompokkan kekecewaan terbesar pembeli ini menjadi 5 sudut penawaran produk saya."',
+        practice: 'Gunakan prompt perbandingan kelemahan vs keunggulan unik produk Anda.',
+        mistakes: 'Hanya meminta: "Tuliskan iklan menarik" tanpa data keluhan riil konsumen.',
+        checklist: ['Menggunakan data keluhan pembeli nyata.', 'Menghasilkan minimal 5 variasi sudut pandang.'],
+      },
+    ],
+  },
+  {
+    id: 'ai-05',
+    trackId: 'ai',
+    code: 'Bab 05',
+    title: 'Otomasi Alur Kerja (Workflow Automation) dengan AI',
+    kicker: 'Integrasi n8n & Make',
+    summary:
+      'Menghubungkan AI dengan tools operasional: saat ada form leads baru, AI merangkum kebutuhan dan mengirim notifikasi berprioritas ke WhatsApp staf.',
+    audience: 'Developer dan tim operasional yang ingin menghubungkan API tanpa ngoding dari nol.',
+    subchapters: [
+      {
+        id: 'ai-05-1',
+        num: '05.1',
+        title: 'Arsitektur Trigger, Filter, AI Node, dan Action',
+        situation: 'Membuat alur n8n yang memanggil AI untuk setiap aktivitas, sehingga biaya token jebol.',
+        explanation: 'Saring dulu dengan logika aturan pasti (IF/ELSE). Hanya lempar data ke node AI jika data tersebut memang membutuhkan pembacaan teks natural.',
+        practice: 'Susun alur: Form Masuk -> Validasi Email/Nomor (RegEx) -> Rangkum Kebutuhan (AI) -> Catat ke Sheets -> Kirim WhatsApp.',
+        mistakes: 'Menggunakan AI untuk memvalidasi format email padahal fungsi regex jauh lebih cepat dan gratis.',
+        checklist: ['Hanya menggunakan AI di langkah yang benar-benar membutuhkan penalaran.', 'Memasang penanganan error jika API down.'],
       },
     ],
   },
   {
     id: 'ai-06',
+    trackId: 'ai',
     code: 'Bab 06',
-    title: 'Workflow Automation: Menghubungkan Tools Tanpa Manual',
-    kicker: 'Arsitektur Otomasi Sistem',
+    title: 'Membangun AI Agent WhatsApp Ber-Guardrails',
+    kicker: 'Layanan Pelanggan 24/7',
     summary:
-      'Otomasi yang berhasil dibangun di atas proses kerja yang sudah stabil. Petakan pemicu (trigger), kondisi pemilah, aksi sistem, dan sediakan jalur pengaman jika terjadi kendala jaringan.',
-    audience: 'Developer dan operator bisnis yang ingin mengotomatiskan alur kerja tanpa kekhawatiran sistem kolaps diam-diam.',
+      'Merancang bot WhatsApp cerdas yang tidak bisa dibobol dengan prompt injection dan otomatis mengoper obrolan ke admin manusia saat situasi genting.',
+    audience: 'Bisnis yang ingin layanan pelanggan responsif 24 jam tanpa risiko reputasi.',
     subchapters: [
       {
         id: 'ai-06-1',
         num: '06.1',
-        title: 'Trigger, Action, Condition, dan Fallback Manual',
-        situation:
-          'Alur otomatisasi yang dibuat di n8n atau Make tiba-tiba berhenti di tengah jalan karena format pesan pelanggan tidak sesuai perkiraan, mengakibatkan lead terbengkalai berhari-hari.',
-        explanation:
-          'Setiap arsitektur otomasi wajib memiliki: (1) Trigger (pemicu event), (2) Sanitasi Input (membersihkan karakter berbahaya), (3) Condition (percabangan logika jika data lengkap vs tidak lengkap), (4) Action (mengeksekusi pengiriman data), dan (5) Error Catching / Fallback (jika gagal, segera kirim notifikasi darurat ke Telegram/WhatsApp developer).',
-        practice:
-          'Tambahkan node penangkap error (Error Trigger / Router Fallback) pada setiap otomasi yang berhubungan langsung dengan transaksi atau pelanggan.',
-        mistakes:
-          'Menganggap API pihak ketiga akan selalu online 100% tanpa menyiapkan log pencatat kegagalan.',
-        checklist: [
-          'Memiliki notifikasi darurat saat webhook gagal memproses data.',
-          'Menyimpan salinan data mentah di database/spreadsheet cadangan sebelum diproses.',
-        ],
+        title: 'Mekanisme Handoff Manusia & Boundary Safety',
+        situation: 'Pelanggan marah dan meminta berbicara dengan manajer, tetapi bot terus membalas dengan kalimat template yang memicu emosi.',
+        explanation: 'Pasang sensor sentimen dan kata kunci darurat ("telepon", "batal", "komplain", "marah"). Begitu terdeteksi, bot berhenti membalas dan langsung kirim notifikasi ke HP admin.',
+        practice: 'Definisikan aturan `if sentiment == negative -> trigger human_takeover`.',
+        mistakes: 'Mengunci pelanggan dalam putaran bot tanpa opsi berbicara dengan manusia.',
+        checklist: ['Tersedia tombol alihkan ke staf manusia kapan saja.', 'Bot menghentikan respon otomatis saat admin mengambil alih.'],
       },
     ],
   },
   {
     id: 'ai-07',
+    trackId: 'ai',
     code: 'Bab 07',
-    title: 'AI Agent untuk Chat, Sales, dan Dukungan Teknis',
-    kicker: 'Autonomous AI Agents',
+    title: 'Evaluasi, Monitoring & Mitigasi Risiko AI Produksi',
+    kicker: 'Kualitas & Keamanan Berkelanjutan',
     summary:
-      'Kapan bisnis membutuhkan AI Agent dan bukan chatbot biasa? Pahami arsitektur tool calling, integrasi MCP (Model Context Protocol), kualifikasi leads, dan titik penyerahan ke staf manusia.',
-    audience: 'Pengembang sistem yang ingin membangun asisten otonom yang aman dan bertanggung jawab.',
+      'Jangan lepaskan AI ke produksi tanpa sistem pemantauan berkala. Cara membaca log, mendeteksi penyimpangan, dan menjaga biaya API tetap efisien.',
+    audience: 'Pemilik produk dan engineer yang mengelola AI di lingkungan produksi.',
     subchapters: [
       {
         id: 'ai-07-1',
         num: '07.1',
-        title: 'Kapan Bisnis Benar-Benar Membutuhkan AI Agent',
-        situation:
-          'Banyak yang mengira chatbot pohon keputusan (rule-based: ketik 1 untuk info, ketik 2 untuk komplain) sudah usang dan harus diganti AI Agent yang bebas berbicara tanpa batas.',
-        explanation:
-          'Chatbot berbasis aturan tetap yang terbaik untuk navigasi menu cepat tanpa biaya token. AI Agent baru diperlukan saat pengguna mengajukan pertanyaan terbuka dengan bahasa alami yang bervariasi, membutuhkan pencarian konteks di dokumen (RAG), atau meminta sistem mengeksekusi tindakan (seperti cek status resi lewat API).',
-        practice:
-          'Batasi wewenang agent pada tahap awal hanya untuk 2 fungsi: (1) Menjawab pertanyaan FAQ produk, dan (2) Mengumpulkan data kontak serta kebutuhan awal prospek (kualifikasi leads).',
-        mistakes:
-          'Memberikan kebebasan penuh kepada agent untuk menjanjikan diskon atau menyetujui transaksi tanpa verifikasi manusia.',
-        checklist: [
-          'Menentukan batas eskalasi: kapan agent harus berkata "Mohon tunggu, saya sambungkan dengan rekan tim kami."',
-          'Membatasi akses tools ke endpoint yang bersifat read-only sebelum memberi izin write/update.',
-        ],
+        title: 'Audit Percakapan Mingguan & Pelaporan Anomali',
+        situation: 'Tidak pernah membuka log percakapan AI sampai ada pelanggan yang komplain viral.',
+        explanation: 'Lakukan audit sampel acak 20 percakapan setiap minggu. Tandai jawaban yang kurang pas dan perbarui file `knowledge.md` untuk mencegah kesalahan terulang.',
+        practice: 'Bikin spreadsheet `ai_feedback_log` untuk mencatat pertanyaan yang belum bisa dijawab AI dengan baik.',
+        mistakes: 'Menganggap sistem AI sudah selesai sekali pasang tanpa perlu diperbarui.',
+        checklist: ['Audit sampel berkala dilakukan.', 'SOP diperbarui berdasarkan pertanyaan baru.'],
+      },
+    ],
+  },
+
+  // ===================== TRACK 2: DIGITAL MARKETING & TRACKING (8 BAB) =====================
+  {
+    id: 'mkt-00',
+    trackId: 'digital-marketing',
+    code: 'Bab 00',
+    title: 'Peta Belajar Technical Marketing & Tracking Berbasis Data',
+    kicker: 'Pemasaran Digital Berbasis Data',
+    summary:
+      'Iklan digital bukan judi tebak-tebakan. Iklan adalah lelang matematika di mana algoritma mencocokkan niat beli pengunjung dengan penawaran Anda.',
+    audience: 'Pebisnis dan pengiklan yang ingin memahami mengapa iklan mereka boncos dan bagaimana memperbaikinya.',
+    subchapters: [
+      {
+        id: 'mkt-00-1',
+        num: '00.1',
+        title: 'Tiga Pilar: Penawaran, Halaman Konversi, dan Sinyal Data',
+        situation: 'Menggonta-ganti setting targeting iklan setiap hari padahal masalahnya ada di landing page yang lambat atau penawaran yang tidak menarik.',
+        explanation: 'Algoritma Meta dan Google hanya bertugas mengantar orang ke pintu Anda. Jika pintu Anda terbuka setelah 5 detik (lambat) atau isinya membingungkan, pengunjung akan kabur sebelum membeli.',
+        practice: 'Ukur kecepatan landing page Anda di Google PageSpeed Insights. Pastikan skor minimal 90+ di HP.',
+        mistakes: 'Menyalahkan algoritma iklan padahal halaman web membutuhkan waktu 8 detik untuk memuat.',
+        checklist: ['Landing page memuat di bawah 1.5 detik.', 'Penawaran utama jelas di layar pertama tanpa perlu scroll.'],
+      },
+    ],
+  },
+  {
+    id: 'mkt-01',
+    trackId: 'digital-marketing',
+    code: 'Bab 01',
+    title: 'Cara Kerja Lelang Iklan Meta Ads & Google Ads',
+    kicker: 'Algoritma Lelang & Skor Relevansi',
+    summary:
+      'Biaya per klik (CPC) Anda tidak ditentukan semata oleh besaran bid uang, melainkan kombinasi bid, perkiraan rasio tindakan, dan kualitas pengalaman halaman tujuan.',
+    audience: 'Pengiklan yang ingin menurunkan biaya iklan tanpa mengurangi jumlah leads.',
+    subchapters: [
+      {
+        id: 'mkt-01-1',
+        num: '01.1',
+        title: 'Formula Total Value Meta Ads',
+        situation: 'Menaikkan budget iklan 3x lipat namun biaya per hasil justru membengkak 4x lipat.',
+        explanation: 'Rumus lelang Meta: `Total Value = [Advertiser Bid] + [Estimated Action Rate] + [Ad Quality & Relevance]`. Halaman yang relevan dan cepat mendapatkan diskon lelang alami dari sistem.',
+        practice: 'Tingkatkan CTR kreatif dan kurangi bounce rate halaman untuk mendongkrak skor kualitas iklan.',
+        mistakes: 'Menaikkan budget secara drastis dalam satu hari sehingga mereset fase pembelajaran (Learning Phase).',
+        checklist: ['Menaikkan budget maksimal 20% per 2-3 hari.', 'Kreatif iklan sesuai dengan isi halaman landing page.'],
+      },
+    ],
+  },
+  {
+    id: 'mkt-02',
+    trackId: 'digital-marketing',
+    code: 'Bab 02',
+    title: 'Struktur Akun Iklan, Creative Testing & Validasi',
+    kicker: 'Struktur Kampanye Modern',
+    summary:
+      'Tinggalkan struktur kampanye kuno dengan 20 adset mikro. Gunakan struktur Broad / Advantage+ dengan penekanan pada keragaman sudut pandang materi kreatif.',
+    audience: 'Media buyer yang ingin struktur akun rapi dan mudah di-scale.',
+    subchapters: [
+      {
+        id: 'mkt-02-1',
+        num: '02.1',
+        title: 'Metode Testing 3:2:2 (3 Kreatif, 2 Teks, 2 Headline)',
+        situation: 'Menaruh 10 materi iklan dalam satu adset sehingga budget hanya terserap di 1 materi secara acak.',
+        explanation: 'Gunakan Dynamic Creative Testing dengan formula terstruktur untuk menemukan kombinasi pemenang sebelum dipindahkan ke kampanye skala besar (Scaling CBO).',
+        practice: 'Siapkan 3 format visual berbeda: foto produk bersih, video testimoni pengguna, dan infografis masalah-solusi.',
+        mistakes: 'Hanya mengubah warna tombol lalu menganggapnya sebagai materi baru.',
+        checklist: ['3 materi visual dengan sudut pandang berbeda.', 'Budget testing dialokasikan terpisah dari kampanye utama.'],
+      },
+    ],
+  },
+  {
+    id: 'mkt-03',
+    trackId: 'digital-marketing',
+    code: 'Bab 03',
+    title: 'Arsitektur Tracking: Dari Pixel Hingga GTM',
+    kicker: 'Fondasi Pelacakan Sinyal',
+    summary:
+      'Memahami bagaimana tag pelacak bekerja di browser, cara kerja cookie pihak pertama vs pihak ketiga, dan mengapa Google Tag Manager wajib digunakan.',
+    audience: 'Developer dan marketer yang ingin mengelola script tracking secara terpusat tanpa merusak kode website.',
+    subchapters: [
+      {
+        id: 'mkt-03-1',
+        num: '03.1',
+        title: 'Mengapa Jangan Menempelkan Kode Script Mentah di Header HTML',
+        situation: 'Website melambat drastis karena dipasangi 8 script analitik berbeda di baris `<head>`.',
+        explanation: 'Gunakan satu container Google Tag Manager (GTM). GTM memuat script secara asinkron dan memudahkan pengaturan pemicu (trigger) konversi tanpa perlu deploy ulang website.',
+        practice: 'Pasang GTM container, lalu kelola Pixel Meta, Google Ads tag, dan GA4 di dalam antarmuka GTM.',
+        mistakes: 'Memasang script ganda di HTML dan GTM sekaligus sehingga data transaksi terhitung dobel.',
+        checklist: ['Hanya satu snippet GTM di header web.', 'Tidak ada kode pelacak duplikat.'],
+      },
+    ],
+  },
+  {
+    id: 'mkt-04',
+    trackId: 'digital-marketing',
+    code: 'Bab 04',
+    title: 'Meta Conversions API (CAPI) & Server-Side Tracking',
+    kicker: 'Kebal Ad-Blocker & iOS Privacy',
+    summary:
+      'Browser adblocker dan pembatasan cookie Safari memangkas 20-30% sinyal konversi Anda. CAPI mengirimkan data langsung dari server ke endpoint Meta.',
+    audience: 'Pengiklan yang ingin data konversi 100% utuh dan skor pencocokan event tinggi.',
+    subchapters: [
+      {
+        id: 'mkt-04-1',
+        num: '04.1',
+        title: 'Mekanisme Deduplikasi Event ID',
+        situation: 'Setelah mengaktifkan CAPI, laporan penjualan di Ads Manager tercatat dua kali lipat dari transaksi riil.',
+        explanation: 'Jika browser mengirim event dan server juga mengirim event yang sama, Anda wajib menyertakan parameter `event_id` yang identik (misal: ID Order). Meta akan menggabungkan keduanya menjadi satu data utuh.',
+        practice: 'Generate UUID unik di backend untuk setiap transaksi dan sertakan di payload browser maupun payload CAPI.',
+        mistakes: 'Mengaktifkan CAPI tanpa parameter `event_id` deduplikasi.',
+        checklist: ['Event ID identik antara browser dan server.', 'Skor Event Match Quality mencapai minimal 8.0+.'],
+      },
+    ],
+  },
+  {
+    id: 'mkt-05',
+    trackId: 'digital-marketing',
+    code: 'Bab 05',
+    title: 'Google Analytics 4 (GA4) untuk Pembacaan Corong Bisnis',
+    kicker: 'Analisis Jalur Pengunjung',
+    summary:
+      'Menelusuri dari mana pengunjung datang, halaman mana yang paling lama dibaca, dan di langkah mana mereka memutuskan pergi tanpa transaksi.',
+    audience: 'Tim bisnis yang ingin optimasi conversion rate (CRO).',
+    subchapters: [
+      {
+        id: 'mkt-05-1',
+        num: '05.1',
+        title: 'Menyusun Laporan Corong (Funnel Exploration)',
+        situation: 'Hanya melihat angka total pengunjung tanpa tahu di tahap mana pengunjung rontok.',
+        explanation: 'Buat Funnel Exploration 4 langkah: Sesi Masuk -> Scroll 50% -> Klik Tombol WhatsApp -> Kirim Pesan. Identifikasi titik hambatan terbesar.',
+        practice: 'Analisis langkah dengan drop-off rate di atas 70% dan sederhanakan prosesnya.',
+        mistakes: 'Membuat formulir dengan 10 kolom isian yang melelahkan bagi pengguna HP.',
+        checklist: ['Laporan corong terkonfigurasi di GA4.', 'Formulir kontak maksimal 3-4 kolom isian.'],
+      },
+    ],
+  },
+  {
+    id: 'mkt-06',
+    trackId: 'digital-marketing',
+    code: 'Bab 06',
+    title: 'Membaca Atribusi Konversi, ROAS Sebenarnya & Budget',
+    kicker: 'Efisiensi Finansial Iklan',
+    summary:
+      'Jangan tertipu metrik ROAS dashboard iklan yang sering mengklaim transaksi yang sama. Cara menghitung Blended ROAS dan batas biaya akuisisi (Target CPA).',
+    audience: 'Pengambil keputusan finansial dan pemilik bisnis.',
+    subchapters: [
+      {
+        id: 'mkt-06-1',
+        num: '06.1',
+        title: 'Rumus Margin Bersih vs Target CPA',
+        situation: 'Iklan terlihat untung di dashboard, tetapi rekening bank bisnis justru defisit di akhir bulan.',
+        explanation: 'Hitung dulu Margin Kotor per produk sebelum beriklan. Jika keuntungan kotor per barang Rp 100.000, maka biaya per akuisisi leads (CPA) maksimal tidak boleh melebihi Rp 50.000 agar bisnis tetap sehat.',
+        practice: 'Buat tabel simulasi target CPA berdasarkan rasio closing CS Anda.',
+        mistakes: 'Beriklan tanpa mengetahui berapa nilai maksimal yang rela Anda bayar untuk satu pembeli baru.',
+        checklist: ['Target CPA tertulis jelas.', 'Menghitung Blended ROAS (Total Omzet / Total Biaya Iklan Gabungan).'],
+      },
+    ],
+  },
+  {
+    id: 'mkt-07',
+    trackId: 'digital-marketing',
+    code: 'Bab 07',
+    title: 'Alur Retargeting Otomatis & CRM Integration',
+    kicker: 'Konversi Prospek yang Belum Beli',
+    summary:
+      '95% pengunjung tidak langsung membeli di kunjungan pertama. Bangun alur pengingat sopan melalui WhatsApp dan audiens retargeting.',
+    audience: 'Tim penjualan yang ingin memaksimalkan setiap prospek yang sudah masuk.',
+    subchapters: [
+      {
+        id: 'mkt-07-1',
+        num: '07.1',
+        title: 'Follow-Up Terstruktur: Hari 1, Hari 3, dan Hari 7',
+        situation: 'Prospek yang sudah bertanya via WhatsApp tidak pernah dihubungi lagi jika tidak langsung bayar hari itu.',
+        explanation: 'Gunakan pesan tindak lanjut sopan yang memberikan nilai tambah (bukan sekadar "gimana kak jadi beli?"), misalnya mengirimkan contoh studi kasus atau tips praktis.',
+        practice: 'Otomatiskan pengingat jadwal follow-up ke kalender staf penjualan.',
+        mistakes: 'Melakukan spam pesan promosi setiap hari sehingga nomor diblokir prospek.',
+        checklist: ['Jadwal follow-up maksimal 3 kali.', 'Pesan berfokus pada membantu menjawab keraguan prospek.'],
+      },
+    ],
+  },
+
+  // ===================== TRACK 3: VIBE CODING & MODERN TOOLING (6 BAB) =====================
+  {
+    id: 'vc-00',
+    trackId: 'vibe-coding',
+    code: 'Bab 00',
+    title: 'Apa Itu Vibe Coding & Arsitektur AI-Assisted Engineering',
+    kicker: 'Paradigma Rekayasa Baru',
+    summary:
+      'Vibe coding bukan berarti ngoding asal-asalan tanpa mikir. Ini adalah pergeseran peran developer dari pengetik sintaks menjadi arsitek sistem yang mengarahkan agen AI.',
+    audience: 'Developer dan insinyur perangkat lunak yang ingin bekerja 5x lebih cepat dengan LLM coding tools.',
+    subchapters: [
+      {
+        id: 'vc-00-1',
+        num: '00.1',
+        title: 'Dari Pengetik Kode Menjadi Reviewer Arsitektur',
+        situation: 'Mengetik ribuan baris boilerplate sintaks yang membosankan dan rentan salah ketik.',
+        explanation: 'Fokus manusia adalah: desain arsitektur data, pemilihan pustaka, penegakan keamanan, dan verifikasi logika bisnis. Biarkan agen AI yang menyusun kode implementasinya.',
+        practice: 'Mulai dengan menyusun file spesifikasi teknis `ARCHITECTURE.md` sebelum meminta AI menulis kode.',
+        mistakes: 'Langsung meminta AI membuat aplikasi tanpa memberikan spesifikasi struktur folder dan dependensi.',
+        checklist: ['Spesifikasi teknis ditulis tertulis.', 'Mengetahui batasan keamanan kode yang dihasilkan.'],
+      },
+    ],
+  },
+  {
+    id: 'vc-01',
+    trackId: 'vibe-coding',
+    code: 'Bab 01',
+    title: 'Menyiapkan Lingkungan: Terminal & Claude Code CLI',
+    kicker: 'Setup Developer Environment',
+    summary:
+      'Memanfaatkan Claude Code CLI dan antarmuka terminal interaktif untuk navigasi codebase, refactoring multi-file, dan eksekusi tes otomatis.',
+    audience: 'Engineer yang ingin mengotomasi tugas koding langsung dari terminal.',
+    subchapters: [
+      {
+        id: 'vc-01-1',
+        num: '01.1',
+        title: 'Alur Kerja Terminal CLI Terpadu',
+        situation: 'Bolak-balik copy-paste kode dari browser ke IDE yang sangat menyita waktu.',
+        explanation: 'Gunakan CLI agent yang memiliki akses langsung membaca berkas, menjalankan build, dan memeriksa error linting di terminal lokal Anda.',
+        practice: 'Gunakan perintah CLI terstruktur untuk memecah tugas besar menjadi langkah atomic kecil.',
+        mistakes: 'Membiarkan agent mengubah 50 berkas sekaligus tanpa git commit teratur.',
+        checklist: ['Git status bersih sebelum menjalankan refactoring besar.', 'Menjalankan build check setelah setiap perubahan.'],
+      },
+    ],
+  },
+  {
+    id: 'vc-02',
+    trackId: 'vibe-coding',
+    code: 'Bab 02',
+    title: 'Prompting Arsitektural untuk Komponen Web Bersih',
+    kicker: 'Clean Code dengan LLM',
+    summary:
+      'Cara meminta AI menulis komponen React/TypeScript yang modular, type-safe, dan tidak menghasilkan kode sampah (anti-slop).',
+    audience: 'Frontend dan fullstack developer.',
+    subchapters: [
+      {
+        id: 'vc-02-1',
+        num: '02.1',
+        title: 'Menegakkan Aturan Zero-Warning & Type Strictness',
+        situation: 'AI sering memakai tipe `any` atau membuat komponen raksasa 800 baris yang sulit dipelihara.',
+        explanation: 'Wajibkan AI mengikuti aturan: "Pecah menjadi sub-komponen jika melebihi 200 baris, gunakan interface TypeScript eksplisit, dan pastikan build lulus tanpa peringatan linter."',
+        practice: 'Sertakan aturan coding standards Anda di file instruksi sistem agen.',
+        mistakes: 'Menerima kode yang tidak type-safe demi kecepatan instan.',
+        checklist: ['TypeScript strict mode aktif.', 'Komponen modular dan mudah diuji.'],
+      },
+    ],
+  },
+  {
+    id: 'vc-03',
+    trackId: 'vibe-coding',
+    code: 'Bab 03',
+    title: 'Debugging Runtime & Resolusi Bug Otomatis',
+    kicker: 'Investigasi & Analisis Akar Masalah',
+    summary:
+      'Cara mengumpankan error stack trace dan log jaringan ke agent AI agar akar masalah ditemukan dalam hitungan detik.',
+    audience: 'Engineer yang sering terjebak debugging berjam-jam.',
+    subchapters: [
+      {
+        id: 'vc-03-1',
+        num: '03.1',
+        title: 'Teknik Root Cause Analysis (RCA)',
+        situation: 'Memperbaiki gejala luar bug tanpa menyadari akar masalahnya ada di skema data backend.',
+        explanation: 'Berikan log error lengkap bersama potongan kode terkait dan tanyakan: "Jelaskan mengapa kondisi ini bisa terjadi sebelum memberikan kode perbaikan."',
+        practice: 'Wajibkan agen menjelaskan akar masalah sebelum menerapkan patch kode.',
+        mistakes: 'Menerapkan patch perbaikan asal jalan yang justru merusak modul lain (regresi).',
+        checklist: ['Akar masalah teridentifikasi jelas.', 'Uji regresi dilakukan setelah perbaikan.'],
+      },
+    ],
+  },
+  {
+    id: 'vc-04',
+    trackId: 'vibe-coding',
+    code: 'Bab 04',
+    title: 'Menghubungkan MCP Tools & Server Eksternal',
+    kicker: 'Model Context Protocol (MCP)',
+    summary:
+      'Memberi kekuatan nyata kepada AI koding dengan menghubungkannya ke database lokal, browser testing, dan dokumentasi API terbaru melalui MCP.',
+    audience: 'Developer modern yang membangun sistem multi-alat.',
+    subchapters: [
+      {
+        id: 'vc-04-1',
+        num: '04.1',
+        title: 'Mengapa MCP Mengubah Segalanya',
+        situation: 'AI koding tidak tahu struktur tabel database Anda atau tidak bisa mengetes tampilan di browser nyata.',
+        explanation: 'MCP (Model Context Protocol) menyediakan antarmuka standar bagi LLM untuk berinteraksi dengan dunia luar: query Postgres, audit DevTools browser, atau panggil API eksternal.',
+        practice: 'Pasang MCP server postgres atau devtools untuk audit langsung di komputer lokal.',
+        mistakes: 'Memberikan akses write ke database produksi tanpa batasan sandbox.',
+        checklist: ['Hanya mengizinkan akses ke database development.', 'Memverifikasi tool calls sebelum dieksekusi.'],
+      },
+    ],
+  },
+  {
+    id: 'vc-05',
+    trackId: 'vibe-coding',
+    code: 'Bab 05',
+    title: 'Siklus Deployment Otomatis (CI/CD) & Hardening',
+    kicker: 'Dari Laptop ke Dunia Luar',
+    summary:
+      'Otomatisasi build, pengujian keamanan statis, dan deployment kilat ke Vercel / Cloudflare dengan git push.',
+    audience: 'Solo developer yang ingin alur rilis aplikasi mulus dan otomatis.',
+    subchapters: [
+      {
+        id: 'vc-05-1',
+        num: '05.1',
+        title: 'Zero-Downtime Deployment dengan Git Flow',
+        situation: 'Deploy aplikasi dengan upload manual FTP yang rawan merusak website saat ada file hilang.',
+        explanation: 'Gunakan Git repository yang terhubung ke pipeline CI/CD. Setiap `git push main`, sistem cloud otomatis membangun preview terisolasi dan memindahkan lalu lintas tanpa jeda server (zero-downtime).',
+        practice: 'Setup auto-deploy GitHub ke Vercel atau Cloudflare Pages.',
+        mistakes: 'Melakukan perubahan langsung di server produksi tanpa melalui git.',
+        checklist: ['Pipeline build otomatis berjalan lancar.', 'Rollback instan tersedia jika terjadi error darurat.'],
       },
     ],
   },
 ];
 
 // -----------------------------------------------------------------------------
-// 4. KAMUS ISTILAH DIGITAL, REKAYASA & AI (GLOSSARY)
+// 5. KAMUS 40+ ISTILAH TEKNIS DIGITAL, AI & TRACKING (GLOSARIUM LENGKAP)
 // -----------------------------------------------------------------------------
 export const KLASIK_KAMUS: KamusTerm[] = [
   {
     term: 'AI Agent',
     category: 'AI & Machine Learning',
-    definition:
-      'Sistem perangkat lunak bertenaga LLM yang mampu merencanakan langkah secara mandiri, memanfaatkan alat eksternal (API / fungsi kode), dan mengeksekusi tugas beruntun untuk mencapai tujuan tertentu.',
-    practicalTip:
-      'Selalu terapkan sandboxing dan pembatasan izin (guardrails) agar agent tidak mengeksekusi perintah destruktif tanpa konfirmasi pengguna.',
+    definition: 'Sistem perangkat lunak yang menggunakan model bahasa (LLM) sebagai otak untuk mengamati lingkungan, membuat rencana, memanggil alat bantu (tools/API), dan menyelesaikan tugas berulang tanpa perlu instruksi manusia di setiap langkahnya.',
+    practicalTip: 'Gunakan AI Agent saat tugas Anda butuh konteks dinamis dan integrasi antar sistem. Untuk alur kaku tanpa variasi, cukup gunakan otomasi biasa.',
   },
   {
     term: 'RAG (Retrieval-Augmented Generation)',
     category: 'AI & Machine Learning',
-    definition:
-      'Metode menghubungkan dokumen atau database eksternal ke model AI saat inferensi, sehingga jawaban yang dihasilkan selalu berbasis data fakta terkini tanpa perlu melatih ulang model (fine-tuning).',
-    practicalTip:
-      'Pastikan dokumen acuan di-chunk (dipotong) dalam ukuran proporsional (200-500 kata) agar konteks yang disuntikkan ke prompt relevan dan hemat biaya token.',
+    definition: 'Teknik menyuapi AI dengan dokumen pengetahuan eksternal (PDF, SOP, database) sebelum AI menjawab pertanyaan, sehingga jawabannya selalu akurat dan berakar pada data nyata perusahaan Anda.',
+    practicalTip: 'RAG jauh lebih murah, cepat, dan mudah diperbarui dibanding melatih ulang model (fine-tuning) saat ada perubahan harga atau aturan bisnis.',
+  },
+  {
+    term: 'Prompt Injection',
+    category: 'Keamanan & Tracking',
+    definition: 'Serangan keamanan di mana pengguna jahat menyisipkan instruksi manipulatif ke dalam kolom chat untuk memaksa model AI mengabaikan aturan aslinya dan membocorkan data rahasia.',
+    practicalTip: 'Terapkan pemisahan tegas antara instruksi sistem dengan input pengguna, dan gunakan filter sensor sebelum data dikirim ke LLM.',
+  },
+  {
+    term: 'Halusinasi AI',
+    category: 'AI & Machine Learning',
+    definition: 'Kecenderungan model LLM untuk menghasilkan jawaban yang salah, tidak akurat, atau mengarang fakta fiktif dengan gaya bahasa yang terdengar sangat meyakinkan.',
+    practicalTip: 'Wajibkan model untuk menolak menjawab jika fakta tidak ditemukan di dalam dokumen acuan dengan instruksi Grounded Prompting.',
+  },
+  {
+    term: 'Meta Conversions API (CAPI)',
+    category: 'Keamanan & Tracking',
+    definition: 'Protokol pelacakan yang mengirimkan data konversi (pembelian, leads) langsung dari server website ke server Meta, memintas pemblokiran browser cookie dan ad-blocker.',
+    practicalTip: 'Aktifkan CAPI bersamaan dengan Pixel browser dan gunakan parameter Event ID yang sama untuk deduplikasi agar data iklan 100% akurat.',
+  },
+  {
+    term: 'Event Deduplication',
+    category: 'Keamanan & Tracking',
+    definition: 'Proses di mana platform iklan (seperti Meta) mencocokkan event dari browser dan event dari server dengan ID yang sama, lalu mengabaikan data duplikat agar transaksi tidak terhitung dua kali.',
+    practicalTip: 'Wajib generate Event ID unik di backend untuk setiap transaksi agar laporan omzet di Ads Manager tidak membengkak semu.',
+  },
+  {
+    term: 'Zero-Trust Architecture',
+    category: 'Cloud & DevOps',
+    definition: 'Model keamanan infrastruktur yang memegang prinsip "jangan pernah percaya, selalu verifikasi". Setiap pengguna dan perangkat harus diautentikasi bahkan saat berada di jaringan internal.',
+    practicalTip: 'Tutup port publik server VPS Anda dan gunakan mesh VPN privat seperti Tailscale untuk akses internal database dan SSH.',
+  },
+  {
+    term: 'Tailscale (WireGuard)',
+    category: 'Cloud & DevOps',
+    definition: 'Layanan jaringan privat terenkripsi berbasis protokol WireGuard yang menghubungkan server cloud, laptop, dan perangkat mobile Anda tanpa perlu membuka port ke internet umum.',
+    practicalTip: 'Dengan Tailscale, port SSH 22 di server VPS bisa ditutup total dari internet luar, sehingga hacker bot otomatis tidak bisa menyerang.',
+  },
+  {
+    term: 'Prepared Statements (Anti-SQLi)',
+    category: 'Keamanan & Tracking',
+    definition: 'Metode eksekusi kueri database yang memisahkan kode SQL dari data input pengguna, membuat serangan penyusupan data (SQL Injection) mustahil dieksekusi.',
+    practicalTip: 'Gunakan selalu ORM seperti Prisma atau driver database parameterized query; jangan pernah menggabungkan string input pengguna langsung ke teks SQL.',
+  },
+  {
+    term: 'Core Web Vitals & LCP',
+    category: 'Web & Arsitektur',
+    definition: 'Metrik resmi Google untuk mengukur kecepatan halaman. LCP (Largest Contentful Paint) mengukur berapa lama konten visual utama halaman muncul ke layar pengguna.',
+    practicalTip: 'Targetkan skor LCP di bawah 1.2 detik untuk mendapatkan skor Google PageSpeed 95+ dan peringkat SEO yang unggul.',
+  },
+  {
+    term: 'ROAS (Return on Ad Spend)',
+    category: 'Keamanan & Tracking',
+    definition: 'Rasio pendapatan kotor yang dihasilkan dari setiap rupiah yang dihabiskan untuk iklan berbayar (Total Pendapatan / Total Biaya Iklan).',
+    practicalTip: 'Hitung juga Blended ROAS yang memasukkan seluruh biaya iklan dibagi seluruh omzet toko untuk mengetahui kesehatan margin riil.',
+  },
+  {
+    term: 'CPA (Cost per Acquisition)',
+    category: 'Keamanan & Tracking',
+    definition: 'Rata-rata biaya iklan yang harus Anda bayar untuk mendapatkan satu pelanggan baru atau satu leads prospek yang mengirim pesan.',
+    practicalTip: 'Ketahui batas maksimal CPA yang sanggup ditoleransi margin keuntungan bisnis Anda sebelum menaikkan budget iklan.',
+  },
+  {
+    term: 'Vibe Coding',
+    category: 'AI & Machine Learning',
+    definition: 'Pendekatan rekayasa perangkat lunak modern di mana developer bertindak sebagai perancang arsitektur sistem dan memanfaatkan asisten AI untuk menulis implementasi kode dengan cepat.',
+    practicalTip: 'Kunci sukses vibe coding adalah memiliki spesifikasi arsitektur yang jelas dan selalu memverifikasi keamanan serta build check secara otomatis.',
   },
   {
     term: 'MCP (Model Context Protocol)',
     category: 'AI & Machine Learning',
-    definition:
-      'Standar protokol terbuka yang diperkenalkan oleh Anthropic untuk menghubungkan aplikasi kecerdasan buatan dengan sumber data lokal, lingkungan runtime, dan alat bantu pengembang secara aman dan terstandar.',
-    practicalTip:
-      'Gunakan MCP server saat membangun asisten coding atau integrasi database internal agar model tidak memerlukan integrasi API kustom yang rapuh.',
+    definition: 'Standar protokol terbuka yang memungkinkan model AI terhubung secara aman dengan alat eksternal, repositori kode, database lokal, dan API pihak ketiga.',
+    practicalTip: 'Gunakan MCP server untuk memberi akses aman kepada agent AI koding Anda agar bisa mengecek database lokal tanpa bocor ke internet.',
   },
   {
-    term: 'SSR vs SSG vs CSR',
-    category: 'Web & Arsitektur',
-    definition:
-      'Tiga pendekatan rendering web: SSR (Server-Side Rendering) membuat HTML di server saat request datang; SSG (Static Site Generation) membuat seluruh file HTML saat proses build; CSR (Client-Side Rendering) membebankan rendering halaman sepenuhnya ke browser pengguna lewat JavaScript.',
-    practicalTip:
-      'Untuk landing page dan blog yang mengejar SEO serta loading instan, pilih SSG (seperti Astro). Untuk dashboard analitik yang penuh interaksi data privat, pilih CSR/SSR.',
-  },
-  {
-    term: 'Core Web Vitals',
-    category: 'Web & Arsitektur',
-    definition:
-      'Tiga metrik utama Google untuk mengukur kualitas pengalaman pengguna nyata pada halaman web: LCP (kecepatan muat konten utama), CLS (stabilitas tata letak visual), dan INP (responsivitas interaksi klik).',
-    practicalTip:
-      'Hindari penggunaan JavaScript bundle raksasa dan sertakan dimensi eksplisit (width & height) pada gambar untuk mengunci skor hijau 95+ di Google PageSpeed.',
-  },
-  {
-    term: 'Conversions API (CAPI)',
-    category: 'Keamanan & Tracking',
-    definition:
-      'Metode pengiriman data interaksi pengguna langsung dari web server ke platform iklan (seperti Meta / Google) tanpa bergantung pada browser pixel yang rentan diblokir adblocker atau kebijakan privasi browser.',
-    practicalTip:
-      'Jalankan browser pixel dan Conversions API secara berdampingan dengan menyertakan Event ID yang identik agar sistem analitik dapat melakukan deduplikasi otomatis.',
-  },
-  {
-    term: 'Reverse Proxy (Caddy / Nginx)',
+    term: 'Docker & Containerization',
     category: 'Cloud & DevOps',
-    definition:
-      'Server perantara yang menerima lalu lintas internet dari pengunjung dan meneruskannya ke port aplikasi backend internal, sekaligus menangani terminasi SSL HTTPS, kompresi data, dan keamanan firewall.',
-    practicalTip:
-      'Caddy adalah pilihan terbaik untuk pengembang modern karena secara otomatis mengurus dan memperbarui sertifikat SSL Let\'s Encrypt tanpa konfigurasi cron job manual.',
+    definition: 'Teknologi untuk membungkus aplikasi beserta seluruh pustaka pendukungnya ke dalam satu paket terisolasi (container), sehingga aplikasi berjalan identik di komputer manapun.',
+    practicalTip: 'Pakai Docker Compose untuk menjalankan database, backend, dan reverse proxy di VPS hanya dengan satu perintah `docker compose up -d`.',
   },
   {
-    term: 'Tailscale VPN',
+    term: 'Caddy Web Server',
     category: 'Cloud & DevOps',
-    definition:
-      'Jaringan privat virtual berbasis protokol WireGuard yang memungkinkan perangkat terhubung satu sama lain secara terenkripsi point-to-point tanpa perlu membuka port publik atau mengonfigurasi port forwarding di router.',
-    practicalTip:
-      'Gunakan Tailscale untuk mengakses port SSH dan dashboard internal server VPS Anda, sehingga port 22 tidak perlu dibuka ke internet publik.',
+    definition: 'Web server modern berkecepatan tinggi yang ditulis dalam bahasa Go dengan fitur otomatisasi penerbitan dan pembaruan sertifikat SSL HTTPS Let\'s Encrypt tanpa konfigurasi rumit.',
+    practicalTip: 'Caddy jauh lebih ringkas dibanding Nginx: cukup tulis 3 baris konfigurasi, domain langsung aktif dengan HTTPS aman dan kompresi Brotli.',
   },
 ];
 
 // -----------------------------------------------------------------------------
-// 5. ARTIKEL BLOG TEKNIS & STUDI KASUS (BLOG POSTS)
+// 6. TOOLS YANG SAYA PAKAI (TOOLKIT HARIAN DENGAN KATEGORI JELAS)
+// -----------------------------------------------------------------------------
+export const KLASIK_TOOLS: ToolItem[] = [
+  {
+    name: 'Next.js & React',
+    category: 'Frontend & Web',
+    tagline: 'Framework Standar Industri',
+    description: 'Arsitektur web modern dengan Server-Side Rendering (SSR) dan Static Generation untuk kecepatan muat instan di bawah 1 detik.',
+    badge: 'Frontend',
+  },
+  {
+    name: 'Tailwind CSS',
+    category: 'Frontend & Web',
+    tagline: 'Desain Responsif Presisi',
+    description: 'Penyusunan antarmuka berstandar tinggi yang ringan, konsisten di seluruh ukuran layar, dan bebas dari CSS gemuk tak terpakai.',
+    badge: 'Styling',
+  },
+  {
+    name: 'TypeScript',
+    category: 'Frontend & Web',
+    tagline: 'Type-Safe Engineering',
+    description: 'Mencegah bug fatal di produksi dengan validasi tipe data statis sejak kode pertama ditulis.',
+    badge: 'Bahasa',
+  },
+  {
+    name: 'Claude 3.7 Sonnet',
+    category: 'AI & LLMs',
+    tagline: 'Otak AI Penalaran Mendalam',
+    description: 'Model AI tercanggih untuk penalaran arsitektur kode, ekstraksi dokumen kompleks, dan pemanggilan tools eksternal terpercaya.',
+    badge: 'LLM Utama',
+  },
+  {
+    name: 'Gemini Flash & OpenAI',
+    category: 'AI & LLMs',
+    tagline: 'Inferensi Cepat & Efisien',
+    description: 'Digunakan untuk respon chat WhatsApp berbiaya sangat terjangkau dengan latensi ultra-rendah.',
+    badge: 'LLM Pendukung',
+  },
+  {
+    name: 'n8n & Webhooks',
+    category: 'AI & LLMs',
+    tagline: 'Otomasi Workflow Mandiri',
+    description: 'Menghubungkan ratusan sistem operasional bisnis tanpa terikat langganan pihak ketiga yang mahal.',
+    badge: 'Automation',
+  },
+  {
+    name: 'PostgreSQL & Supabase',
+    category: 'Backend & Data',
+    tagline: 'Database Relasional Teruji',
+    description: 'Penyimpanan data yang tangguh dengan integritas relasional, dukungan enkripsi data, dan query terparameter anti-SQLi.',
+    badge: 'Database',
+  },
+  {
+    name: 'Ubuntu Linux 24.04 LTS',
+    category: 'Cloud & Security',
+    tagline: 'Sistem Operasi Server Standar',
+    description: 'Distribusi Linux minim celah keamanan yang di-hardening khusus untuk menjalankan container aplikasi produksi 24/7.',
+    badge: 'OS Server',
+  },
+  {
+    name: 'Docker Engine',
+    category: 'Cloud & Security',
+    tagline: 'Isolasi Kontainer Aplikasi',
+    description: 'Menjamin aplikasi berjalan stabil tanpa konflik pustaka antar layanan di dalam server cloud.',
+    badge: 'DevOps',
+  },
+  {
+    name: 'Tailscale & WireGuard',
+    category: 'Cloud & Security',
+    tagline: 'Zero-Trust Private Mesh VPN',
+    description: 'Mengunci port remote SSH agar tidak terlihat oleh internet publik, hanya bisa diakses oleh perangkat resmi yang diautentikasi.',
+    badge: 'Keamanan Jaringan',
+  },
+  {
+    name: 'Cloudflare WAF & CDN',
+    category: 'Cloud & Security',
+    tagline: 'Perlindungan Perimeter Terdepan',
+    description: 'Mitigasi serangan DDoS global, filter bot jahat, dan percepatan aset statis di ratusan data center dunia.',
+    badge: 'Edge Security',
+  },
+  {
+    name: 'Meta Conversions API (CAPI)',
+    category: 'Marketing & Analytics',
+    tagline: 'Tracking Server-Side Presisi',
+    description: 'Memulihkan 20-30% sinyal konversi yang hilang akibat pemblokiran browser modern demi efisiensi budget iklan.',
+    badge: 'Tracking',
+  },
+  {
+    name: 'Google Tag Manager & GA4',
+    category: 'Marketing & Analytics',
+    tagline: 'Analitik Corong Perilaku Pengunjung',
+    description: 'Manajemen script pelacak terpusat dan pengukuran jalur konversi pengunjung secara terstruktur.',
+    badge: 'Analitik',
+  },
+];
+
+// -----------------------------------------------------------------------------
+// 7. ARTIKEL BLOG PILIHAN
 // -----------------------------------------------------------------------------
 export const KLASIK_BLOG_POSTS: BlogPost[] = [
   {
-    id: 'arsitektur-web-modern-csr-ssr-ssg',
-    slug: 'arsitektur-web-modern-csr-ssr-ssg',
-    title: 'Arsitektur Web Modern: Kapan Memilih CSR, SSR, atau SSG untuk Produk Anda',
+    id: 'apa-itu-ai-agent-arsitektur-dan-batas',
+    slug: 'apa-itu-ai-agent',
+    title: 'Apa Itu AI Agent? Komponen, Batas Tindakan, dan Kapan Harus Memakainya',
     excerpt:
-      'Membedah perbandingan teknis antara Client-Side Rendering, Server-Side Rendering, dan Static Site Generation agar keputusan teknologi produk Anda tidak dimulai dari tren semata.',
-    category: 'Web Engineering',
-    readTime: '6 min read',
-    date: '28 Okt 2026',
-    featured: true,
-    content: {
-      intro:
-        'Salah satu kesalahan paling umum dalam pengembangan perangkat lunak modern adalah memilih tech stack berdasarkan popularitas di media sosial, bukan karakteristik beban kerja dan kebutuhan pengguna akhir.',
-      keyTakeaways: [
-        'SSG adalah pilihan mutlak untuk website pemasaran, company profile, dan blog teknis yang memprioritaskan skor SEO 100 dan biaya hosting nol.',
-        'SSR dibutuhkan ketika konten halaman bersifat sangat dinamis dan dipersonalisasi per pengguna berdasarkan sesi otentikasi server.',
-        'CSR ideal untuk aplikasi dashboard internal, tools interaktif murni, atau panel kontrol di mana SEO tidak relevan.',
-      ],
-      sections: [
-        {
-          heading: '1. Mengapa Static Site Generation (SSG) Mengalami Kebangkitan',
-          body:
-            'Di era awal web, kita menggunakan HTML statis. Kemudian web beralih ke dynamic PHP, lalu ke Single Page Applications (SPA) berbasis React yang memindahkan semua beban render ke browser klien. Masalahnya: pengguna di jaringan seluler harus mengunduh megabyte JavaScript sebelum layar menampilkan teks pertama. Framework modern seperti Astro mengembalikan kejayaan SSG dengan konsep Island Architecture: kirim HTML murni secara instan, dan hanya hydrate komponen kecil yang membutuhkan interaktivitas JavaScript.',
-        },
-        {
-          heading: '2. Kriteria Objektif Memilih Pola Render',
-          body:
-            'Tanyakan 3 pertanyaan ini sebelum memulai proyek:\n1. Apakah halaman ini wajib diindeks Google Search secara sempurna? (Jika ya -> Pilih SSG atau SSR).\n2. Apakah konten halaman berubah setiap detik untuk semua pengunjung? (Jika tidak -> Pilih SSG dengan rebuild otomatis saat ada konten baru).\n3. Apakah ada budget bulanan untuk memelihara server Node.js aktif 24 jam? (Jika tidak -> SSG yang di-host di Cloudflare Pages / Vercel Edge berbiaya nol rupiah dan tahan lonjakan jutaan pengunjung).',
-        },
-      ],
-      conclusion:
-        'Gunakan teknologi yang paling membosankan dan paling dapat diandalkan untuk masalah yang Anda hadapi. Jangan gunakan arsitektur microservices atau SSR kompleks jika yang Anda bangun hanyalah company profile yang cukup diselesaikan dengan file statis berkecepatan tinggi.',
-    },
-  },
-  {
-    id: 'ai-agent-vs-chatbot-konvensional',
-    slug: 'ai-agent-vs-chatbot-konvensional',
-    title: 'AI Agent vs Chatbot Konvensional: Kenapa Tool Calling Mengubah Segalanya',
-    excerpt:
-      'Penjelasan mendalam mengenai perbedaan mendasar antara chatbot percakapan biasa dengan sistem AI Agent yang mampu merencanakan tindakan dan memanggil API eksternal.',
+      'Perbedaan mendasar antara chatbot tanya-jawab biasa dengan AI Agent yang memiliki kemampuan merencanakan, memanggil tools, dan mengeksekusi tugas bisnis nyata.',
     category: 'AI & Agents',
-    readTime: '7 min read',
-    date: '15 Okt 2026',
+    readTime: '6 min read',
+    date: '28 Sep 2026',
     featured: true,
     content: {
       intro:
@@ -723,53 +1239,50 @@ export const KLASIK_BLOG_POSTS: BlogPost[] = [
     },
   },
   {
-    id: 'setup-cloud-vps-docker-caddy-tailscale',
-    slug: 'setup-cloud-vps-docker-caddy-tailscale',
-    title: 'Setup Server Mandiri: Docker, Tailscale, dan Caddy untuk Pengembang Solo',
+    id: 'biaya-pembuatan-website-komponen-dan-paket',
+    slug: 'biaya-pembuatan-website',
+    title: 'Biaya Pembuatan Website: Komponen Riil dan Pilihan Paket Masuk Akal',
     excerpt:
-      'Panduan praktis menyusun infrastruktur cloud VPS Linux yang aman, hemat biaya, dan mudah dipelihara tanpa terjebak biaya bulanan platform PaaS yang mahal.',
-    category: 'Cloud & DevOps',
-    readTime: '8 min read',
-    date: '02 Okt 2026',
+      'Membedah mengapa harga website bisa berkisar dari Rp 500 ribu hingga puluhan juta rupiah, dan apa saja yang sebenarnya Anda bayar di balik layar.',
+    category: 'Web Engineering',
+    readTime: '7 min read',
+    date: '27 Agt 2026',
+    featured: true,
     content: {
       intro:
-        'Banyak developer pemula enggan menyentuh VPS Linux dan lebih memilih layanan PaaS berbayar bulanan mahal karena takut dengan kompleksitas konfigurasi firewall dan sertifikat SSL. Padahal, dengan kombinasi alat modern, mengelola VPS mandiri kini sangat mudah dan menyenangkan.',
+        'Banyak calon pemilik usaha bingung melihat variasi harga pembuatan website di pasaran. Ada yang menawarkan Rp 100 ribu, ada yang Rp 500 ribu, dan ada agensi yang meminta puluhan juta untuk tampilan yang sekilas mirip.',
       keyTakeaways: [
-        'Satu server VPS seharga $4-$6 per bulan dapat menjalankan belasan aplikasi containerized dengan performa sangat memuaskan.',
-        'Caddy Web Server mengeliminasi kerumitan certbot dan konfigurasi Nginx yang berbelit-belit.',
-        'Tailscale VPN memungkinkan server dikelola dari mana saja tanpa perlu mengekspos port SSH ke internet publik.',
+        'Biaya website ditentukan oleh 3 faktor: infrastruktur (domain & hosting), performa kecepatan render, dan kompleksitas fitur fungsional.',
+        'Paket Rp 500 ribuan sangat ideal untuk landing page statis cepat yang mengarahkan pembeli ke WhatsApp.',
+        'Aplikasi web kustom dengan sistem login dan database internal membutuhkan investasi rekayasa yang lebih serius.',
       ],
       sections: [
         {
-          heading: '1. Hardening Server Linux dalam 5 Menit',
+          heading: '1. Komponen Biaya yang Nyata',
           body:
-            'Langkah pertama setelah membuat VPS adalah mematikan login root berbasis password dan hanya mengizinkan public key cryptography. Pasang firewall UFW hanya untuk port 80 dan 443. Untuk port SSH (22), jangan buka ke publik — gunakan antarmuka Tailscale sehingga hanya laptop atau HP Anda yang terautentikasi yang bisa melakukan remote SSH ke server.',
-        },
-        {
-          heading: '2. Mengapa Caddy Menggantikan Nginx untuk Tim Kecil',
-          body:
-            'Caddy ditulis dalam bahasa Go dan memiliki arsitektur modern. Anda cukup menulis 3 baris di Caddyfile:\n```\napp.domainanda.com {\n    reverse_proxy localhost:3000\n}\n```\nCaddy akan otomatis menghubungi Let\'s Encrypt, menerbitkan sertifikat SSL HTTPS, memperbaruinya setiap 60 hari, dan mengompresi aset web dengan algoritma Brotli tanpa konfigurasi tambahan apapun.',
+            'Komponen dasar website terdiri dari:\n- Nama Domain (.com / .id): Biaya sewa tahunan resmi ke registrar.\n- Hosting & Server: Layanan komputasi cloud untuk menampung berkas web.\n- Sertifikat Keamanan SSL: Enkripsi HTTPS (yang seharusnya gratis via Let\'s Encrypt / Cloudflare).\n- Desain & Rekayasa Kode: Waktu insinyur menyusun tata letak responsif, mengoptimasi gambar, dan memastikan website tidak lelet di ponsel pembeli.',
         },
       ],
       conclusion:
-        'Memahami dasar-dasar sistem operasi dan infrastruktur server memberi Anda kebebasan penuh sebagai insinyur perangkat lunak untuk menjalankan eksperimen apapun tanpa memikirkan tagihan cloud yang membengkak.',
+        'Pilihlah solusi yang sesuai dengan skala bisnis Anda saat ini. Jangan menghabiskan puluhan juta untuk sistem rumit jika yang Anda butuhkan hanyalah landing page cepat yang menghasilkan kontak leads setiap hari.',
     },
   },
   {
     id: 'server-side-tracking-capi-vs-pixel',
-    slug: 'server-side-tracking-capi-vs-pixel',
-    title: 'Server-Side Tracking (CAPI) vs Browser Pixel: Menjaga Akurasi Data di Era Modern',
+    slug: 'cara-tracking-konversi-meta-ads',
+    title: 'Cara Tracking Konversi Meta Ads: Event, WhatsApp, dan Server-Side CAPI',
     excerpt:
-      'Mengapa browser pixel tradisional kehilangan hingga 30% data akibat adblocker dan perlindungan privasi browser, serta bagaimana arsitektur server-side mengatasinya.',
-    category: 'Keamanan & Tracking',
-    readTime: '5 min read',
-    date: '20 Sep 2026',
+      'Mengapa browser pixel tradisional kehilangan hingga 30% data akibat adblocker, serta bagaimana arsitektur server-side mengatasinya secara legal dan akurat.',
+    category: 'Keamanan & Arsitektur',
+    readTime: '6 min read',
+    date: '27 Agt 2026',
+    featured: true,
     content: {
       intro:
-        'Jika Anda pernah menjalankan iklan berbayar dan melihat laporan dashboard iklan mencatat 50 transaksi sementara rekening bank Anda mencatat 70 transaksi, Anda sedang mengalami fenomena "data signal loss" akibat pemblokiran browser modern.',
+        'Jika Anda pernah menjalankan iklan berbayar dan melihat laporan dashboard mencatat 50 transaksi sementara rekening bank Anda mencatat 70 transaksi, Anda sedang mengalami fenomena data loss akibat pemblokiran browser modern.',
       keyTakeaways: [
-        'Browser cookie pihak ketiga sedang dihapuskan secara bertahap oleh browser terkemuka (Safari ITP, Firefox ETP, Chrome).',
-        'Conversions API (CAPI) mengirimkan sinyal transaksi langsung dari backend server ke endpoint API platform analitik.',
+        'Browser cookie pihak ketiga sedang dihapuskan secara bertahap oleh browser modern (Safari ITP, Firefox, Chrome).',
+        'Conversions API (CAPI) mengirimkan sinyal transaksi langsung dari backend server ke endpoint API platform iklan.',
         'Deduplikasi event dengan Event ID yang sama adalah kunci mencegah pelaporan transaksi ganda.',
       ],
       sections: [
@@ -781,6 +1294,35 @@ export const KLASIK_BLOG_POSTS: BlogPost[] = [
       ],
       conclusion:
         'Keputusan pemasaran dan alokasi budget bisnis hanya seakurat data yang Anda kumpulkan. Investasi pada sistem tracking yang solid selalu membuahkan hasil dalam bentuk biaya akuisisi yang lebih terkendali.',
+    },
+  },
+  {
+    id: 'setup-cloud-vps-docker-caddy-tailscale',
+    slug: 'coding-dari-hp-remote-ssh-termius-tailscale',
+    title: 'Coding dari HP: Remote SSH ke PC Lokal & Cloud VPS dengan Termius + Tailscale',
+    excerpt:
+      'Panduan praktis mengelola server cloud VPS Linux yang aman, hemat biaya, dan bisa dipantau langsung dari smartphone Anda.',
+    category: 'Cloud & DevOps',
+    readTime: '8 min read',
+    date: '09 Agt 2026',
+    featured: true,
+    content: {
+      intro:
+        'Mengelola server dan merilis pembaruan kode tidak harus selalu di depan meja kerja dengan multi-monitor. Dengan setup modern, Anda bisa mengecek status server dari mana saja dengan aman.',
+      keyTakeaways: [
+        'Satu server VPS seharga $4-$6 per bulan dapat menjalankan belasan aplikasi containerized dengan performa prima.',
+        'Caddy Web Server mengeliminasi kerumitan certbot dan konfigurasi Nginx berbelit.',
+        'Tailscale VPN memungkinkan server dikelola dari HP tanpa perlu membuka port SSH ke publik.',
+      ],
+      sections: [
+        {
+          heading: '1. Hardening Server Linux dalam 5 Menit',
+          body:
+            'Langkah pertama setelah membuat VPS adalah mematikan login root berbasis password dan hanya mengizinkan public key cryptography. Pasang firewall UFW hanya untuk port 80 dan 443. Untuk port SSH (22), jangan buka ke publik — gunakan antarmuka Tailscale sehingga hanya perangkat terautentikasi Anda yang bisa mengaksesnya.',
+        },
+      ],
+      conclusion:
+        'Memahami dasar-dasar sistem operasi dan infrastruktur server memberi Anda kebebasan penuh sebagai insinyur perangkat lunak untuk menjalankan eksperimen apapun tanpa memikirkan tagihan cloud yang membengkak.',
     },
   },
 ];

@@ -34,6 +34,7 @@ const SECTION_TO_PATH: Record<SectionId, string> = {
   security: '/keamanan',
   learning: '/belajar',
   blog: '/blog',
+  tools: '/tools',
   kamus: '/kamus',
 };
 
@@ -93,11 +94,14 @@ function resolveRouteFromWindow(): { tab: SectionId; cert: CertificateItem | nul
   if (lowerPath === 'security' || lowerPath === 'keamanan') {
     return { tab: 'security', cert: null };
   }
-  if (lowerPath === 'learning' || lowerPath === 'belajar') {
+  if (lowerPath === 'learning' || lowerPath.startsWith('belajar')) {
     return { tab: 'learning', cert: null };
   }
   if (lowerPath === 'blog' || lowerPath === 'artikel') {
     return { tab: 'blog', cert: null };
+  }
+  if (lowerPath === 'tools' || lowerPath === 'alat') {
+    return { tab: 'tools', cert: null };
   }
   if (lowerPath === 'kamus' || lowerPath === 'glossary') {
     return { tab: 'kamus', cert: null };
@@ -209,11 +213,8 @@ export default function App() {
     window.history.pushState(null, '', nextPath);
 
     if (designTheme === 'arcade') {
-      const targetElement = document.getElementById(sectionId);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        return;
-      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
     }
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   };
@@ -286,6 +287,8 @@ export default function App() {
                 />
               ) : designTheme === 'arcade' ? (
                 <KlasikEcosystemView
+                  activePage={activeTab}
+                  onNavigate={handleNavigate}
                   onOpenCV={() => setIsCVModalOpen(true)}
                   onSelectCertificate={handleSelectCertificate}
                   onSelectProject={(p) => setSelectedProject(p)}

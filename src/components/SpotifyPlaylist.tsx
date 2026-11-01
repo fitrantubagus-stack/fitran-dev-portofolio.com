@@ -30,7 +30,7 @@ export const SpotifyPlaylist: React.FC<SpotifyPlaylistProps> = ({ designTheme = 
           <div className="flex items-center gap-2 min-w-0">
             <FitranPixelLogo size="sm" />
             <h2 className="font-heading font-bold text-lg text-zinc-950 dark:text-white tracking-tight truncate">
-              Playlist
+              Fitran playlist
             </h2>
           </div>
 

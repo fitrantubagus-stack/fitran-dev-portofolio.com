@@ -10,6 +10,7 @@ export type SectionId =
   | 'security'
   | 'learning'
   | 'blog'
+  | 'tools'
   | 'kamus';
 
 export type CertificateCategory = 'all' | 'cloud-ai' | 'marketing' | 'academic' | 'publications';
