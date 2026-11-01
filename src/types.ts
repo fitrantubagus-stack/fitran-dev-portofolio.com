@@ -1,4 +1,16 @@
-export type SectionId = 'home' | 'about' | 'work' | 'certificates' | 'ecosystem' | 'craft-lab' | 'contact';
+export type SectionId =
+  | 'home'
+  | 'about'
+  | 'work'
+  | 'certificates'
+  | 'ecosystem'
+  | 'craft-lab'
+  | 'contact'
+  | 'services'
+  | 'security'
+  | 'learning'
+  | 'blog'
+  | 'kamus';
 
 export type CertificateCategory = 'all' | 'cloud-ai' | 'marketing' | 'academic' | 'publications';
 

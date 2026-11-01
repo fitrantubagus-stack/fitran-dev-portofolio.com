@@ -16,6 +16,11 @@ import {
   Mail,
   Palette,
   Search,
+  Briefcase,
+  ShieldCheck,
+  Compass,
+  BookOpen,
+  FileText,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -63,8 +68,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  // Compact single-word labels so the minimalist floating pill NEVER wraps or clips
-  const navItems: { id: SectionId; label: string; icon: React.ReactNode }[] = [
+  // Nav items conditionally adapted:
+  // For 'arcade' (Klasik / Fikran.dev Concept): authentic fikran.dev ecosystem links
+  // For 'modern' & 'clipboard': untouched original portfolio tabs
+  const defaultNavItems: { id: SectionId; label: string; icon: React.ReactNode }[] = [
     {
       id: 'about',
       label: 'About',
@@ -97,6 +104,46 @@ export const Navbar: React.FC<NavbarProps> = ({
     },
   ];
 
+  const fikranConceptNavItems: { id: SectionId; label: string; icon: React.ReactNode }[] = [
+    {
+      id: 'services',
+      label: 'Layanan',
+      icon: <Briefcase className="w-3.5 h-3.5" />,
+    },
+    {
+      id: 'security',
+      label: 'Keamanan',
+      icon: <ShieldCheck className="w-3.5 h-3.5" />,
+    },
+    {
+      id: 'learning',
+      label: 'Belajar',
+      icon: <Compass className="w-3.5 h-3.5" />,
+    },
+    {
+      id: 'kamus',
+      label: 'Kamus',
+      icon: <BookOpen className="w-3.5 h-3.5" />,
+    },
+    {
+      id: 'blog',
+      label: 'Blog',
+      icon: <FileText className="w-3.5 h-3.5" />,
+    },
+    {
+      id: 'about',
+      label: 'Tentang',
+      icon: <UserCircle className="w-3.5 h-3.5" />,
+    },
+    {
+      id: 'contact',
+      label: 'Konsultasi',
+      icon: <Mail className="w-3.5 h-3.5" />,
+    },
+  ];
+
+  const navItems = designTheme === 'arcade' ? fikranConceptNavItems : defaultNavItems;
+
   const themes: { id: DesignTheme; name: string; desc: string; dotClass: string }[] = [
     {
       id: 'modern',
@@ -112,9 +159,9 @@ export const Navbar: React.FC<NavbarProps> = ({
     },
     {
       id: 'arcade',
-      name: '3. Klasik & Elegan',
-      desc: 'Profesional Editorial & Executive Dossier',
-      dotClass: 'bg-[#B48A3E]',
+      name: '3. Klasik (Fikran.dev Concept)',
+      desc: 'Layanan 500k, 5 Lapisan Keamanan & Belajar AI',
+      dotClass: 'bg-emerald-500',
     },
   ];
 
@@ -146,7 +193,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               designTheme === 'clipboard'
                 ? 'bg-[#FFFDF9]/95 border-2 border-zinc-900 text-zinc-900 shadow-[4px_4px_0px_#1E3A8A]'
                 : designTheme === 'arcade'
-                  ? 'bg-[#251E10]/95 border border-[#D4A038]/70 text-[#FDE68A] shadow-[0_6px_24px_rgba(212,160,56,0.2)]'
+                  ? 'bg-white/90 dark:bg-[#111318]/90 border border-zinc-200/90 dark:border-zinc-800 text-zinc-800 dark:text-zinc-100 shadow-[0_10px_32px_rgba(0,0,0,0.08)]'
                   : 'bg-white/95 dark:bg-zinc-900/95 border border-zinc-200/90 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200'
             }`}
           >
@@ -156,7 +203,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               className={`w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer shrink-0 ${
                 activeSection === 'home'
                   ? designTheme === 'arcade'
-                    ? 'bg-[#D4A038] text-black font-bold shadow-xs'
+                    ? 'bg-emerald-600 text-white font-bold shadow-xs'
                     : designTheme === 'clipboard'
                       ? 'bg-blue-600 text-white font-bold'
                       : 'bg-zinc-200/90 dark:bg-zinc-800 text-zinc-950 dark:text-white shadow-2xs'
@@ -182,7 +229,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                       isActive
                         ? designTheme === 'arcade'
-                          ? 'bg-[#D4A038] text-black font-bold shadow-2xs'
+                          ? 'bg-emerald-600 text-white font-bold shadow-xs'
                           : designTheme === 'clipboard'
                             ? 'bg-blue-600 text-white font-bold'
                             : 'bg-zinc-200/80 dark:bg-zinc-800 text-zinc-950 dark:text-white font-semibold'
@@ -205,7 +252,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => setThemeMenuOpen((prev) => !prev)}
                 className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all cursor-pointer ${
                   designTheme === 'arcade'
-                    ? 'bg-[#D4A038]/20 text-[#FDE68A] border border-[#D4A038]/50'
+                    ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
                     : designTheme === 'clipboard'
                       ? 'bg-amber-100 text-zinc-900 border border-zinc-900'
                       : 'bg-cyan-50 dark:bg-zinc-800 text-cyan-800 dark:text-cyan-300 border border-cyan-200/80 dark:border-zinc-700'
@@ -218,7 +265,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     ? 'Modern'
                     : designTheme === 'clipboard'
                       ? 'Animasi'
-                      : 'Klasik'}
+                      : 'Klasik (Fikran)'}
                 </span>
               </button>
 

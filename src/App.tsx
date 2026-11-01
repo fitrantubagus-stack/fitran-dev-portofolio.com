@@ -30,6 +30,11 @@ const SECTION_TO_PATH: Record<SectionId, string> = {
   ecosystem: '/ecosystem',
   'craft-lab': '/craft-lab',
   contact: '/contact',
+  services: '/layanan',
+  security: '/keamanan',
+  learning: '/belajar',
+  blog: '/blog',
+  kamus: '/kamus',
 };
 
 const normalizeStr = (s: string) =>
@@ -81,6 +86,21 @@ function resolveRouteFromWindow(): { tab: SectionId; cert: CertificateItem | nul
   }
   if (lowerPath === 'contact' || lowerPath === 'kontak') {
     return { tab: 'contact', cert: null };
+  }
+  if (lowerPath === 'services' || lowerPath === 'layanan') {
+    return { tab: 'services', cert: null };
+  }
+  if (lowerPath === 'security' || lowerPath === 'keamanan') {
+    return { tab: 'security', cert: null };
+  }
+  if (lowerPath === 'learning' || lowerPath === 'belajar') {
+    return { tab: 'learning', cert: null };
+  }
+  if (lowerPath === 'blog' || lowerPath === 'artikel') {
+    return { tab: 'blog', cert: null };
+  }
+  if (lowerPath === 'kamus' || lowerPath === 'glossary') {
+    return { tab: 'kamus', cert: null };
   }
 
   if (lowerPath === 'preview') {
@@ -187,6 +207,14 @@ export default function App() {
     setActiveTab(sectionId);
     const nextPath = SECTION_TO_PATH[sectionId] || '/';
     window.history.pushState(null, '', nextPath);
+
+    if (designTheme === 'arcade') {
+      const targetElement = document.getElementById(sectionId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+    }
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   };
 
@@ -210,7 +238,7 @@ export default function App() {
     designTheme === 'clipboard'
       ? 'bg-gradient-to-br from-[#EEF2FF] via-[#F8FAFC] to-[#E0E7FF] dark:from-[#070913] dark:via-[#0F172A] dark:to-[#090D16] text-slate-900 dark:text-slate-100'
       : designTheme === 'arcade'
-        ? 'bg-[#FAF7F0] dark:bg-[#111110] text-[#141413] dark:text-[#F5F2EB]'
+        ? 'bg-[#FAFAFB] dark:bg-[#0B0D12] text-zinc-900 dark:text-zinc-100'
         : 'bg-[#FAFAFA] dark:bg-[#09090B] bg-dot-grid text-zinc-900 dark:text-zinc-100';
 
   const rootThemeInlineStyle: React.CSSProperties | undefined =
@@ -220,13 +248,7 @@ export default function App() {
             'radial-gradient(rgba(79, 70, 229, 0.12) 1px, transparent 1px)',
           backgroundSize: '24px 24px',
         }
-      : designTheme === 'arcade'
-        ? {
-            backgroundImage:
-              'radial-gradient(rgba(180, 138, 62, 0.14) 1px, transparent 1px)',
-            backgroundSize: '32px 32px',
-          }
-        : undefined;
+      : undefined;
 
   const pageTransitionKey = selectedCertificate
     ? `cert-${selectedCertificate.id}`
@@ -436,11 +458,13 @@ export default function App() {
         </main>
 
         {/* Full-Width Footer with 3D Interactive Phone & Collaboration Form */}
-        <ContactFooter
-          onNavigate={handleNavigate}
-          onOpenCV={() => setIsCVModalOpen(true)}
-          designTheme={designTheme}
-        />
+        {designTheme !== 'arcade' && (
+          <ContactFooter
+            onNavigate={handleNavigate}
+            onOpenCV={() => setIsCVModalOpen(true)}
+            designTheme={designTheme}
+          />
+        )}
 
         {/* Official CV Viewer & PDF Download Modal */}
         <CVModal

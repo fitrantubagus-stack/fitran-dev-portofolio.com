@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   KLASIK_SERVICES,
   KLASIK_SECURITY_LAYERS,
@@ -9,6 +9,7 @@ import {
   LearningChapter,
   BlogPost,
   SecurityLayer,
+  KamusTerm,
 } from '../data/klasikEcosystemData';
 import {
   PERSONAL_INFO,
@@ -50,6 +51,14 @@ import {
   Database,
   Tag,
   Zap,
+  Check,
+  ChevronDown,
+  PhoneCall,
+  Activity,
+  AlertCircle,
+  Shield,
+  Smartphone,
+  Share2,
 } from 'lucide-react';
 
 interface KlasikEcosystemViewProps {
@@ -58,48 +67,60 @@ interface KlasikEcosystemViewProps {
   onSelectProject?: (project: ProjectItem) => void;
 }
 
-type KlasikTab = 'overview' | 'services' | 'security' | 'learning' | 'blog' | 'credentials' | 'contact';
-
 export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   onOpenCV,
   onSelectCertificate,
   onSelectProject,
 }) => {
-  const [activeTab, setActiveTab] = useState<KlasikTab>('overview');
+  // Modal states
   const [selectedArticle, setSelectedArticle] = useState<BlogPost | null>(null);
   const [selectedService, setSelectedService] = useState<ServicePackage | null>(null);
+
+  // Learning curriculum state
   const [activeChapterId, setActiveChapterId] = useState<string>('ai-00');
   const [activeSubchapterId, setActiveSubchapterId] = useState<string>('ai-00-1');
-  const [blogFilter, setBlogFilter] = useState<string>('Semua');
+
+  // Filter states
   const [serviceCategoryFilter, setServiceCategoryFilter] = useState<string>('Semua');
   const [kamusSearch, setKamusSearch] = useState<string>('');
+  const [kamusCategory, setKamusCategory] = useState<string>('Semua');
+  const [blogFilter, setBlogFilter] = useState<string>('Semua');
 
+  // Interactive FAQ state
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  // Active chapter and subchapter resolution
   const activeChapter =
     KLASIK_LEARNING_CHAPTERS.find((c) => c.id === activeChapterId) || KLASIK_LEARNING_CHAPTERS[0];
   const activeSubchapter =
     activeChapter.subchapters.find((s) => s.id === activeSubchapterId) ||
     activeChapter.subchapters[0];
 
-  const filteredBlogPosts =
-    blogFilter === 'Semua'
-      ? KLASIK_BLOG_POSTS
-      : KLASIK_BLOG_POSTS.filter((p) => p.category === blogFilter);
+  // Filtering services
+  const serviceCategories = ['Semua', 'Website Online', 'Aplikasi & Dashboard', 'AI & Otomasi', 'Infrastruktur Cloud', 'Keamanan & Tracking'];
+  const filteredServices = useMemo(() => {
+    if (serviceCategoryFilter === 'Semua') return KLASIK_SERVICES;
+    return KLASIK_SERVICES.filter((s) => s.category === serviceCategoryFilter);
+  }, [serviceCategoryFilter]);
 
-  const filteredServices =
-    serviceCategoryFilter === 'Semua'
-      ? KLASIK_SERVICES
-      : KLASIK_SERVICES.filter((s) => s.category === serviceCategoryFilter);
+  // Filtering Kamus
+  const kamusCategories = ['Semua', 'AI & Machine Learning', 'Web & Arsitektur', 'Cloud & DevOps', 'Keamanan & Tracking'];
+  const filteredKamus = useMemo(() => {
+    return KLASIK_KAMUS.filter((k) => {
+      const matchSearch =
+        k.term.toLowerCase().includes(kamusSearch.toLowerCase()) ||
+        k.definition.toLowerCase().includes(kamusSearch.toLowerCase()) ||
+        k.practicalTip.toLowerCase().includes(kamusSearch.toLowerCase());
+      const matchCat = kamusCategory === 'Semua' || k.category === kamusCategory;
+      return matchSearch && matchCat;
+    });
+  }, [kamusSearch, kamusCategory]);
 
-  const filteredKamus = KLASIK_KAMUS.filter(
-    (k) =>
-      k.term.toLowerCase().includes(kamusSearch.toLowerCase()) ||
-      k.definition.toLowerCase().includes(kamusSearch.toLowerCase())
-  );
-
+  // WhatsApp consultation triggers
   const handleWhatsAppConsultation = (serviceName?: string, price?: string) => {
     const text = serviceName
-      ? `Halo Tubagus Fitran, saya tertarik untuk mendiskusikan kebutuhan layanan: ${serviceName}${price ? ` (${price})` : ''}. Boleh minta info ketersediaan slot pengerjaan dan detail scope-nya?`
-      : `Halo Tubagus Fitran, saya membaca portofolio & materi di fitran.dev dan ingin berdiskusi mengenai proyek rekayasa software / AI / website online.`;
+      ? `Halo Tubagus Fitran, saya membaca portofolio fitran.dev dan ingin konsultasi paket layanan: ${serviceName}${price ? ` (${price})` : ''}. Boleh minta info estimasi waktu & langkah awalnya?`
+      : `Halo Tubagus Fitran, saya membaca portofolio & materi di fitran.dev dan ingin mendiskusikan kebutuhan sistem digital / website / AI agent untuk bisnis saya.`;
     const url = `https://wa.me/6282211993414?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
@@ -107,1422 +128,1419 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   const renderSecurityIcon = (icon: string) => {
     switch (icon) {
       case 'ShieldCheck':
-        return <ShieldCheck className="w-5 h-5 text-[#855E1E] dark:text-[#D4AF37]" />;
+        return <ShieldCheck className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />;
       case 'Server':
-        return <Server className="w-5 h-5 text-[#855E1E] dark:text-[#D4AF37]" />;
+        return <Server className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />;
       case 'Lock':
-        return <Lock className="w-5 h-5 text-[#855E1E] dark:text-[#D4AF37]" />;
+        return <Lock className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />;
       case 'Cpu':
-        return <Cpu className="w-5 h-5 text-[#855E1E] dark:text-[#D4AF37]" />;
+        return <Cpu className="w-6 h-6 text-purple-600 dark:text-purple-400" />;
       case 'Database':
-        return <Database className="w-5 h-5 text-[#855E1E] dark:text-[#D4AF37]" />;
+        return <Database className="w-6 h-6 text-amber-600 dark:text-amber-400" />;
       default:
-        return <ShieldCheck className="w-5 h-5 text-[#855E1E] dark:text-[#D4AF37]" />;
+        return <ShieldCheck className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />;
     }
   };
 
+  const scrollToAnchor = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const FAQ_ITEMS = [
+    {
+      q: 'Berapa biaya minimal untuk membuat website online?',
+      a: 'Biaya mulai dari Rp 500.000 untuk paket Website Online Kilat (1 halaman responsif, tombol WhatsApp leads, SSL HTTPS aktif, dan gratis hosting cloud). Untuk website multi-halaman perusahaan berkisar Rp 1.500.000, dan aplikasi dashboard custom mulai Rp 3.500.000.',
+    },
+    {
+      q: 'Apakah ada biaya langganan bulanan atau biaya tersembunyi?',
+      a: 'Tidak ada biaya tersembunyi. Pekerjaan bersifat sekali jadi (one-off). Setelah serah terima, seluruh source code, akses domain, dan hosting menjadi 100% milik Anda. Untuk hosting gratis via Vercel/Cloudflare, Anda tidak perlu bayar biaya server bulanan untuk lalu lintas standar.',
+    },
+    {
+      q: 'Apa bedanya WhatsApp AI Agent dengan chatbot biasa?',
+      a: 'Chatbot biasa hanya mencocokkan kata kunci kaku (jika salah ketik, bot bingung). AI Agent membaca konteks kalimat bahasa Indonesia yang bervariasi menggunakan LLM cerdas, mengambil data dari dokumen SOP/katalog bisnis Anda (RAG), memiliki guardrails agar tidak berhalusinasi, serta otomatis mengalihkan obrolan ke staf manusia jika pelanggan butuh bantuan khusus.',
+    },
+    {
+      q: 'Bagaimana standar keamanan yang diterapkan pada website & aplikasi?',
+      a: 'Saya menerapkan 5 Lapisan Keamanan Terstruktur: Enkripsi TLS 1.3 Strict & Cloudflare Anti-DDoS, Hardening Server Linux (SSH Key Only, UFW Firewall, Fail2ban), Sanitasi Input Anti-SQLi & XSS, Guardrails Sandboxing untuk AI, dan Pencadangan Terenkripsi Harian (Disaster Recovery).',
+    },
+    {
+      q: 'Berapa lama proses pengerjaan dari awal hingga online?',
+      a: 'Website Kilat: 1 - 2 hari kerja. Website Perusahaan: 3 - 5 hari kerja. WhatsApp AI Agent: 3 - 5 hari kerja. Aplikasi Web Dashboard: 7 - 14 hari kerja. Estimasi disepakati secara tertulis di awal sebelum pengerjaan dimulai.',
+    },
+    {
+      q: 'Bagaimana cara memulai konsultasi?',
+      a: 'Cukup klik tombol Konsultasi WhatsApp di website ini. Ceritakan kebutuhan, kendala saat ini, atau contoh referensi yang Anda inginkan. Saya akan menganalisis dan memberikan rekomendasi solusi teknis beserta estimasi waktu yang transparan.',
+    },
+  ];
+
   return (
-    <div className="w-full bg-[#FAF7F0] dark:bg-[#111110] text-[#141413] dark:text-[#F5F2EB] font-sans transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+    <div className="w-full bg-[#FAFAFC] dark:bg-[#090A0F] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-emerald-500 selection:text-white transition-colors duration-300">
+      {/* ========================================================================= */}
+      {/* 1. STICKY SUB-BAR ANCHOR NAVIGATION (ALA FIKRAN.DEV ECOSYSTEM)             */}
+      {/* ========================================================================= */}
+      <div className="sticky top-16 z-40 w-full bg-white/85 dark:bg-[#0B0D13]/85 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3 overflow-x-auto scrollbar-none text-xs">
+          <div className="flex items-center gap-1.5 shrink-0 font-medium">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="font-semibold text-zinc-900 dark:text-white">Ekosistem Fikran.dev</span>
+            <span className="text-zinc-400 hidden sm:inline">•</span>
+            <span className="text-zinc-500 dark:text-zinc-400 hidden sm:inline">Konsep Lengkap &amp; Terstruktur</span>
+          </div>
+
+          <div className="flex items-center gap-1 shrink-0">
+            {[
+              { id: 'layanan', label: 'Layanan 500k', icon: <Briefcase className="w-3.5 h-3.5" /> },
+              { id: 'keamanan', label: 'Keamanan 5 Lapis', icon: <ShieldCheck className="w-3.5 h-3.5" /> },
+              { id: 'alur-kerja', label: 'Cara Kerja', icon: <Layers className="w-3.5 h-3.5" /> },
+              { id: 'belajar', label: 'Pusat Belajar', icon: <Compass className="w-3.5 h-3.5" /> },
+              { id: 'kamus', label: 'Kamus', icon: <BookOpen className="w-3.5 h-3.5" /> },
+              { id: 'blog', label: 'Blog', icon: <FileText className="w-3.5 h-3.5" /> },
+              { id: 'tentang', label: 'Tentang Saya', icon: <GraduationCap className="w-3.5 h-3.5" /> },
+              { id: 'faq', label: 'FAQ', icon: <HelpCircle className="w-3.5 h-3.5" /> },
+            ].map((anchor) => (
+              <button
+                key={anchor.id}
+                onClick={() => scrollToAnchor(anchor.id)}
+                className="px-2.5 py-1 rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-all cursor-pointer font-medium whitespace-nowrap flex items-center gap-1.5 text-[11px]"
+              >
+                {anchor.icon}
+                <span>{anchor.label}</span>
+              </button>
+            ))}
+
+            <button
+              onClick={() => handleWhatsAppConsultation()}
+              className="ml-2 px-3 py-1 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-all cursor-pointer whitespace-nowrap text-[11px] flex items-center gap-1 shadow-xs"
+            >
+              <MessageSquare className="w-3 h-3" />
+              <span>WhatsApp</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24">
         {/* ========================================================================= */}
-        {/* 1. CLASSICAL EDITORIAL MASTHEAD (DOSSIER EKSEKUTIF)                       */}
+        {/* 2. HERO SECTION (ALA FIKRAN.DEV & FIKRAN.DEV/ABOUT)                      */}
         {/* ========================================================================= */}
-        <header className="border-b-2 border-[#141413] dark:border-[#B48A3E]/70 pb-5 mb-8">
-          {/* Top metadata strip */}
-          <div className="border-y border-[#141413]/30 dark:border-[#B48A3E]/30 py-2 mb-4 flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono tracking-widest uppercase text-[#855E1E] dark:text-[#D4AF37]">
-            <div className="flex items-center gap-2">
-              <span className="font-bold">DOSSIER EKSEKUTIF</span>
-              <span>•</span>
-              <span>CILEGON, BANTEN, ID</span>
-              <span>•</span>
-              <span className="text-zinc-600 dark:text-zinc-400">REKAYASA WEB &amp; SISTEM AI</span>
+        <section id="beranda" className="pt-2">
+          {/* Breadcrumb ala fikran.dev/about */}
+          <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500 dark:text-zinc-400 mb-6" aria-label="Breadcrumb">
+            <span className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              Beranda
+            </span>
+            <span className="text-zinc-400">/</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+              Tubagus Fitran Badruttamam
+            </span>
+          </nav>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            {/* Left Column: Heading & Pitch */}
+            <div className="lg:col-span-7 space-y-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-emerald-700 dark:text-emerald-300 font-mono text-xs font-semibold">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>TERSEDIA UNTUK PROYEK BARU • MULAI RP 500.000</span>
+              </div>
+
+              <div>
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-[1.15]">
+                  Fullstack Developer <br />
+                  <span className="text-emerald-600 dark:text-emerald-400">&amp; AI Engineer.</span>
+                </h1>
+                <p className="mt-4 text-base sm:text-lg text-zinc-600 dark:text-zinc-300 leading-relaxed font-normal max-w-2xl">
+                  Saya merancang aplikasi web kilat performa tinggi, AI agent WhatsApp yang terhubung langsung dengan proses bisnis Anda, serta arsitektur server dengan 5 lapisan keamanan terstruktur.
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <button
+                  onClick={() => handleWhatsAppConsultation()}
+                  className="px-6 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-950 font-bold text-sm transition-all shadow-md flex items-center gap-2 cursor-pointer"
+                >
+                  <MessageSquare className="w-4 h-4 text-emerald-400 dark:text-emerald-600" />
+                  <span>Konsultasi WhatsApp Langsung</span>
+                </button>
+
+                <button
+                  onClick={() => scrollToAnchor('layanan')}
+                  className="px-5 py-3 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 font-semibold text-sm transition-all cursor-pointer flex items-center gap-2 shadow-2xs"
+                >
+                  <Briefcase className="w-4 h-4 text-zinc-500" />
+                  <span>Paket Layanan (500rb)</span>
+                </button>
+
+                {onOpenCV && (
+                  <button
+                    onClick={onOpenCV}
+                    className="px-4 py-3 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-medium text-xs transition-all cursor-pointer flex items-center gap-1.5"
+                  >
+                    <FileText className="w-4 h-4" />
+                    <span>Curriculum Vitae (PDF)</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Fast Stats Row */}
+              <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+                <div>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-[11px]">Kecepatan Render</p>
+                  <p className="font-bold text-zinc-950 dark:text-white font-mono text-sm">&lt; 1.0 Detik (95+)</p>
+                </div>
+                <div>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-[11px]">Sistem Keamanan</p>
+                  <p className="font-bold text-emerald-600 dark:text-emerald-400 font-mono text-sm">5 Lapisan Teruji</p>
+                </div>
+                <div>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-[11px]">Pusat Belajar</p>
+                  <p className="font-bold text-zinc-950 dark:text-white font-mono text-sm">Roadmap 4 Pilar</p>
+                </div>
+                <div>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-[11px]">Akses &amp; Lisensi</p>
+                  <p className="font-bold text-zinc-950 dark:text-white font-mono text-sm">100% Hak Klien</p>
+                </div>
+              </div>
             </div>
 
-            <div className="flex items-center gap-4">
-              <a
-                href={PERSONAL_INFO.socialLinks.googleDev}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 hover:underline font-bold"
-              >
-                <GoogleDeveloperLogo size={14} />
-                <span>Verified Google Developer</span>
-                <ExternalLink className="w-3 h-3" />
-              </a>
+            {/* Right Column: Profile Card (Inspired by fikran.dev/about) */}
+            <div className="lg:col-span-5">
+              <div className="p-6 sm:p-7 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
 
-              {onOpenCV && (
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="relative">
+                    <ProfileAvatar size="hero" showBadge={true} />
+                    <span className="absolute bottom-1 right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white dark:border-zinc-900" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-base text-zinc-950 dark:text-white">
+                      Tubagus Fitran Badruttamam
+                    </h3>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                      Cilegon, Banten, Indonesia (Remote Ready)
+                    </p>
+                    <div className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-[11px] font-mono font-medium text-zinc-700 dark:text-zinc-300">
+                      <GoogleDeveloperLogo size={12} />
+                      <span>Verified Google Developer</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3 text-xs border-t border-zinc-100 dark:border-zinc-800 pt-4">
+                  <div className="flex items-start gap-2.5">
+                    <GraduationCap className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold text-zinc-900 dark:text-white">Universitas Muhammadiyah Banten</p>
+                      <p className="text-zinc-500 dark:text-zinc-400 text-[11px]">S1 Teknik Informatika • Fokus Arsitektur Data &amp; Backend</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5">
+                    <Award className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold text-zinc-900 dark:text-white">2× Medali Emas Sains Nasional</p>
+                      <p className="text-zinc-500 dark:text-zinc-400 text-[11px]">Olimpiade Matematika &amp; Sejarah Nasional (Grade A+)</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5">
+                    <BookOpen className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold text-zinc-900 dark:text-white">Penulis Terpilih Perpusnas RI</p>
+                      <p className="text-zinc-500 dark:text-zinc-400 text-[11px]">Kompilasi Resmi HUT ke-46 Perpustakaan Nasional RI</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick WhatsApp Card Trigger */}
+                <div className="mt-5 pt-4 border-t border-zinc-100 dark:border-zinc-800">
+                  <button
+                    onClick={() => handleWhatsAppConsultation()}
+                    className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+                  >
+                    <Smartphone className="w-4 h-4" />
+                    <span>Mulai Diskusi Kebutuhan via WhatsApp</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 3. TIGA PILAR UTAMA (INSPIRED BY FIKRAN.DEV HOME)                         */}
+        {/* ========================================================================= */}
+        <section id="pilar" className="space-y-6">
+          <div className="border-b border-zinc-200 dark:border-zinc-800 pb-4">
+            <p className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">
+              Kapabilitas Inti
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+              AI Agent, Otomasi &amp; Fullstack Engineering untuk Bisnis.
+            </h2>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+              Fokus pada penyelesaian masalah nyata operasional dan penjualan, bukan sekadar menampilkan teknologi tanpa dampak terukur.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/50 transition-all shadow-xs space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-md">
+                  01
+                </span>
+                <Globe className="w-5 h-5 text-zinc-400" />
+              </div>
+              <h3 className="font-bold text-lg text-zinc-950 dark:text-white">Pengembangan Web &amp; Aplikasi</h3>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                Membangun landing page cepat, website profil bisnis, portal klien, dan dashboard internal yang responsif dan mudah dikelola tanpa ketergantungan agensi.
+              </p>
+              <ul className="text-[11px] text-zinc-500 dark:text-zinc-400 space-y-1.5 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+                <li className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> Website Online Kilat mulai Rp 500rb</li>
+                <li className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> Skor Google PageSpeed 95+</li>
+                <li className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> 100% Source Code &amp; Kepemilikan Klien</li>
+              </ul>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/50 transition-all shadow-xs space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/40 px-2.5 py-1 rounded-md">
+                  02
+                </span>
+                <Cpu className="w-5 h-5 text-zinc-400" />
+              </div>
+              <h3 className="font-bold text-lg text-zinc-950 dark:text-white">AI Agent &amp; Otomasi Alur Kerja</h3>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                Menghubungkan WhatsApp bisnis, formulir web, dan spreadsheet dengan AI cerdas yang memahami konteks bisnis dan memiliki batasan eskalasi aman ke manusia.
+              </p>
+              <ul className="text-[11px] text-zinc-500 dark:text-zinc-400 space-y-1.5 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+                <li className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-purple-500 shrink-0" /> WhatsApp AI Agent respons 24/7</li>
+                <li className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-purple-500 shrink-0" /> Guardrail ketat anti-halusinasi</li>
+                <li className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-purple-500 shrink-0" /> Integrasi otomatisasi n8n &amp; Make</li>
+              </ul>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-cyan-500/50 transition-all shadow-xs space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/40 px-2.5 py-1 rounded-md">
+                  03
+                </span>
+                <ShieldCheck className="w-5 h-5 text-zinc-400" />
+              </div>
+              <h3 className="font-bold text-lg text-zinc-950 dark:text-white">Keamanan Terstruktur &amp; Tracking</h3>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                Infrastruktur terlindungi dengan 5 lapisan keamanan sistem (SSL/TLS 1.3, Zero-Trust VPS, sanitasi data anti-SQLi) serta tracking Meta CAPI yang kebal ad-blocker.
+              </p>
+              <ul className="text-[11px] text-zinc-500 dark:text-zinc-400 space-y-1.5 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+                <li className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-cyan-500 shrink-0" /> Setup VPS Hardening mulai Rp 750rb</li>
+                <li className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-cyan-500 shrink-0" /> Meta Conversions API (CAPI) 100% akurat</li>
+                <li className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-cyan-500 shrink-0" /> Backup otomatis harian terenkripsi</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 4. KATALOG LAYANAN RESMI DENGAN HARGA RINCI (MULAI 500 RIBUAN)           */}
+        {/* ========================================================================= */}
+        <section id="layanan" className="space-y-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-4">
+            <div>
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-mono text-xs font-bold mb-2">
+                <Tag className="w-3.5 h-3.5" />
+                <span>HARGA TRANSPARAN TANPA BIAYA TERSEMBUNYI</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+                Katalog Layanan &amp; Rincian Investasi
+              </h2>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+                Dimulai dari Rp 500.000 untuk website online kilat. Cocok untuk UMKM, profesional mandiri, agensi, hingga aplikasi operasional perusahaan.
+              </p>
+            </div>
+
+            {/* Category Filter Chips */}
+            <div className="flex flex-wrap items-center gap-1.5">
+              {serviceCategories.map((cat) => (
                 <button
-                  onClick={onOpenCV}
-                  className="inline-flex items-center gap-1 font-bold text-[#1B2A4A] dark:text-[#D4AF37] hover:underline cursor-pointer"
+                  key={cat}
+                  onClick={() => setServiceCategoryFilter(cat)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
+                    serviceCategoryFilter === cat
+                      ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-bold'
+                      : 'bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
+                  }`}
                 >
-                  <FileText className="w-3 h-3" />
-                  <span>Curriculum Vitae (PDF)</span>
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredServices.map((service) => (
+              <div
+                key={service.id}
+                className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/60 transition-all shadow-xs flex flex-col justify-between group"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-xs font-bold px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                      {service.code}
+                    </span>
+                    {service.badge && (
+                      <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50">
+                        {service.badge}
+                      </span>
+                    )}
+                  </div>
+
+                  <div>
+                    <h3 className="font-bold text-lg text-zinc-950 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                      {service.title}
+                    </h3>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 line-clamp-2">
+                      {service.tagline}
+                    </p>
+                  </div>
+
+                  {/* Pricing Box */}
+                  <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800/80">
+                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400">Investasi Pengerjaan:</p>
+                    <div className="flex items-baseline gap-2 mt-0.5">
+                      <span className="font-mono text-2xl font-black text-zinc-950 dark:text-white">
+                        {service.price}
+                      </span>
+                      {service.originalPrice && (
+                        <span className="font-mono text-xs text-zinc-400 line-through">
+                          {service.originalPrice}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-emerald-500" />
+                      <span>Estimasi: {service.duration}</span>
+                    </p>
+                  </div>
+
+                  {/* Scope Highlights Preview */}
+                  <div className="space-y-2 pt-1 text-xs">
+                    <p className="font-semibold text-zinc-800 dark:text-zinc-200 text-[11px] uppercase tracking-wider font-mono">
+                      Cakupan Pekerjaan Termasuk:
+                    </p>
+                    <ul className="space-y-1.5 text-zinc-600 dark:text-zinc-400 text-xs">
+                      {service.scope.slice(0, 4).map((sc, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                          <span className="line-clamp-2">{sc}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-zinc-100 dark:border-zinc-800 space-y-2">
+                  <button
+                    onClick={() => setSelectedService(service)}
+                    className="w-full py-2.5 px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold text-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    <span>Rincian Scope &amp; Spesifikasi Lengkap</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+
+                  <button
+                    onClick={() => handleWhatsAppConsultation(service.title, service.price)}
+                    className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5" />
+                    <span>Pesan Layanan Ini via WhatsApp</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 5. ARSITEKTUR SISTEM KEAMANAN TERSTRUKTUR (5 LAPISAN PERTAHANAN)           */}
+        {/* ========================================================================= */}
+        <section id="keamanan" className="space-y-6">
+          <div className="border-b border-zinc-200 dark:border-zinc-800 pb-4">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-mono text-xs font-bold mb-2">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>SISTEM KEAMANAN TERSTRUKTUR • STANDAR PRODUKSI</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+              5 Lapisan Keamanan Website &amp; Infrastruktur Digital
+            </h2>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+              Keamanan bukanlah fitur tambahan, melainkan pondasi wajib sejak baris kode pertama ditulis. Setiap proyek diproteksi dengan 5 tingkat perlindungan aktif.
+            </p>
+          </div>
+
+          {/* 5 Layer Visual Stack Cards */}
+          <div className="space-y-4">
+            {KLASIK_SECURITY_LAYERS.map((layer, index) => (
+              <div
+                key={index}
+                className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/50 transition-all shadow-xs"
+              >
+                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700 shrink-0">
+                      {renderSecurityIcon(layer.icon)}
+                    </div>
+                    <div>
+                      <span className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400 tracking-wider">
+                        {layer.level}
+                      </span>
+                      <h3 className="font-bold text-lg text-zinc-950 dark:text-white mt-0.5">
+                        {layer.title}
+                      </h3>
+                      <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1 max-w-3xl leading-relaxed">
+                        {layer.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                  {layer.measures.map((measure, mIdx) => (
+                    <div
+                      key={mIdx}
+                      className="p-2.5 rounded-lg bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800 flex items-start gap-2 text-zinc-700 dark:text-zinc-300"
+                    >
+                      <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                      <span className="text-[11px] leading-snug">{measure}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* 16 Parameter Security Audit Checklist Box */}
+          <div className="p-6 sm:p-8 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/60 space-y-4">
+            <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-300 font-bold text-sm">
+              <Shield className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <span>Daftar Parameter Audit Keamanan Sebelum Rilis (Production Ready Checklist)</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs text-zinc-700 dark:text-zinc-300">
+              {[
+                'Enkripsi TLS 1.3 Strict & HSTS',
+                'Anti-SQL Injection via ORM/Prepared',
+                'Proteksi XSS & Sanitasi HTML',
+                'CSRF Token & SameSite Cookies',
+                'Firewall UFW & Port SSH Tertutup',
+                'Fail2ban Anti-Brute-Force',
+                'Zero-Trust Tailscale Private Mesh',
+                'Enkripsi Password Bcrypt + Salt',
+                'AI Prompt Sandboxing & Guardrails',
+                'Filter Data Sensitif (PII Sensor)',
+                'Human Escalation Triggers for Bot',
+                'Auto Backup Harian AES-256 S3',
+                'Core Web Vitals LCP < 1.0 Detik',
+                'Content Security Policy (CSP)',
+                'Sitemap XML & Robots.txt Aman',
+                '100% Source Code Hak Klien',
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-center gap-2 p-2 rounded-md bg-white/80 dark:bg-zinc-900/80 border border-emerald-100 dark:border-emerald-900/40">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                  <span className="text-[11px] font-medium">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 6. ALUR CARA KERJA (INSPIRED BY FIKRAN.DEV: YANG TERJADI SETELAH BRIEF)   */}
+        {/* ========================================================================= */}
+        <section id="alur-kerja" className="space-y-6">
+          <div className="border-b border-zinc-200 dark:border-zinc-800 pb-4">
+            <p className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">
+              Transparansi Kolaborasi
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+              Yang Terjadi Setelah Anda Mengirim Konteks Proyek
+            </h2>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+              Empat tahap terstruktur untuk menerjemahkan kebutuhan bisnis Anda menjadi sistem perangkat lunak yang andal dan selesai tepat waktu.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                num: '01',
+                step: 'AWAL',
+                title: 'Pahami Konteks & Masalah',
+                desc: 'Ceritakan target bisnis, alur operasional saat ini, atau contoh tampilan yang diinginkan. Saya memetakan masalah inti dan ukuran keberhasilannya.',
+              },
+              {
+                num: '02',
+                step: 'SETELAH BRIEF',
+                title: 'Prioritas & Scope Tertulis',
+                desc: 'Saya usulkan pendekatan teknis, estimasi durasi, dan daftar deliverables yang disepakati bersama secara tertulis tanpa biaya terselubung.',
+              },
+              {
+                num: '03',
+                step: 'PENGERJAAN',
+                title: 'Coding, Keamanan & Staging',
+                desc: 'Pembangunan website/sistem dilakukan dengan pengujian performa <1s, penerapan 5 lapisan keamanan, dan tautan preview staging untuk Anda cek.',
+              },
+              {
+                num: '04',
+                step: 'PENYELESAIAN',
+                title: 'Review, Rilis & Serah Terima 100%',
+                desc: 'Testing akhir bersama, deployment ke domain utama Anda, serta penyerahan hak akses repositori kode dan panduan pengelolaan mandiri.',
+              },
+            ].map((st, idx) => (
+              <div
+                key={idx}
+                className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/50 transition-all shadow-xs space-y-3"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-2xl font-black text-zinc-300 dark:text-zinc-700">
+                    {st.num}
+                  </span>
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded">
+                    {st.step}
+                  </span>
+                </div>
+                <h3 className="font-bold text-base text-zinc-950 dark:text-white">
+                  {st.title}
+                </h3>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  {st.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 7. PUSAT BELAJAR & KURIKULUM AI / WEB (LEBIH LENGKAP DARI FIKRAN.DEV)     */}
+        {/* ========================================================================= */}
+        <section id="belajar" className="space-y-6">
+          <div className="border-b border-zinc-200 dark:border-zinc-800 pb-4">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 font-mono text-xs font-bold mb-2">
+              <Compass className="w-3.5 h-3.5" />
+              <span>DOKUMENTASI &amp; MATERI PRAKTIK REKAYASA SISTEM</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+              Pusat Belajar AI, Arsitektur Web &amp; Keamanan Sistem
+            </h2>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+              Kurikulum terstruktur yang merinci alur kerja nyata: dari pemahaman AI Agent, pencegahan halusinasi, sanitasi database, hingga hardening server cloud.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Left Column: Chapter List */}
+            <div className="lg:col-span-4 space-y-2">
+              <p className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-400 px-1 mb-2">
+                Daftar Bab Kurikulum ({KLASIK_LEARNING_CHAPTERS.length} Bab)
+              </p>
+
+              <div className="space-y-2">
+                {KLASIK_LEARNING_CHAPTERS.map((ch) => {
+                  const isActive = ch.id === activeChapterId;
+                  return (
+                    <button
+                      key={ch.id}
+                      onClick={() => {
+                        setActiveChapterId(ch.id);
+                        setActiveSubchapterId(ch.subchapters[0].id);
+                      }}
+                      className={`w-full text-left p-3.5 rounded-xl border transition-all cursor-pointer flex items-start gap-3 ${
+                        isActive
+                          ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 border-zinc-900 dark:border-white shadow-md'
+                          : 'bg-white dark:bg-[#111319] border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:border-zinc-400 dark:hover:border-zinc-600'
+                      }`}
+                    >
+                      <span className={`font-mono text-xs font-bold px-2 py-0.5 rounded shrink-0 ${
+                        isActive
+                          ? 'bg-emerald-500 text-white dark:bg-emerald-600 dark:text-white'
+                          : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400'
+                      }`}>
+                        {ch.code}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="font-bold text-xs leading-snug line-clamp-1">{ch.title}</p>
+                        <p className={`text-[11px] mt-0.5 line-clamp-1 ${isActive ? 'text-zinc-300 dark:text-zinc-700' : 'text-zinc-400'}`}>
+                          {ch.kicker}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right Column: Active Chapter Detail Reader */}
+            <div className="lg:col-span-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-6">
+              <div className="border-b border-zinc-100 dark:border-zinc-800 pb-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
+                  <span className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                    {activeChapter.code} • {activeChapter.kicker}
+                  </span>
+                  <span className="text-[11px] font-mono text-zinc-400">
+                    Target: {activeChapter.audience}
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-zinc-950 dark:text-white">
+                  {activeChapter.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1 leading-relaxed">
+                  {activeChapter.summary}
+                </p>
+              </div>
+
+              {/* Subchapter Selector Tabs */}
+              <div className="flex flex-wrap gap-2 border-b border-zinc-100 dark:border-zinc-800 pb-3">
+                {activeChapter.subchapters.map((sub) => {
+                  const isSubActive = sub.id === activeSubchapterId;
+                  return (
+                    <button
+                      key={sub.id}
+                      onClick={() => setActiveSubchapterId(sub.id)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
+                        isSubActive
+                          ? 'bg-emerald-600 text-white font-bold shadow-xs'
+                          : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
+                      }`}
+                    >
+                      <span>{sub.num}</span>
+                      <span className="line-clamp-1">{sub.title}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Deep Subchapter Content */}
+              <div className="space-y-5 text-xs sm:text-sm">
+                <div>
+                  <h4 className="font-bold text-base text-zinc-950 dark:text-white mb-2">
+                    {activeSubchapter.num} {activeSubchapter.title}
+                  </h4>
+                </div>
+
+                {/* Situation / Real Case */}
+                <div className="p-4 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-900/50 space-y-1">
+                  <p className="font-mono text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400">
+                    Masalah Riil di Lapangan:
+                  </p>
+                  <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed text-xs">
+                    {activeSubchapter.situation}
+                  </p>
+                </div>
+
+                {/* Explanation */}
+                <div className="space-y-2">
+                  <p className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-500">
+                    Penjelasan Konsep &amp; Logika Arsitektur:
+                  </p>
+                  <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                    {activeSubchapter.explanation}
+                  </p>
+                </div>
+
+                {/* Code / Implementation Practice */}
+                <div className="space-y-2">
+                  <p className="font-mono text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                    Praktik Implementasi:
+                  </p>
+                  <div className="p-4 rounded-xl bg-zinc-950 text-zinc-200 font-mono text-xs leading-relaxed overflow-x-auto border border-zinc-800 shadow-inner">
+                    <pre className="whitespace-pre-wrap">{activeSubchapter.practice}</pre>
+                  </div>
+                </div>
+
+                {/* Common Mistakes */}
+                <div className="p-4 rounded-xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-200/80 dark:border-rose-900/50 space-y-1">
+                  <p className="font-mono text-xs font-bold uppercase tracking-wider text-rose-800 dark:text-rose-400">
+                    Kesalahan Fatal yang Sering Terjadi:
+                  </p>
+                  <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed text-xs">
+                    {activeSubchapter.mistakes}
+                  </p>
+                </div>
+
+                {/* Checklist */}
+                <div className="space-y-2 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+                  <p className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+                    Checklist Verifikasi:
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {activeSubchapter.checklist.map((item, idx) => (
+                      <div key={idx} className="flex items-center gap-2 p-2 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-xs">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                        <span className="text-zinc-700 dark:text-zinc-300 text-[11px]">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 8. KAMUS ISTILAH DIGITAL & AI (SEARCHABLE GLOSSARY)                       */}
+        {/* ========================================================================= */}
+        <section id="kamus" className="space-y-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-4">
+            <div>
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-cyan-50 dark:bg-cyan-950/40 text-cyan-700 dark:text-cyan-300 font-mono text-xs font-bold mb-2">
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>GLOSARIUM TEKNOLOGI BISNIS</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+                Kamus Istilah Digital, AI &amp; Web
+              </h2>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+                Penjelasan lugas istilah teknis tanpa jargon yang membingungkan, lengkap dengan implikasi praktis bagi keputusan bisnis Anda.
+              </p>
+            </div>
+
+            {/* Live Search Input */}
+            <div className="relative w-full md:w-72">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+              <input
+                type="text"
+                placeholder="Cari istilah (e.g. AI Agent, RAG, Webhook)..."
+                value={kamusSearch}
+                onChange={(e) => setKamusSearch(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-xs focus:outline-hidden focus:border-emerald-500 transition-colors"
+              />
+              {kamusSearch && (
+                <button
+                  onClick={() => setKamusSearch('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                >
+                  <X className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
           </div>
 
-          {/* Main Title Banner */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-2">
-            <div>
-              <p className="font-mono text-xs tracking-[0.2em] uppercase text-[#855E1E] dark:text-[#D4AF37] font-semibold mb-1">
-                fitran.dev • Portofolio, Layanan Rekayasa &amp; Pusat Belajar
-              </p>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-black tracking-tight text-zinc-950 dark:text-white">
-                Tubagus Fitran Badruttamam
-              </h1>
-              <p className="text-sm sm:text-base font-serif italic text-zinc-700 dark:text-zinc-300 mt-1 max-w-3xl">
-                Insinyur Perangkat Lunak, Peneliti Sistem Berbasis AI &amp; Perancang Infrastruktur Cloud Mandiri.
-              </p>
+          {/* Category Chips */}
+          <div className="flex flex-wrap items-center gap-1.5">
+            {kamusCategories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setKamusCategory(cat)}
+                className={`px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer ${
+                  kamusCategory === cat
+                    ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-bold'
+                    : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Terms Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredKamus.map((item, idx) => (
+              <div
+                key={idx}
+                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/40 transition-all shadow-xs space-y-2.5 flex flex-col justify-between"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="font-bold text-sm text-zinc-950 dark:text-white">
+                      {item.term}
+                    </h3>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                      {item.category}
+                    </span>
+                  </div>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    {item.definition}
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800 text-[11px] text-emerald-800 dark:text-emerald-300">
+                  <span className="font-bold font-mono">Tip Praktis: </span>
+                  <span>{item.practicalTip}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 9. TOOLS YANG SAYA PAKAI (STACK HARIAN RESMI)                             */}
+        {/* ========================================================================= */}
+        <section id="tools" className="space-y-6">
+          <div className="border-b border-zinc-200 dark:border-zinc-800 pb-4">
+            <p className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-400 mb-1">
+              Toolkit Harian
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+              Teknologi &amp; Tools yang Saya Gunakan
+            </h2>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+              Kombinasi teknologi modern untuk menjamin sistem berjalan cepat, aman, dan hemat biaya infrastruktur.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-2">
+              <p className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">FRONTEND &amp; WEB</p>
+              <p className="font-bold text-sm text-zinc-950 dark:text-white">Next.js, Astro, React, Tailwind CSS, TypeScript</p>
+              <p className="text-[11px] text-zinc-500">Menghasilkan website ultra-cepat dengan skor PageSpeed 95+ dan SEO terstruktur.</p>
             </div>
 
-            {/* Quick Status Pill */}
-            <div className="border border-[#B48A3E]/50 bg-white/70 dark:bg-[#181816]/70 px-4 py-2.5 rounded-none text-xs font-mono shrink-0 shadow-xs">
-              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-bold mb-0.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>LAYANAN DIBUKA • MULAI RP 500.000</span>
-              </div>
-              <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
-                Website Online Kilat • Sistem Keamanan Terstruktur
-              </p>
+            <div className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-2">
+              <p className="font-mono text-xs font-bold text-purple-600 dark:text-purple-400">AI &amp; AGENT WORKFLOW</p>
+              <p className="font-bold text-sm text-zinc-950 dark:text-white">Claude 3.7 Sonnet, Gemini Flash, OpenAI, n8n, LangChain</p>
+              <p className="text-[11px] text-zinc-500">Membangun bot cerdas berkemampuan RAG dengan guardrails keamanan anti-halusinasi.</p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-2">
+              <p className="font-mono text-xs font-bold text-cyan-600 dark:text-cyan-400">BACKEND &amp; DATABASE</p>
+              <p className="font-bold text-sm text-zinc-950 dark:text-white">Node.js, Python FastAPI, PostgreSQL, Supabase, Prisma</p>
+              <p className="text-[11px] text-zinc-500">Skema relasional bersih, query berparameter anti-SQLi, dan API RESTful terstruktur.</p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-2">
+              <p className="font-mono text-xs font-bold text-amber-600 dark:text-amber-400">CLOUD &amp; SECURITY</p>
+              <p className="font-bold text-sm text-zinc-950 dark:text-white">Ubuntu Linux, Docker, Cloudflare WAF, Tailscale, Caddy</p>
+              <p className="text-[11px] text-zinc-500">Isolasi Zero-Trust, sertifikat SSL Let\'s Encrypt otomatis, dan backup terenkripsi.</p>
             </div>
           </div>
-        </header>
+        </section>
 
         {/* ========================================================================= */}
-        {/* 2. KLASIK SUB-NAVIGATION                                                  */}
+        {/* 10. TULISAN PILIHAN & BLOG TEKNIS (READER MODAL SUPPORT)                  */}
         {/* ========================================================================= */}
-        <nav className="mb-8 border-y-2 border-[#141413] dark:border-[#B48A3E]/60 bg-[#F4EFE6] dark:bg-[#171614] overflow-x-auto scrollbar-none">
-          <div className="flex items-center justify-start sm:justify-center divide-x divide-[#141413]/20 dark:divide-[#B48A3E]/30 text-xs sm:text-sm font-serif">
+        <section id="blog" className="space-y-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-4">
+            <div>
+              <p className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">
+                Catatan Teknis &amp; Praktik Nyata
+              </p>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+                Tulisan Pilihan seputar AI, Web &amp; Keamanan
+              </h2>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+                Artikel mendalam tentang bagaimana teknologi diterapkan pada skenario bisnis yang sesungguhnya.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-1.5">
+              {['Semua', 'Web Engineering', 'AI & Agents', 'Cloud & DevOps', 'Keamanan & Arsitektur'].map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setBlogFilter(cat)}
+                  className={`px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer ${
+                    blogFilter === cat
+                      ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-bold'
+                      : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {(blogFilter === 'Semua'
+              ? KLASIK_BLOG_POSTS
+              : KLASIK_BLOG_POSTS.filter((p) => p.category === blogFilter)
+            ).map((post) => (
+              <div
+                key={post.id}
+                onClick={() => setSelectedArticle(post)}
+                className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/60 transition-all shadow-xs flex flex-col justify-between cursor-pointer group"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
+                    <span className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                      {post.category}
+                    </span>
+                    <span>{post.date} • {post.readTime}</span>
+                  </div>
+
+                  <h3 className="font-bold text-lg text-zinc-950 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    {post.title}
+                  </h3>
+
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    {post.excerpt}
+                  </p>
+                </div>
+
+                <div className="pt-4 mt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                  <span>Baca Selengkapnya</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 11. TENTANG TUBAGUS FITRAN BADRUTTAMAM (KONSEP FIKRAN.DEV/ABOUT)          */}
+        {/* ========================================================================= */}
+        <section id="tentang" className="space-y-8">
+          <div className="border-b border-zinc-200 dark:border-zinc-800 pb-4">
+            <p className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">
+              Profil Rekayasa &amp; Nilai Kerja
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+              Tentang Tubagus Fitran Badruttamam
+            </h2>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+              Latar belakang, dedikasi rekayasa perangkat lunak, serta prinsip kerja yang saya pegang teguh dalam setiap kolaborasi.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="lg:col-span-7 space-y-6">
+              <div className="space-y-4 text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                <p>
+                  Saya adalah seorang Fullstack Developer dan AI Engineer yang berbasis di Cilegon, Banten. Fokus saya adalah merancang sistem digital yang bekerja cepat, memiliki arsitektur keamanan terstruktur, dan memecahkan hambatan operasional nyata.
+                </p>
+                <p>
+                  Sebagai mahasiswa S1 Teknik Informatika di Universitas Muhammadiyah Banten dengan peminatan Data &amp; Backend, saya memadukan pemahaman teori komputasi yang kuat dengan pengalaman praktis membangun produk berbasis cloud dan AI model modern.
+                </p>
+                <p>
+                  Di luar pemrograman, saya adalah peraih 2× Medali Emas Olimpiade Sains Nasional (Matematika &amp; Sejarah Nasional, Grade A+) serta penulis terpilih yang karyanya diterbitkan secara resmi oleh Perpustakaan Nasional Republik Indonesia (Perpusnas RI). Kedisiplinan analitis dari kompetisi sains ini saya bawa ke dalam penulisan arsitektur kode: rapi, terukur, dan terdokumentasi.
+                </p>
+              </div>
+
+              {/* 4 Core Engineering Principles ala fikran.dev/about */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <div className="p-4 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-1.5">
+                  <span className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">PRINSIP 01</span>
+                  <h4 className="font-bold text-sm text-zinc-950 dark:text-white">Kecepatan &amp; Skor 95+</h4>
+                  <p className="text-xs text-zinc-500">Setiap milidetik berharga. Website dioptimasi agar memuat instan di bawah 1 detik demi kenyamanan pengunjung.</p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-1.5">
+                  <span className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">PRINSIP 02</span>
+                  <h4 className="font-bold text-sm text-zinc-950 dark:text-white">Keamanan Default Aktif</h4>
+                  <p className="text-xs text-zinc-500">Mulai dari SSL TLS 1.3, sanitasi data anti-SQLi, hingga private network Tailscale diterapkan sejak awal.</p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-1.5">
+                  <span className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">PRINSIP 03</span>
+                  <h4 className="font-bold text-sm text-zinc-950 dark:text-white">Harga Transparan</h4>
+                  <p className="text-xs text-zinc-500">Paket layanan jelas dimulai dari Rp 500 ribuan. Tidak ada biaya jebakan atau tagihan rahasia di tengah jalan.</p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-1.5">
+                  <span className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">PRINSIP 04</span>
+                  <h4 className="font-bold text-sm text-zinc-950 dark:text-white">100% Kepemilikan Anda</h4>
+                  <p className="text-xs text-zinc-500">Source code, domain, dan akses hosting diserahkan sepenuhnya tanpa ketergantungan sewa kode agensi.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Verified Credentials & Community */}
+            <div className="lg:col-span-5 space-y-4">
+              <div className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-4">
+                <h3 className="font-bold text-sm text-zinc-950 dark:text-white uppercase tracking-wider font-mono">
+                  Afiliasi &amp; Kredensial Resmi
+                </h3>
+
+                <div className="space-y-3 text-xs">
+                  <a
+                    href={PERSONAL_INFO.socialLinks.googleDev}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between hover:border-emerald-500 transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <GoogleDeveloperLogo size={18} />
+                      <div>
+                        <p className="font-bold text-zinc-900 dark:text-white">Google Developer Program</p>
+                        <p className="text-[11px] text-zinc-500">Verified Member ID: 114674061805908955688</p>
+                      </div>
+                    </div>
+                    <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
+                  </a>
+
+                  <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+                    <div>
+                      <p className="font-bold text-zinc-900 dark:text-white">GDG on Campus &amp; Maps Innovators</p>
+                      <p className="text-[11px] text-zinc-500">Komunitas Pengembang Google &amp; Google Maps Platform</p>
+                    </div>
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+                    <div>
+                      <p className="font-bold text-zinc-900 dark:text-white">NVIDIA &amp; AWS Certified Knowledge</p>
+                      <p className="text-[11px] text-zinc-500">NVIDIA Developer Program &amp; AWS Cloud Practitioner</p>
+                    </div>
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <a
+                    href={CERTIFICATES_DRIVE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-950 font-bold text-xs transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Award className="w-4 h-4" />
+                    <span>Lihat Seluruh Sertifikat &amp; Bukti Lisensi</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Spotify Coding Playlist Integration */}
+              <SpotifyPlaylist designTheme="arcade" />
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 12. FAQ (YANG PALING SERING DITANYAKAN)                                    */}
+        {/* ========================================================================= */}
+        <section id="faq" className="space-y-6">
+          <div className="border-b border-zinc-200 dark:border-zinc-800 pb-4">
+            <p className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">
+              Tanya Jawab Terbuka
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+              Yang Paling Sering Ditanyakan
+            </h2>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+              Jawaban lugas seputar proses pengerjaan, biaya, keamanan, dan kepemilikan aset.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {FAQ_ITEMS.map((item, index) => {
+              const isOpen = openFaqIndex === index;
+              return (
+                <div
+                  key={index}
+                  className="rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 overflow-hidden transition-all shadow-xs"
+                >
+                  <button
+                    onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                    className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer"
+                  >
+                    <span className="font-bold text-sm text-zinc-900 dark:text-white">
+                      {item.q}
+                    </span>
+                    <ChevronDown
+                      className={`w-4 h-4 text-zinc-400 shrink-0 transition-transform duration-200 ${
+                        isOpen ? 'rotate-180 text-emerald-500' : ''
+                      }`}
+                    />
+                  </button>
+
+                  {isOpen && (
+                    <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed border-t border-zinc-100 dark:border-zinc-800/60">
+                      {item.a}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 13. BOTTOM CALL TO ACTION & CONTACT BANNER (ALA FIKRAN.DEV)                */}
+        {/* ========================================================================= */}
+        <section id="kontak" className="p-8 sm:p-12 rounded-3xl bg-zinc-900 dark:bg-[#111319] text-white border border-zinc-800 text-center space-y-6 relative overflow-hidden">
+          <div className="absolute inset-0 bg-radial from-emerald-500/10 to-transparent pointer-events-none" />
+
+          <div className="max-w-2xl mx-auto space-y-3 relative z-10">
+            <span className="font-mono text-xs font-bold text-emerald-400 uppercase tracking-widest">
+              MULAI PROYEK ANDA HARI INI
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
+              Mari Bicarakan Aplikasi, AI Agent, atau Website Anda.
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+              Ceritakan kebutuhan bisnis Anda. Saya akan menganalisis dan memberikan usulan solusi teknis beserta rincian estimasi biaya yang masuk akal dan transparan.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 relative z-10 pt-2">
             <button
-              onClick={() => setActiveTab('overview')}
-              className={`px-4 sm:px-6 py-3 font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer shrink-0 ${
-                activeTab === 'overview'
-                  ? 'bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110]'
-                  : 'hover:bg-black/5 dark:hover:bg-white/5 text-zinc-800 dark:text-zinc-200'
-              }`}
+              onClick={() => handleWhatsAppConsultation()}
+              className="px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-sm transition-all shadow-lg flex items-center gap-2 cursor-pointer"
             >
-              <span>🏛️ Beranda Dossier</span>
+              <MessageSquare className="w-4 h-4" />
+              <span>Mulai Diskusi via WhatsApp</span>
             </button>
 
-            <button
-              onClick={() => setActiveTab('services')}
-              className={`px-4 sm:px-6 py-3 font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer shrink-0 ${
-                activeTab === 'services'
-                  ? 'bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110]'
-                  : 'hover:bg-black/5 dark:hover:bg-white/5 text-zinc-800 dark:text-zinc-200'
-              }`}
-            >
-              <Briefcase className="w-4 h-4" />
-              <span>Layanan &amp; Harga ({KLASIK_SERVICES.length})</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('security')}
-              className={`px-4 sm:px-6 py-3 font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer shrink-0 ${
-                activeTab === 'security'
-                  ? 'bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110]'
-                  : 'hover:bg-black/5 dark:hover:bg-white/5 text-zinc-800 dark:text-zinc-200'
-              }`}
-            >
-              <ShieldCheck className="w-4 h-4" />
-              <span>Sistem Keamanan ({KLASIK_SECURITY_LAYERS.length} Lapisan)</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('learning')}
-              className={`px-4 sm:px-6 py-3 font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer shrink-0 ${
-                activeTab === 'learning'
-                  ? 'bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110]'
-                  : 'hover:bg-black/5 dark:hover:bg-white/5 text-zinc-800 dark:text-zinc-200'
-              }`}
-            >
-              <Compass className="w-4 h-4" />
-              <span>Pusat Belajar AI &amp; Web</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('blog')}
-              className={`px-4 sm:px-6 py-3 font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer shrink-0 ${
-                activeTab === 'blog'
-                  ? 'bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110]'
-                  : 'hover:bg-black/5 dark:hover:bg-white/5 text-zinc-800 dark:text-zinc-200'
-              }`}
-            >
-              <BookOpen className="w-4 h-4" />
-              <span>Blog ({KLASIK_BLOG_POSTS.length})</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('credentials')}
-              className={`px-4 sm:px-6 py-3 font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer shrink-0 ${
-                activeTab === 'credentials'
-                  ? 'bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110]'
-                  : 'hover:bg-black/5 dark:hover:bg-white/5 text-zinc-800 dark:text-zinc-200'
-              }`}
-            >
-              <Award className="w-4 h-4" />
-              <span>Kredensial ({CERTIFICATES_DATA.length})</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('contact')}
-              className={`px-4 sm:px-6 py-3 font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer shrink-0 ${
-                activeTab === 'contact'
-                  ? 'bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110]'
-                  : 'hover:bg-black/5 dark:hover:bg-white/5 text-zinc-800 dark:text-zinc-200'
-              }`}
+            <a
+              href={`mailto:${PERSONAL_INFO.email}`}
+              className="px-5 py-3.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-semibold text-sm transition-all border border-zinc-700 flex items-center gap-2"
             >
               <Mail className="w-4 h-4" />
-              <span>Konsultasi</span>
+              <span>Kirim Email Resmi</span>
+            </a>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 14. AUTHENTIC FOOTER (ALA FIKRAN.DEV)                                     */}
+        {/* ========================================================================= */}
+        <footer className="pt-8 pb-12 border-t border-zinc-200 dark:border-zinc-800 text-xs text-zinc-500 dark:text-zinc-400 space-y-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-sm text-zinc-900 dark:text-white">fitran.dev</span>
+              <span>—</span>
+              <span>Tubagus Fitran Badruttamam</span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-4 text-xs">
+              <button onClick={() => scrollToAnchor('layanan')} className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Layanan</button>
+              <button onClick={() => scrollToAnchor('keamanan')} className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Keamanan</button>
+              <button onClick={() => scrollToAnchor('belajar')} className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Belajar</button>
+              <button onClick={() => scrollToAnchor('kamus')} className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Kamus</button>
+              <button onClick={() => scrollToAnchor('blog')} className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Blog</button>
+              <button onClick={() => scrollToAnchor('tentang')} className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Tentang</button>
+              <button onClick={() => handleWhatsAppConsultation()} className="text-emerald-600 dark:text-emerald-400 font-bold hover:underline cursor-pointer">Konsultasi</button>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-zinc-400 border-t border-zinc-100 dark:border-zinc-800/60 pt-4">
+            <p>© {new Date().getFullYear()} fitran.dev • Hak cipta dilindungi undang-undang.</p>
+            <p>Dibangun dengan Next/React, TypeScript &amp; 5 Lapisan Keamanan Terstruktur.</p>
+          </div>
+        </footer>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 15. MODAL DETAIL LAYANAN (SERVICE INQUIRY MODAL)                          */}
+      {/* ========================================================================= */}
+      {selectedService && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
+          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 p-6 sm:p-8 shadow-2xl space-y-6">
+            <button
+              onClick={() => setSelectedService(null)}
+              className="absolute top-5 right-5 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+            >
+              <X className="w-5 h-5" />
             </button>
-          </div>
-        </nav>
 
-        {/* ========================================================================= */}
-        {/* TAB 1: OVERVIEW (BERANDA DOSSIER & KONSEP FIKRAN.DEV/ABOUT)               */}
-        {/* ========================================================================= */}
-        {activeTab === 'overview' && (
-          <div className="space-y-12 animate-fade-in">
-            {/* Top Grid: Portrait + Academic & Bio */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-              {/* Left Column: Portrait */}
-              <div className="lg:col-span-4 p-6 bg-white dark:bg-[#181816] border border-[#141413]/25 dark:border-[#B48A3E]/40 shadow-xs flex flex-col justify-between">
-                <div>
-                  <div className="p-3 border-2 border-[#B48A3E] bg-[#FAF7F0] dark:bg-[#141413] flex flex-col items-center mb-4">
-                    <ProfileAvatar size="hero" showBadge={true} />
-                  </div>
-                  <p className="font-mono text-[10px] tracking-widest uppercase text-center text-[#855E1E] dark:text-[#D4AF37] font-bold mb-4">
-                    POTRET RESMI • TERVERIFIKASI 2026
-                  </p>
-
-                  <div className="space-y-3 text-xs border-t border-[#141413]/15 dark:border-white/10 pt-4">
-                    <div className="flex items-start gap-2">
-                      <GraduationCap className="w-4 h-4 text-[#855E1E] dark:text-[#D4AF37] shrink-0 mt-0.5" />
-                      <div>
-                        <p className="font-bold text-zinc-900 dark:text-white">
-                          Universitas Muhammadiyah Banten
-                        </p>
-                        <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
-                          S1 Informatika • Data &amp; Backend
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <Award className="w-4 h-4 text-[#855E1E] dark:text-[#D4AF37] shrink-0 mt-0.5" />
-                      <div>
-                        <p className="font-bold text-zinc-900 dark:text-white">
-                          2× Medali Emas Sains Nasional
-                        </p>
-                        <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
-                          Matematika &amp; Sejarah Nasional (Grade A+)
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <BookOpen className="w-4 h-4 text-[#855E1E] dark:text-[#D4AF37] shrink-0 mt-0.5" />
-                      <div>
-                        <p className="font-bold text-zinc-900 dark:text-white">
-                          Penulis Terpilih Perpusnas RI
-                        </p>
-                        <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
-                          Kompilasi Resmi HUT ke-46 Perpustakaan Nasional
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-[#141413]/15 dark:border-white/10">
-                  <button
-                    onClick={() => handleWhatsAppConsultation()}
-                    className="w-full py-2.5 px-4 bg-[#141413] hover:bg-zinc-800 text-white dark:bg-[#B48A3E] dark:hover:bg-[#9E772F] dark:text-[#111110] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-colors"
-                  >
-                    <MessageSquare className="w-3.5 h-3.5" />
-                    <span>Mulai Konsultasi WhatsApp</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Right Column: Statement, Pricing Banner & 4 Engineering Principles */}
-              <div className="lg:col-span-8 flex flex-col justify-between space-y-6">
-                <div className="p-6 sm:p-8 bg-white dark:bg-[#181816] border border-[#141413]/25 dark:border-[#B48A3E]/40 shadow-xs">
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                    <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-[#855E1E]/10 dark:bg-[#D4AF37]/15 text-[#855E1E] dark:text-[#D4AF37] font-mono text-[11px] font-bold uppercase tracking-widest">
-                      <ShieldCheck className="w-3.5 h-3.5" />
-                      <span>PRINSIP REKAYASA &amp; NILAI TAMBAH</span>
-                    </div>
-                    <span className="font-mono text-xs font-bold text-emerald-700 dark:text-emerald-400">
-                      Paket Website Mulai Rp 500.000
-                    </span>
-                  </div>
-
-                  <h2 className="text-2xl sm:text-3xl font-serif font-black tracking-tight text-zinc-950 dark:text-white mb-4">
-                    Website Cepat Online, Arsitektur Keamanan Terstruktur &amp; Otomasi AI Terkendali.
-                  </h2>
-                  <p className="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300 font-serif">
-                    {PERSONAL_INFO.bio}
-                  </p>
-                  <p className="text-xs sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-400 font-serif mt-3">
-                    Setiap website dan sistem yang saya bangun mengedepankan 4 standar: kecepatan muat di bawah 1 detik, struktur keamanan multi-layer, transparansi harga yang jelas tanpa biaya tersembunyi, dan kepemilikan source code 100% milik Anda.
-                  </p>
-                </div>
-
-                {/* 4 Engineering Principles (Inspired by fikran.dev/about) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="p-4 bg-white dark:bg-[#181816] border border-[#141413]/20 dark:border-white/10">
-                    <div className="w-7 h-7 border border-[#B48A3E] flex items-center justify-center text-[#855E1E] dark:text-[#D4AF37] mb-2 font-mono text-xs font-bold">
-                      01
-                    </div>
-                    <h3 className="font-serif font-bold text-sm text-zinc-950 dark:text-white">
-                      Kecepatan &amp; Skor 95+
-                    </h3>
-                    <p className="text-[11px] text-zinc-600 dark:text-zinc-400 mt-1 font-serif">
-                      Loading instan di bawah 1 detik. Setiap millisecond dihemat demi konversi pengunjung.
-                    </p>
-                  </div>
-
-                  <div className="p-4 bg-white dark:bg-[#181816] border border-[#141413]/20 dark:border-white/10">
-                    <div className="w-7 h-7 border border-[#B48A3E] flex items-center justify-center text-[#855E1E] dark:text-[#D4AF37] mb-2 font-mono text-xs font-bold">
-                      02
-                    </div>
-                    <h3 className="font-serif font-bold text-sm text-zinc-950 dark:text-white">
-                      Keamanan Terstruktur
-                    </h3>
-                    <p className="text-[11px] text-zinc-600 dark:text-zinc-400 mt-1 font-serif">
-                      Enkripsi TLS 1.3, sanitasi data anti-SQLi/XSS, dan isolasi server Zero-Trust WireGuard.
-                    </p>
-                  </div>
-
-                  <div className="p-4 bg-white dark:bg-[#181816] border border-[#141413]/20 dark:border-white/10">
-                    <div className="w-7 h-7 border border-[#B48A3E] flex items-center justify-center text-[#855E1E] dark:text-[#D4AF37] mb-2 font-mono text-xs font-bold">
-                      03
-                    </div>
-                    <h3 className="font-serif font-bold text-sm text-zinc-950 dark:text-white">
-                      Harga Transparan
-                    </h3>
-                    <p className="text-[11px] text-zinc-600 dark:text-zinc-400 mt-1 font-serif">
-                      Paket jelas dimulai dari Rp 500 ribuan. Tidak ada biaya jebakan di tengah pengerjaan.
-                    </p>
-                  </div>
-
-                  <div className="p-4 bg-white dark:bg-[#181816] border border-[#141413]/20 dark:border-white/10">
-                    <div className="w-7 h-7 border border-[#B48A3E] flex items-center justify-center text-[#855E1E] dark:text-[#D4AF37] mb-2 font-mono text-xs font-bold">
-                      04
-                    </div>
-                    <h3 className="font-serif font-bold text-sm text-zinc-950 dark:text-white">
-                      Ownership Penuh
-                    </h3>
-                    <p className="text-[11px] text-zinc-600 dark:text-zinc-400 mt-1 font-serif">
-                      Source code, domain, dan akses hosting 100% milik Anda tanpa ketergantungan sewa kode.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Featured Spotify Coding Playlist */}
-            <SpotifyPlaylist designTheme="arcade" />
-
-            {/* 4 Structured Steps of Work (Inspired by fikran.dev/about: Cara Kerja) */}
-            <div className="p-6 sm:p-8 bg-[#F4EFE6] dark:bg-[#171614] border-2 border-[#141413]/30 dark:border-[#B48A3E]/40">
-              <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37] mb-2">
-                <Layers className="w-4 h-4" />
-                <span>ALUR KERJA TERSTRUKTUR (CARA KERJA)</span>
-              </div>
-              <h3 className="font-serif font-bold text-xl text-zinc-950 dark:text-white mb-4">
-                4 Tahap Pengerjaan Proyek dari Perumusan Hingga Serah Terima
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-serif">
-                <div className="p-4 bg-white dark:bg-[#1E1D1B] border border-[#141413]/20 dark:border-white/10">
-                  <p className="font-mono font-bold text-[#855E1E] dark:text-[#D4AF37] mb-1">
-                    TAHAP 01
-                  </p>
-                  <p className="font-bold text-zinc-900 dark:text-white mb-1">
-                    Audit &amp; Spesifikasi Scope
-                  </p>
-                  <p className="text-zinc-600 dark:text-zinc-400">
-                    Diskusi mendalam untuk memetakan tujuan bisnis, target audiens, dan batas fitur yang disepakati tertulis.
-                  </p>
-                </div>
-
-                <div className="p-4 bg-white dark:bg-[#1E1D1B] border border-[#141413]/20 dark:border-white/10">
-                  <p className="font-mono font-bold text-[#855E1E] dark:text-[#D4AF37] mb-1">
-                    TAHAP 02
-                  </p>
-                  <p className="font-bold text-zinc-900 dark:text-white mb-1">
-                    Desain UI/UX &amp; Arsitektur
-                  </p>
-                  <p className="text-zinc-600 dark:text-zinc-400">
-                    Perancangan antarmuka berkelas yang selaras dengan kenyamanan pengguna HP dan laptop sebelum penulisan kode.
-                  </p>
-                </div>
-
-                <div className="p-4 bg-white dark:bg-[#1E1D1B] border border-[#141413]/20 dark:border-white/10">
-                  <p className="font-mono font-bold text-[#855E1E] dark:text-[#D4AF37] mb-1">
-                    TAHAP 03
-                  </p>
-                  <p className="font-bold text-zinc-900 dark:text-white mb-1">
-                    Coding &amp; Hardening Keamanan
-                  </p>
-                  <p className="text-zinc-600 dark:text-zinc-400">
-                    Implementasi kode bersih, pengujian Core Web Vitals, sanitasi form, dan setup sertifikat SSL HTTPS.
-                  </p>
-                </div>
-
-                <div className="p-4 bg-white dark:bg-[#1E1D1B] border border-[#141413]/20 dark:border-white/10">
-                  <p className="font-mono font-bold text-[#855E1E] dark:text-[#D4AF37] mb-1">
-                    TAHAP 04
-                  </p>
-                  <p className="font-bold text-zinc-900 dark:text-white mb-1">
-                    Go-Live &amp; Serah Terima Penuh
-                  </p>
-                  <p className="text-zinc-600 dark:text-zinc-400">
-                    Peluncuran ke domain online, penyerahan akses repository, dokumentasi panduan, dan garansi pemeliharaan.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Featured Services Preview with Pricing */}
-            <div className="border-t-2 border-[#141413]/30 dark:border-[#B48A3E]/40 pt-8">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <p className="font-mono text-xs uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37] font-bold">
-                    KATALOG LAYANAN &amp; ESTIMASI HARGA
-                  </p>
-                  <h3 className="text-2xl font-serif font-black text-zinc-950 dark:text-white">
-                    Pilihan Paket Website &amp; Solusi Rekayasa
-                  </h3>
-                </div>
-                <button
-                  onClick={() => setActiveTab('services')}
-                  className="font-mono text-xs font-bold text-[#855E1E] dark:text-[#D4AF37] hover:underline flex items-center gap-1 cursor-pointer"
-                >
-                  <span>Lihat Seluruh Layanan ({KLASIK_SERVICES.length})</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {KLASIK_SERVICES.slice(0, 3).map((srv) => (
-                  <div
-                    key={srv.id}
-                    className="p-6 bg-white dark:bg-[#181816] border-2 border-[#141413]/25 dark:border-[#B48A3E]/40 flex flex-col justify-between hover:shadow-md transition-shadow relative"
-                  >
-                    {srv.badge && (
-                      <span className="absolute -top-3 right-4 px-2.5 py-0.5 bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110] font-mono text-[10px] font-bold uppercase tracking-wider">
-                        {srv.badge}
-                      </span>
-                    )}
-
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-2 font-mono text-[11px] text-[#855E1E] dark:text-[#D4AF37] font-bold">
-                        <span>{srv.code}</span>
-                        <span>{srv.category}</span>
-                      </div>
-
-                      <h4 className="font-serif font-bold text-xl text-zinc-950 dark:text-white mb-1">
-                        {srv.title}
-                      </h4>
-
-                      <div className="flex items-baseline gap-2 mb-3">
-                        <span className="font-mono font-black text-2xl text-emerald-700 dark:text-emerald-400">
-                          {srv.price}
-                        </span>
-                        {srv.originalPrice && (
-                          <span className="font-mono text-xs text-zinc-400 line-through">
-                            {srv.originalPrice}
-                          </span>
-                        )}
-                      </div>
-
-                      <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-3 mb-4 font-serif">
-                        {srv.description}
-                      </p>
-
-                      <div className="space-y-1.5 border-t border-[#141413]/10 dark:border-white/10 pt-3 text-[11px] text-zinc-700 dark:text-zinc-300">
-                        {srv.scope.slice(0, 3).map((sc, i) => (
-                          <div key={i} className="flex items-start gap-1.5">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                            <span className="line-clamp-1">{sc}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="mt-6 pt-4 border-t border-[#141413]/10 dark:border-white/10 flex items-center justify-between">
-                      <span className="text-[11px] font-mono text-zinc-500">
-                        ⏱️ {srv.duration}
-                      </span>
-                      <button
-                        onClick={() => setSelectedService(srv)}
-                        className="text-xs font-mono font-bold text-[#855E1E] dark:text-[#D4AF37] hover:underline cursor-pointer"
-                      >
-                        Detail &amp; Request →
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ========================================================================= */}
-        {/* TAB 2: SERVICES (KATALOG SELURUH LAYANAN & RINCIAN HARGA)                */}
-        {/* ========================================================================= */}
-        {activeTab === 'services' && (
-          <div className="space-y-8 animate-fade-in">
-            <div className="border-b border-[#141413]/20 dark:border-[#B48A3E]/30 pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-              <div>
-                <p className="font-mono text-xs uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37] font-bold">
-                  KATALOG LAYANAN RESMI &amp; ESTIMASI HARGA
-                </p>
-                <h2 className="text-3xl font-serif font-black text-zinc-950 dark:text-white mt-1">
-                  Pilihan Paket Website Online, Sistem Web &amp; AI
-                </h2>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 font-serif max-w-3xl mt-2">
-                  Transparansi harga mulai dari Rp 500 ribuan. Dikerjakan dengan arsitektur keamanan terstruktur, jaminan skor PageSpeed 95+, dan source code 100% milik Anda.
-                </p>
-              </div>
-
-              {/* Filter Category */}
-              <div className="flex flex-wrap gap-1.5 font-mono text-xs">
-                {['Semua', 'Website Online', 'Aplikasi & Dashboard', 'AI & Otomasi', 'Infrastruktur Cloud', 'Keamanan & Tracking'].map(
-                  (cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setServiceCategoryFilter(cat)}
-                      className={`px-3 py-1 border transition-colors cursor-pointer ${
-                        serviceCategoryFilter === cat
-                          ? 'bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110] border-[#141413] dark:border-[#B48A3E] font-bold'
-                          : 'bg-white dark:bg-[#181816] text-zinc-700 dark:text-zinc-300 border-[#141413]/20 dark:border-white/10 hover:border-[#B48A3E]'
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  )
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredServices.map((srv) => (
-                <div
-                  key={srv.id}
-                  className="p-6 sm:p-8 bg-white dark:bg-[#181816] border-2 border-[#141413]/25 dark:border-[#B48A3E]/40 shadow-xs flex flex-col justify-between relative"
-                >
-                  {srv.badge && (
-                    <span className="absolute -top-3.5 right-6 px-3 py-1 bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110] font-mono text-xs font-bold uppercase tracking-wider shadow-sm">
-                      {srv.badge}
-                    </span>
-                  )}
-
-                  <div>
-                    <div className="flex items-center justify-between gap-2 font-mono text-xs text-[#855E1E] dark:text-[#D4AF37] font-bold mb-2">
-                      <span className="px-2.5 py-1 bg-[#855E1E]/10 dark:bg-[#D4AF37]/15">
-                        {srv.code} • {srv.category}
-                      </span>
-                      <span className="text-zinc-500 font-normal">⏱️ {srv.duration}</span>
-                    </div>
-
-                    <h3 className="text-2xl font-serif font-black text-zinc-950 dark:text-white mt-2 mb-2">
-                      {srv.title}
-                    </h3>
-
-                    <div className="flex items-baseline gap-3 mb-3">
-                      <span className="font-mono font-black text-3xl text-emerald-700 dark:text-emerald-400">
-                        {srv.price}
-                      </span>
-                      {srv.originalPrice && (
-                        <span className="font-mono text-sm text-zinc-400 line-through">
-                          {srv.originalPrice}
-                        </span>
-                      )}
-                    </div>
-
-                    <p className="text-xs font-mono text-[#855E1E] dark:text-[#D4AF37] italic mb-3">
-                      "{srv.tagline}"
-                    </p>
-                    <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 font-serif leading-relaxed mb-5">
-                      {srv.description}
-                    </p>
-
-                    {/* Scope */}
-                    <div className="border-t border-[#141413]/10 dark:border-white/10 pt-4 mb-4">
-                      <p className="font-mono text-[11px] font-bold tracking-wider uppercase text-zinc-900 dark:text-zinc-100 mb-2">
-                        Ruang Lingkup Pekerjaan (Scope):
-                      </p>
-                      <ul className="space-y-1.5 text-xs text-zinc-600 dark:text-zinc-400 font-serif">
-                        {srv.scope.map((item, idx) => (
-                          <li key={idx} className="flex items-start gap-2">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Security Highlights */}
-                    <div className="border-t border-[#141413]/10 dark:border-white/10 pt-3 mb-4">
-                      <p className="font-mono text-[11px] font-bold tracking-wider uppercase text-[#855E1E] dark:text-[#D4AF37] mb-1.5 flex items-center gap-1">
-                        <Lock className="w-3 h-3" />
-                        <span>Proteksi Keamanan Termasuk:</span>
-                      </p>
-                      <ul className="space-y-1 text-xs text-zinc-600 dark:text-zinc-400 font-serif">
-                        {srv.securityHighlights.map((sec, idx) => (
-                          <li key={idx} className="flex items-start gap-2">
-                            <span className="text-emerald-600 dark:text-emerald-400">🛡️</span>
-                            <span>{sec}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Deliverables */}
-                    <div className="border-t border-[#141413]/10 dark:border-white/10 pt-3 mb-4">
-                      <p className="font-mono text-[11px] font-bold tracking-wider uppercase text-zinc-900 dark:text-zinc-100 mb-1.5">
-                        Output Yang Diserahkan:
-                      </p>
-                      <ul className="space-y-1 text-xs text-zinc-600 dark:text-zinc-400 font-serif">
-                        {srv.deliverables.map((item, idx) => (
-                          <li key={idx} className="flex items-start gap-2">
-                            <span className="text-[#855E1E] dark:text-[#D4AF37]">✦</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="flex flex-wrap gap-1.5 pt-2 mb-4">
-                      {srv.techStack.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2 py-0.5 bg-[#FAF7F0] dark:bg-[#111110] border border-[#141413]/15 dark:border-white/10 text-[10px] font-mono text-zinc-600 dark:text-zinc-400"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="pt-4 border-t-2 border-[#141413]/15 dark:border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                    <p className="text-[11px] text-zinc-500 font-serif italic max-w-xs">
-                      Cocok untuk: {srv.idealFor}
-                    </p>
-                    <button
-                      onClick={() => handleWhatsAppConsultation(srv.title, srv.price)}
-                      className="px-4 py-2 bg-[#141413] hover:bg-zinc-800 text-white dark:bg-[#B48A3E] dark:hover:bg-[#9E772F] dark:text-[#111110] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-colors"
-                    >
-                      <MessageSquare className="w-3.5 h-3.5" />
-                      <span>Pesan / Konsultasi</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ========================================================================= */}
-        {/* TAB 3: STRUCTURED SECURITY SYSTEM (SISTEM KEAMANAN TERSTRUKTUR)           */}
-        {/* ========================================================================= */}
-        {activeTab === 'security' && (
-          <div className="space-y-8 animate-fade-in font-serif">
-            <div className="border-b border-[#141413]/20 dark:border-[#B48A3E]/30 pb-4">
-              <p className="font-mono text-xs uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37] font-bold">
-                ARSITEKTUR PERTAHANAN MULTI-LAYER
-              </p>
-              <h2 className="text-3xl font-serif font-black text-zinc-950 dark:text-white mt-1">
-                Sistem Keamanan Terstruktur &amp; Teruji
-              </h2>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 max-w-3xl mt-2 leading-relaxed">
-                Keamanan bukan sekadar fitur tambahan, melainkan pondasi utama di setiap baris kode dan konfigurasi server. Berikut adalah 5 lapisan proteksi sistem yang diterapkan pada setiap proyek yang saya tangani.
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              {KLASIK_SECURITY_LAYERS.map((sec, idx) => (
-                <div
-                  key={idx}
-                  className="p-6 sm:p-8 bg-white dark:bg-[#181816] border-2 border-[#141413]/25 dark:border-[#B48A3E]/40 shadow-xs"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 border-b border-[#141413]/10 dark:border-white/10 pb-3">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 border border-[#B48A3E] bg-[#FAF7F0] dark:bg-[#111110]">
-                        {renderSecurityIcon(sec.icon)}
-                      </div>
-                      <div>
-                        <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37]">
-                          {sec.level}
-                        </span>
-                        <h3 className="text-xl font-serif font-bold text-zinc-950 dark:text-white">
-                          {sec.title}
-                        </h3>
-                      </div>
-                    </div>
-                    <span className="font-mono text-xs text-emerald-700 dark:text-emerald-400 font-bold">
-                      AKTIF SECARA DEFAULT
-                    </span>
-                  </div>
-
-                  <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed mb-4">
-                    {sec.description}
-                  </p>
-
-                  <div className="p-4 bg-[#FAF7F0] dark:bg-[#111110] border border-[#141413]/15 dark:border-white/10">
-                    <p className="font-mono text-[11px] font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 mb-2">
-                      Langkah &amp; Mekanisme Konkret:
-                    </p>
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-zinc-700 dark:text-zinc-300">
-                      {sec.measures.map((m, mIdx) => (
-                        <li key={mIdx} className="flex items-start gap-2">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                          <span>{m}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Security Guarantee Box */}
-            <div className="p-6 bg-emerald-500/10 border-2 border-emerald-600/50 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div>
-                <h4 className="font-serif font-bold text-lg text-zinc-950 dark:text-white">
-                  Ingin Melakukan Audit Keamanan pada Website yang Sudah Berjalan?
-                </h4>
-                <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1">
-                  Saya menyediakan jasa audit celah keamanan web, perbaikan sertifikat SSL, penutupan port server rentan, dan mitigasi spam form.
-                </p>
-              </div>
-              <button
-                onClick={() => handleWhatsAppConsultation('Audit Keamanan Web')}
-                className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-mono text-xs font-bold uppercase tracking-wider shrink-0 cursor-pointer transition-colors"
-              >
-                Konsultasi Audit Keamanan
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* ========================================================================= */}
-        {/* TAB 4: LEARNING & CURRICULUM (PUSAT BELAJAR & MATERI AI)                 */}
-        {/* ========================================================================= */}
-        {activeTab === 'learning' && (
-          <div className="space-y-10 animate-fade-in">
-            {/* Header */}
-            <div className="border-b border-[#141413]/20 dark:border-[#B48A3E]/30 pb-4">
-              <p className="font-mono text-xs uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37] font-bold">
-                ARSIP PEMBELAJARAN INTERAKTIF TERPERINCI
-              </p>
-              <h2 className="text-3xl font-serif font-black text-zinc-950 dark:text-white mt-1">
-                Pusat Belajar AI &amp; Rekayasa Workflow Bisnis
-              </h2>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 font-serif max-w-3xl mt-2">
-                Kurikulum terstruktur yang jauh lebih lengkap, membedah implementasi AI dari fondasi, formula prompt 4 bagian, context injection, otomasi alur kerja, hingga AI Agent otonom dengan guardrails.
-              </p>
-            </div>
-
-            {/* 90-Days Learning Roadmap Overview */}
-            <div className="p-6 bg-[#F4EFE6] dark:bg-[#171614] border-2 border-[#141413]/30 dark:border-[#B48A3E]/40">
-              <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37] mb-2">
-                <Compass className="w-4 h-4" />
-                <span>PETA JALAN IMPLEMENTASI 90 HARI</span>
-              </div>
-              <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-white mb-4">
-                Urutan Rasional dari Fondasi Masalah Hingga Skala Mandiri
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-serif">
-                <div className="p-4 bg-white dark:bg-[#1E1D1B] border border-[#141413]/20 dark:border-white/10">
-                  <p className="font-mono font-bold text-[#855E1E] dark:text-[#D4AF37] mb-1">
-                    HARI 1 - 14
-                  </p>
-                  <p className="font-bold text-zinc-900 dark:text-white mb-1">
-                    Petakan Proses Berulang
-                  </p>
-                  <p className="text-zinc-600 dark:text-zinc-400">
-                    Identifikasi 1 pekerjaan repetitif yang menyita jam kerja tim. Susun profil bisnis 1 halaman.
-                  </p>
-                </div>
-
-                <div className="p-4 bg-white dark:bg-[#1E1D1B] border border-[#141413]/20 dark:border-white/10">
-                  <p className="font-mono font-bold text-[#855E1E] dark:text-[#D4AF37] mb-1">
-                    HARI 15 - 30
-                  </p>
-                  <p className="font-bold text-zinc-900 dark:text-white mb-1">
-                    Prompting &amp; Context Injection
-                  </p>
-                  <p className="text-zinc-600 dark:text-zinc-400">
-                    Beri konteks bisnis nyata, terapkan formula prompt 4 bagian, dan uji konsistensi output awal.
-                  </p>
-                </div>
-
-                <div className="p-4 bg-white dark:bg-[#1E1D1B] border border-[#141413]/20 dark:border-white/10">
-                  <p className="font-mono font-bold text-[#855E1E] dark:text-[#D4AF37] mb-1">
-                    HARI 31 - 60
-                  </p>
-                  <p className="font-bold text-zinc-900 dark:text-white mb-1">
-                    Otomasi Trigger &amp; Human Approval
-                  </p>
-                  <p className="text-zinc-600 dark:text-zinc-400">
-                    Hubungkan webhook form/chat ke model AI, sertakan notifikasi persetujuan staf sebelum data diposting.
-                  </p>
-                </div>
-
-                <div className="p-4 bg-white dark:bg-[#1E1D1B] border border-[#141413]/20 dark:border-white/10">
-                  <p className="font-mono font-bold text-[#855E1E] dark:text-[#D4AF37] mb-1">
-                    HARI 61 - 90
-                  </p>
-                  <p className="font-bold text-zinc-900 dark:text-white mb-1">
-                    Tata Kelola &amp; Evaluasi Efisiensi
-                  </p>
-                  <p className="text-zinc-600 dark:text-zinc-400">
-                    Audit log keamanan, kunci data sensitif, dan ukur jam kerja nyata yang berhasil dihemat per minggu.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Interactive Chapter Selector & Detail Viewer */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Left Column (4 cols): Chapter List */}
-              <div className="lg:col-span-4 space-y-2">
-                <p className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2">
-                  Daftar Bab Kurikulum:
-                </p>
-                {KLASIK_LEARNING_CHAPTERS.map((chap) => (
-                  <button
-                    key={chap.id}
-                    onClick={() => {
-                      setActiveChapterId(chap.id);
-                      if (chap.subchapters.length > 0) {
-                        setActiveSubchapterId(chap.subchapters[0].id);
-                      }
-                    }}
-                    className={`w-full text-left p-4 border transition-all cursor-pointer flex flex-col gap-1 ${
-                      activeChapterId === chap.id
-                        ? 'bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110] border-[#141413] dark:border-[#B48A3E] shadow-sm'
-                        : 'bg-white dark:bg-[#181816] text-zinc-900 dark:text-zinc-200 border-[#141413]/20 dark:border-white/10 hover:border-[#B48A3E]'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between text-[11px] font-mono opacity-80">
-                      <span>{chap.code}</span>
-                      <span>{chap.subchapters.length} Subbab</span>
-                    </div>
-                    <p className="font-serif font-bold text-sm line-clamp-1">{chap.title}</p>
-                    <p className="text-[11px] opacity-75 line-clamp-1 font-serif">{chap.kicker}</p>
-                  </button>
-                ))}
-              </div>
-
-              {/* Right Column (8 cols): Chapter Content Viewer */}
-              <div className="lg:col-span-8 p-6 sm:p-8 bg-white dark:bg-[#181816] border-2 border-[#141413]/25 dark:border-[#B48A3E]/40 shadow-xs">
-                {/* Active Chapter Header */}
-                <div className="border-b border-[#141413]/20 dark:border-white/10 pb-5 mb-6">
-                  <div className="flex items-center gap-2 font-mono text-xs text-[#855E1E] dark:text-[#D4AF37] font-bold mb-1">
-                    <span>{activeChapter.code}</span>
-                    <span>•</span>
-                    <span>{activeChapter.kicker}</span>
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-serif font-black text-zinc-950 dark:text-white mb-2">
-                    {activeChapter.title}
-                  </h3>
-                  <p className="text-sm font-serif leading-relaxed text-zinc-700 dark:text-zinc-300">
-                    {activeChapter.summary}
-                  </p>
-                  <p className="text-xs font-mono text-zinc-500 mt-3">
-                    Target Pembaca: {activeChapter.audience}
-                  </p>
-                </div>
-
-                {/* Subchapter Selector Tabs */}
-                {activeChapter.subchapters.length > 1 && (
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {activeChapter.subchapters.map((sub) => (
-                      <button
-                        key={sub.id}
-                        onClick={() => setActiveSubchapterId(sub.id)}
-                        className={`px-3 py-1.5 text-xs font-mono font-bold tracking-wider uppercase border transition-colors cursor-pointer ${
-                          activeSubchapterId === sub.id
-                            ? 'bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110] border-[#141413] dark:border-[#B48A3E]'
-                            : 'bg-[#FAF7F0] dark:bg-[#111110] text-zinc-800 dark:text-zinc-300 border-[#141413]/20 dark:border-white/10 hover:border-[#B48A3E]'
-                        }`}
-                      >
-                        {sub.num} {sub.title}
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                {/* Subchapter Deep Content */}
-                <div className="space-y-6 font-serif">
-                  <div>
-                    <h4 className="text-lg font-serif font-bold text-zinc-950 dark:text-white flex items-center gap-2 mb-2">
-                      <span className="font-mono text-xs text-[#855E1E] dark:text-[#D4AF37]">
-                        [{activeSubchapter.num}]
-                      </span>
-                      <span>{activeSubchapter.title}</span>
-                    </h4>
-                  </div>
-
-                  {/* Situation Card */}
-                  <div className="p-4 bg-amber-500/10 border-l-4 border-amber-600 text-xs sm:text-sm text-zinc-800 dark:text-zinc-200">
-                    <p className="font-mono font-bold text-amber-800 dark:text-amber-300 uppercase text-[11px] mb-1">
-                      Situasi Nyata di Lapangan:
-                    </p>
-                    <p className="leading-relaxed">{activeSubchapter.situation}</p>
-                  </div>
-
-                  {/* Explanation */}
-                  <div>
-                    <p className="font-mono text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1.5">
-                      Penjelasan &amp; Prinsip Dasar:
-                    </p>
-                    <p className="text-sm leading-relaxed text-zinc-800 dark:text-zinc-200 whitespace-pre-line">
-                      {activeSubchapter.explanation}
-                    </p>
-                  </div>
-
-                  {/* Practice */}
-                  <div className="p-4 bg-emerald-500/10 border-l-4 border-emerald-600 text-xs sm:text-sm text-zinc-800 dark:text-zinc-200">
-                    <p className="font-mono font-bold text-emerald-800 dark:text-emerald-300 uppercase text-[11px] mb-1">
-                      Cara Mempraktikkan Hari Ini:
-                    </p>
-                    <p className="leading-relaxed">{activeSubchapter.practice}</p>
-                  </div>
-
-                  {/* Common Mistakes */}
-                  <div className="p-4 bg-rose-500/10 border-l-4 border-rose-600 text-xs sm:text-sm text-zinc-800 dark:text-zinc-200">
-                    <p className="font-mono font-bold text-rose-800 dark:text-rose-300 uppercase text-[11px] mb-1">
-                      Kesalahan yang Sering Terjadi:
-                    </p>
-                    <p className="leading-relaxed">{activeSubchapter.mistakes}</p>
-                  </div>
-
-                  {/* Checklist */}
-                  <div className="border-t border-[#141413]/10 dark:border-white/10 pt-4">
-                    <p className="font-mono text-xs font-bold uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37] mb-2 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                      <span>Checklist Mini Kesiapan:</span>
-                    </p>
-                    <ul className="space-y-1.5 text-xs text-zinc-700 dark:text-zinc-300">
-                      {activeSubchapter.checklist.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <span className="font-mono text-[#855E1E] dark:text-[#D4AF37] font-bold">
-                            ✓
-                          </span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Kamus Istilah Digital & AI (Glossary) */}
-            <div className="border-t-2 border-[#141413]/30 dark:border-[#B48A3E]/40 pt-8">
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
-                <div>
-                  <p className="font-mono text-xs uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37] font-bold">
-                    GLOSARIUM REKAYASA &amp; AI
-                  </p>
-                  <h3 className="text-2xl font-serif font-black text-zinc-950 dark:text-white">
-                    Kamus Istilah Digital &amp; Arsitektur
-                  </h3>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-400 font-serif mt-1">
-                    Definisi ringkas tanpa jargon berbelit beserta tips praktis penerapannya.
-                  </p>
-                </div>
-
-                {/* Search input */}
-                <div className="relative w-full sm:w-64">
-                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-                  <input
-                    type="text"
-                    placeholder="Cari istilah (MCP, RAG...)"
-                    value={kamusSearch}
-                    onChange={(e) => setKamusSearch(e.target.value)}
-                    className="w-full pl-9 pr-3 py-1.5 bg-white dark:bg-[#181816] border border-[#141413]/25 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#B48A3E]"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {filteredKamus.map((k) => (
-                  <div
-                    key={k.term}
-                    className="p-4 bg-white dark:bg-[#181816] border border-[#141413]/20 dark:border-white/10 flex flex-col justify-between"
-                  >
-                    <div>
-                      <span className="font-mono text-[9px] uppercase tracking-wider text-[#855E1E] dark:text-[#D4AF37] font-bold block mb-1">
-                        {k.category}
-                      </span>
-                      <h4 className="font-serif font-bold text-base text-zinc-950 dark:text-white mb-2">
-                        {k.term}
-                      </h4>
-                      <p className="text-xs text-zinc-700 dark:text-zinc-300 font-serif leading-relaxed mb-3">
-                        {k.definition}
-                      </p>
-                    </div>
-                    <div className="border-t border-[#141413]/10 dark:border-white/10 pt-2 text-[11px] font-mono text-zinc-500 italic">
-                      💡 {k.practicalTip}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ========================================================================= */}
-        {/* TAB 5: BLOG & TECHNICAL ARTICLES                                          */}
-        {/* ========================================================================= */}
-        {activeTab === 'blog' && (
-          <div className="space-y-8 animate-fade-in">
-            {/* Header */}
-            <div className="border-b border-[#141413]/20 dark:border-[#B48A3E]/30 pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-              <div>
-                <p className="font-mono text-xs uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37] font-bold">
-                  ARTIKEL &amp; WAWASAN TEKNIS
-                </p>
-                <h2 className="text-3xl font-serif font-black text-zinc-950 dark:text-white mt-1">
-                  Arsip Catatan Rekayasa Perangkat Lunak
-                </h2>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 font-serif max-w-2xl mt-2">
-                  Dokumentasi studi kasus, pertimbangan arsitektur sistem, dan evaluasi teknologi dari pengerjaan proyek nyata.
-                </p>
-              </div>
-
-              {/* Category Filter Pills */}
-              <div className="flex flex-wrap gap-1.5 font-mono text-xs">
-                {['Semua', 'Web Engineering', 'AI & Agents', 'Cloud & DevOps', 'Keamanan & Arsitektur'].map(
-                  (cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setBlogFilter(cat)}
-                      className={`px-3 py-1 border transition-colors cursor-pointer ${
-                        blogFilter === cat
-                          ? 'bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110] border-[#141413] dark:border-[#B48A3E] font-bold'
-                          : 'bg-white dark:bg-[#181816] text-zinc-700 dark:text-zinc-300 border-[#141413]/20 dark:border-white/10 hover:border-[#B48A3E]'
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  )
-                )}
-              </div>
-            </div>
-
-            {/* Articles Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredBlogPosts.map((post) => (
-                <article
-                  key={post.id}
-                  onClick={() => setSelectedArticle(post)}
-                  className="p-6 sm:p-8 bg-white dark:bg-[#181816] border-2 border-[#141413]/25 dark:border-[#B48A3E]/40 hover:border-[#B48A3E] transition-all cursor-pointer group shadow-xs flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center justify-between text-xs font-mono text-[#855E1E] dark:text-[#D4AF37] font-bold mb-2">
-                      <span className="px-2 py-0.5 bg-[#855E1E]/10 dark:bg-[#D4AF37]/15">
-                        {post.category}
-                      </span>
-                      <span className="text-zinc-500 font-normal">
-                        {post.date} • {post.readTime}
-                      </span>
-                    </div>
-
-                    <h3 className="text-xl font-serif font-black text-zinc-950 dark:text-white group-hover:text-[#B48A3E] transition-colors mt-2 mb-3 leading-snug">
-                      {post.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-serif leading-relaxed mb-6">
-                      {post.excerpt}
-                    </p>
-
-                    <div className="space-y-1.5 border-t border-[#141413]/10 dark:border-white/10 pt-3">
-                      <p className="font-mono text-[10px] uppercase font-bold text-zinc-500 tracking-wider">
-                        Poin Inti:
-                      </p>
-                      {post.content.keyTakeaways.slice(0, 2).map((takeaway, idx) => (
-                        <p
-                          key={idx}
-                          className="text-xs text-zinc-700 dark:text-zinc-300 font-serif line-clamp-1 flex items-start gap-1.5"
-                        >
-                          <span className="text-[#855E1E] dark:text-[#D4AF37]">✦</span>
-                          <span>{takeaway}</span>
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mt-6 pt-4 border-t border-[#141413]/10 dark:border-white/10 flex items-center justify-between font-mono text-xs font-bold text-[#855E1E] dark:text-[#D4AF37]">
-                    <span>Baca Artikel Penuh</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform" />
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ========================================================================= */}
-        {/* TAB 6: CREDENTIALS & PORTFOLIO (PRESTASI & KREDENSIAL RESMI)              */}
-        {/* ========================================================================= */}
-        {activeTab === 'credentials' && (
-          <div className="space-y-10 animate-fade-in">
-            {/* Header */}
-            <div className="border-b border-[#141413]/20 dark:border-[#B48A3E]/30 pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-              <div>
-                <p className="font-mono text-xs uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37] font-bold">
-                  PRESTASI &amp; KREDENSIAL TERVERIFIKASI
-                </p>
-                <h2 className="text-3xl font-serif font-black text-zinc-950 dark:text-white mt-1">
-                  Arsip Sertifikasi, Kompetisi Sains &amp; Publikasi
-                </h2>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 font-serif max-w-2xl mt-2">
-                  Total {CERTIFICATES_DATA.length} dokumen kredensial resmi dari Google Cloud, AWS, NVIDIA, Claude AI, serta medali kompetisi akademik nasional.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3 font-mono text-xs">
-                <a
-                  href={PERSONAL_INFO.socialLinks.googleSkillshopWallet}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3.5 py-2 bg-black text-white dark:bg-[#B48A3E] dark:text-black font-bold uppercase tracking-wider flex items-center gap-1.5"
-                >
-                  <span>Accredible Wallet</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-
-                <a
-                  href={CERTIFICATES_DRIVE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3.5 py-2 border border-[#141413]/30 dark:border-white/20 hover:border-[#B48A3E] font-bold uppercase tracking-wider flex items-center gap-1.5"
-                >
-                  <span>Google Drive Lengkap</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </div>
-            </div>
-
-            {/* Highlights Metrics Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {HIGHLIGHTS_METRICS.map((m) => (
-                <div
-                  key={m.id}
-                  className="p-5 bg-white dark:bg-[#181816] border border-[#141413]/25 dark:border-[#B48A3E]/30 shadow-xs"
-                >
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37] font-bold block mb-1">
-                    {m.badge}
-                  </span>
-                  <h4 className="font-serif font-black text-xl text-zinc-950 dark:text-white">
-                    {m.value}
-                  </h4>
-                  <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200 mt-1">
-                    {m.labelId || m.label}
-                  </p>
-                  <p className="text-[11px] text-zinc-500 font-serif mt-1">
-                    {m.subtext}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Certificates Grid */}
-            <div className="space-y-4">
-              <h3 className="font-serif font-bold text-xl text-zinc-950 dark:text-white">
-                Daftar Dokumen Kredensial Pilihan
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {CERTIFICATES_DATA.slice(0, 12).map((cert) => (
-                  <div
-                    key={cert.id}
-                    onClick={() => onSelectCertificate?.(cert)}
-                    className="p-5 bg-white dark:bg-[#181816] border border-[#141413]/20 dark:border-[#B48A3E]/30 hover:border-[#B48A3E] transition-all cursor-pointer flex flex-col justify-between group shadow-xs"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between text-[11px] font-mono text-[#855E1E] dark:text-[#D4AF37] font-bold mb-2">
-                        <span className="px-2 py-0.5 bg-[#855E1E]/10 dark:bg-[#D4AF37]/15">
-                          {cert.issuer}
-                        </span>
-                        <span className="text-zinc-500">{cert.date}</span>
-                      </div>
-                      <h4 className="font-serif font-bold text-base text-zinc-950 dark:text-white group-hover:text-[#B48A3E] transition-colors mb-2 line-clamp-2">
-                        {cert.title}
-                      </h4>
-                      <p className="text-xs text-zinc-600 dark:text-zinc-400 font-serif line-clamp-3">
-                        {cert.description}
-                      </p>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-[#141413]/10 dark:border-white/10 flex items-center justify-between text-xs font-mono font-bold text-[#855E1E] dark:text-[#D4AF37]">
-                      <span>Buka Verifikasi Dokumen</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ========================================================================= */}
-        {/* TAB 7: CONTACT & CONSULTATION                                             */}
-        {/* ========================================================================= */}
-        {activeTab === 'contact' && (
-          <div className="max-w-3xl mx-auto p-6 sm:p-10 bg-white dark:bg-[#181816] border-2 border-[#141413]/30 dark:border-[#B48A3E]/40 shadow-md animate-fade-in space-y-8 font-serif">
-            <div className="border-b border-[#141413]/20 dark:border-white/10 pb-5 text-center">
-              <span className="font-mono text-xs font-bold uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37]">
-                SALURAN KOMUNIKASI RESMI
-              </span>
-              <h2 className="text-3xl font-serif font-black text-zinc-950 dark:text-white mt-1">
-                Diskusikan Kebutuhan Proyek &amp; Rekayasa
-              </h2>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-2 max-w-xl mx-auto">
-                Silakan hubungi saya untuk pembuatan website online mulai Rp 500rb, audit keamanan web, implementasi AI Agent WhatsApp, atau pengembangan sistem aplikasi kustom.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
-              <div className="p-5 bg-[#FAF7F0] dark:bg-[#111110] border border-[#141413]/20 dark:border-white/10">
-                <p className="font-mono text-xs uppercase tracking-wider text-[#855E1E] dark:text-[#D4AF37] font-bold mb-1">
-                  Surat Elektronik (Email)
-                </p>
-                <p className="font-bold text-zinc-900 dark:text-white text-base">
-                  {PERSONAL_INFO.email}
-                </p>
-                <p className="text-xs text-zinc-500 mt-2">
-                  Untuk proposal resmi, invoice, NDA, atau penawaran kerja sama institusional.
-                </p>
-                <a
-                  href={`mailto:${PERSONAL_INFO.email}`}
-                  className="mt-4 inline-flex items-center gap-1 font-mono text-xs font-bold text-[#855E1E] dark:text-[#D4AF37] hover:underline"
-                >
-                  <span>Kirim Email Langsung</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-
-              <div className="p-5 bg-[#FAF7F0] dark:bg-[#111110] border border-[#141413]/20 dark:border-white/10">
-                <p className="font-mono text-xs uppercase tracking-wider text-[#855E1E] dark:text-[#D4AF37] font-bold mb-1">
-                  Pesan Instan (WhatsApp)
-                </p>
-                <p className="font-bold text-zinc-900 dark:text-white text-base">
-                  +62 822-1199-3414
-                </p>
-                <p className="text-xs text-zinc-500 mt-2">
-                  Respon tercepat untuk konsultasi awal, penawaran harga, dan diskusi teknis.
-                </p>
-                <button
-                  onClick={() => handleWhatsAppConsultation()}
-                  className="mt-4 inline-flex items-center gap-1 font-mono text-xs font-bold text-[#855E1E] dark:text-[#D4AF37] hover:underline cursor-pointer"
-                >
-                  <span>Chat WhatsApp Sekarang</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-
-            <div className="border-t border-[#141413]/15 dark:border-white/10 pt-6 text-center text-xs text-zinc-500 font-mono">
-              Lokasi: {PERSONAL_INFO.location} • Zona Waktu: {PERSONAL_INFO.timezone}
-            </div>
-          </div>
-        )}
-
-        {/* ========================================================================= */}
-        {/* 4. MODAL: FULL ARTICLE READER MODAL                                       */}
-        {/* ========================================================================= */}
-        {selectedArticle && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-            <div className="bg-[#FAF7F0] dark:bg-[#141413] text-[#141413] dark:text-[#F5F2EB] w-full max-w-3xl max-h-[90vh] overflow-y-auto border-2 border-[#141413] dark:border-[#B48A3E] p-6 sm:p-10 shadow-2xl relative font-serif">
-              <button
-                onClick={() => setSelectedArticle(null)}
-                className="absolute top-4 right-4 p-2 text-zinc-500 hover:text-black dark:hover:text-white cursor-pointer"
-                title="Tutup"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="border-b border-[#141413]/20 dark:border-white/10 pb-4 mb-6">
-                <div className="flex items-center gap-2 font-mono text-xs text-[#855E1E] dark:text-[#D4AF37] font-bold mb-2">
-                  <span>{selectedArticle.category}</span>
-                  <span>•</span>
-                  <span>{selectedArticle.date}</span>
-                  <span>•</span>
-                  <span>{selectedArticle.readTime}</span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl font-serif font-black text-zinc-950 dark:text-white leading-tight">
-                  {selectedArticle.title}
-                </h2>
-                <p className="font-mono text-xs text-zinc-500 mt-2">
-                  Oleh: Tubagus Fitran Badruttamam (Software Engineer)
-                </p>
-              </div>
-
-              {/* Takeaways Box */}
-              <div className="p-4 bg-white dark:bg-[#1E1D1B] border border-[#141413]/20 dark:border-white/10 mb-6">
-                <p className="font-mono text-xs uppercase font-bold text-[#855E1E] dark:text-[#D4AF37] tracking-wider mb-2">
-                  Ringkasan Eksekutif (Key Takeaways):
-                </p>
-                <ul className="space-y-1.5 text-xs sm:text-sm text-zinc-800 dark:text-zinc-200">
-                  {selectedArticle.content.keyTakeaways.map((takeaway, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-[#855E1E] dark:text-[#D4AF37] font-bold">✦</span>
-                      <span>{takeaway}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Body */}
-              <div className="space-y-6 text-sm sm:text-base leading-relaxed text-zinc-800 dark:text-zinc-200">
-                <p className="italic text-zinc-600 dark:text-zinc-400 border-l-2 border-[#B48A3E] pl-4">
-                  {selectedArticle.content.intro}
-                </p>
-
-                {selectedArticle.content.sections.map((sec, idx) => (
-                  <div key={idx} className="space-y-2">
-                    <h3 className="text-lg font-serif font-bold text-zinc-950 dark:text-white pt-2">
-                      {sec.heading}
-                    </h3>
-                    <p className="whitespace-pre-line leading-relaxed">{sec.body}</p>
-                  </div>
-                ))}
-
-                <div className="border-t border-[#141413]/10 dark:border-white/10 pt-6 mt-8">
-                  <h4 className="font-mono text-xs font-bold uppercase tracking-widest text-[#855E1E] dark:text-[#D4AF37] mb-2">
-                    Kesimpulan &amp; Catatan Penutup
-                  </h4>
-                  <p className="text-sm italic">{selectedArticle.content.conclusion}</p>
-                </div>
-              </div>
-
-              <div className="mt-8 pt-6 border-t-2 border-[#141413]/20 dark:border-white/10 flex items-center justify-between">
-                <button
-                  onClick={() => setSelectedArticle(null)}
-                  className="px-4 py-2 border border-[#141413]/30 dark:border-white/20 font-mono text-xs font-bold uppercase cursor-pointer hover:bg-black/5 dark:hover:bg-white/5"
-                >
-                  Tutup Bacaan
-                </button>
-                <button
-                  onClick={() => handleWhatsAppConsultation(selectedArticle.title)}
-                  className="px-4 py-2 bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110] font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 cursor-pointer"
-                >
-                  <MessageSquare className="w-3.5 h-3.5" />
-                  <span>Diskusikan Topik Ini</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ========================================================================= */}
-        {/* 5. MODAL: SERVICE DETAIL & SCOPE MODAL                                    */}
-        {/* ========================================================================= */}
-        {selectedService && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-            <div className="bg-[#FAF7F0] dark:bg-[#141413] text-[#141413] dark:text-[#F5F2EB] w-full max-w-2xl max-h-[90vh] overflow-y-auto border-2 border-[#141413] dark:border-[#B48A3E] p-6 sm:p-8 shadow-2xl relative font-serif">
-              <button
-                onClick={() => setSelectedService(null)}
-                className="absolute top-4 right-4 p-2 text-zinc-500 hover:text-black dark:hover:text-white cursor-pointer"
-                title="Tutup"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="border-b border-[#141413]/20 dark:border-white/10 pb-4 mb-4">
-                <span className="font-mono text-xs font-bold text-[#855E1E] dark:text-[#D4AF37]">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300">
                   {selectedService.code} • {selectedService.category}
                 </span>
-                <h3 className="text-2xl font-serif font-black text-zinc-950 dark:text-white mt-1">
-                  {selectedService.title}
-                </h3>
-                <div className="flex items-baseline gap-3 mt-1.5">
-                  <span className="font-mono font-black text-2xl text-emerald-700 dark:text-emerald-400">
-                    {selectedService.price}
+                {selectedService.badge && (
+                  <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                    {selectedService.badge}
                   </span>
-                  {selectedService.originalPrice && (
-                    <span className="font-mono text-xs text-zinc-400 line-through">
-                      {selectedService.originalPrice}
-                    </span>
-                  )}
-                  <span className="text-xs text-zinc-500">⏱️ {selectedService.duration}</span>
-                </div>
+                )}
               </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-zinc-950 dark:text-white">
+                {selectedService.title}
+              </h3>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+                {selectedService.description}
+              </p>
+            </div>
 
-              <div className="space-y-4 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300">
-                <p className="leading-relaxed">{selectedService.description}</p>
-
-                <div className="p-4 bg-white dark:bg-[#1E1D1B] border border-[#141413]/20 dark:border-white/10">
-                  <p className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 mb-2">
-                    Detail Ruang Lingkup (Scope):
+            {/* Price & Timeline Grid */}
+            <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800 grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs text-zinc-400 font-mono">Biaya Investasi:</p>
+                <p className="text-2xl font-black font-mono text-zinc-950 dark:text-white mt-0.5">
+                  {selectedService.price}
+                </p>
+                {selectedService.originalPrice && (
+                  <p className="text-xs font-mono text-zinc-400 line-through">
+                    {selectedService.originalPrice}
                   </p>
-                  <ul className="space-y-1.5 font-serif">
-                    {selectedService.scope.map((s, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                        <span>{s}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="p-4 bg-emerald-500/10 border border-emerald-600/30">
-                  <p className="font-mono text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 mb-1.5 flex items-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4" />
-                    <span>Sistem Keamanan Termasuk:</span>
-                  </p>
-                  <ul className="space-y-1 font-serif text-xs">
-                    {selectedService.securityHighlights.map((sec, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-emerald-600 dark:text-emerald-400">🛡️</span>
-                        <span>{sec}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div>
-                  <p className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 mb-1">
-                    Output Yang Anda Dapatkan:
-                  </p>
-                  <ul className="space-y-1 font-serif">
-                    {selectedService.deliverables.map((d, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-[#855E1E] dark:text-[#D4AF37]">✦</span>
-                        <span>{d}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                )}
               </div>
-
-              <div className="mt-6 pt-4 border-t-2 border-[#141413]/15 dark:border-white/10 flex items-center justify-between gap-3">
-                <button
-                  onClick={() => setSelectedService(null)}
-                  className="px-4 py-2 border border-[#141413]/30 dark:border-white/20 font-mono text-xs font-bold uppercase cursor-pointer"
-                >
-                  Tutup
-                </button>
-                <button
-                  onClick={() => handleWhatsAppConsultation(selectedService.title, selectedService.price)}
-                  className="px-5 py-2.5 bg-[#141413] text-white dark:bg-[#B48A3E] dark:text-[#111110] font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer"
-                >
-                  <MessageSquare className="w-3.5 h-3.5" />
-                  <span>Ajukan Penawaran WhatsApp</span>
-                </button>
+              <div>
+                <p className="text-xs text-zinc-400 font-mono">Estimasi Pengerjaan:</p>
+                <p className="text-sm font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1">
+                  <Clock className="w-4 h-4" />
+                  <span>{selectedService.duration}</span>
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Disepakati tertulis di awal</p>
               </div>
             </div>
+
+            {/* Scope Breakdown */}
+            <div className="space-y-2 text-xs">
+              <p className="font-bold text-zinc-900 dark:text-white uppercase font-mono tracking-wider">
+                Cakupan Fitur &amp; Pekerjaan:
+              </p>
+              <ul className="space-y-2">
+                {selectedService.scope.map((sc, idx) => (
+                  <li key={idx} className="flex items-start gap-2.5 text-zinc-700 dark:text-zinc-300">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                    <span>{sc}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Deliverables */}
+            <div className="space-y-2 text-xs border-t border-zinc-100 dark:border-zinc-800 pt-4">
+              <p className="font-bold text-zinc-900 dark:text-white uppercase font-mono tracking-wider">
+                Hasil Serah Terima (Deliverables):
+              </p>
+              <ul className="space-y-1.5 text-zinc-600 dark:text-zinc-400">
+                {selectedService.deliverables.map((del, idx) => (
+                  <li key={idx} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                    <span>{del}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Security Highlights */}
+            <div className="p-3.5 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200/60 dark:border-emerald-900/40 text-xs space-y-1.5">
+              <p className="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <span>Standar Keamanan Bawaan:</span>
+              </p>
+              <div className="flex flex-wrap gap-2 text-[11px] text-emerald-900 dark:text-emerald-200">
+                {selectedService.securityHighlights.map((sh, idx) => (
+                  <span key={idx} className="px-2 py-0.5 rounded bg-white/80 dark:bg-zinc-900/80 border border-emerald-200/50 dark:border-emerald-900/40">
+                    ✓ {sh}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                onClick={() => {
+                  handleWhatsAppConsultation(selectedService.title, selectedService.price);
+                  setSelectedService(null);
+                }}
+                className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md"
+              >
+                <MessageSquare className="w-4 h-4" />
+                <span>Pesan Paket Ini Langsung via WhatsApp</span>
+              </button>
+
+              <button
+                onClick={() => setSelectedService(null)}
+                className="py-3 px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold text-xs transition-colors cursor-pointer"
+              >
+                Tutup
+              </button>
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 16. MODAL READER ARTIKEL BLOG LENGKAP (ARTICLE READER MODAL)             */}
+      {/* ========================================================================= */}
+      {selectedArticle && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
+          <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 p-6 sm:p-10 shadow-2xl space-y-6">
+            <button
+              onClick={() => setSelectedArticle(null)}
+              className="absolute top-5 right-5 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="border-b border-zinc-100 dark:border-zinc-800 pb-4">
+              <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 mb-2">
+                <span className="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-bold">
+                  {selectedArticle.category}
+                </span>
+                <span>•</span>
+                <span>{selectedArticle.date}</span>
+                <span>•</span>
+                <span>{selectedArticle.readTime}</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white leading-tight">
+                {selectedArticle.title}
+              </h2>
+            </div>
+
+            {/* Intro */}
+            <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">
+              {selectedArticle.content.intro}
+            </p>
+
+            {/* Key Takeaways */}
+            <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-2">
+              <p className="font-mono text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                Poin Kunci (Key Takeaways):
+              </p>
+              <ul className="space-y-1.5 text-xs text-zinc-700 dark:text-zinc-300">
+                {selectedArticle.content.keyTakeaways.map((point, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Sections */}
+            <div className="space-y-6 pt-2">
+              {selectedArticle.content.sections.map((sec, idx) => (
+                <div key={idx} className="space-y-2">
+                  <h3 className="font-bold text-lg text-zinc-950 dark:text-white">
+                    {sec.heading}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed whitespace-pre-line">
+                    {sec.body}
+                  </p>
+                  {sec.codeSnippet && (
+                    <div className="p-4 rounded-xl bg-zinc-950 text-emerald-400 font-mono text-xs leading-relaxed overflow-x-auto border border-zinc-800 my-3">
+                      <pre className="whitespace-pre-wrap">{sec.codeSnippet}</pre>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Conclusion */}
+            <div className="p-4 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-900/50 space-y-1">
+              <p className="font-mono text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+                Kesimpulan:
+              </p>
+              <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                {selectedArticle.content.conclusion}
+              </p>
+            </div>
+
+            {/* Footer buttons */}
+            <div className="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800">
+              <button
+                onClick={() => handleWhatsAppConsultation(selectedArticle.title)}
+                className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors flex items-center gap-2"
+              >
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>Diskusikan Topik Ini via WhatsApp</span>
+              </button>
+
+              <button
+                onClick={() => setSelectedArticle(null)}
+                className="py-2.5 px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold text-xs transition-colors"
+              >
+                Tutup Artikel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
