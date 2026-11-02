@@ -207,23 +207,34 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="hidden md:flex items-center gap-4 lg:gap-5 text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-300">
                 {/* Layanan with Webzoo-style Mega Dropdown (Matching User Image 2) */}
                 <div className="relative">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setLayananDropdownOpen((prev) => !prev);
-                      setBelajarDropdownOpen(false);
-                    }}
-                    className={`flex items-center gap-1 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
-                      activeSection === 'services' ? 'font-bold text-zinc-950 dark:text-white' : ''
-                    }`}
-                  >
-                    <span>Layanan</span>
-                    <ChevronDown
-                      className={`w-3.5 h-3.5 opacity-70 transition-transform ${
-                        layananDropdownOpen ? 'rotate-180' : ''
+                  <div className="flex items-center gap-0.5">
+                    <button
+                      onClick={(e) => {
+                        setLayananDropdownOpen(false);
+                        handleNavClick('services', e);
+                      }}
+                      className={`hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
+                        activeSection === 'services' ? 'font-bold text-zinc-950 dark:text-white' : ''
                       }`}
-                    />
-                  </button>
+                    >
+                      <span>Layanan</span>
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setLayananDropdownOpen((prev) => !prev);
+                        setBelajarDropdownOpen(false);
+                      }}
+                      className="p-1 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer"
+                      title="Buka menu katalog layanan"
+                    >
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 opacity-70 transition-transform ${
+                          layananDropdownOpen ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
+                  </div>
 
                   {/* Mega Menu Popover */}
                   <AnimatePresence>
@@ -464,24 +475,36 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 {/* Belajar with Dropdown */}
                 <div className="relative">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setBelajarDropdownOpen((prev) => !prev);
-                    }}
-                    className={`flex items-center gap-1 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
-                      activeSection === 'learning' || activeSection === 'kamus'
-                        ? 'font-bold text-zinc-950 dark:text-white'
-                        : ''
-                    }`}
-                  >
-                    <span>Belajar</span>
-                    <ChevronDown
-                      className={`w-3.5 h-3.5 opacity-70 transition-transform ${
-                        belajarDropdownOpen ? 'rotate-180' : ''
+                  <div className="flex items-center gap-0.5">
+                    <button
+                      onClick={(e) => {
+                        setBelajarDropdownOpen(false);
+                        handleNavClick('learning', e);
+                      }}
+                      className={`hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
+                        activeSection === 'learning' || activeSection === 'kamus'
+                          ? 'font-bold text-zinc-950 dark:text-white'
+                          : ''
                       }`}
-                    />
-                  </button>
+                    >
+                      <span>Belajar</span>
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setBelajarDropdownOpen((prev) => !prev);
+                        setLayananDropdownOpen(false);
+                      }}
+                      className="p-1 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer"
+                      title="Buka kurikulum belajar"
+                    >
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 opacity-70 transition-transform ${
+                          belajarDropdownOpen ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
+                  </div>
 
                   {/* Dropdown Popover */}
                   <AnimatePresence>

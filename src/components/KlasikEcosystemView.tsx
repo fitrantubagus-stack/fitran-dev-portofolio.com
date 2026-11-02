@@ -209,9 +209,11 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
     }
   }, [activePage, activeChapterId, activeSubchapterId]);
 
-  // Sync track, chapter, hash, and blog articles with URL
+  // Sync track, chapter, hash, and blog articles with URL & browser popstate
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window === 'undefined') return;
+
+    const syncFromLocation = () => {
       const fullUrl = (window.location.pathname + window.location.hash).toLowerCase();
       const path = window.location.pathname.toLowerCase();
 
@@ -220,10 +222,12 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
         const slug = path.replace(/^\/(blog|artikel)\/?/, '').trim();
         if (slug) {
           const found = KLASIK_BLOG_POSTS.find((p) => p.slug === slug || p.id === slug);
-          if (found) {
-            setSelectedArticle(found);
-          }
+          setSelectedArticle(found || null);
+        } else {
+          setSelectedArticle(null);
         }
+      } else {
+        setSelectedArticle(null);
       }
 
       // Sync learning track from path or query
@@ -257,7 +261,11 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           }
         }
       }
-    }
+    };
+
+    syncFromLocation();
+    window.addEventListener('popstate', syncFromLocation);
+    return () => window.removeEventListener('popstate', syncFromLocation);
   }, [activePage]);
 
   // Filter States

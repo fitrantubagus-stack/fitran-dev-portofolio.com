@@ -6,6 +6,7 @@ export type BrandIconName =
   | 'github'
   | 'linkedin'
   | 'instagram'
+  | 'amazon'
   | 'aws'
   | 'aws-skill-builder'
   | 'meta'
@@ -26,6 +27,7 @@ export type BrandIconName =
   | 'nvidia'
   | 'nvidia-developer'
   | 'gdg-campus'
+  | 'dicoding'
   | 'perpusnas'
   | 'osn'
   | 'sohib'
@@ -119,6 +121,39 @@ export const BrandIcon: React.FC<BrandIconProps> = ({
           />
         </svg>
       );
+
+    case 'amazon': {
+      const azH = Math.max(size * 1.3, 22);
+      return (
+        <span
+          className={`inline-flex items-center bg-white px-2.5 py-1 rounded-lg border border-zinc-200/90 shadow-2xs shrink-0 ${baseClasses} ${className}`}
+        >
+          <svg
+            height={azH}
+            viewBox="0 0 100 30"
+            fill="none"
+            className="shrink-0"
+            style={{ width: 'auto', height: `${azH}px` }}
+          >
+            {/* amazon wordmark */}
+            <text x="0" y="20" fill="#111827" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="900" fontSize="21" letterSpacing="-0.5px">
+              amazon
+            </text>
+            {/* signature amazon orange smile arrow */}
+            <path
+              d="M10 24 C 28 30, 60 30, 80 23"
+              stroke="#FF9900"
+              strokeWidth="2.8"
+              strokeLinecap="round"
+            />
+            <path
+              d="M77 20 L 83 23 L 78 26 Z"
+              fill="#FF9900"
+            />
+          </svg>
+        </span>
+      );
+    }
 
     case 'aws': {
       const logoH = Math.max(size * 1.45, 22);
@@ -394,6 +429,35 @@ export const BrandIcon: React.FC<BrandIconProps> = ({
           style={{ width: badgeSize, height: badgeSize }}
           className={`object-contain shrink-0 ${baseClasses} ${className}`}
         />
+      );
+    }
+
+    case 'dicoding': {
+      const dicodingH = Math.max(size * 1.35, 24);
+      return (
+        <span
+          className={`inline-flex items-center bg-white px-2.5 py-1 rounded-lg border border-zinc-200/90 shadow-2xs shrink-0 ${baseClasses} ${className}`}
+        >
+          <svg
+            height={dicodingH}
+            viewBox="0 0 115 32"
+            fill="none"
+            className="shrink-0"
+            style={{ width: 'auto', height: `${dicodingH}px` }}
+          >
+            {/* dicoding signature logo with dark blue text and accent square */}
+            <text x="2" y="23" fill="#1A365D" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="800" fontSize="22" letterSpacing="-0.5px">
+              dicodin
+            </text>
+            {/* 'g' glyph */}
+            <text x="83" y="23" fill="#1A365D" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="800" fontSize="22" letterSpacing="-0.5px">
+              g
+            </text>
+            {/* Dicoding distinctive blue box emblem on right */}
+            <rect x="97" y="6" width="16" height="19" rx="3" fill="#0C2340" />
+            <circle cx="105" cy="15.5" r="3.2" fill="#FFFFFF" />
+          </svg>
+        </span>
       );
     }
 
