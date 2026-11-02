@@ -19,6 +19,7 @@ import {
   PERSONAL_INFO,
   CERTIFICATES_DATA,
   CERTIFICATES_DRIVE_URL,
+  PROJECTS_DATA,
 } from '../data/portfolioData';
 import { ProfileAvatar } from './ProfileAvatar';
 import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
@@ -64,6 +65,8 @@ import {
   Copy,
   Wrench,
   TrendingUp,
+  Download,
+  FolderOpen,
 } from 'lucide-react';
 
 interface KlasikEcosystemViewProps {
@@ -127,6 +130,125 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   const [kamusCategory, setKamusCategory] = useState<string>('Semua');
   const [toolsCategory, setToolsCategory] = useState<string>('Semua');
   const [blogFilter, setBlogFilter] = useState<string>('Semua');
+
+  // Certificate Showcase States in Home
+  const [certIssuerFilter, setCertIssuerFilter] = useState<'all' | 'Google' | 'CloudAI' | 'Competitions' | 'Academic'>('all');
+  const [copiedCertId, setCopiedCertId] = useState<string | null>(null);
+
+  const handleCopyCertId = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(id);
+    setCopiedCertId(id);
+    setToastMessage(`ID Kredensial "${id}" berhasil disalin!`);
+    setTimeout(() => setCopiedCertId(null), 2500);
+  };
+
+  const filteredCerts = useMemo(() => {
+    return CERTIFICATES_DATA.filter((cert) => {
+      if (certIssuerFilter === 'all') return true;
+      if (certIssuerFilter === 'Google')
+        return (
+          cert.issuer === 'Google' ||
+          cert.issuer === 'Google Skills' ||
+          cert.issuer === 'Google Developer Program'
+        );
+      if (certIssuerFilter === 'CloudAI')
+        return (
+          cert.issuer === 'AWS' ||
+          cert.issuer === 'NVIDIA' ||
+          cert.issuer === 'Meta' ||
+          cert.issuer === 'Vercel' ||
+          cert.issuer === 'Anthropic' ||
+          cert.issuer === 'Claude Academy' ||
+          cert.issuer === 'Dicoding'
+        );
+      if (certIssuerFilter === 'Competitions')
+        return (
+          cert.title.toLowerCase().includes('medali') ||
+          cert.title.toLowerCase().includes('gold') ||
+          cert.title.toLowerCase().includes('kshpi') ||
+          cert.title.toLowerCase().includes('oshsp') ||
+          cert.title.toLowerCase().includes('osn') ||
+          cert.title.toLowerCase().includes('posi')
+        );
+      if (certIssuerFilter === 'Academic')
+        return (
+          cert.category === 'academic' ||
+          cert.category === 'publications' ||
+          cert.issuer === 'Perpustakaan Nasional RI' ||
+          cert.issuer === 'Central Course' ||
+          cert.issuer === 'Belajar Era Digital' ||
+          cert.issuer === 'Indonesia Baik'
+        );
+      return true;
+    });
+  }, [certIssuerFilter]);
+
+  // Issuer badge helper
+  const renderCertBadge = (cert: CertificateItem) => {
+    if (cert.issuer === 'AWS') {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-300 font-mono text-[11px] font-bold">
+          <img src="/official-aws-logo.png" alt="AWS" className="h-3.5 w-auto object-contain" />
+          <span>AWS Skill Builder</span>
+        </span>
+      );
+    }
+    if (cert.issuer === 'NVIDIA' || cert.title.toUpperCase().includes('NVIDIA')) {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-mono text-[11px] font-bold">
+          <img src="/official-nvidia-logo.png" alt="NVIDIA" className="h-3.5 w-auto object-contain" />
+          <span>NVIDIA DLI</span>
+        </span>
+      );
+    }
+    if (cert.issuer === 'Anthropic' || cert.issuer === 'Claude Academy' || cert.title.toLowerCase().includes('claude')) {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-orange-50 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-900/60 text-orange-800 dark:text-orange-300 font-mono text-[11px] font-bold">
+          <img src="/official-claude-logo.png" alt="Claude" className="h-3.5 w-auto object-contain" />
+          <span>Claude Academy</span>
+        </span>
+      );
+    }
+    if (cert.issuer === 'Google' || cert.issuer === 'Google Skills' || cert.issuer === 'Google Developer Program') {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 text-blue-800 dark:text-blue-300 font-mono text-[11px] font-bold">
+          <GoogleDeveloperLogo size={13} />
+          <span>Google Developer</span>
+        </span>
+      );
+    }
+    if (cert.issuer === 'Meta') {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-900/60 text-sky-800 dark:text-sky-300 font-mono text-[11px] font-bold">
+          <img src="/official-meta-logo.png" alt="Meta" className="h-3.5 w-auto object-contain" />
+          <span>Meta Blueprint</span>
+        </span>
+      );
+    }
+    if (cert.title.toLowerCase().includes('gold') || cert.title.toLowerCase().includes('medali')) {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-yellow-50 dark:bg-yellow-950/40 border border-yellow-200 dark:border-yellow-900/60 text-yellow-900 dark:text-yellow-300 font-mono text-[11px] font-bold">
+          <Award className="w-3.5 h-3.5 text-yellow-600 dark:text-yellow-400" />
+          <span>Medali Emas Sains</span>
+        </span>
+      );
+    }
+    if (cert.issuer === 'Perpustakaan Nasional RI' || cert.category === 'publications') {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-200 dark:border-cyan-900/60 text-cyan-800 dark:text-cyan-300 font-mono text-[11px] font-bold">
+          <BookOpen className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+          <span>Perpusnas RI</span>
+        </span>
+      );
+    }
+    return (
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-mono text-[11px] font-bold">
+        <CheckCircle2 className="w-3.5 h-3.5 text-zinc-500" />
+        <span>{cert.issuer}</span>
+      </span>
+    );
+  };
 
   // FAQ State
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
@@ -276,52 +398,207 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       )}
 
       {/* ========================================================================= */}
-      {/* VIEW 1: BERANDA LENGKAP (HOME VIEW)                                       */}
+      {/* VIEW 1: BERANDA LENGKAP (HOME VIEW - ELEVATED INNOVATION ARCHITECTURE)    */}
       {/* ========================================================================= */}
       {activePage === 'home' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14 space-y-20 sm:space-y-28">
-          {/* 1. HERO SECTION */}
+          {/* 1. HERO SECTION - 2-COLUMN SPLIT WITH EXECUTIVE HUD & OFFICIAL AVATAR */}
           <section className="pt-2">
-            <div className="space-y-4 max-w-4xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/80 text-[11px] font-mono font-bold tracking-wider uppercase text-zinc-700 dark:text-zinc-300">
-                <span className="w-2 h-2 rounded-full bg-[#8A0F14] animate-pulse" />
-                <span>TUBAGUS FITRAN BADRUTTAMAM · FITRAN DEV</span>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              {/* SISI KIRI (Col 7) */}
+              <div className="lg:col-span-7 space-y-6">
+                {/* Live Availability Pill */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300 font-mono text-[11px] font-bold">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>TERBUKA UNTUK PROYEK &amp; KONSULTASI · CILEGON, INDONESIA</span>
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-900/60 text-blue-700 dark:text-blue-300 text-[11px] font-bold">
+                    <GoogleDeveloperLogo size={12} />
+                    <span>Google Dev Program</span>
+                  </div>
+                </div>
+
+                {/* Big Hero Title */}
+                <div className="space-y-2">
+                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-zinc-950 dark:text-white leading-[1.08]">
+                    Fullstack Developer <br />
+                    <span className="text-[#8A0F14] dark:text-[#E02424]">&amp; AI Engineer</span>
+                  </h1>
+                  <p className="text-lg sm:text-xl font-medium text-zinc-800 dark:text-zinc-200 max-w-2xl leading-relaxed">
+                    Merancang AI agent &amp; automation, aplikasi web performa tinggi (<span className="text-[#8A0F14] dark:text-red-400 font-bold">&lt;0.8s</span>), sistem keamanan server 5 lapis, serta technical marketing (Meta CAPI &amp; Google Ads).
+                  </p>
+                </div>
+
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
+                  Tubagus Fitran Badruttamam adalah Fullstack Developer dan AI Engineer dari Cilegon, Indonesia (Mahasiswa S1 Informatika Universitas Muhammadiyah Banten). Fitran Dev menyediakan jasa website kilat, AI agent dan automation terintegrasi, dengan kepemilikan source code 100% milik klien tanpa biaya sewa kode tersembunyi.
+                </p>
+
+                {/* Action Buttons */}
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <button
+                    onClick={() => handleWhatsAppConsultation()}
+                    className="px-6 py-3 rounded-full bg-[#8A0F14] hover:bg-[#6E0B0F] text-white font-bold text-xs sm:text-sm transition-all shadow-md flex items-center gap-2 cursor-pointer group"
+                  >
+                    <MessageSquare className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+                    <span>Chat via WhatsApp</span>
+                  </button>
+
+                  <button
+                    onClick={() => navigateTo('services')}
+                    className="px-6 py-3 rounded-full bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 font-bold text-xs sm:text-sm transition-all cursor-pointer flex items-center gap-2 shadow-xs"
+                  >
+                    <Briefcase className="w-4 h-4 text-zinc-500" />
+                    <span>Lihat 8 Layanan (Mulai 500rb)</span>
+                  </button>
+
+                  <a
+                    href="#sertifikat-showcase"
+                    className="px-5 py-3 rounded-full bg-zinc-100 dark:bg-zinc-800/80 hover:bg-zinc-200 dark:hover:bg-zinc-700/80 text-zinc-700 dark:text-zinc-300 font-semibold text-xs sm:text-sm transition-all cursor-pointer flex items-center gap-2"
+                  >
+                    <Award className="w-4 h-4 text-amber-500" />
+                    <span>36+ Sertifikasi &amp; Lisensi</span>
+                  </a>
+                </div>
+
+                {/* Tech Ecosystem Quick Badges */}
+                <div className="pt-2 border-t border-zinc-200/80 dark:border-zinc-800/80 flex flex-wrap items-center gap-2 text-xs">
+                  <span className="font-mono text-[10px] uppercase font-bold text-zinc-400 mr-1">Ecosystem:</span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300">
+                    <GoogleDeveloperLogo size={12} /> Google Cloud
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300">
+                    <img src="/official-aws-logo.png" alt="AWS" className="h-3 w-auto object-contain" /> AWS AI
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300">
+                    <img src="/official-nvidia-logo.png" alt="NVIDIA" className="h-3 w-auto object-contain" /> NVIDIA DLI
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300">
+                    <img src="/official-claude-logo.png" alt="Claude" className="h-3 w-auto object-contain" /> Claude AI
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300">
+                    <img src="/official-meta-logo.png" alt="Meta" className="h-3 w-auto object-contain" /> Meta CAPI
+                  </span>
+                </div>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-[1.08]">
-                Fullstack Developer <br />
-                <span className="text-[#8A0F14] dark:text-[#E02424]">&amp; AI Engineer</span>
-              </h1>
+              {/* SISI KANAN (Col 5) - Executive Profile & Systems HUD Card */}
+              <div className="lg:col-span-5">
+                <div className="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200/90 dark:border-zinc-800 shadow-xl space-y-5 relative overflow-hidden">
+                  {/* Decorative subtle ambient accent */}
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-[#8A0F14]/5 dark:bg-[#8A0F14]/15 rounded-full blur-3xl pointer-events-none" />
 
-              <p className="text-lg sm:text-xl font-medium text-zinc-700 dark:text-zinc-200 max-w-3xl leading-snug">
-                Merancang AI agent dan automation, dengan pengembangan web/aplikasi serta technical marketing dan keamanan sistem sesuai kebutuhan.
-              </p>
+                  {/* Top Profile Card Header */}
+                  <div className="flex items-center gap-4 relative z-10">
+                    <div className="relative shrink-0">
+                      <img
+                        src="/tubagus-fitran-avatar.jpg"
+                        alt="Tubagus Fitran Badruttamam"
+                        className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-2 border-[#8A0F14]/40 shadow-md"
+                      />
+                      <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white dark:border-[#111319] rounded-full" title="Online & Aktif" />
+                    </div>
+                    <div className="min-w-0 flex-1 space-y-1">
+                      <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-900/60 text-blue-700 dark:text-blue-300 text-[10px] font-bold">
+                        <GoogleDeveloperLogo size={11} />
+                        <span>Google Developer Program</span>
+                      </div>
+                      <h2 className="font-extrabold text-base sm:text-lg text-zinc-950 dark:text-white truncate">
+                        Tubagus Fitran Badruttamam
+                      </h2>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono truncate">
+                        S1 Informatika · Univ. Muhammadiyah Banten
+                      </p>
+                      <p className="text-[11px] text-zinc-400 flex items-center gap-1">
+                        <Compass className="w-3 h-3 text-[#8A0F14]" /> Cilegon, Provinsi Banten
+                      </p>
+                    </div>
+                  </div>
 
-              <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 max-w-3xl leading-relaxed">
-                Tubagus Fitran Badruttamam adalah Fullstack Developer dan AI Engineer dari Cilegon, Indonesia. Fitran Dev menyediakan jasa website kilat, AI agent dan automation, dengan pengembangan web/aplikasi dan technical marketing sebagai pendukung.
-              </p>
+                  {/* 4-Stat Metrics Grid */}
+                  <div className="grid grid-cols-2 gap-2.5 relative z-10 pt-1">
+                    <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800/80 text-center">
+                      <p className="text-xl sm:text-2xl font-black text-zinc-950 dark:text-white font-mono">36+</p>
+                      <p className="text-[11px] text-zinc-500 font-medium">Lisensi &amp; Sertifikat</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800/80 text-center">
+                      <p className="text-xl sm:text-2xl font-black text-amber-600 dark:text-amber-400 font-mono">2×</p>
+                      <p className="text-[11px] text-zinc-500 font-medium">Medali Emas Sains</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800/80 text-center">
+                      <p className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono">&lt;0.8s</p>
+                      <p className="text-[11px] text-zinc-500 font-medium">Lighthouse Speed</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800/80 text-center">
+                      <p className="text-xl sm:text-2xl font-black text-blue-600 dark:text-blue-400 font-mono">100%</p>
+                      <p className="text-[11px] text-zinc-500 font-medium">Hak Milik Source Code</p>
+                    </div>
+                  </div>
 
-              <div className="flex flex-wrap items-center gap-3 pt-4">
-                <button
-                  onClick={() => handleWhatsAppConsultation()}
-                  className="px-6 py-3 rounded-full bg-[#8A0F14] hover:bg-[#6E0B0F] text-white font-bold text-sm transition-all shadow-md flex items-center gap-2 cursor-pointer"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  <span>Chat via WhatsApp</span>
-                </button>
+                  {/* Quick Action Links inside card */}
+                  <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 space-y-2 relative z-10">
+                    <button
+                      onClick={onOpenCV}
+                      className="w-full py-2.5 px-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-950 font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-xs"
+                    >
+                      <FileText className="w-3.5 h-3.5" />
+                      <span>Buka Curriculum Vitae Resmi (PDF)</span>
+                    </button>
 
-                <button
-                  onClick={() => navigateTo('services')}
-                  className="px-6 py-3 rounded-full bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold text-sm transition-all cursor-pointer flex items-center gap-2"
-                >
-                  <Briefcase className="w-4 h-4 text-zinc-500" />
-                  <span>Lihat Layanan (Mulai 500rb)</span>
-                </button>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <a
+                        href={PERSONAL_INFO.socialLinks.googleSkillshopWallet}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="py-2 px-3 rounded-xl bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold text-[11px] flex items-center justify-center gap-1.5 transition-colors"
+                      >
+                        <span>Skillshop Wallet</span>
+                        <ExternalLink className="w-3 h-3 text-zinc-400" />
+                      </a>
+                      <a
+                        href={CERTIFICATES_DRIVE_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="py-2 px-3 rounded-xl bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold text-[11px] flex items-center justify-center gap-1.5 transition-colors"
+                      >
+                        <span>Google Drive</span>
+                        <ExternalLink className="w-3 h-3 text-zinc-400" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
 
-          {/* 2. KAPABILITAS */}
+          {/* 2. OFFICIAL PARTNERSHIP & BADGE STRIP */}
+          <section className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
+            <div className="flex flex-wrap items-center justify-center md:justify-between gap-4 sm:gap-6 text-xs text-zinc-500 font-medium">
+              <span className="font-mono text-[10px] uppercase font-bold tracking-wider text-zinc-400">Afiliasi &amp; Lisensi Resmi:</span>
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+                <span className="inline-flex items-center gap-1.5 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                  <GoogleDeveloperLogo size={14} /> Google Developer Program
+                </span>
+                <span className="inline-flex items-center gap-1.5 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                  <img src="/official-aws-logo.png" alt="AWS" className="h-3.5 w-auto object-contain" /> AWS Skill Builder
+                </span>
+                <span className="inline-flex items-center gap-1.5 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                  <img src="/official-nvidia-logo.png" alt="NVIDIA" className="h-3.5 w-auto object-contain" /> NVIDIA DLI
+                </span>
+                <span className="inline-flex items-center gap-1.5 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                  <img src="/official-claude-logo.png" alt="Claude" className="h-3.5 w-auto object-contain" /> Anthropic Claude
+                </span>
+                <span className="inline-flex items-center gap-1.5 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                  <Award className="w-4 h-4 text-amber-500" /> 2× Medali Emas Sains
+                </span>
+                <span className="inline-flex items-center gap-1.5 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                  <BookOpen className="w-4 h-4 text-cyan-500" /> Perpusnas RI Press
+                </span>
+              </div>
+            </div>
+          </section>
+
+          {/* 3. KAPABILITAS */}
           <section className="space-y-6">
             <div>
               <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
@@ -337,68 +614,80 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
               {/* 01 Full-Stack Development */}
-              <div className="p-7 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs space-y-4">
-                <p className="font-mono text-xs font-bold text-zinc-400">01 FULL-STACK DEVELOPMENT</p>
+              <div className="p-7 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs space-y-4 hover:border-blue-500/50 transition-colors">
+                <div className="flex items-center justify-between">
+                  <p className="font-mono text-xs font-bold text-zinc-400">01 FULL-STACK DEVELOPMENT</p>
+                  <Code2 className="w-4 h-4 text-blue-500" />
+                </div>
                 <h3 className="font-bold text-xl text-zinc-950 dark:text-white">Pengembangan web &amp; aplikasi</h3>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
                   Membangun website, web app, dashboard, dan integrasi yang mengikuti proses bisnis Anda.
                 </p>
                 <ul className="text-xs text-zinc-700 dark:text-zinc-300 space-y-2 pt-2 border-t border-zinc-100 dark:border-zinc-800/80">
-                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> Landing page cepat dan ringan</li>
-                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> Website bisnis</li>
-                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> Dashboard dan portal internal</li>
+                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> Landing page cepat dan ringan (&lt;1s load)</li>
+                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> Website bisnis &amp; company profile</li>
+                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> Dashboard dan portal internal klien</li>
                   <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> Integrasi API dan sistem yang sudah ada</li>
                 </ul>
               </div>
 
               {/* 02 AI Engineering */}
-              <div className="p-7 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs space-y-4">
-                <p className="font-mono text-xs font-bold text-zinc-400">02 AI ENGINEERING</p>
+              <div className="p-7 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs space-y-4 hover:border-purple-500/50 transition-colors">
+                <div className="flex items-center justify-between">
+                  <p className="font-mono text-xs font-bold text-zinc-400">02 AI ENGINEERING</p>
+                  <Cpu className="w-4 h-4 text-purple-500" />
+                </div>
                 <h3 className="font-bold text-xl text-zinc-950 dark:text-white">AI agent &amp; automation</h3>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
                   Merancang agent dan alur kerja yang membantu tim menangani pekerjaan berulang dengan lebih konsisten.
                 </p>
                 <ul className="text-xs text-zinc-700 dark:text-zinc-300 space-y-2 pt-2 border-t border-zinc-100 dark:border-zinc-800/80">
                   <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-purple-500 shrink-0" /> Agent AI untuk balas chat &amp; kualifikasi leads</li>
-                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-purple-500 shrink-0" /> Alur kerja otomatis antar tools</li>
+                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-purple-500 shrink-0" /> Alur kerja otomatis antar tools (Make/n8n)</li>
                   <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-purple-500 shrink-0" /> Integrasi data dan CRM</li>
                   <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-purple-500 shrink-0" /> Laporan terjadwal tanpa disusun manual</li>
                 </ul>
               </div>
 
               {/* 03 Digital Marketing & Security */}
-              <div className="p-7 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs space-y-4">
-                <p className="font-mono text-xs font-bold text-zinc-400">03 DIGITAL MARKETING</p>
-                <h3 className="font-bold text-xl text-zinc-950 dark:text-white">Pemasaran digital terukur</h3>
+              <div className="p-7 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs space-y-4 hover:border-cyan-500/50 transition-colors">
+                <div className="flex items-center justify-between">
+                  <p className="font-mono text-xs font-bold text-zinc-400">03 DIGITAL MARKETING &amp; KEAMANAN</p>
+                  <ShieldCheck className="w-4 h-4 text-cyan-500" />
+                </div>
+                <h3 className="font-bold text-xl text-zinc-950 dark:text-white">Pemasaran digital &amp; keamanan server</h3>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                  Menghubungkan landing page, tracking, dan iklan supaya keputusan pemasaran bertumpu pada data.
+                  Menghubungkan landing page, tracking server-side, dan pertahanan server Linux agar sistem kokoh dan terukur.
                 </p>
                 <ul className="text-xs text-zinc-700 dark:text-zinc-300 space-y-2 pt-2 border-t border-zinc-100 dark:border-zinc-800/80">
-                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-cyan-500 shrink-0" /> Meta Ads &amp; Google Ads</li>
-                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-cyan-500 shrink-0" /> Landing page yang dirancang untuk konversi</li>
-                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-cyan-500 shrink-0" /> Tracking, atribusi, dan pelaporan</li>
-                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-cyan-500 shrink-0" /> Alur follow-up sampai closing</li>
+                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-cyan-500 shrink-0" /> Meta Conversions API (CAPI) &amp; Google Ads</li>
+                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-cyan-500 shrink-0" /> Hardening VPS Linux (UFW, Fail2ban, SSH Key)</li>
+                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-cyan-500 shrink-0" /> Tracking, atribusi, dan pelaporan konversi</li>
+                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-cyan-500 shrink-0" /> 5 Lapisan Keamanan sistem berstandar tinggi</li>
                 </ul>
               </div>
             </div>
           </section>
 
-          {/* 3. LAYANAN (8 ITEMS GRID) */}
+          {/* 4. LAYANAN (8 ITEMS GRID - MULAI 500RB) */}
           <section className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
                 <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
-                  LAYANAN
+                  LAYANAN RESMI
                 </p>
                 <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
                   Aplikasi, AI, otomasi, dan pemasaran digital untuk bisnis.
                 </h2>
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+                  Seluruh layanan bersifat sekali jadi (one-off) dengan kepemilikan 100% kode di tangan Anda tanpa biaya sewa tersembunyi.
+                </p>
               </div>
               <button
                 onClick={() => navigateTo('services')}
-                className="text-xs font-bold text-[#8A0F14] dark:text-red-400 hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-xs font-bold text-[#8A0F14] dark:text-red-400 hover:underline flex items-center gap-1 cursor-pointer shrink-0"
               >
-                <span>Buka Katalog Layanan Lengkap</span>
+                <span>Buka Detail Seluruh 8 Layanan</span>
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
@@ -408,14 +697,21 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <div
                   key={s.id}
                   onClick={() => setSelectedService(s)}
-                  className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14]/60 dark:hover:border-red-500/60 transition-all shadow-xs flex flex-col justify-between cursor-pointer group"
+                  className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14]/60 dark:hover:border-red-500/60 transition-all shadow-xs flex flex-col justify-between cursor-pointer group relative overflow-hidden"
                 >
+                  {s.badge && (
+                    <span className="absolute top-3 right-3 font-mono text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                      {s.badge}
+                    </span>
+                  )}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-xs font-bold text-zinc-400 group-hover:text-[#8A0F14] dark:group-hover:text-red-400">
                         {s.code}
                       </span>
-                      <span className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                    </div>
+                    <div className="pt-1">
+                      <span className="font-mono text-xs font-black text-emerald-600 dark:text-emerald-400">
                         {s.price}
                       </span>
                     </div>
@@ -427,7 +723,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     </p>
                   </div>
                   <div className="pt-3 mt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-[11px] text-[#8A0F14] dark:text-red-400 font-semibold">
-                    <span>Lihat Scope</span>
+                    <span>Lihat Scope &amp; SLA</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
@@ -435,7 +731,242 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             </div>
           </section>
 
-          {/* 4. CARA KERJA (4 LANGKAH) */}
+          {/* 5. 5 LAPISAN ARSITEKTUR KEAMANAN SISTEM (SECURITY BLUEPRINT) */}
+          <section className="p-7 sm:p-9 rounded-3xl bg-zinc-950 dark:bg-[#0D0F14] text-white border border-zinc-800 space-y-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-950/60 border border-red-800/80 text-red-300 font-mono text-[10px] font-bold uppercase mb-2">
+                  <ShieldCheck className="w-3.5 h-3.5 text-red-400" />
+                  <span>5 Lapisan Keamanan Terstruktur</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                  Sistem Aman, Cepat, dan Tahan Serangan.
+                </h2>
+                <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-2xl leading-relaxed">
+                  Setiap website, web app, dan AI agent yang dibangun menerapkan protokol keamanan industri berlapis untuk melindungi data bisnis dan kredensial Anda.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-2">
+              {KLASIK_SECURITY_LAYERS.map((layer) => (
+                <div
+                  key={layer.id}
+                  className="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 hover:border-[#8A0F14] transition-colors space-y-2 flex flex-col justify-between"
+                >
+                  <div className="space-y-1.5">
+                    <span className="font-mono text-[10px] font-bold text-red-400">
+                      {layer.layerNumber}
+                    </span>
+                    <h3 className="font-bold text-xs text-white leading-snug">
+                      {layer.title}
+                    </h3>
+                    <p className="text-[11px] text-zinc-400 leading-relaxed">
+                      {layer.subtitle}
+                    </p>
+                  </div>
+                  <div className="pt-2 border-t border-zinc-800/80 text-[10px] font-mono text-zinc-500">
+                    <span className="text-emerald-400">✓ {layer.benefit}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* 6. SERTIFIKAT, KOMPETISI & LISENSI RESMI (LENGKAP 36+ SERTIFIKAT!) */}
+          <section id="sertifikat-showcase" className="space-y-6 pt-4">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
+                  KREDENSIAL &amp; LISENSI RESMI
+                </p>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+                  Sertifikasi Global, Olimpiade Sains &amp; Rekayasa.
+                </h2>
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+                  Kompilasi 36+ lisensi resmi dari Google Cloud, AWS, NVIDIA, Anthropic, medali emas kompetisi sains nasional, serta pengakuan Perpustakaan Nasional RI.
+                </p>
+              </div>
+
+              {/* External credentials links */}
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={CERTIFICATES_DRIVE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-xs font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <span>Buka Google Drive Lengkap</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Filter Tabs */}
+            <div className="flex flex-wrap items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+              {[
+                { id: 'all', label: `Semua (${CERTIFICATES_DATA.length})` },
+                { id: 'Google', label: 'Google & Google Cloud' },
+                { id: 'CloudAI', label: 'AWS & NVIDIA AI' },
+                { id: 'Competitions', label: 'Olimpiade & Medali Emas' },
+                { id: 'Academic', label: 'Akademik & Literasi' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setCertIssuerFilter(tab.id as any)}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                    certIssuerFilter === tab.id
+                      ? 'bg-[#8A0F14] text-white shadow-xs font-bold'
+                      : 'bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Certificates Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredCerts.slice(0, 9).map((cert) => (
+                <div
+                  key={cert.id}
+                  onClick={() => onSelectCertificate && onSelectCertificate(cert)}
+                  className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14]/50 dark:hover:border-red-500/50 transition-all shadow-xs flex flex-col justify-between group cursor-pointer space-y-3"
+                >
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between gap-2">
+                      {renderCertBadge(cert)}
+                      <span className="font-mono text-[10px] text-zinc-400">{cert.issueDate}</span>
+                    </div>
+
+                    <h3 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors line-clamp-2">
+                      {cert.title}
+                    </h3>
+
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">
+                      {cert.description}
+                    </p>
+
+                    {cert.credentialId && (
+                      <div
+                        onClick={(e) => handleCopyCertId(e, cert.credentialId!)}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-[10px] font-mono text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
+                        title="Klik untuk menyalin ID"
+                      >
+                        <Copy className="w-3 h-3" />
+                        <span className="truncate max-w-[170px]">ID: {cert.credentialId}</span>
+                        {copiedCertId === cert.credentialId && (
+                          <span className="text-emerald-500 font-bold ml-1">Tersalin!</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-[11px] font-semibold text-[#8A0F14] dark:text-red-400">
+                    <span>Lihat Bukti Kredensial</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Button to show all certs */}
+            {filteredCerts.length > 9 && (
+              <div className="text-center pt-2">
+                <button
+                  onClick={() => {
+                    if (onSelectCertificate && filteredCerts[0]) {
+                      onSelectCertificate(filteredCerts[0]);
+                    }
+                  }}
+                  className="px-6 py-2.5 rounded-full bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-xs font-bold text-zinc-800 dark:text-zinc-200 transition-colors inline-flex items-center gap-2 cursor-pointer shadow-xs"
+                >
+                  <span>Buka Seluruh {filteredCerts.length} Kredensial di Katalog Detail</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </section>
+
+          {/* 7. PORTOFOLIO PROYEK REKAYASA NYATA */}
+          <section className="space-y-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
+                  KARYA REKAYASA NYATA
+                </p>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
+                  Aplikasi &amp; Sistem yang Telah Dirancang.
+                </h2>
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+                  Produk perangkat lunak riil yang sudah live di Vercel dan digunakan untuk operasional industri, layanan ibadah harian, serta platform analitik.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {PROJECTS_DATA.slice(0, 3).map((project) => (
+                <div
+                  key={project.id}
+                  onClick={() => onSelectProject && onSelectProject(project)}
+                  className="p-6 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14]/60 dark:hover:border-red-500/60 transition-all shadow-sm flex flex-col justify-between group cursor-pointer space-y-4"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 font-mono text-[10px] font-bold text-zinc-700 dark:text-zinc-300">
+                        {project.category}
+                      </span>
+                      <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        <span>Live Deployment</span>
+                      </span>
+                    </div>
+
+                    <h3 className="font-extrabold text-lg text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors">
+                      {project.name}
+                    </h3>
+
+                    <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-3">
+                      {project.summary}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {project.technologies.slice(0, 4).map((tech, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-0.5 rounded-md bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-[10px] font-mono text-zinc-600 dark:text-zinc-400"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#8A0F14] dark:text-red-400 flex items-center gap-1">
+                      <span>Eksplorasi Arsitektur</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                        title="Buka Live Web"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* 8. CARA KERJA (4 LANGKAH) */}
           <section className="space-y-6">
             <div>
               <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
@@ -490,16 +1021,19 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             </div>
           </section>
 
-          {/* 5. BELAJAR TEASER SECTION */}
+          {/* 9. BELAJAR TEASER SECTION */}
           <section className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
                 <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
-                  BELAJAR
+                  STUDIO BELAJAR
                 </p>
                 <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
                   Materi yang biasanya disimpan agency.
                 </h2>
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+                  22 bab kurikulum sistematis dengan studi kasus implementasi nyata, kode arsitektur, dan checklist produksi.
+                </p>
               </div>
               <button
                 onClick={() => navigateTo('learning')}
@@ -573,7 +1107,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             </div>
           </section>
 
-          {/* 6. TOOLS YANG SAYA PAKAI */}
+          {/* 10. TOOLS YANG SAYA PAKAI */}
           <section className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
@@ -608,7 +1142,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             </div>
           </section>
 
-          {/* 7. BLOG (TULISAN PILIHAN) */}
+          {/* 11. BLOG (TULISAN PILIHAN) */}
           <section className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
@@ -654,7 +1188,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             </div>
           </section>
 
-          {/* 8. KOMUNITAS & AFILIASI RESMI */}
+          {/* 12. KOMUNITAS & AFILIASI RESMI */}
           <section className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-6">
             <div>
               <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
@@ -695,7 +1229,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             </div>
           </section>
 
-          {/* 9. PERTANYAAN (FAQ) */}
+          {/* 13. PERTANYAAN (FAQ) */}
           <section className="space-y-6">
             <div>
               <p className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-400 mb-1">
@@ -732,7 +1266,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             </div>
           </section>
 
-          {/* 10. TENTANG SAYA TEASER */}
+          {/* 14. TENTANG SAYA TEASER */}
           <section className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-4">
             <p className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-400">
               TENTANG SAYA
@@ -759,7 +1293,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             </div>
           </section>
 
-          {/* 11. SIAP MULAI? (CTA BANNER) */}
+          {/* 15. SIAP MULAI? (CTA BANNER) */}
           <section className="p-8 sm:p-12 rounded-3xl bg-zinc-950 dark:bg-[#141720] text-white text-center space-y-5 border border-zinc-800">
             <span className="font-mono text-xs font-bold text-[#E02424] uppercase tracking-widest">
               SIAP MULAI?

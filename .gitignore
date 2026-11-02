@@ -9,4 +9,12 @@ coverage/
 extracted-certs/
 scripts/
 test-*.png
+.agent/
+.agents/
+.claude/
+.codex/
+.gemini/
+.kiro/
+.opencode/
+.impeccable/
 
