@@ -73,9 +73,16 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
   const syncServiceFromUrl = useCallback(() => {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
-    const serviceParam = params.get('service');
+    const serviceParam = (params.get('service') || '').trim().toLowerCase();
     if (serviceParam) {
-      const match = ALL_SERVICES_CATALOG.find((s) => s.id === serviceParam || s.category === serviceParam);
+      const match = ALL_SERVICES_CATALOG.find(
+        (s) =>
+          s.id.toLowerCase() === serviceParam ||
+          s.id.toLowerCase().replace(/-/g, '') === serviceParam.replace(/-/g, '') ||
+          s.id.toLowerCase().includes(serviceParam) ||
+          serviceParam.includes(s.id.toLowerCase()) ||
+          s.category.toLowerCase() === serviceParam
+      );
       if (match) {
         setSelectedServiceId(match.id);
       }

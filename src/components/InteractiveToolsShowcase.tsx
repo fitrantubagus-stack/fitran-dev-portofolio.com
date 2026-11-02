@@ -98,8 +98,7 @@ export const InteractiveToolsShowcase: React.FC = () => {
         <div className="flex items-center justify-center -space-x-4 sm:-space-x-6 py-4 px-6">
           {SHOWCASE_DECK.map((tool, idx) => {
             const isHovered = hoveredIndex === idx;
-            const isSelected = selectedIndex === idx;
-            const isElevated = isHovered || (hoveredIndex === null && isSelected);
+            const isElevated = isHovered;
 
             // Calculate rotational tilt offset relative to center or active card
             const baseCenter = hoveredIndex !== null ? hoveredIndex : 4.5;

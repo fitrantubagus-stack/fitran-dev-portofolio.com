@@ -20,6 +20,7 @@ import {
   CERTIFICATES_DATA,
   CERTIFICATES_DRIVE_URL,
   PROJECTS_DATA,
+  getCertPreviewPath,
 } from '../data/portfolioData';
 import { ProfileAvatar } from './ProfileAvatar';
 import { FitranMascot } from './FitranMascot';
@@ -2434,18 +2435,18 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredTools.map((tool, idx) => (
               <div key={idx} className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-4 shadow-xs hover:border-[#1E3A8A]/50 transition-all">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div className="w-12 h-12 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center shrink-0 shadow-xs">
                       <ToolLogo name={tool.name} size={30} />
                     </div>
-                    <div>
-                      <h3 className="font-bold text-base text-zinc-950 dark:text-white leading-tight">{tool.name}</h3>
-                      <p className="text-[11px] text-zinc-500 font-medium">{tool.tagline}</p>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-bold text-base text-zinc-950 dark:text-white leading-tight truncate">{tool.name}</h3>
+                      <p className="text-[11px] text-zinc-500 font-medium truncate">{tool.tagline}</p>
                     </div>
                   </div>
                   {tool.badge && (
-                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                    <span className="shrink-0 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
                       {tool.badge}
                     </span>
                   )}
