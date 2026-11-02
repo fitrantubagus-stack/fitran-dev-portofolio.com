@@ -22,6 +22,9 @@ import {
   PROJECTS_DATA,
 } from '../data/portfolioData';
 import { ProfileAvatar } from './ProfileAvatar';
+import { FitranMascot } from './FitranMascot';
+import { MateriCoverBanner } from './MateriCoverBanner';
+import { SekawanEnterpriseLayanan } from './SekawanEnterpriseLayanan';
 import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
 import { SpotifyPlaylist } from './SpotifyPlaylist';
 import { CertificateItem, ProjectItem, SectionId } from '../types';
@@ -103,6 +106,23 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   const [activeSubchapterId, setActiveSubchapterId] = useState<string>('ai-00-1');
   const [materiSearch, setMateriSearch] = useState<string>('');
   const [openChapters, setOpenChapters] = useState<Record<string, boolean>>({ 'ai-00': true, 'mkt-00': true, 'vc-00': true });
+
+    // Synchronize document.title dynamically
+  useEffect(() => {
+    if (selectedArticle) {
+      document.title = `${selectedArticle.title} — fitran.dev`;
+    }
+  }, [selectedArticle]);
+
+  useEffect(() => {
+    if (activePage === 'learning') {
+      const ch = KLASIK_LEARNING_CHAPTERS.find((c) => c.id === activeChapterId);
+      const sub = ch?.subchapters.find((s) => s.id === activeSubchapterId);
+      if (sub && ch) {
+        document.title = `${sub.title} | Belajar ${ch.title} — fitran.dev`;
+      }
+    }
+  }, [activePage, activeChapterId, activeSubchapterId]);
 
   // Sync track, chapter, hash, and blog articles with URL
   useEffect(() => {
@@ -456,7 +476,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   ];
 
   return (
-    <div className="w-full bg-[#FAFAFC] dark:bg-[#0A0B0F] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-[#8A0F14] selection:text-white transition-colors duration-300">
+    <div className="w-full bg-[#FAFAFC] dark:bg-[#0A0B0F] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-[#1E3A8A] selection:text-white transition-colors duration-300">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-2xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-medium text-xs shadow-2xl flex items-center gap-2 animate-bounce">
@@ -491,10 +511,10 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <div className="space-y-2">
                   <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-zinc-950 dark:text-white leading-[1.08]">
                     Fullstack Developer <br />
-                    <span className="text-[#8A0F14] dark:text-[#E02424]">&amp; AI Engineer</span>
+                    <span className="text-[#1E3A8A] dark:text-blue-400">&amp; AI Engineer</span>
                   </h1>
                   <p className="text-lg sm:text-xl font-medium text-zinc-800 dark:text-zinc-200 max-w-2xl leading-relaxed">
-                    Merancang AI agent &amp; automation, aplikasi web performa tinggi (<span className="text-[#8A0F14] dark:text-red-400 font-bold">&lt;0.8s</span>), sistem keamanan server 5 lapis, serta technical marketing (Meta CAPI &amp; Google Ads).
+                    Merancang AI agent &amp; automation, aplikasi web performa tinggi (<span className="text-[#1E3A8A] dark:text-blue-400 font-bold">&lt;0.8s</span>), sistem keamanan server 5 lapis, serta technical marketing (Meta CAPI &amp; Google Ads).
                   </p>
                 </div>
 
@@ -506,7 +526,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <div className="flex flex-wrap items-center gap-3 pt-2">
                   <button
                     onClick={() => handleWhatsAppConsultation()}
-                    className="px-6 py-3 rounded-full bg-[#8A0F14] hover:bg-[#6E0B0F] text-white font-bold text-xs sm:text-sm transition-all shadow-md flex items-center gap-2 cursor-pointer group"
+                    className="px-6 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-all shadow-md flex items-center gap-2 cursor-pointer group"
                   >
                     <MessageSquare className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
                     <span>Chat via WhatsApp</span>
@@ -554,7 +574,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               <div className="lg:col-span-5">
                 <div className="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200/90 dark:border-zinc-800 shadow-xl space-y-5 relative overflow-hidden">
                   {/* Decorative subtle ambient accent */}
-                  <div className="absolute top-0 right-0 w-48 h-48 bg-[#8A0F14]/5 dark:bg-[#8A0F14]/15 rounded-full blur-3xl pointer-events-none" />
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-[#1E3A8A]/5 dark:bg-[#1E3A8A]/15 rounded-full blur-3xl pointer-events-none" />
 
                   {/* Top Profile Card Header */}
                   <div className="flex items-center gap-4 relative z-10">
@@ -562,7 +582,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       <img
                         src="/tubagus-fitran-avatar.jpg"
                         alt="Tubagus Fitran Badruttamam"
-                        className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-2 border-[#8A0F14]/40 shadow-md"
+                        className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-2 border-[#1E3A8A]/40 shadow-md"
                       />
                       <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white dark:border-[#111319] rounded-full" title="Online & Aktif" />
                     </div>
@@ -578,7 +598,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                         S1 Informatika · Univ. Muhammadiyah Banten
                       </p>
                       <p className="text-[11px] text-zinc-400 flex items-center gap-1">
-                        <Compass className="w-3 h-3 text-[#8A0F14]" /> Cilegon, Provinsi Banten
+                        <Compass className="w-3 h-3 text-[#1E3A8A] dark:text-blue-400" /> Cilegon, Provinsi Banten
                       </p>
                     </div>
                   </div>
@@ -669,7 +689,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           {/* 3. KAPABILITAS */}
           <section className="space-y-6">
             <div>
-              <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
+              <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#1E3A8A] dark:text-blue-400 mb-1">
                 KAPABILITAS
               </p>
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
@@ -741,7 +761,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           <section className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
+                <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#1E3A8A] dark:text-blue-400 mb-1">
                   LAYANAN RESMI
                 </p>
                 <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
@@ -753,7 +773,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               </div>
               <button
                 onClick={() => navigateTo('services')}
-                className="text-xs font-bold text-[#8A0F14] dark:text-red-400 hover:underline flex items-center gap-1 cursor-pointer shrink-0"
+                className="text-xs font-bold text-[#1E3A8A] dark:text-blue-400 hover:underline flex items-center gap-1 cursor-pointer shrink-0"
               >
                 <span>Buka Detail Seluruh 8 Layanan</span>
                 <ChevronRight className="w-4 h-4" />
@@ -765,7 +785,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <div
                   key={s.id}
                   onClick={() => setSelectedService(s)}
-                  className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14]/60 dark:hover:border-red-500/60 transition-all shadow-xs flex flex-col justify-between cursor-pointer group relative overflow-hidden"
+                  className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A]/60 dark:hover:border-blue-500/60 transition-all shadow-xs flex flex-col justify-between cursor-pointer group relative overflow-hidden"
                 >
                   {s.badge && (
                     <span className="absolute top-3 right-3 font-mono text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
@@ -774,7 +794,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   )}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-xs font-bold text-zinc-400 group-hover:text-[#8A0F14] dark:group-hover:text-red-400">
+                      <span className="font-mono text-xs font-bold text-zinc-400 group-hover:text-[#1E3A8A] dark:text-blue-400 dark:group-hover:text-red-400">
                         {s.code}
                       </span>
                     </div>
@@ -783,14 +803,14 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                         {s.price}
                       </span>
                     </div>
-                    <h3 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors">
+                    <h3 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:text-blue-400 dark:group-hover:text-red-400 transition-colors">
                       {s.title}
                     </h3>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed line-clamp-3">
                       {s.tagline}
                     </p>
                   </div>
-                  <div className="pt-3 mt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-[11px] text-[#8A0F14] dark:text-red-400 font-semibold">
+                  <div className="pt-3 mt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-[11px] text-[#1E3A8A] dark:text-blue-400 font-semibold">
                     <span>Lihat Scope &amp; SLA</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -820,7 +840,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               {KLASIK_SECURITY_LAYERS.map((layer) => (
                 <div
                   key={layer.id}
-                  className="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 hover:border-[#8A0F14] transition-colors space-y-2 flex flex-col justify-between"
+                  className="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 hover:border-[#1E3A8A] transition-colors space-y-2 flex flex-col justify-between"
                 >
                   <div className="space-y-1.5">
                     <span className="font-mono text-[10px] font-bold text-red-400">
@@ -845,7 +865,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           <section id="sertifikat-showcase" className="space-y-6 pt-4">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
+                <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#1E3A8A] dark:text-blue-400 mb-1">
                   KREDENSIAL &amp; LISENSI RESMI
                 </p>
                 <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
@@ -884,7 +904,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   onClick={() => setCertIssuerFilter(tab.id as any)}
                   className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                     certIssuerFilter === tab.id
-                      ? 'bg-[#8A0F14] text-white shadow-xs font-bold'
+                      ? 'bg-[#1E3A8A] text-white shadow-xs font-bold'
                       : 'bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
                   }`}
                 >
@@ -899,7 +919,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <div
                   key={cert.id}
                   onClick={() => onSelectCertificate && onSelectCertificate(cert)}
-                  className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14]/50 dark:hover:border-red-500/50 transition-all shadow-xs flex flex-col justify-between group cursor-pointer space-y-3"
+                  className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A]/50 dark:hover:border-blue-500/50 transition-all shadow-xs flex flex-col justify-between group cursor-pointer space-y-3"
                 >
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between gap-2">
@@ -907,7 +927,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       <span className="font-mono text-[10px] text-zinc-400">{cert.issueDate}</span>
                     </div>
 
-                    <h3 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors line-clamp-2">
+                    <h3 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:text-blue-400 dark:group-hover:text-red-400 transition-colors line-clamp-2">
                       {cert.title}
                     </h3>
 
@@ -930,7 +950,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     )}
                   </div>
 
-                  <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-[11px] font-semibold text-[#8A0F14] dark:text-red-400">
+                  <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-[11px] font-semibold text-[#1E3A8A] dark:text-blue-400">
                     <span>Lihat Bukti Kredensial</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -960,7 +980,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           <section className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
+                <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#1E3A8A] dark:text-blue-400 mb-1">
                   KARYA REKAYASA NYATA
                 </p>
                 <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
@@ -977,7 +997,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <div
                   key={project.id}
                   onClick={() => onSelectProject && onSelectProject(project)}
-                  className="p-6 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14]/60 dark:hover:border-red-500/60 transition-all shadow-sm flex flex-col justify-between group cursor-pointer space-y-4"
+                  className="p-6 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A]/60 dark:hover:border-blue-500/60 transition-all shadow-sm flex flex-col justify-between group cursor-pointer space-y-4"
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
@@ -990,7 +1010,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       </span>
                     </div>
 
-                    <h3 className="font-extrabold text-lg text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors">
+                    <h3 className="font-extrabold text-lg text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:text-blue-400 dark:group-hover:text-red-400 transition-colors">
                       {project.name}
                     </h3>
 
@@ -1011,7 +1031,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   </div>
 
                   <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-                    <span className="text-xs font-bold text-[#8A0F14] dark:text-red-400 flex items-center gap-1">
+                    <span className="text-xs font-bold text-[#1E3A8A] dark:text-blue-400 flex items-center gap-1">
                       <span>Eksplorasi Arsitektur</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </span>
@@ -1037,7 +1057,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           {/* 8. CARA KERJA (4 LANGKAH) */}
           <section className="space-y-6">
             <div>
-              <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
+              <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#1E3A8A] dark:text-blue-400 mb-1">
                 CARA KERJA
               </p>
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
@@ -1093,7 +1113,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           <section className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
+                <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#1E3A8A] dark:text-blue-400 mb-1">
                   STUDIO BELAJAR
                 </p>
                 <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
@@ -1105,7 +1125,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               </div>
               <button
                 onClick={() => navigateTo('learning')}
-                className="px-5 py-2.5 rounded-full bg-[#8A0F14] hover:bg-[#6E0B0F] text-white font-bold text-xs transition-colors cursor-pointer shrink-0"
+                className="px-5 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors cursor-pointer shrink-0"
               >
                 Buka Peta Belajar Lengkap
               </button>
@@ -1191,7 +1211,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               </div>
               <button
                 onClick={() => navigateTo('tools')}
-                className="text-xs font-bold text-[#8A0F14] dark:text-red-400 hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-xs font-bold text-[#1E3A8A] dark:text-blue-400 hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>Lihat Seluruh Toolkit</span>
                 <ChevronRight className="w-4 h-4" />
@@ -1223,7 +1243,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               </div>
               <button
                 onClick={() => navigateTo('blog')}
-                className="text-xs font-bold text-[#8A0F14] dark:text-red-400 hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-xs font-bold text-[#1E3A8A] dark:text-blue-400 hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>Lihat Semua Tulisan</span>
                 <ChevronRight className="w-4 h-4" />
@@ -1235,7 +1255,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <div
                   key={p.id}
                   onClick={() => setSelectedArticle(p)}
-                  className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14]/50 transition-all cursor-pointer group flex flex-col justify-between"
+                  className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A]/50 transition-all cursor-pointer group flex flex-col justify-between"
                 >
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
@@ -1243,11 +1263,11 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       <span>•</span>
                       <span className="text-emerald-600 dark:text-emerald-400">{p.category}</span>
                     </div>
-                    <h3 className="font-bold text-base text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors">
+                    <h3 className="font-bold text-base text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:text-blue-400 dark:group-hover:text-red-400 transition-colors">
                       {p.title}
                     </h3>
                   </div>
-                  <div className="pt-3 mt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs font-semibold text-[#8A0F14] dark:text-red-400">
+                  <div className="pt-3 mt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs font-semibold text-[#1E3A8A] dark:text-blue-400">
                     <span>Baca Selengkapnya</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -1259,7 +1279,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           {/* 12. KOMUNITAS & AFILIASI RESMI */}
           <section className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-6">
             <div>
-              <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400 mb-1">
+              <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#1E3A8A] dark:text-blue-400 mb-1">
                 KOMUNITAS &amp; LISENSI RESMI
               </p>
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
@@ -1321,7 +1341,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer"
                     >
                       <span className="font-bold text-sm text-zinc-900 dark:text-white">{item.q}</span>
-                      <ChevronDown className={`w-4 h-4 text-zinc-400 transition-transform ${isOpen ? 'rotate-180 text-[#8A0F14]' : ''}`} />
+                      <ChevronDown className={`w-4 h-4 text-zinc-400 transition-transform ${isOpen ? 'rotate-180 text-[#1E3A8A] dark:text-blue-400' : ''}`} />
                     </button>
                     {isOpen && (
                       <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed border-t border-zinc-100 dark:border-zinc-800/60">
@@ -1353,7 +1373,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             <div className="pt-2">
               <button
                 onClick={() => navigateTo('about')}
-                className="text-xs font-bold text-[#8A0F14] dark:text-red-400 hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-xs font-bold text-[#1E3A8A] dark:text-blue-400 hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>Baca Profil Rekayasa Selengkapnya</span>
                 <ChevronRight className="w-4 h-4" />
@@ -1375,7 +1395,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             <div className="pt-2">
               <button
                 onClick={() => handleWhatsAppConsultation()}
-                className="px-6 py-3.5 rounded-full bg-[#8A0F14] hover:bg-[#6E0B0F] text-white font-bold text-sm transition-all shadow-lg flex items-center gap-2 mx-auto cursor-pointer"
+                className="px-6 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm transition-all shadow-lg flex items-center gap-2 mx-auto cursor-pointer"
               >
                 <MessageSquare className="w-4 h-4" />
                 <span>Mulai Diskusi Proyek via WhatsApp</span>
@@ -1390,13 +1410,28 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       {/* ========================================================================= */}
       {activePage === 'certificates' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 animate-fade-in">
+          {/* Official Credentials Mascot Highlight Banner */}
+          <div className="p-6 rounded-3xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-md bg-[#1E3A8A] flex items-center justify-center text-white text-[10px] font-black">FD</div>
+                <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-300">fitran.dev Official Credentials</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black text-zinc-950 dark:text-white">Kredensial Resmi Standar Global</h2>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-xl">
+                Terverifikasi resmi dari Google Cloud & Developer Program, AWS, NVIDIA Deep Learning Institute, Anthropic Claude, Meta, serta 2× Medali Emas Sains Nasional.
+              </p>
+            </div>
+            <FitranMascot variant="security" size="md" className="shrink-0" />
+          </div>
+
           {/* Top Breadcrumb & Header */}
           <div className="border-b border-zinc-200 dark:border-zinc-800 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-2">
               <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-1">
                 <span className="hover:underline cursor-pointer" onClick={() => navigateTo('home')}>Beranda</span>
                 <span>/</span>
-                <span className="text-[#8A0F14] dark:text-red-400 font-semibold">Sertifikat &amp; Kredensial Resmi</span>
+                <span className="text-[#1E3A8A] dark:text-blue-400 font-semibold">Sertifikat &amp; Kredensial Resmi</span>
               </nav>
               <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white tracking-tight">
                 36+ Kredensial &amp; Sertifikasi Terverifikasi
@@ -1422,7 +1457,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               {onOpenCV && (
                 <button
                   onClick={onOpenCV}
-                  className="px-4 py-2.5 rounded-xl bg-[#8A0F14] hover:bg-[#6E0B0F] text-white text-xs font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer"
+                  className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer"
                 >
                   <Download className="w-4 h-4" />
                   <span>Unduh CV Lengkap</span>
@@ -1474,7 +1509,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   onClick={() => setCertIssuerFilter(tab.id as any)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                     certIssuerFilter === tab.id
-                      ? 'bg-[#8A0F14] text-white shadow-xs'
+                      ? 'bg-[#1E3A8A] text-white shadow-xs'
                       : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
                   }`}
                 >
@@ -1491,7 +1526,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 placeholder="Cari nama, penerbit, ID..."
                 value={certSearch}
                 onChange={(e) => setCertSearch(e.target.value)}
-                className="w-full pl-8 pr-3 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs focus:outline-hidden focus:border-[#8A0F14]"
+                className="w-full pl-8 pr-3 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs focus:outline-hidden focus:border-[#1E3A8A]"
               />
               {certSearch && (
                 <button
@@ -1509,7 +1544,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             {filteredCerts.map((cert) => (
               <div
                 key={cert.id}
-                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between hover:border-[#8A0F14]/60 transition-all group"
+                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between hover:border-[#1E3A8A]/60 transition-all group"
               >
                 <div className="space-y-3">
                   {/* Issuer Badge & Date */}
@@ -1521,7 +1556,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   </div>
 
                   {/* Cert Title */}
-                  <h3 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors leading-snug">
+                  <h3 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:text-blue-400 dark:group-hover:text-red-400 transition-colors leading-snug">
                     {cert.title}
                   </h3>
 
@@ -1538,7 +1573,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       </span>
                       <button
                         onClick={(e) => handleCopyCertId(e, cert.credentialId || '')}
-                        className="flex items-center gap-1 text-[10px] text-zinc-600 dark:text-zinc-300 hover:text-[#8A0F14] dark:hover:text-red-400 font-bold ml-2 shrink-0 cursor-pointer"
+                        className="flex items-center gap-1 text-[10px] text-zinc-600 dark:text-zinc-300 hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 font-bold ml-2 shrink-0 cursor-pointer"
                         title="Salin ID Kredensial"
                       >
                         {copiedCertId === cert.credentialId ? (
@@ -1563,7 +1598,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     onClick={() => onSelectCertificate && onSelectCertificate(cert)}
                     className="py-1.5 px-3 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5"
                   >
-                    <Award className="w-3.5 h-3.5 text-[#8A0F14] dark:text-red-400" />
+                    <Award className="w-3.5 h-3.5 text-[#1E3A8A] dark:text-blue-400" />
                     <span>Lihat Sertifikat</span>
                   </button>
 
@@ -1572,7 +1607,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       href={cert.verifyUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="py-1.5 px-3 rounded-lg text-zinc-500 hover:text-[#8A0F14] dark:hover:text-red-400 text-xs font-medium flex items-center gap-1 transition-colors"
+                      className="py-1.5 px-3 rounded-lg text-zinc-500 hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 text-xs font-medium flex items-center gap-1 transition-colors"
                       title="Buka Halaman Verifikasi Resmi Penerbit"
                     >
                       <span>Verifikasi</span>
@@ -1592,7 +1627,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               <p className="font-bold text-sm text-zinc-900 dark:text-white">Tidak ada sertifikat yang cocok dengan pencarian.</p>
               <button
                 onClick={() => { setCertSearch(''); setCertIssuerFilter('all'); }}
-                className="text-xs text-[#8A0F14] dark:text-red-400 font-bold hover:underline cursor-pointer"
+                className="text-xs text-[#1E3A8A] dark:text-blue-400 font-bold hover:underline cursor-pointer"
               >
                 Reset Pencarian
               </button>
@@ -1610,7 +1645,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-1">
               <span className="hover:underline cursor-pointer" onClick={() => navigateTo('home')}>Beranda</span>
               <span>/</span>
-              <span className="text-[#8A0F14] dark:text-red-400 font-semibold">Proyek Rekayasa</span>
+              <span className="text-[#1E3A8A] dark:text-blue-400 font-semibold">Proyek Rekayasa</span>
             </nav>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
               Portofolio Proyek &amp; Rekayasa Sistem
@@ -1625,7 +1660,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               <div
                 key={project.id}
                 onClick={() => onSelectProject && onSelectProject(project)}
-                className="p-6 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14]/60 dark:hover:border-red-500/60 transition-all shadow-sm flex flex-col justify-between group cursor-pointer space-y-4"
+                className="p-6 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A]/60 dark:hover:border-blue-500/60 transition-all shadow-sm flex flex-col justify-between group cursor-pointer space-y-4"
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -1638,7 +1673,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     </span>
                   </div>
 
-                  <h3 className="font-extrabold text-lg text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors">
+                  <h3 className="font-extrabold text-lg text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:text-blue-400 dark:group-hover:text-red-400 transition-colors">
                     {project.name}
                   </h3>
 
@@ -1659,7 +1694,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 </div>
 
                 <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#8A0F14] dark:text-red-400 flex items-center gap-1">
+                  <span className="text-xs font-bold text-[#1E3A8A] dark:text-blue-400 flex items-center gap-1">
                     <span>Lihat Detail Arsitektur</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </span>
@@ -1696,7 +1731,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <span>/</span>
                 <span className="hover:underline cursor-pointer" onClick={() => navigateTo('learning')}>Belajar</span>
                 <span>/</span>
-                <span className="text-[#8A0F14] dark:text-red-400 font-semibold uppercase">{activeTrackId}</span>
+                <span className="text-[#1E3A8A] dark:text-blue-400 font-semibold uppercase">{activeTrackId}</span>
               </nav>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white">
                 {activeChapter.title}
@@ -1718,7 +1753,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       setActiveSubchapterId(firstChapter.subchapters[0].id);
                     }
                   }}
-                  className="px-4 py-2 rounded-xl bg-white dark:bg-[#111319] border border-zinc-300 dark:border-zinc-700 text-xs font-bold text-zinc-900 dark:text-white cursor-pointer focus:outline-hidden focus:border-[#8A0F14]"
+                  className="px-4 py-2 rounded-xl bg-white dark:bg-[#111319] border border-zinc-300 dark:border-zinc-700 text-xs font-bold text-zinc-900 dark:text-white cursor-pointer focus:outline-hidden focus:border-[#1E3A8A]"
                 >
                   <option value="ai">AI untuk Bisnis (8 Bab Studio)</option>
                   <option value="digital-marketing">Digital Marketing &amp; CAPI (8 Bab)</option>
@@ -1740,7 +1775,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   placeholder="Cari materi..."
                   value={materiSearch}
                   onChange={(e) => setMateriSearch(e.target.value)}
-                  className="w-full pl-8 pr-3 py-2 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-xs focus:outline-hidden focus:border-[#8A0F14]"
+                  className="w-full pl-8 pr-3 py-2 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-xs focus:outline-hidden focus:border-[#1E3A8A]"
                 />
               </div>
 
@@ -1765,7 +1800,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                         }`}
                       >
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isCurrentChapter ? 'bg-[#8A0F14]' : 'bg-zinc-300 dark:bg-zinc-700'}`} />
+                          <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isCurrentChapter ? 'bg-[#1E3A8A]' : 'bg-zinc-300 dark:bg-zinc-700'}`} />
                           <span className="truncate">{chapter.title}</span>
                         </div>
                         <ChevronDown className={`w-3.5 h-3.5 text-zinc-400 shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -1782,7 +1817,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                                 onClick={() => handleSelectSubchapter(chapter, sub)}
                                 className={`w-full text-left py-1.5 px-2.5 rounded-lg text-[11px] transition-all cursor-pointer flex items-center gap-2 ${
                                   isSubActive
-                                    ? 'bg-[#8A0F14] text-white font-bold shadow-xs'
+                                    ? 'bg-[#1E3A8A] text-white font-bold shadow-xs'
                                     : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800'
                                 }`}
                               >
@@ -1801,6 +1836,13 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
             {/* COLUMN 2: CENTER READING AREA */}
             <div className="lg:col-span-6 space-y-6 bg-white dark:bg-[#111319] p-6 sm:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+              <MateriCoverBanner
+                title={activeSubchapter?.title || activeChapter.title}
+                category={activeTrackId === 'ai' ? 'AI UNTUK BISNIS' : activeTrackId === 'digital-marketing' ? 'DIGITAL MARKETING' : 'VIBE CODING'}
+                readTime="5 MENIT BACA"
+                mascotVariant={activeTrackId === 'ai' ? 'idea' : activeTrackId === 'digital-marketing' ? 'rocket' : 'code'}
+                className="mb-6"
+              />
               <div>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white">
                   {activeChapter.title}
@@ -1822,20 +1864,20 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
               {/* SECTION: Intinya (Callout Box) */}
               <div id="intinya" className="p-4 sm:p-5 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-2">
-                <h4 className="font-bold text-xs uppercase tracking-wider font-mono text-[#8A0F14] dark:text-red-400">
+                <h4 className="font-bold text-xs uppercase tracking-wider font-mono text-[#1E3A8A] dark:text-blue-400">
                   Intinya
                 </h4>
                 <ul className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 space-y-2">
                   <li className="flex items-start gap-2">
-                    <span className="text-[#8A0F14] font-bold">—</span>
+                    <span className="text-[#1E3A8A] dark:text-blue-400 font-bold">—</span>
                     <span>AI bukan tujuan akhir; fokus pada penghematan waktu dan proses yang sudah jelas tolok ukur suksesnya.</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-[#8A0F14] font-bold">—</span>
+                    <span className="text-[#1E3A8A] dark:text-blue-400 font-bold">—</span>
                     <span>Pilihlah solusi paling sederhana: gunakan otomasi deterministik untuk alur kaku, gunakan agent jika butuh keputusan kontekstual.</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-[#8A0F14] font-bold">—</span>
+                    <span className="text-[#1E3A8A] dark:text-blue-400 font-bold">—</span>
                     <span>Pastikan ada batasan wewenang (guardrails) dan jalur eskalasi aman ke staf manusia.</span>
                   </li>
                 </ul>
@@ -1844,7 +1886,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               {/* SECTION: Subbab Content */}
               <div id="subbab" className="space-y-6 pt-4 border-t border-zinc-100 dark:border-zinc-800">
                 <div>
-                  <span className="font-mono text-xs font-bold text-[#8A0F14] dark:text-red-400">
+                  <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-400">
                     SUBBAB {activeSubchapter.num}
                   </span>
                   <h3 className="text-xl font-bold text-zinc-950 dark:text-white mt-1">
@@ -1900,7 +1942,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   <div className="space-y-1.5">
                     {activeSubchapter.checklist.map((item, idx) => (
                       <label key={idx} className="flex items-center gap-2.5 p-2 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-xs cursor-pointer">
-                        <input type="checkbox" defaultChecked className="rounded text-[#8A0F14] focus:ring-[#8A0F14]" />
+                        <input type="checkbox" defaultChecked className="rounded text-[#1E3A8A] dark:text-blue-400 focus:ring-[#1E3A8A]" />
                         <span className="text-zinc-700 dark:text-zinc-300">{item}</span>
                       </label>
                     ))}
@@ -1912,9 +1954,9 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   {prevSubItem ? (
                     <button
                       onClick={() => handleSelectSubchapter(prevSubItem.chapter, prevSubItem.sub)}
-                      className="w-full sm:w-auto p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14] bg-zinc-50 dark:bg-zinc-900/60 text-left transition-all cursor-pointer group"
+                      className="w-full sm:w-auto p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A] bg-zinc-50 dark:bg-zinc-900/60 text-left transition-all cursor-pointer group"
                     >
-                      <span className="block text-[10px] font-mono uppercase text-zinc-400 group-hover:text-[#8A0F14]">
+                      <span className="block text-[10px] font-mono uppercase text-zinc-400 group-hover:text-[#1E3A8A] dark:text-blue-400">
                         ← Bab Sebelumnya
                       </span>
                       <span className="text-xs font-bold text-zinc-950 dark:text-white line-clamp-1">
@@ -1926,9 +1968,9 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   {nextSubItem && (
                     <button
                       onClick={() => handleSelectSubchapter(nextSubItem.chapter, nextSubItem.sub)}
-                      className="w-full sm:w-auto p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14] bg-zinc-50 dark:bg-zinc-900/60 text-right transition-all cursor-pointer group ml-auto"
+                      className="w-full sm:w-auto p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A] bg-zinc-50 dark:bg-zinc-900/60 text-right transition-all cursor-pointer group ml-auto"
                     >
-                      <span className="block text-[10px] font-mono uppercase text-zinc-400 group-hover:text-[#8A0F14]">
+                      <span className="block text-[10px] font-mono uppercase text-zinc-400 group-hover:text-[#1E3A8A] dark:text-blue-400">
                         Bab Berikutnya →
                       </span>
                       <span className="text-xs font-bold text-zinc-950 dark:text-white line-clamp-1">
@@ -1946,7 +1988,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               <div className="space-y-2">
                 <button
                   onClick={handleCopyMarkdown}
-                  className="w-full py-2.5 px-4 rounded-xl bg-[#8A0F14] hover:bg-[#6E0B0F] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
+                  className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
                 >
                   <Copy className="w-3.5 h-3.5" />
                   <span>Copy Markdown</span>
@@ -1981,22 +2023,22 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   DI HALAMAN INI
                 </p>
                 <div className="space-y-1.5 text-zinc-600 dark:text-zinc-400">
-                  <a href="#untuk-siapa" className="block hover:text-[#8A0F14] dark:hover:text-red-400 transition-colors">
+                  <a href="#untuk-siapa" className="block hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 transition-colors">
                     Untuk siapa bab ini
                   </a>
-                  <a href="#intinya" className="block hover:text-[#8A0F14] dark:hover:text-red-400 transition-colors">
+                  <a href="#intinya" className="block hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 transition-colors">
                     Intinya
                   </a>
-                  <a href="#subbab" className="block hover:text-[#8A0F14] dark:hover:text-red-400 transition-colors">
+                  <a href="#subbab" className="block hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 transition-colors">
                     Subbab &amp; Materi
                   </a>
-                  <a href="#praktik" className="block hover:text-[#8A0F14] dark:hover:text-red-400 transition-colors">
+                  <a href="#praktik" className="block hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 transition-colors">
                     Praktik Implementasi
                   </a>
-                  <a href="#kesalahan" className="block hover:text-[#8A0F14] dark:hover:text-red-400 transition-colors">
+                  <a href="#kesalahan" className="block hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 transition-colors">
                     Kesalahan Fatal
                   </a>
-                  <a href="#checklist" className="block hover:text-[#8A0F14] dark:hover:text-red-400 transition-colors">
+                  <a href="#checklist" className="block hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 transition-colors">
                     Checklist Verifikasi
                   </a>
                 </div>
@@ -2004,7 +2046,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
               {/* Layanan Terkait CTA */}
               <div className="p-4 rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-2 text-xs">
-                <p className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400">
+                <p className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#1E3A8A] dark:text-blue-400">
                   LAYANAN TERKAIT →
                 </p>
                 <p className="font-bold text-zinc-900 dark:text-white">
@@ -2043,116 +2085,37 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       {/* VIEW 3: DEDICATED LAYANAN KATALOG (SERVICES VIEW)                        */}
       {/* ========================================================================= */}
       {activePage === 'services' && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
-          <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5">
-            <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-1">
-              <span className="hover:underline cursor-pointer" onClick={() => navigateTo('home')}>Beranda</span>
-              <span>/</span>
-              <span className="text-[#8A0F14] font-semibold">Layanan</span>
-            </nav>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
-              Katalog Layanan &amp; Investasi Pengerjaan
-            </h1>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
-              Harga transparan dimulai dari Rp 500.000 untuk website online kilat. Seluruh pengerjaan bergaransi dan kepemilikan kode 100% milik Anda.
-            </p>
-          </div>
-
-          {/* Category Filter Chips */}
-          <div className="flex flex-wrap items-center gap-2">
-            {['Semua', 'Website Online', 'Aplikasi & Dashboard', 'AI & Otomasi', 'Infrastruktur Cloud', 'Keamanan & Tracking'].map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setServiceFilter(cat)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                  serviceFilter === cat
-                    ? 'bg-[#8A0F14] text-white shadow-xs'
-                    : 'bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredServices.map((s) => (
-              <div
-                key={s.id}
-                className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between space-y-4 hover:border-[#8A0F14]/50 transition-all"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
-                      {s.code}
-                    </span>
-                    {s.badge && (
-                      <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50">
-                        {s.badge}
-                      </span>
-                    )}
-                  </div>
-
-                  <h3 className="font-bold text-lg text-zinc-950 dark:text-white">{s.title}</h3>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">{s.description}</p>
-
-                  <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800">
-                    <p className="text-[11px] text-zinc-500">Biaya Investasi:</p>
-                    <p className="font-mono text-2xl font-black text-zinc-950 dark:text-white">{s.price}</p>
-                    <p className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      <span>Estimasi: {s.duration}</span>
-                    </p>
-                  </div>
-
-                  <div className="space-y-1.5 pt-1 text-xs">
-                    <p className="font-bold text-zinc-800 dark:text-zinc-200 text-[11px] uppercase tracking-wider font-mono">
-                      Cakupan Pekerjaan:
-                    </p>
-                    <ul className="space-y-1 text-zinc-600 dark:text-zinc-400 text-xs">
-                      {s.scope.slice(0, 4).map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 space-y-2">
-                  <button
-                    onClick={() => setSelectedService(s)}
-                    className="w-full py-2.5 px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold text-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5"
-                  >
-                    <span>Rincian Scope Lengkap</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
-
-                  <button
-                    onClick={() => handleWhatsAppConsultation(s.title, s.price)}
-                    className="w-full py-2.5 px-4 rounded-xl bg-[#8A0F14] hover:bg-[#6E0B0F] text-white font-semibold text-xs transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
-                  >
-                    <MessageSquare className="w-3.5 h-3.5" />
-                    <span>Pesan via WhatsApp</span>
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <SekawanEnterpriseLayanan
+            onWhatsAppInquiry={handleWhatsAppConsultation}
+            onNavigateHome={() => navigateTo('home')}
+          />
         </div>
       )}
 
-      {/* ========================================================================= */}
       {/* VIEW 4: DEDICATED TOOLS YANG SAYA PAKAI (TOOLS VIEW)                      */}
       {/* ========================================================================= */}
       {activePage === 'tools' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
+          {/* Tools Mascot Banner */}
+          <div className="p-6 rounded-3xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-md bg-[#1E3A8A] flex items-center justify-center text-white text-[10px] font-black">FD</div>
+                <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-300">fitran.dev DevStack Toolkit</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black text-zinc-950 dark:text-white">Daftar Toolkit & Stack Rekayasa Teruji</h2>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-xl">
+                Semua tool dan framework yang saya gunakan sehari-hari untuk merancang AI agent, aplikasi web performa tinggi, dan technical marketing.
+              </p>
+            </div>
+            <FitranMascot variant="code" size="md" className="shrink-0" />
+          </div>
           <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5">
             <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-1">
               <span className="hover:underline cursor-pointer" onClick={() => navigateTo('home')}>Beranda</span>
               <span>/</span>
-              <span className="text-[#8A0F14] font-semibold">Tools</span>
+              <span className="text-[#1E3A8A] dark:text-blue-400 font-semibold">Tools</span>
             </nav>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
               Tools yang Saya Gunakan Sehari-hari
@@ -2169,7 +2132,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 onClick={() => setToolsCategory(cat)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                   toolsCategory === cat
-                    ? 'bg-[#8A0F14] text-white shadow-xs'
+                    ? 'bg-[#1E3A8A] text-white shadow-xs'
                     : 'bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
                 }`}
               >
@@ -2207,12 +2170,26 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       {/* ========================================================================= */}
       {activePage === 'kamus' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
+          {/* Kamus Mascot Banner */}
+          <div className="p-6 rounded-3xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-md bg-[#1E3A8A] flex items-center justify-center text-white text-[10px] font-black">FD</div>
+                <span className="font-mono text-xs font-bold text-emerald-800 dark:text-emerald-300">fitran.dev Glossary Hub</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black text-zinc-950 dark:text-white">Kamus Istilah Digital & AI Tanpa Jargon</h2>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-xl">
+                Definisi lugas dan analogi praktis untuk para pelaku bisnis agar paham teknologi AI, Ads, dan Web secara mendalam.
+              </p>
+            </div>
+            <FitranMascot variant="idea" size="md" className="shrink-0" />
+          </div>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
             <div>
               <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-1">
                 <span className="hover:underline cursor-pointer" onClick={() => navigateTo('home')}>Beranda</span>
                 <span>/</span>
-                <span className="text-[#8A0F14] font-semibold">Kamus</span>
+                <span className="text-[#1E3A8A] dark:text-blue-400 font-semibold">Kamus</span>
               </nav>
               <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
                 Kamus Istilah Digital, AI &amp; Marketing
@@ -2230,7 +2207,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 placeholder="Cari istilah (e.g. AI Agent, RAG, CAPI)..."
                 value={kamusSearch}
                 onChange={(e) => setKamusSearch(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 rounded-xl bg-white dark:bg-[#111319] border border-zinc-300 dark:border-zinc-700 text-xs focus:outline-hidden focus:border-[#8A0F14]"
+                className="w-full pl-9 pr-4 py-2 rounded-xl bg-white dark:bg-[#111319] border border-zinc-300 dark:border-zinc-700 text-xs focus:outline-hidden focus:border-[#1E3A8A]"
               />
               {kamusSearch && (
                 <button
@@ -2250,7 +2227,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 onClick={() => setKamusCategory(cat)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                   kamusCategory === cat
-                    ? 'bg-[#8A0F14] text-white shadow-xs'
+                    ? 'bg-[#1E3A8A] text-white shadow-xs'
                     : 'bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
                 }`}
               >
@@ -2289,6 +2266,14 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           {selectedArticle ? (
             /* DEDICATED FULL-PAGE ARTICLE READING VIEW (MATCHING FIKRAN.DEV/BLOG/<SLUG>) */
             <article className="space-y-8 animate-fade-in max-w-4xl mx-auto">
+              {/* Illustrated Official Cover Banner */}
+              <MateriCoverBanner
+                title={selectedArticle.title}
+                category={selectedArticle.category.toUpperCase()}
+                readTime={selectedArticle.readTime.toUpperCase()}
+                mascotVariant="code"
+                className="mb-2"
+              />
               {/* Back to Blog Button + Breadcrumb */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-zinc-200 dark:border-zinc-800">
                 <button
@@ -2298,7 +2283,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       window.history.pushState(null, '', '/blog');
                     }
                   }}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-600 dark:text-zinc-400 hover:text-[#8A0F14] dark:hover:text-red-400 transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-600 dark:text-zinc-400 hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 transition-colors cursor-pointer"
                 >
                   <ArrowRight className="w-3.5 h-3.5 rotate-180" />
                   <span>Kembali ke Semua Artikel</span>
@@ -2317,14 +2302,14 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     Blog
                   </span>
                   <span>/</span>
-                  <span className="text-[#8A0F14] dark:text-red-400 font-semibold truncate max-w-[200px]">{selectedArticle.title}</span>
+                  <span className="text-[#1E3A8A] dark:text-blue-400 font-semibold truncate max-w-[200px]">{selectedArticle.title}</span>
                 </nav>
               </div>
 
               {/* Article Header */}
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-zinc-500">
-                  <span className="px-2.5 py-1 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-[#8A0F14] dark:text-red-400 font-bold">
+                  <span className="px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 text-[#1E3A8A] dark:text-blue-400 font-bold">
                     {selectedArticle.category}
                   </span>
                   <span>•</span>
@@ -2371,7 +2356,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
                     <button
                       onClick={() => handleWhatsAppConsultation(selectedArticle.title)}
-                      className="px-3 py-1.5 rounded-xl bg-[#8A0F14] hover:bg-[#6E0B0F] text-white text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                      className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
                     >
                       <MessageSquare className="w-3.5 h-3.5" />
                       <span>Diskusi</span>
@@ -2424,7 +2409,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 {selectedArticle.slug === 'cara-membuat-mvp-dan-menentukan-fitur' && (
                   <div className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-4">
                     <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
-                      <p className="font-mono text-xs font-bold text-[#8A0F14] dark:text-red-400 uppercase tracking-wider">
+                      <p className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-400 uppercase tracking-wider">
                         Matriks Prioritisasi Fitur MVP (MoSCoW)
                       </p>
                       <span className="text-[11px] font-mono text-zinc-400">Kerangka Kerja Validasi Kilat</span>
@@ -2486,7 +2471,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3">
                       <button
                         onClick={() => handleWhatsAppConsultation(selectedArticle.title)}
-                        className="py-2 px-4 rounded-xl bg-[#8A0F14] hover:bg-[#6E0B0F] text-white font-bold text-xs flex items-center gap-2 cursor-pointer shadow-sm"
+                        className="py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 cursor-pointer shadow-sm"
                       >
                         <MessageSquare className="w-3.5 h-3.5" />
                         <span>Konsultasi Proyek Bersama Tubagus</span>
@@ -2510,7 +2495,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                         setSelectedArticle(null);
                         if (typeof window !== 'undefined') window.history.pushState(null, '', '/blog');
                       }}
-                      className="text-xs text-[#8A0F14] dark:text-red-400 font-bold hover:underline cursor-pointer"
+                      className="text-xs text-[#1E3A8A] dark:text-blue-400 font-bold hover:underline cursor-pointer"
                     >
                       Lihat Semua Artikel →
                     </button>
@@ -2527,10 +2512,10 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                           }
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="p-5 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14]/50 cursor-pointer transition-all space-y-2 group"
+                        className="p-5 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A]/50 cursor-pointer transition-all space-y-2 group"
                       >
                         <span className="text-[10px] font-mono text-zinc-400 uppercase">{post.category} · {post.readTime}</span>
-                        <h4 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors line-clamp-2">
+                        <h4 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:text-blue-400 dark:group-hover:text-red-400 transition-colors line-clamp-2">
                           {post.title}
                         </h4>
                         <p className="text-xs text-zinc-500 line-clamp-2">{post.excerpt}</p>
@@ -2547,7 +2532,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-1">
                   <span className="hover:underline cursor-pointer" onClick={() => navigateTo('home')}>Beranda</span>
                   <span>/</span>
-                  <span className="text-[#8A0F14] dark:text-red-400 font-semibold">Blog</span>
+                  <span className="text-[#1E3A8A] dark:text-blue-400 font-semibold">Blog</span>
                 </nav>
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
                   Tulisan Pilihan seputar AI, Web &amp; Keamanan
@@ -2565,7 +2550,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     onClick={() => setBlogFilter(cat)}
                     className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                       blogFilter === cat
-                        ? 'bg-[#8A0F14] text-white shadow-xs'
+                        ? 'bg-[#1E3A8A] text-white shadow-xs'
                         : 'bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
                     }`}
                   >
@@ -2585,7 +2570,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       }
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between cursor-pointer group hover:border-[#8A0F14]/50 transition-all"
+                    className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between cursor-pointer group hover:border-[#1E3A8A]/50 transition-all"
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
@@ -2594,14 +2579,14 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                         </span>
                         <span>{post.date} • {post.readTime}</span>
                       </div>
-                      <h3 className="font-bold text-lg text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors">
+                      <h3 className="font-bold text-lg text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:text-blue-400 dark:group-hover:text-red-400 transition-colors">
                         {post.title}
                       </h3>
                       <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
                         {post.excerpt}
                       </p>
                     </div>
-                    <div className="pt-4 mt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs font-bold text-[#8A0F14] dark:text-red-400">
+                    <div className="pt-4 mt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs font-bold text-[#1E3A8A] dark:text-blue-400">
                       <span>Baca Selengkapnya</span>
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -2618,11 +2603,25 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       {/* ========================================================================= */}
       {activePage === 'about' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10">
+          {/* About Mascot Banner */}
+          <div className="p-6 rounded-3xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-md bg-[#1E3A8A] flex items-center justify-center text-white text-[10px] font-black">FD</div>
+                <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-300">fitran.dev Engineer Profile</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black text-zinc-950 dark:text-white">Tubagus Fitran Badruttamam</h2>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-xl">
+                Fullstack Developer & AI Engineer dari Cilegon, Indonesia. Membangun software terukur dengan komitmen 100% kepemilikan source code milik klien.
+              </p>
+            </div>
+            <FitranMascot variant="bot" size="md" className="shrink-0" />
+          </div>
           <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5">
             <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-1">
               <span className="hover:underline cursor-pointer" onClick={() => navigateTo('home')}>Beranda</span>
               <span>/</span>
-              <span className="text-[#8A0F14] font-semibold">Mohammad Fikran / Tubagus Fitran</span>
+              <span className="text-[#1E3A8A] dark:text-blue-400 font-semibold">Tubagus Fitran Badruttamam</span>
             </nav>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
               Tubagus Fitran Badruttamam
@@ -2658,25 +2657,25 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               {/* 4 Prinsip Rekayasa */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
-                  <span className="font-mono text-xs font-bold text-[#8A0F14]">01 KECEPATAN</span>
+                  <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-400">01 KECEPATAN</span>
                   <p className="font-bold text-xs text-zinc-900 dark:text-white">Render &lt; 1 Detik (PageSpeed 95+)</p>
                   <p className="text-[11px] text-zinc-500">Setiap milidetik dihemat demi kenyamanan pengunjung.</p>
                 </div>
 
                 <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
-                  <span className="font-mono text-xs font-bold text-[#8A0F14]">02 KEAMANAN</span>
+                  <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-400">02 KEAMANAN</span>
                   <p className="font-bold text-xs text-zinc-900 dark:text-white">5 Lapisan Keamanan Aktif</p>
                   <p className="text-[11px] text-zinc-500">TLS 1.3, Zero-Trust VPS, sanitasi anti-SQLi &amp; anti-XSS.</p>
                 </div>
 
                 <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
-                  <span className="font-mono text-xs font-bold text-[#8A0F14]">03 TRANSPARANSI</span>
+                  <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-400">03 TRANSPARANSI</span>
                   <p className="font-bold text-xs text-zinc-900 dark:text-white">Harga Pasti Mulai 500rb</p>
                   <p className="text-[11px] text-zinc-500">Tidak ada biaya tersembunyi di tengah jalan.</p>
                 </div>
 
                 <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
-                  <span className="font-mono text-xs font-bold text-[#8A0F14]">04 OWNERSHIP</span>
+                  <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-400">04 OWNERSHIP</span>
                   <p className="font-bold text-xs text-zinc-900 dark:text-white">100% Hak Milik Klien</p>
                   <p className="text-[11px] text-zinc-500">Kode sumber dan akses domain sepenuhnya milik Anda.</p>
                 </div>
@@ -2694,7 +2693,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 </div>
                 <button
                   onClick={() => handleWhatsAppConsultation()}
-                  className="w-full py-2.5 px-4 rounded-full bg-[#8A0F14] hover:bg-[#6E0B0F] text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-2.5 px-4 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
                   <span>Chat via WhatsApp</span>
@@ -2748,7 +2747,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               <button onClick={() => navigateTo('tools')} className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Tools</button>
               <button onClick={() => navigateTo('blog')} className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Blog</button>
               <button onClick={() => navigateTo('about')} className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Tentang</button>
-              <button onClick={() => handleWhatsAppConsultation()} className="text-[#8A0F14] dark:text-red-400 font-bold hover:underline cursor-pointer">Konsultasi</button>
+              <button onClick={() => handleWhatsAppConsultation()} className="text-[#1E3A8A] dark:text-blue-400 font-bold hover:underline cursor-pointer">Konsultasi</button>
             </div>
           </div>
 
@@ -2819,7 +2818,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   handleWhatsAppConsultation(selectedService.title, selectedService.price);
                   setSelectedService(null);
                 }}
-                className="flex-1 py-3 px-4 rounded-xl bg-[#8A0F14] hover:bg-[#6E0B0F] text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md"
               >
                 <MessageSquare className="w-4 h-4" />
                 <span>Pesan Layanan via WhatsApp</span>
@@ -2868,7 +2867,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             </p>
 
             <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-2">
-              <p className="font-mono text-xs font-bold uppercase tracking-wider text-[#8A0F14] dark:text-red-400">
+              <p className="font-mono text-xs font-bold uppercase tracking-wider text-[#1E3A8A] dark:text-blue-400">
                 Poin Kunci (Key Takeaways):
               </p>
               <ul className="space-y-1.5 text-xs text-zinc-700 dark:text-zinc-300">
@@ -2906,7 +2905,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             <div className="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800">
               <button
                 onClick={() => handleWhatsAppConsultation(selectedArticle.title)}
-                className="py-2.5 px-4 rounded-xl bg-[#8A0F14] hover:bg-[#6E0B0F] text-white font-bold text-xs transition-colors flex items-center gap-2 cursor-pointer"
+                className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors flex items-center gap-2 cursor-pointer"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
                 <span>Diskusikan via WhatsApp</span>

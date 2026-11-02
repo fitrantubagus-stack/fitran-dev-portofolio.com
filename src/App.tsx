@@ -195,6 +195,44 @@ export default function App() {
     }
   };
 
+  // Dynamic document.title synchronization (fixes tab title desync)
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    if (selectedCertificate) {
+      document.title = `${selectedCertificate.title} — Sertifikat Resmi fitran.dev`;
+      return;
+    }
+    switch (activeTab) {
+      case 'certificates':
+        document.title = '36+ Sertifikat & Kredensial Resmi — fitran.dev';
+        break;
+      case 'services':
+        document.title = 'Layanan & Solusi Digital Perusahaan — fitran.dev';
+        break;
+      case 'learning':
+        document.title = 'Studio Belajar AI, Ads & Vibe Coding — fitran.dev';
+        break;
+      case 'blog':
+        document.title = 'Blog Rekayasa Web, AI & Keamanan — fitran.dev';
+        break;
+      case 'work':
+        document.title = 'Portofolio Proyek Rekayasa Sistem — fitran.dev';
+        break;
+      case 'tools':
+        document.title = 'Tools & Toolkit Harian — fitran.dev';
+        break;
+      case 'kamus':
+        document.title = 'Kamus Istilah Digital & AI — fitran.dev';
+        break;
+      case 'about':
+        document.title = 'Tentang Tubagus Fitran Badruttamam — fitran.dev';
+        break;
+      default:
+        document.title = 'fitran.dev — Tubagus Fitran Badruttamam | Fullstack Developer & AI Engineer';
+        break;
+    }
+  }, [activeTab, selectedCertificate]);
+
   // Resolve pathname (and legacy hash if present) into activeTab or selectedCertificate
   const syncRouteFromLocation = useCallback(() => {
     const resolved = resolveRouteFromWindow();
