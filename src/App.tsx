@@ -74,8 +74,10 @@ function resolveRouteFromWindow(): { tab: SectionId; cert: CertificateItem | nul
   }
   if (
     lowerPath === 'certificates' ||
+    lowerPath.startsWith('certificates/') ||
     lowerPath === 'credentials' ||
-    lowerPath === 'sertifikat'
+    lowerPath === 'sertifikat' ||
+    lowerPath.startsWith('sertifikat/')
   ) {
     return { tab: 'certificates', cert: null };
   }
@@ -97,7 +99,12 @@ function resolveRouteFromWindow(): { tab: SectionId; cert: CertificateItem | nul
   if (lowerPath === 'learning' || lowerPath.startsWith('belajar')) {
     return { tab: 'learning', cert: null };
   }
-  if (lowerPath === 'blog' || lowerPath === 'artikel') {
+  if (
+    lowerPath === 'blog' ||
+    lowerPath.startsWith('blog/') ||
+    lowerPath === 'artikel' ||
+    lowerPath.startsWith('artikel/')
+  ) {
     return { tab: 'blog', cert: null };
   }
   if (lowerPath === 'tools' || lowerPath === 'alat') {

@@ -575,6 +575,16 @@ export const KLASIK_LEARNING_CHAPTERS: LearningChapter[] = [
         mistakes: 'Mencampuradukkan perintah tugas dengan batasan larangan dalam satu paragraf panjang.',
         checklist: ['Ada pemisahan eksplisit dengan tag XML.', 'Format output dispesifikasikan secara kaku.'],
       },
+      {
+        id: 'ai-02-2',
+        num: '02.2',
+        title: 'Structured Outputs & JSON Schema: Memaksa Output Valid',
+        situation: 'Mengintegrasikan LLM ke backend namun model sering membalas dengan pembuka "Tentu, ini datanya:" dan membungkus JSON dengan markdown ```json.',
+        explanation: 'Gunakan mode Structured Outputs asli dari provider (OpenAI response_format json_schema, Gemini responseSchema, atau Zod schema). Model di-guarantee 100% menghasilkan JSON valid yang lolos parser backend tanpa regex pembersih.',
+        practice: 'Definisikan schema Zod:\n```typescript\nimport { z } from "zod";\nexport const LeadSchema = z.object({\n  name: z.string(),\n  phone: z.string(),\n  budget: z.number(),\n  intent: z.enum(["high", "medium", "low"])\n});\n```',
+        mistakes: 'Hanya menulis "tolong keluarkan JSON" di prompt teks tanpa mengaktifkan schema constraint di level API.',
+        checklist: ['Schema divalidasi dengan Zod di sisi backend.', 'Fallback retry otomatis jika JSON parse gagal.'],
+      },
     ],
   },
   {
@@ -596,6 +606,16 @@ export const KLASIK_LEARNING_CHAPTERS: LearningChapter[] = [
         practice: 'Susun file `knowledge.md` sederhana dengan heading yang jelas untuk setiap topik bisnis.',
         mistakes: 'Membiarkan dokumen acuan memuat harga lama yang bertentangan dengan promo baru.',
         checklist: ['Dokumen berbentuk teks bersih Markdown.', 'Hanya ada 1 versi kebenaran yang valid.'],
+      },
+      {
+        id: 'ai-03-2',
+        num: '03.2',
+        title: 'Vector Database & Chunking: pgvector untuk Data Produksi',
+        situation: 'Dokumen panduan SOP perusahaan mencapai 300 halaman dan melampaui batas context window atau boros biaya jika dikirim utuh setiap chat.',
+        explanation: 'Pecah dokumen menjadi potongan kecil (chunks) 500-800 token dengan overlap 100 token. Simpan embedding vektor di PostgreSQL menggunakan ekstensi `pgvector`. Saat pengguna bertanya, lakukan cosine similarity search untuk mengambil 3 potongan paling relevan saja.',
+        practice: 'Query pencarian vektor di PostgreSQL:\n```sql\nSELECT content, 1 - (embedding <=> $1) AS similarity\nFROM knowledge_chunks\nORDER BY embedding <=> $1\nLIMIT 3;\n```',
+        mistakes: 'Membuat potongan chunk terlalu kecil (kehilangan konteks) atau terlalu besar (memasukkan informasi sampah).',
+        checklist: ['Ekstensi pgvector aktif di PostgreSQL.', 'Metrik kemiripan cosine distance teruji akurat.'],
       },
     ],
   },
@@ -619,6 +639,16 @@ export const KLASIK_LEARNING_CHAPTERS: LearningChapter[] = [
         mistakes: 'Hanya meminta: "Tuliskan iklan menarik" tanpa data keluhan riil konsumen.',
         checklist: ['Menggunakan data keluhan pembeli nyata.', 'Menghasilkan minimal 5 variasi sudut pandang.'],
       },
+      {
+        id: 'ai-04-2',
+        num: '04.2',
+        title: 'Kualifikasi Prospek Otomatis di Percakapan WhatsApp',
+        situation: 'Customer service menghabiskan 4 jam sehari menjawab chat prospek yang tidak punya anggaran atau sekadar coba-coba.',
+        explanation: 'Rancang bot yang mengajukan 3 pertanyaan kualifikasi ramah (skala usaha, tenggat waktu kebutuhan, dan estimasi budget). Bot otomatis menandai tag prospek: "Hot Lead" jika budget di atas Rp 2 juta, dan langsung mengarahkan ke telepon staf penutup (closer).',
+        practice: 'Instruksikan bot: "Jika pengguna menyebut budget di bawah Rp 500rb, tawarkan paket starter website atau materi mandiri. Jika di atas Rp 2jt, jadwalkan panggilan Google Meet."',
+        mistakes: 'Langsung menodong pertanyaan budget di pesan pertama sebelum memberikan rasa aman dan nilai pembuka.',
+        checklist: ['Alur kualifikasi terasa natural seperti obrolan manusia.', 'Hot leads dipisahkan otomatis ke notifikasi admin.'],
+      },
     ],
   },
   {
@@ -641,6 +671,16 @@ export const KLASIK_LEARNING_CHAPTERS: LearningChapter[] = [
         mistakes: 'Menggunakan AI untuk memvalidasi format email padahal fungsi regex jauh lebih cepat dan gratis.',
         checklist: ['Hanya menggunakan AI di langkah yang benar-benar membutuhkan penalaran.', 'Memasang penanganan error jika API down.'],
       },
+      {
+        id: 'ai-05-2',
+        num: '05.2',
+        title: 'Webhook Error Handling & Dead Letter Queue (DLQ)',
+        situation: 'Server API AI mengalami timeout sejenak (504 error) dan pesan pelanggan hilang tanpa jejak.',
+        explanation: 'Setiap event webhook masuk wajib disimpan ke antrean database sebelum diproses (Ingest-First Pattern). Pasang mekanisme auto-retry 3 kali dengan exponential backoff. Jika tetap gagal, masukkan ke antrean Dead Letter Queue untuk ditinjau manual.',
+        practice: 'Konfigurasi n8n Retry on Fail: Max Tries = 3, Wait Between Tries = 5000ms.',
+        mistakes: 'Memproses webhook langsung di thread utama tanpa sistem pencatatan riwayat (audit log).',
+        checklist: ['Payload pesan tersimpan sebelum proses AI dimulai.', 'Notifikasi Telegram/WA aktif jika webhook berulang kali gagal.'],
+      },
     ],
   },
   {
@@ -662,6 +702,16 @@ export const KLASIK_LEARNING_CHAPTERS: LearningChapter[] = [
         practice: 'Definisikan aturan `if sentiment == negative -> trigger human_takeover`.',
         mistakes: 'Mengunci pelanggan dalam putaran bot tanpa opsi berbicara dengan manusia.',
         checklist: ['Tersedia tombol alihkan ke staf manusia kapan saja.', 'Bot menghentikan respon otomatis saat admin mengambil alih.'],
+      },
+      {
+        id: 'ai-06-2',
+        num: '06.2',
+        title: 'Function Calling Terintegrasi: Cek Status Pesanan & Database',
+        situation: 'Pelanggan menanyakan "Apakah pesanan #9821 sudah dikirim?" dan bot tidak bisa menjawab karena tidak punya akses ke database.',
+        explanation: 'Daftarkan tools fungsi `cek_pesanan(order_id: string)` ke LLM. Model membaca order_id dari chat pelanggan, memanggil API backend Anda, menerima JSON status pengiriman, lalu merangkum nomor resi secara akurat.',
+        practice: 'Contoh definisi Tool Schema:\n```json\n{\n  "name": "cek_pesanan",\n  "description": "Ambil status paket dan resi berdasarkan nomor invoice",\n  "parameters": {\n    "type": "object",\n    "properties": {\n      "invoice_id": { "type": "string" }\n    },\n    "required": ["invoice_id"]\n  }\n}\n```',
+        mistakes: 'Memberikan akses write (ubah status pesanan) tanpa token otorisasi atau verifikasi nomor HP pengirim.',
+        checklist: ['Nomor pengirim WhatsApp diverifikasi sesuai pemilik order.', 'Fungsi hanya memiliki hak akses read-only.'],
       },
     ],
   },
@@ -1204,6 +1254,61 @@ export const KLASIK_TOOLS: ToolItem[] = [
 // 7. ARTIKEL BLOG PILIHAN
 // -----------------------------------------------------------------------------
 export const KLASIK_BLOG_POSTS: BlogPost[] = [
+  {
+    id: 'cara-membuat-mvp-dan-menentukan-fitur',
+    slug: 'cara-membuat-mvp-dan-menentukan-fitur',
+    title: 'Cara Membuat MVP dan Menentukan Fitur untuk Validasi Produk Secepat Kilat',
+    excerpt:
+      'Panduan praktis memangkas fitur, menghindari jebakan overengineering, dan merilis Minimum Viable Product yang terbukti dibeli pasar sebelum menghabiskan tabungan.',
+    category: 'Web Engineering',
+    readTime: '9 min read',
+    date: '01 Nov 2026',
+    featured: true,
+    content: {
+      intro:
+        'Hampir 90% proyek perangkat lunak dan startup baru gagal bukan karena kodenya jelek atau servernya tumbang, melainkan karena pendirinya menghabiskan waktu 6 bulan di ruang tertutup membangun 40 fitur yang ternyata tidak dibutuhkan siapa pun. Minimum Viable Product (MVP) bukan berarti produk cacat atau setengah jadi; MVP adalah versi paling ramping dari ide Anda yang mampu menyelesaikan satu masalah inti pelanggan dan membuktikan apakah mereka bersedia membayar.',
+      keyTakeaways: [
+        'MVP bukanlah produk jelek atau buggy; MVP adalah produk utuh dengan cakupan fitur paling minimal yang memberikan nilai nyata.',
+        'Gunakan kerangka kerja MoSCoW: pisahkan secara kejam mana fitur "Must Have" (wajib ada agar alur jalan) dan mana yang hanya "Nice to have".',
+        'Validasi transaksi nyata selalu mengalahkan pujian teman: jika ada 3 orang asing yang rela mentransfer uang muka via WhatsApp, produk Anda valid.',
+        'Fokus pada Critical User Journey: dari orang datang ke landing page hingga terjadi kesepakatan transaksi.',
+      ],
+      sections: [
+        {
+          heading: '1. Mengapa Kebanyakan MVP Berakhir Menjadi "Fitur Kuburan"',
+          body:
+            'Kesalahan paling umum dari developer dan founder pemula adalah menunda peluncuran karena merasa aplikasinya "belum siap". Mereka sibuk menambahkan fitur dark mode, sistem reset password lewat SMS OTP, multi-bahasa 5 negara, dan referral link berjenjang, padahal belum ada satupun pengguna aktif yang mendaftar.\n\nPrinsip dasarnya sederhana: Setiap baris kode yang Anda tulis sebelum ada validasi pasar adalah bentuk utang teknis dan pemborosan modal. Jika Anda tidak merasa sedikit malu dengan versi pertama produk Anda saat diluncurkan, kemungkinan besar Anda sudah terlambat meluncurkannya.',
+        },
+        {
+          heading: '2. Kerangka Kerja MoSCoW: Membedah Fitur Secara Kejam',
+          body:
+            'Untuk menentukan fitur apa yang wajib masuk ke MVP versi 1.0, kelompokkan seluruh ide Anda ke dalam 4 kotak:\n\n1. MUST HAVE (Wajib Ada):\nFitur yang jika dihilangkan, produk Anda kehilangan alasan untuk eksis. Contoh: jika Anda membuat jasa pembuatan website kilat, Must Have-nya adalah landing page profil, tombol chat WhatsApp, dan portofolio bukti hasil kerja.\n\n2. SHOULD HAVE (Sebaiknya Ada, Tapi Bisa Ditunda):\nFitur penting namun masih bisa diakali manual oleh manusia di tahap awal. Contoh: kalkulator estimasi harga otomatis. Pada rilis awal, biarkan calon klien menanyakan estimasi harga langsung via chat WhatsApp daripada menghabiskan seminggu mengoding logika kalkulator yang belum tentu dipakai.\n\n3. COULD HAVE (Boleh Ada Jika Ada Sisa Waktu):\nFitur pemanis seperti animasi interaktif 3D atau generator invoice PDF otomatis. Kerjakan hanya jika Must Have sudah berjalan mulus di tangan pengguna nyata.\n\n4. WON\'T HAVE (Tegas Ditolak untuk Rilis Pertama):\nSistem multi-tenant, pembayaran kartu kredit internasional otomatis dengan escrow, dan dashboard analitik rumit. Catat ide ini di backlog masa depan, lalu kunci dan lupakan sampai ada 20 klien aktif.',
+        },
+        {
+          heading: '3. Memetakan Jalur Kritis (The Critical User Journey)',
+          body:
+            'Gambarkan garis lurus dari titik pertama pengunjung melihat penawaran Anda hingga titik mereka menyelesaikan tujuan utama. Contoh alur kritis jasa digital:\nPengunjung Buka Website → Membaca Masalah & Solusi → Melihat Bukti Kredensial → Klik Tombol Chat WhatsApp → Konsultasi & Deal.\n\nSetiap elemen halaman yang tidak mendukung alur lurus ini harus disingkirkan atau disederhanakan. Jangan buat pengunjung berpikir keras atau mengisi formulir 12 kolom yang melelahkan.',
+        },
+        {
+          heading: '4. Studi Kasus Riil: Validasi Layanan Jasa Web Kilat 500rb dalam 48 Jam',
+          body:
+            'Saat saya merancang paket "Website Online Kilat Rp 500rb", godaan awalnya adalah membangun platform SaaS generator landing page otomatis seperti Wix atau Shopify. Namun itu membutuhkan waktu 3 bulan rekayasa dan biaya server bulanan yang tinggi.\n\nAlih-alih membuat software otomatis, saya menerapkan prinsip MVP concierge: saya membuat 1 landing page statis cepat dengan Astro & Tailwind CSS, menampilkan paket layanan jelas dengan harga transparan Rp 500rb, dan menghubungkannya langsung ke WhatsApp saya. Dalam tempo 48 jam, validasi pasar langsung terjadi: calon klien UMKM menghubungi, memesan, dan proses pengerjaan dilakukan manual dengan standar kode tinggi. Pasar terbukti ada tanpa perlu membangun SaaS bernilai ratusan juta di muka.',
+        },
+        {
+          heading: '5. Lima Kesalahan Fatal Saat Membangun MVP',
+          body:
+            'Hindari 5 jebakan klasik berikut:\n- Terlalu Cepat Menggunakan Arsitektur Microservices: Gunakan monolit sederhana atau serverless static page. Jangan mempersulit diri dengan Kubernetes untuk aplikasi berpenghuni 50 orang.\n- Mengabaikan Kecepatan Muat (Page Speed): Banyak MVP dibuat asal-asalan dengan builder berat yang loading-nya 7 detik di HP 4G. Calon pembeli sudah kabur sebelum halaman selesai dimuat.\n- Lupa Memasang Sinyal Pelacak (Tracking): Anda wajib memasang Meta Pixel / CAPI dan Google Analytics sejak hari pertama agar tahu tombol mana yang diklik dan di langkah mana pengunjung membatalkan niatnya.\n- Tidak Memiliki Mekanisme Pengumpulan Feedback: Berikan cara termudah bagi pengguna pertama untuk menyampaikan keluhan langsung ke founder.\n- Takut Menaruh Harga: Jangan malu menampilkan harga yang jelas. Fitur gratisan menarik pengguna pemburu gratisan, bukan pembeli yang memvalidasi model bisnis Anda.',
+        },
+        {
+          heading: '6. Checklist 10 Poin: Siapkah MVP Anda Diluncurkan Hari Ini?',
+          body:
+            'Centang daftar berikut sebelum membagikan link ke publik:\n[ ] Satu masalah inti teratasi dengan jelas tanpa ambigu\n[ ] Waktu muat halaman di bawah 1.5 detik pada koneksi ponsel\n[ ] Tombol Call-to-Action (WhatsApp / Beli) langsung terlihat tanpa perlu scroll jauh\n[ ] Kredensial, portofolio, atau bukti sosial sudah terpasang\n[ ] Tidak ada dead links atau tombol rusak (404 error)\n[ ] Desain responsif diuji di layar HP Android dan iPhone\n[ ] Sertifikat SSL HTTPS aktif dan gembok hijau menyala\n[ ] Nomor kontak dan alamat email pengelola valid dan aktif dipantau\n[ ] Teks penawaran fokus pada keuntungan klien, bukan daftar fitur teknis belaka\n[ ] Akses analitik pengunjung sudah aktif merekam kunjungan',
+        },
+      ],
+      conclusion:
+        'MVP bukanlah tentang seberapa sedikit kode yang Anda tulis, melainkan seberapa cepat Anda belajar dari interaksi manusia nyata. Luncurkan solusi paling ringkas Anda sekarang, dengarkan masukan mereka, dan lakukan iterasi setiap minggu. Keberhasilan produk tidak ditentukan di meja perancangan, melainkan di tangan pengguna yang masalahnya terselesaikan.',
+    },
+  },
   {
     id: 'apa-itu-ai-agent-arsitektur-dan-batas',
     slug: 'apa-itu-ai-agent',

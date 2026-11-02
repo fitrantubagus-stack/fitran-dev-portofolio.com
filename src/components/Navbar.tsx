@@ -24,6 +24,10 @@ import {
   ChevronDown,
   Wrench,
   MessageSquare,
+  Bot,
+  TrendingUp,
+  Zap,
+  Cpu,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -201,6 +205,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                   Layanan
                 </button>
 
+                <button
+                  onClick={(e) => handleNavClick('certificates', e)}
+                  className={`hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
+                    activeSection === 'certificates' ? 'font-bold text-zinc-950 dark:text-white' : ''
+                  }`}
+                >
+                  Sertifikat
+                </button>
+
                 {/* Belajar with Dropdown */}
                 <div className="relative">
                   <button
@@ -230,7 +243,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 4, scale: 0.95 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute left-0 mt-2.5 w-64 p-2 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-2xl z-50 text-xs"
+                        className="absolute left-0 mt-2.5 w-68 p-2 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-2xl z-50 text-xs"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <p className="px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">
@@ -242,11 +255,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                             window.history.pushState(null, '', '/belajar/ai');
                             handleNavClick('learning', e);
                           }}
-                          className="w-full px-3 py-2 rounded-xl text-left hover:bg-zinc-50 dark:hover:bg-zinc-800 flex items-start gap-2.5 transition-colors cursor-pointer"
+                          className="w-full px-3 py-2.5 rounded-xl text-left hover:bg-zinc-50 dark:hover:bg-zinc-800/80 flex items-start gap-3 transition-colors cursor-pointer group"
                         >
-                          <span className="p-1 rounded bg-purple-50 dark:bg-purple-950/50 text-purple-600 text-xs mt-0.5">
-                            🤖
-                          </span>
+                          <div className="w-7 h-7 rounded-lg bg-purple-100 dark:bg-purple-950/60 border border-purple-200/80 dark:border-purple-800/60 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                            <Bot className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                          </div>
                           <div>
                             <p className="font-bold text-zinc-900 dark:text-white">AI untuk Bisnis</p>
                             <p className="text-[11px] text-zinc-400">8 Bab Fondasi, RAG &amp; WhatsApp Agent</p>
@@ -258,11 +271,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                             window.history.pushState(null, '', '/belajar/digital-marketing');
                             handleNavClick('learning', e);
                           }}
-                          className="w-full px-3 py-2 rounded-xl text-left hover:bg-zinc-50 dark:hover:bg-zinc-800 flex items-start gap-2.5 transition-colors cursor-pointer"
+                          className="w-full px-3 py-2.5 rounded-xl text-left hover:bg-zinc-50 dark:hover:bg-zinc-800/80 flex items-start gap-3 transition-colors cursor-pointer group"
                         >
-                          <span className="p-1 rounded bg-cyan-50 dark:bg-cyan-950/50 text-cyan-600 text-xs mt-0.5">
-                            📈
-                          </span>
+                          <div className="w-7 h-7 rounded-lg bg-cyan-100 dark:bg-cyan-950/60 border border-cyan-200/80 dark:border-cyan-800/60 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                            <TrendingUp className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                          </div>
                           <div>
                             <p className="font-bold text-zinc-900 dark:text-white">Digital Marketing</p>
                             <p className="text-[11px] text-zinc-400">8 Bab Ads, GTM &amp; Conversions API</p>
@@ -274,11 +287,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                             window.history.pushState(null, '', '/belajar/vibe-coding');
                             handleNavClick('learning', e);
                           }}
-                          className="w-full px-3 py-2 rounded-xl text-left hover:bg-zinc-50 dark:hover:bg-zinc-800 flex items-start gap-2.5 transition-colors cursor-pointer"
+                          className="w-full px-3 py-2.5 rounded-xl text-left hover:bg-zinc-50 dark:hover:bg-zinc-800/80 flex items-start gap-3 transition-colors cursor-pointer group"
                         >
-                          <span className="p-1 rounded bg-amber-50 dark:bg-amber-950/50 text-amber-600 text-xs mt-0.5">
-                            ⚡
-                          </span>
+                          <div className="w-7 h-7 rounded-lg bg-amber-100 dark:bg-amber-950/60 border border-amber-200/80 dark:border-amber-800/60 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                            <Zap className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                          </div>
                           <div>
                             <p className="font-bold text-zinc-900 dark:text-white">Vibe Coding</p>
                             <p className="text-[11px] text-zinc-400">6 Bab Claude Code CLI &amp; Tooling</p>
@@ -289,11 +302,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                         <button
                           onClick={(e) => handleNavClick('kamus', e)}
-                          className="w-full px-3 py-2 rounded-xl text-left hover:bg-zinc-50 dark:hover:bg-zinc-800 flex items-start gap-2.5 transition-colors cursor-pointer"
+                          className="w-full px-3 py-2.5 rounded-xl text-left hover:bg-zinc-50 dark:hover:bg-zinc-800/80 flex items-start gap-3 transition-colors cursor-pointer group"
                         >
-                          <span className="p-1 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 text-xs mt-0.5">
-                            📖
-                          </span>
+                          <div className="w-7 h-7 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200/80 dark:border-emerald-800/60 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                            <BookOpen className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                          </div>
                           <div>
                             <p className="font-bold text-zinc-900 dark:text-white">Kamus Istilah Digital</p>
                             <p className="text-[11px] text-zinc-400">40+ Istilah AI, Web &amp; Marketing</p>
@@ -575,6 +588,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className="w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
                 >
                   Layanan (Mulai 500rb)
+                </button>
+                <button
+                  onClick={(e) => handleNavClick('certificates', e)}
+                  className="w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold text-[#8A0F14] dark:text-red-400"
+                >
+                  Sertifikat (36+ Terverifikasi)
                 </button>
                 <button
                   onClick={(e) => handleNavClick('learning', e)}

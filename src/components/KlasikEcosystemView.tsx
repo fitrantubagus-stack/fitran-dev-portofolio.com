@@ -104,22 +104,53 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   const [materiSearch, setMateriSearch] = useState<string>('');
   const [openChapters, setOpenChapters] = useState<Record<string, boolean>>({ 'ai-00': true, 'mkt-00': true, 'vc-00': true });
 
-  // Sync track with URL path or hash
+  // Sync track, chapter, hash, and blog articles with URL
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const fullUrl = (window.location.pathname + window.location.hash).toLowerCase();
+      const path = window.location.pathname.toLowerCase();
+
+      // Sync blog article from URL slug (e.g. /blog/cara-membuat-mvp-dan-menentukan-fitur)
+      if (path.startsWith('/blog/') || path.startsWith('/artikel/')) {
+        const slug = path.replace(/^\/(blog|artikel)\/?/, '').trim();
+        if (slug) {
+          const found = KLASIK_BLOG_POSTS.find((p) => p.slug === slug || p.id === slug);
+          if (found) {
+            setSelectedArticle(found);
+          }
+        }
+      }
+
+      // Sync learning track from path or query
       if (fullUrl.includes('digital-marketing') || fullUrl.includes('meta-') || fullUrl.includes('google-') || fullUrl.includes('tracking-')) {
         setActiveTrackId('digital-marketing');
-        setActiveChapterId('mkt-00');
-        setActiveSubchapterId('mkt-00-1');
       } else if (fullUrl.includes('vibe-coding') || fullUrl.includes('vc-')) {
         setActiveTrackId('vibe-coding');
-        setActiveChapterId('vc-00');
-        setActiveSubchapterId('vc-00-1');
       } else if (fullUrl.includes('ai')) {
         setActiveTrackId('ai');
-        setActiveChapterId('ai-00');
-        setActiveSubchapterId('ai-00-1');
+      }
+
+      // Sync learning subchapter from URL hash (e.g. #/ai-00-1 or #ai-00-1)
+      const rawHash = window.location.hash.replace(/^#\/?/, '').trim().toLowerCase();
+      if (rawHash) {
+        for (const ch of KLASIK_LEARNING_CHAPTERS) {
+          const matchedSub = ch.subchapters.find(
+            (s) => s.id.toLowerCase() === rawHash || rawHash.includes(s.id.toLowerCase())
+          );
+          if (matchedSub) {
+            setActiveTrackId(ch.trackId);
+            setActiveChapterId(ch.id);
+            setActiveSubchapterId(matchedSub.id);
+            setOpenChapters((prev) => ({ ...prev, [ch.id]: true }));
+            break;
+          } else if (ch.id.toLowerCase() === rawHash || rawHash.includes(ch.id.toLowerCase())) {
+            setActiveTrackId(ch.trackId);
+            setActiveChapterId(ch.id);
+            setActiveSubchapterId(ch.subchapters[0].id);
+            setOpenChapters((prev) => ({ ...prev, [ch.id]: true }));
+            break;
+          }
+        }
       }
     }
   }, [activePage]);
@@ -131,8 +162,9 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   const [toolsCategory, setToolsCategory] = useState<string>('Semua');
   const [blogFilter, setBlogFilter] = useState<string>('Semua');
 
-  // Certificate Showcase States in Home
+  // Certificate Showcase States in Home & Dedicated Certificates Page
   const [certIssuerFilter, setCertIssuerFilter] = useState<'all' | 'Google' | 'CloudAI' | 'Competitions' | 'Academic'>('all');
+  const [certSearch, setCertSearch] = useState<string>('');
   const [copiedCertId, setCopiedCertId] = useState<string | null>(null);
 
   const handleCopyCertId = (e: React.MouseEvent, id: string) => {
@@ -145,6 +177,14 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
   const filteredCerts = useMemo(() => {
     return CERTIFICATES_DATA.filter((cert) => {
+      if (certSearch) {
+        const q = certSearch.toLowerCase();
+        const match =
+          cert.title.toLowerCase().includes(q) ||
+          cert.issuer.toLowerCase().includes(q) ||
+          (cert.credentialId && cert.credentialId.toLowerCase().includes(q));
+        if (!match) return false;
+      }
       if (certIssuerFilter === 'all') return true;
       if (certIssuerFilter === 'Google')
         return (
@@ -182,7 +222,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
         );
       return true;
     });
-  }, [certIssuerFilter]);
+  }, [certIssuerFilter, certSearch]);
 
   // Issuer badge helper
   const renderCertBadge = (cert: CertificateItem) => {
@@ -296,6 +336,34 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   const toggleChapter = (chapterId: string) => {
     setOpenChapters((prev) => ({ ...prev, [chapterId]: !prev[chapterId] }));
   };
+
+  // Handle select subchapter with URL hash update
+  const handleSelectSubchapter = (chapter: LearningChapter, sub: SubchapterItem) => {
+    setActiveChapterId(chapter.id);
+    setActiveSubchapterId(sub.id);
+    setOpenChapters((prev) => ({ ...prev, [chapter.id]: true }));
+    if (typeof window !== 'undefined') {
+      window.history.pushState(null, '', `/belajar/${chapter.trackId}#/${sub.id}`);
+    }
+  };
+
+  const allCurrentSubchapters = useMemo(() => {
+    return currentTrackChapters.flatMap((ch) =>
+      ch.subchapters.map((sub) => ({ chapter: ch, sub }))
+    );
+  }, [currentTrackChapters]);
+
+  const currentSubIndex = useMemo(() => {
+    return allCurrentSubchapters.findIndex(
+      (item) => item.sub.id === activeSubchapter.id && item.chapter.id === activeChapter.id
+    );
+  }, [allCurrentSubchapters, activeSubchapter, activeChapter]);
+
+  const prevSubItem = currentSubIndex > 0 ? allCurrentSubchapters[currentSubIndex - 1] : null;
+  const nextSubItem =
+    currentSubIndex >= 0 && currentSubIndex < allCurrentSubchapters.length - 1
+      ? allCurrentSubchapters[currentSubIndex + 1]
+      : null;
 
   // WhatsApp consultation triggers
   const handleWhatsAppConsultation = (serviceName?: string, price?: string) => {
@@ -1318,6 +1386,304 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       )}
 
       {/* ========================================================================= */}
+      {/* VIEW: DEDICATED CERTIFICATES CATALOG (/certificates)                     */}
+      {/* ========================================================================= */}
+      {activePage === 'certificates' && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 animate-fade-in">
+          {/* Top Breadcrumb & Header */}
+          <div className="border-b border-zinc-200 dark:border-zinc-800 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-2">
+              <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-1">
+                <span className="hover:underline cursor-pointer" onClick={() => navigateTo('home')}>Beranda</span>
+                <span>/</span>
+                <span className="text-[#8A0F14] dark:text-red-400 font-semibold">Sertifikat &amp; Kredensial Resmi</span>
+              </nav>
+              <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white tracking-tight">
+                36+ Kredensial &amp; Sertifikasi Terverifikasi
+              </h1>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-3xl leading-relaxed">
+                Seluruh sertifikasi kompetensi industri dan akademik resmi yang diraih Tubagus Fitran Badruttamam. Meliputi Google Cloud &amp; Developer Program, AWS Skill Builder, NVIDIA Deep Learning Institute, Claude / Anthropic, Meta Blueprint, Medali Emas Sains KSHPI/POSI, dan Perpustakaan Nasional RI. Dilengkapi ID kredensial terverifikasi dan tautan validasi online resmi.
+              </p>
+            </div>
+
+            {/* External Action Buttons */}
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <a
+                href={CERTIFICATES_DRIVE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2.5 rounded-xl bg-white dark:bg-[#111319] hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer"
+              >
+                <FolderOpen className="w-4 h-4 text-amber-500" />
+                <span>Google Drive Sertifikat</span>
+                <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
+              </a>
+
+              {onOpenCV && (
+                <button
+                  onClick={onOpenCV}
+                  className="px-4 py-2.5 rounded-xl bg-[#8A0F14] hover:bg-[#6E0B0F] text-white text-xs font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Unduh CV Lengkap</span>
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Metric Highlights Strip */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs">
+              <p className="text-[11px] font-mono uppercase text-zinc-400">Total Kredensial</p>
+              <p className="text-2xl sm:text-3xl font-black font-mono text-zinc-950 dark:text-white mt-1">36+</p>
+              <p className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-0.5">Terverifikasi 100%</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs">
+              <p className="text-[11px] font-mono uppercase text-zinc-400">Kompetisi Sains</p>
+              <p className="text-2xl sm:text-3xl font-black font-mono text-yellow-600 dark:text-yellow-400 mt-1">2×</p>
+              <p className="text-[11px] text-zinc-500 mt-0.5">Medali Emas Grade A+</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs">
+              <p className="text-[11px] font-mono uppercase text-zinc-400">Vendor Cloud Utama</p>
+              <p className="text-2xl sm:text-3xl font-black font-mono text-blue-600 dark:text-blue-400 mt-1">4</p>
+              <p className="text-[11px] text-zinc-500 mt-0.5">Google, AWS, NVIDIA, Meta</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs">
+              <p className="text-[11px] font-mono uppercase text-zinc-400">Publikasi Resmi</p>
+              <p className="text-2xl sm:text-3xl font-black font-mono text-purple-600 dark:text-purple-400 mt-1">1</p>
+              <p className="text-[11px] text-zinc-500 mt-0.5">Buku Perpusnas RI</p>
+            </div>
+          </div>
+
+          {/* Filter Controls & Search */}
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 p-4 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800">
+            {/* Issuer Filter Pills */}
+            <div className="flex flex-wrap items-center gap-1.5">
+              {[
+                { id: 'all', label: 'Semua (36+)' },
+                { id: 'Google', label: 'Google Cloud & Dev' },
+                { id: 'CloudAI', label: 'AWS & Cloud AI' },
+                { id: 'Competitions', label: 'Medali Sains' },
+                { id: 'Academic', label: 'Akademik & Perpusnas' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setCertIssuerFilter(tab.id as any)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                    certIssuerFilter === tab.id
+                      ? 'bg-[#8A0F14] text-white shadow-xs'
+                      : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Search Bar */}
+            <div className="relative w-full md:w-72 shrink-0">
+              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+              <input
+                type="text"
+                placeholder="Cari nama, penerbit, ID..."
+                value={certSearch}
+                onChange={(e) => setCertSearch(e.target.value)}
+                className="w-full pl-8 pr-3 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs focus:outline-hidden focus:border-[#8A0F14]"
+              />
+              {certSearch && (
+                <button
+                  onClick={() => setCertSearch('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Certificates Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filteredCerts.map((cert) => (
+              <div
+                key={cert.id}
+                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between hover:border-[#8A0F14]/60 transition-all group"
+              >
+                <div className="space-y-3">
+                  {/* Issuer Badge & Date */}
+                  <div className="flex items-center justify-between gap-2">
+                    {renderCertBadge(cert)}
+                    <span className="text-[11px] font-mono text-zinc-400 shrink-0">
+                      {cert.date}
+                    </span>
+                  </div>
+
+                  {/* Cert Title */}
+                  <h3 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors leading-snug">
+                    {cert.title}
+                  </h3>
+
+                  {/* Issuer Name */}
+                  <p className="text-xs text-zinc-500">
+                    Penerbit Resmi: <span className="font-medium text-zinc-700 dark:text-zinc-300">{cert.issuer}</span>
+                  </p>
+
+                  {/* Credential ID with Copy */}
+                  {cert.credentialId && (
+                    <div className="flex items-center justify-between p-2 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-[11px] font-mono">
+                      <span className="text-zinc-400 truncate max-w-[170px]" title={cert.credentialId}>
+                        ID: {cert.credentialId}
+                      </span>
+                      <button
+                        onClick={(e) => handleCopyCertId(e, cert.credentialId || '')}
+                        className="flex items-center gap-1 text-[10px] text-zinc-600 dark:text-zinc-300 hover:text-[#8A0F14] dark:hover:text-red-400 font-bold ml-2 shrink-0 cursor-pointer"
+                        title="Salin ID Kredensial"
+                      >
+                        {copiedCertId === cert.credentialId ? (
+                          <>
+                            <Check className="w-3 h-3 text-emerald-500" />
+                            <span className="text-emerald-500">Tersalin</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3" />
+                            <span>Salin</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="pt-4 mt-4 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between gap-2">
+                  <button
+                    onClick={() => onSelectCertificate && onSelectCertificate(cert)}
+                    className="py-1.5 px-3 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5"
+                  >
+                    <Award className="w-3.5 h-3.5 text-[#8A0F14] dark:text-red-400" />
+                    <span>Lihat Sertifikat</span>
+                  </button>
+
+                  {cert.verifyUrl ? (
+                    <a
+                      href={cert.verifyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="py-1.5 px-3 rounded-lg text-zinc-500 hover:text-[#8A0F14] dark:hover:text-red-400 text-xs font-medium flex items-center gap-1 transition-colors"
+                      title="Buka Halaman Verifikasi Resmi Penerbit"
+                    >
+                      <span>Verifikasi</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  ) : (
+                    <span className="text-[10px] font-mono text-zinc-400">Arsip Terbitan</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {filteredCerts.length === 0 && (
+            <div className="p-12 text-center rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-3">
+              <AlertCircle className="w-8 h-8 text-zinc-400 mx-auto" />
+              <p className="font-bold text-sm text-zinc-900 dark:text-white">Tidak ada sertifikat yang cocok dengan pencarian.</p>
+              <button
+                onClick={() => { setCertSearch(''); setCertIssuerFilter('all'); }}
+                className="text-xs text-[#8A0F14] dark:text-red-400 font-bold hover:underline cursor-pointer"
+              >
+                Reset Pencarian
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* VIEW: DEDICATED PROJECTS PORTFOLIO (/projects)                           */}
+      {/* ========================================================================= */}
+      {activePage === 'work' && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 animate-fade-in">
+          <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5">
+            <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-1">
+              <span className="hover:underline cursor-pointer" onClick={() => navigateTo('home')}>Beranda</span>
+              <span>/</span>
+              <span className="text-[#8A0F14] dark:text-red-400 font-semibold">Proyek Rekayasa</span>
+            </nav>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
+              Portofolio Proyek &amp; Rekayasa Sistem
+            </h1>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+              Perangkat lunak nyata yang dirancang dengan standar performa tinggi, aman dari ancaman siber, dan terdeploy aktif di cloud produksi.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {PROJECTS_DATA.map((project) => (
+              <div
+                key={project.id}
+                onClick={() => onSelectProject && onSelectProject(project)}
+                className="p-6 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14]/60 dark:hover:border-red-500/60 transition-all shadow-sm flex flex-col justify-between group cursor-pointer space-y-4"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 font-mono text-[10px] font-bold text-zinc-700 dark:text-zinc-300">
+                      {project.category}
+                    </span>
+                    <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                      <span>Live Deployment</span>
+                    </span>
+                  </div>
+
+                  <h3 className="font-extrabold text-lg text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors">
+                    {project.name}
+                  </h3>
+
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-3">
+                    {project.summary}
+                  </p>
+
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {project.technologies.slice(0, 4).map((tech, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2 py-0.5 rounded-md bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-[10px] font-mono text-zinc-600 dark:text-zinc-400"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#8A0F14] dark:text-red-400 flex items-center gap-1">
+                    <span>Lihat Detail Arsitektur</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                      title="Buka Live Web"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
       {/* VIEW 2: DEDICATED BELAJAR DOCUMENTATION STUDIO (ALA FIKRAN.DEV/BELAJAR)   */}
       {/* ========================================================================= */}
       {activePage === 'learning' && (
@@ -1354,9 +1720,9 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   }}
                   className="px-4 py-2 rounded-xl bg-white dark:bg-[#111319] border border-zinc-300 dark:border-zinc-700 text-xs font-bold text-zinc-900 dark:text-white cursor-pointer focus:outline-hidden focus:border-[#8A0F14]"
                 >
-                  <option value="ai">🤖 AI untuk Bisnis (8 Bab)</option>
-                  <option value="digital-marketing">📈 Digital Marketing &amp; CAPI (8 Bab)</option>
-                  <option value="vibe-coding">⚡ Vibe Coding &amp; Tooling (6 Bab)</option>
+                  <option value="ai">AI untuk Bisnis (8 Bab Studio)</option>
+                  <option value="digital-marketing">Digital Marketing &amp; CAPI (8 Bab)</option>
+                  <option value="vibe-coding">Vibe Coding &amp; Tooling (6 Bab)</option>
                 </select>
               </div>
             </div>
@@ -1413,10 +1779,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                             return (
                               <button
                                 key={sub.id}
-                                onClick={() => {
-                                  setActiveChapterId(chapter.id);
-                                  setActiveSubchapterId(sub.id);
-                                }}
+                                onClick={() => handleSelectSubchapter(chapter, sub)}
                                 className={`w-full text-left py-1.5 px-2.5 rounded-lg text-[11px] transition-all cursor-pointer flex items-center gap-2 ${
                                   isSubActive
                                     ? 'bg-[#8A0F14] text-white font-bold shadow-xs'
@@ -1542,6 +1905,37 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       </label>
                     ))}
                   </div>
+                </div>
+
+                {/* Next / Previous Subchapter Navigation Buttons (Ala Fikran Dev) */}
+                <div className="pt-6 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  {prevSubItem ? (
+                    <button
+                      onClick={() => handleSelectSubchapter(prevSubItem.chapter, prevSubItem.sub)}
+                      className="w-full sm:w-auto p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14] bg-zinc-50 dark:bg-zinc-900/60 text-left transition-all cursor-pointer group"
+                    >
+                      <span className="block text-[10px] font-mono uppercase text-zinc-400 group-hover:text-[#8A0F14]">
+                        ← Bab Sebelumnya
+                      </span>
+                      <span className="text-xs font-bold text-zinc-950 dark:text-white line-clamp-1">
+                        {prevSubItem.sub.num} {prevSubItem.sub.title}
+                      </span>
+                    </button>
+                  ) : <div />}
+
+                  {nextSubItem && (
+                    <button
+                      onClick={() => handleSelectSubchapter(nextSubItem.chapter, nextSubItem.sub)}
+                      className="w-full sm:w-auto p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14] bg-zinc-50 dark:bg-zinc-900/60 text-right transition-all cursor-pointer group ml-auto"
+                    >
+                      <span className="block text-[10px] font-mono uppercase text-zinc-400 group-hover:text-[#8A0F14]">
+                        Bab Berikutnya →
+                      </span>
+                      <span className="text-xs font-bold text-zinc-950 dark:text-white line-clamp-1">
+                        {nextSubItem.sub.num} {nextSubItem.sub.title}
+                      </span>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -1888,52 +2282,334 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       )}
 
       {/* ========================================================================= */}
-      {/* VIEW 6: DEDICATED BLOG (BLOG VIEW)                                        */}
+      {/* VIEW 6: DEDICATED BLOG (FULL-PAGE EDITORIAL ALA FIKRAN.DEV/BLOG)           */}
       {/* ========================================================================= */}
       {activePage === 'blog' && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
-          <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5">
-            <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-1">
-              <span className="hover:underline cursor-pointer" onClick={() => navigateTo('home')}>Beranda</span>
-              <span>/</span>
-              <span className="text-[#8A0F14] font-semibold">Blog</span>
-            </nav>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
-              Tulisan Pilihan seputar AI, Web &amp; Keamanan
-            </h1>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
-              Catatan arsitektur dan pengalaman lapangan mengenai implementasi teknologi nyata untuk bisnis.
-            </p>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          {selectedArticle ? (
+            /* DEDICATED FULL-PAGE ARTICLE READING VIEW (MATCHING FIKRAN.DEV/BLOG/<SLUG>) */
+            <article className="space-y-8 animate-fade-in max-w-4xl mx-auto">
+              {/* Back to Blog Button + Breadcrumb */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+                <button
+                  onClick={() => {
+                    setSelectedArticle(null);
+                    if (typeof window !== 'undefined') {
+                      window.history.pushState(null, '', '/blog');
+                    }
+                  }}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-600 dark:text-zinc-400 hover:text-[#8A0F14] dark:hover:text-red-400 transition-colors cursor-pointer"
+                >
+                  <ArrowRight className="w-3.5 h-3.5 rotate-180" />
+                  <span>Kembali ke Semua Artikel</span>
+                </button>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {KLASIK_BLOG_POSTS.map((post) => (
-              <div
-                key={post.id}
-                onClick={() => setSelectedArticle(post)}
-                className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between cursor-pointer group hover:border-[#8A0F14]/50 transition-all"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
-                    <span className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
-                      {post.category}
-                    </span>
-                    <span>{post.date} • {post.readTime}</span>
-                  </div>
-                  <h3 className="font-bold text-lg text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors">
-                    {post.title}
-                  </h3>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                    {post.excerpt}
-                  </p>
+                <nav className="flex items-center gap-2 text-xs font-mono text-zinc-400">
+                  <span className="hover:underline cursor-pointer" onClick={() => navigateTo('home')}>Beranda</span>
+                  <span>/</span>
+                  <span
+                    className="hover:underline cursor-pointer"
+                    onClick={() => {
+                      setSelectedArticle(null);
+                      if (typeof window !== 'undefined') window.history.pushState(null, '', '/blog');
+                    }}
+                  >
+                    Blog
+                  </span>
+                  <span>/</span>
+                  <span className="text-[#8A0F14] dark:text-red-400 font-semibold truncate max-w-[200px]">{selectedArticle.title}</span>
+                </nav>
+              </div>
+
+              {/* Article Header */}
+              <div className="space-y-4">
+                <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-zinc-500">
+                  <span className="px-2.5 py-1 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-[#8A0F14] dark:text-red-400 font-bold">
+                    {selectedArticle.category}
+                  </span>
+                  <span>•</span>
+                  <span>{selectedArticle.date}</span>
+                  <span>•</span>
+                  <span>{selectedArticle.readTime}</span>
                 </div>
-                <div className="pt-4 mt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs font-bold text-[#8A0F14] dark:text-red-400">
-                  <span>Baca Selengkapnya</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+
+                <h1 className="text-3xl sm:text-5xl font-black text-zinc-950 dark:text-white tracking-tight leading-tight">
+                  {selectedArticle.title}
+                </h1>
+
+                <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal">
+                  {selectedArticle.excerpt}
+                </p>
+
+                {/* Author Info Bar + Share Controls */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 px-5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800">
+                  <div className="flex items-center gap-3">
+                    <ProfileAvatar size="nav" showBadge={false} />
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <p className="font-bold text-xs text-zinc-950 dark:text-white">Tubagus Fitran Badruttamam</p>
+                        <ShieldCheck className="w-3.5 h-3.5 text-blue-500" />
+                      </div>
+                      <p className="text-[11px] text-zinc-400">Fullstack Developer &amp; AI Engineer · Cilegon</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => {
+                        if (typeof window !== 'undefined') {
+                          navigator.clipboard.writeText(window.location.href);
+                          setToastMessage('Link artikel berhasil disalin!');
+                        }
+                      }}
+                      className="px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-[#111319] hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                      title="Salin Tautan Artikel"
+                    >
+                      <Copy className="w-3.5 h-3.5 text-zinc-500" />
+                      <span>Salin Link</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleWhatsAppConsultation(selectedArticle.title)}
+                      className="px-3 py-1.5 rounded-xl bg-[#8A0F14] hover:bg-[#6E0B0F] text-white text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      <span>Diskusi</span>
+                    </button>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
+
+              {/* Main Reading Body */}
+              <div className="space-y-8 text-zinc-800 dark:text-zinc-200 leading-relaxed text-sm sm:text-base">
+                {/* Intro */}
+                <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                  {selectedArticle.content.intro}
+                </p>
+
+                {/* PRINSIP UTAMA / KEY TAKEAWAYS (Matching Fikran Dev Callout) */}
+                <div className="p-6 rounded-2xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-900/60 space-y-3">
+                  <div className="flex items-center gap-2 text-amber-800 dark:text-amber-400 font-mono text-xs font-bold uppercase tracking-wider">
+                    <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                    <span>Prinsip Utama (Core Principles)</span>
+                  </div>
+                  <ul className="space-y-2 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300">
+                    {selectedArticle.content.keyTakeaways.map((point, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Content Sections */}
+                {selectedArticle.content.sections.map((sec, idx) => (
+                  <div key={idx} className="space-y-3 pt-4 border-t border-zinc-100 dark:border-zinc-800/80">
+                    <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 dark:text-white tracking-tight">
+                      {sec.heading}
+                    </h2>
+                    <p className="text-zinc-700 dark:text-zinc-300 whitespace-pre-line leading-relaxed text-sm sm:text-base">
+                      {sec.body}
+                    </p>
+                    {sec.codeSnippet && (
+                      <div className="p-4 rounded-xl bg-zinc-950 text-zinc-200 font-mono text-xs leading-relaxed overflow-x-auto border border-zinc-800 shadow-inner">
+                        <pre className="whitespace-pre-wrap">{sec.codeSnippet}</pre>
+                      </div>
+                    )}
+                  </div>
+                ))}
+
+                {/* MoSCoW Framework Matrix Highlight Box (if MVP article) */}
+                {selectedArticle.slug === 'cara-membuat-mvp-dan-menentukan-fitur' && (
+                  <div className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-4">
+                    <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
+                      <p className="font-mono text-xs font-bold text-[#8A0F14] dark:text-red-400 uppercase tracking-wider">
+                        Matriks Prioritisasi Fitur MVP (MoSCoW)
+                      </p>
+                      <span className="text-[11px] font-mono text-zinc-400">Kerangka Kerja Validasi Kilat</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                      <div className="p-3.5 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/40 space-y-1">
+                        <span className="font-mono text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase">1. MUST HAVE</span>
+                        <p className="font-bold text-zinc-900 dark:text-white">Alur Kritis Transaksi</p>
+                        <p className="text-[11px] text-zinc-600 dark:text-zinc-400">Landing page profil, tombol WhatsApp deal, bukti portofolio, dan nomor rekening transfer.</p>
+                      </div>
+
+                      <div className="p-3.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/40 space-y-1">
+                        <span className="font-mono text-[10px] font-bold text-blue-700 dark:text-blue-400 uppercase">2. SHOULD HAVE</span>
+                        <p className="font-bold text-zinc-900 dark:text-white">Dikerjakan Manual Dulu</p>
+                        <p className="text-[11px] text-zinc-600 dark:text-zinc-400">Kalkulator estimasi harga &amp; formulir tanya jawab (cukup jawab langsung lewat chat manual).</p>
+                      </div>
+
+                      <div className="p-3.5 rounded-xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 space-y-1">
+                        <span className="font-mono text-[10px] font-bold text-amber-700 dark:text-amber-400 uppercase">3. COULD HAVE</span>
+                        <p className="font-bold text-zinc-900 dark:text-white">Pemanis Opsional</p>
+                        <p className="text-[11px] text-zinc-600 dark:text-zinc-400">Generator invoice PDF otomatis, dark mode switcher, animasi 3D interaktif.</p>
+                      </div>
+
+                      <div className="p-3.5 rounded-xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40 space-y-1">
+                        <span className="font-mono text-[10px] font-bold text-rose-700 dark:text-rose-400 uppercase">4. WON'T HAVE</span>
+                        <p className="font-bold text-zinc-900 dark:text-white">Tolak untuk Rilis 1.0</p>
+                        <p className="text-[11px] text-zinc-600 dark:text-zinc-400">Sistem multi-tenant SaaS, integrasi gateway internasional dengan escrow, sistem afiliasi bertingkat.</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Conclusion Callout */}
+                <div className="p-6 rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-2">
+                  <p className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-500">
+                    Kesimpulan &amp; Langkah Nyata:
+                  </p>
+                  <p className="text-xs sm:text-sm text-zinc-800 dark:text-zinc-200 leading-relaxed font-medium">
+                    {selectedArticle.content.conclusion}
+                  </p>
+                </div>
+
+                {/* Author Bio Card (End of Article) */}
+                <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col sm:flex-row items-center gap-6">
+                  <div className="shrink-0">
+                    <ProfileAvatar size="hero" showBadge={true} />
+                  </div>
+                  <div className="space-y-2 text-center sm:text-left">
+                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                      <h3 className="font-bold text-base text-zinc-950 dark:text-white">Tubagus Fitran Badruttamam</h3>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
+                        Google Dev Verified
+                      </span>
+                    </div>
+                    <p className="text-xs text-zinc-500 leading-relaxed">
+                      Fullstack Developer &amp; AI Engineer dari Cilegon, Indonesia. Membantu UMKM dan bisnis berkembang dengan website cepat kilat mulai 500rb, sistem AI Agent WhatsApp, dan pelacakan iklan server-side presisi.
+                    </p>
+                    <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3">
+                      <button
+                        onClick={() => handleWhatsAppConsultation(selectedArticle.title)}
+                        className="py-2 px-4 rounded-xl bg-[#8A0F14] hover:bg-[#6E0B0F] text-white font-bold text-xs flex items-center gap-2 cursor-pointer shadow-sm"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        <span>Konsultasi Proyek Bersama Tubagus</span>
+                      </button>
+                      <button
+                        onClick={() => navigateTo('services')}
+                        className="py-2 px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold text-xs transition-colors cursor-pointer"
+                      >
+                        Lihat Daftar Layanan
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Related Articles Carousel / Grid */}
+                <div className="pt-8 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold text-lg text-zinc-950 dark:text-white">Artikel Pilihan Lainnya</h3>
+                    <button
+                      onClick={() => {
+                        setSelectedArticle(null);
+                        if (typeof window !== 'undefined') window.history.pushState(null, '', '/blog');
+                      }}
+                      className="text-xs text-[#8A0F14] dark:text-red-400 font-bold hover:underline cursor-pointer"
+                    >
+                      Lihat Semua Artikel →
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {KLASIK_BLOG_POSTS.filter((p) => p.id !== selectedArticle.id).slice(0, 2).map((post) => (
+                      <div
+                        key={post.id}
+                        onClick={() => {
+                          setSelectedArticle(post);
+                          if (typeof window !== 'undefined') {
+                            window.history.pushState(null, '', '/blog/' + post.slug);
+                          }
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className="p-5 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#8A0F14]/50 cursor-pointer transition-all space-y-2 group"
+                      >
+                        <span className="text-[10px] font-mono text-zinc-400 uppercase">{post.category} · {post.readTime}</span>
+                        <h4 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors line-clamp-2">
+                          {post.title}
+                        </h4>
+                        <p className="text-xs text-zinc-500 line-clamp-2">{post.excerpt}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </article>
+          ) : (
+            /* BLOG LISTING VIEW */
+            <div className="space-y-8 animate-fade-in">
+              <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5">
+                <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-1">
+                  <span className="hover:underline cursor-pointer" onClick={() => navigateTo('home')}>Beranda</span>
+                  <span>/</span>
+                  <span className="text-[#8A0F14] dark:text-red-400 font-semibold">Blog</span>
+                </nav>
+                <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
+                  Tulisan Pilihan seputar AI, Web &amp; Keamanan
+                </h1>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+                  Catatan arsitektur dan pengalaman lapangan mengenai implementasi teknologi nyata untuk bisnis.
+                </p>
+              </div>
+
+              {/* Category Filter Chips */}
+              <div className="flex flex-wrap items-center gap-2">
+                {['Semua', 'Web Engineering', 'AI & Agents', 'Cloud & DevOps', 'Keamanan & Arsitektur'].map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setBlogFilter(cat)}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                      blogFilter === cat
+                        ? 'bg-[#8A0F14] text-white shadow-xs'
+                        : 'bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {KLASIK_BLOG_POSTS.filter((p) => blogFilter === 'Semua' || p.category === blogFilter).map((post) => (
+                  <div
+                    key={post.id}
+                    onClick={() => {
+                      setSelectedArticle(post);
+                      if (typeof window !== 'undefined') {
+                        window.history.pushState(null, '', '/blog/' + post.slug);
+                      }
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between cursor-pointer group hover:border-[#8A0F14]/50 transition-all"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
+                        <span className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                          {post.category}
+                        </span>
+                        <span>{post.date} • {post.readTime}</span>
+                      </div>
+                      <h3 className="font-bold text-lg text-zinc-950 dark:text-white group-hover:text-[#8A0F14] dark:group-hover:text-red-400 transition-colors">
+                        {post.title}
+                      </h3>
+                      <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                        {post.excerpt}
+                      </p>
+                    </div>
+                    <div className="pt-4 mt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs font-bold text-[#8A0F14] dark:text-red-400">
+                      <span>Baca Selengkapnya</span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
