@@ -369,10 +369,10 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
 
                   {/* Deliverables Checklist (2 bullets) */}
                   <div className="space-y-1.5 pt-1 text-xs">
-                    {srv.deliverables.slice(0, 2).map((item, idx) => (
+                    {srv.deliverables.slice(0, 2).map((sec, idx) => (
                       <div key={idx} className="flex items-start gap-2 text-zinc-600 dark:text-zinc-400">
                         <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                        <span className="line-clamp-1">{item}</span>
+                        <span className="line-clamp-1 font-medium">{sec.title}</span>
                       </div>
                     ))}
                   </div>

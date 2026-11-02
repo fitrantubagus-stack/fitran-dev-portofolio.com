@@ -19,6 +19,7 @@ import { KlasikEcosystemView } from './components/KlasikEcosystemView';
 import { CERTIFICATES_DATA, getCertPreviewPath } from './data/portfolioData';
 import { LanguageProvider } from './context/LanguageContext';
 import { TextStyleProvider } from './context/TextStyleContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { motion, AnimatePresence } from 'motion/react';
 import { Terminal, ArrowRight } from 'lucide-react';
 
@@ -315,7 +316,8 @@ export default function App() {
 
         {/* Smooth GPU-Accelerated Page Transition + Scroll Reveal Content */}
         <main className="flex-1 w-full max-w-full">
-          <div key={pageTransitionKey} className="animate-page-enter">
+          <ErrorBoundary onReset={() => handleNavigate('home')}>
+            <div key={pageTransitionKey} className="animate-page-enter">
               {/* DEDICATED CERTIFICATE PAGE (/<Certificate Title>) */}
               {selectedCertificate ? (
                 <CertificateModal
@@ -503,7 +505,8 @@ export default function App() {
                   {activeTab === 'contact' && <div className="py-2" />}
                 </>
               )}
-          </div>
+            </div>
+          </ErrorBoundary>
         </main>
 
         {/* Full-Width Footer with 3D Interactive Phone & Collaboration Form */}
