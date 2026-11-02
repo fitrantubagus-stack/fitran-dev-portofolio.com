@@ -114,12 +114,6 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
     return ALL_SERVICES_CATALOG.filter((s) => s.category === activeCategoryFilter);
   }, [activeCategoryFilter]);
 
-  // Grouped services by category for multi-column mega catalog (Matching Image 2)
-  const websiteServices = useMemo(() => ALL_SERVICES_CATALOG.filter((s) => s.category === 'website'), []);
-  const aplikasiServices = useMemo(() => ALL_SERVICES_CATALOG.filter((s) => s.category === 'aplikasi'), []);
-  const marketingServices = useMemo(() => ALL_SERVICES_CATALOG.filter((s) => s.category === 'marketing'), []);
-  const infrastrukturServices = useMemo(() => ALL_SERVICES_CATALOG.filter((s) => s.category === 'infrastruktur'), []);
-
   // Helper for Lucide icons
   const renderCatalogIcon = (name: string, className = 'w-5 h-5') => {
     switch (name) {
@@ -160,24 +154,191 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
     }
   };
 
-  // If a specific sub-service is selected, render the dedicated detail page (Matching Image 3)
+  // Reusable 16-Solution Catalog Grid Component
+  const renderCatalogSection = (
+    title = 'Pilih Solusi yang Sesuai dengan Kebutuhan Bisnis Anda',
+    subtitle = 'Setiap solusi dikerjakan dengan standar arsitektur industri, deliverable jelas, kode bersih, dan garansi resmi. Klik kartu untuk melihat rincian alur kerja lengkap.'
+  ) => (
+    <div id="katalog-lengkap" className="space-y-8 pt-4 scroll-mt-24">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
+        <div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950 text-[#1E3A8A] dark:text-blue-300 font-mono text-[11px] font-bold uppercase tracking-wider mb-2">
+            <Layers className="w-3.5 h-3.5" />
+            <span>Katalog Solusi Lengkap 16 Layanan Digital</span>
+          </div>
+          <h2 className="text-2xl sm:text-4xl font-black text-zinc-950 dark:text-white tracking-tight">
+            {title}
+          </h2>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+            {subtitle}
+          </p>
+        </div>
+
+        {/* Category Filter Tabs */}
+        <div className="flex flex-wrap items-center gap-2">
+          {[
+            { id: 'semua', label: 'Semua Solusi (16)' },
+            { id: 'website', label: 'Website (5)' },
+            { id: 'aplikasi', label: 'Aplikasi (6)' },
+            { id: 'marketing', label: 'AI & Marketing (3)' },
+            { id: 'infrastruktur', label: 'Infrastruktur (2)' },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveCategoryFilter(tab.id)}
+              className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                activeCategoryFilter === tab.id
+                  ? 'bg-[#1E3A8A] text-white shadow-md'
+                  : 'bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:border-zinc-300'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* SPACIOUS, BALANCED 3-COLUMN GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredServices.map((srv) => {
+          const categoryBadgeColor =
+            srv.category === 'website'
+              ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-900/60'
+              : srv.category === 'aplikasi'
+              ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900/60'
+              : srv.category === 'marketing'
+              ? 'bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-900/60'
+              : 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-900/60';
+
+          const isCurrentlyActive = selectedServiceId === srv.id;
+
+          return (
+            <a
+              key={srv.id}
+              href={`${currentPrefix}/layanan?service=${srv.id}#katalog-lengkap`}
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectedServiceId(srv.id);
+                if (typeof window !== 'undefined') {
+                  window.history.pushState(null, '', `${currentPrefix}/layanan?service=${srv.id}#katalog-lengkap`);
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className={`p-6 rounded-3xl bg-white dark:bg-[#111319] border ${
+                isCurrentlyActive
+                  ? 'border-blue-600 ring-2 ring-blue-500/20 shadow-lg'
+                  : 'border-zinc-200/90 dark:border-zinc-800 hover:border-[#1E3A8A] dark:hover:border-blue-500 shadow-xs hover:shadow-xl'
+              } transition-all cursor-pointer group flex flex-col justify-between space-y-5`}
+            >
+              <div className="space-y-4">
+                {/* Top Bar: Icon + Category Badge */}
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 flex items-center justify-center text-[#1E3A8A] dark:text-blue-400 group-hover:scale-105 transition-transform shadow-xs">
+                    {renderCatalogIcon(srv.iconName, 'w-6 h-6 stroke-[2.2]')}
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    <span className={`px-2.5 py-1 rounded-full font-mono text-[10px] font-bold border uppercase tracking-wider ${categoryBadgeColor}`}>
+                      {srv.category}
+                    </span>
+                    {srv.badge && (
+                      <span className="px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 font-mono text-[9px] font-bold">
+                        {srv.badge}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Title & Tagline */}
+                <div>
+                  <h3 className="font-black text-lg text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:group-hover:text-blue-400 transition-colors leading-snug">
+                    {srv.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
+                    {srv.tagline}
+                  </p>
+                </div>
+
+                {/* Deliverables Checklist (2 bullets) */}
+                <div className="space-y-1.5 pt-1 text-xs">
+                  {srv.deliverables?.slice(0, 2).map((sec, idx) => (
+                    <div key={idx} className="flex items-start gap-2 text-zinc-600 dark:text-zinc-400">
+                      <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                      <span className="line-clamp-1 font-medium">{sec.title}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bottom Card Footer: Price & CTA */}
+              <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] font-mono text-zinc-400 uppercase block">Investasi Mulai</span>
+                  <span className="font-extrabold text-xs sm:text-sm text-zinc-950 dark:text-white font-mono">
+                    {srv.price}
+                  </span>
+                </div>
+
+                <span className="text-xs font-bold text-[#1E3A8A] dark:text-blue-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  <span>Lihat Rincian</span>
+                  <ArrowRight className="w-4 h-4" />
+                </span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  // If a specific sub-service is selected:
+  // Render the dedicated detail page at the top, AND below it render the full 16-solution catalog & SaaS show so everything is accessible
   if (selectedService) {
     return (
-      <ServiceDetailView
-        service={selectedService}
-        onBack={() => {
-          setSelectedServiceId(null);
-          if (typeof window !== 'undefined') {
-            window.history.pushState(null, '', `${currentPrefix}/layanan#katalog-lengkap`);
-            window.dispatchEvent(new Event('app-route-change'));
-          }
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        onWhatsAppInquiry={onWhatsAppInquiry}
-      />
+      <div className="space-y-16 animate-fade-in">
+        <ServiceDetailView
+          service={selectedService}
+          onBack={() => {
+            setSelectedServiceId(null);
+            if (typeof window !== 'undefined') {
+              window.history.pushState(null, '', `${currentPrefix}/layanan#katalog-lengkap`);
+              window.dispatchEvent(new Event('app-route-change'));
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onWhatsAppInquiry={onWhatsAppInquiry}
+          themePrefix={currentPrefix}
+        />
+
+        {/* 16-SOLUTION CATALOG GRID BENEATH DETAIL VIEW (SO #katalog-lengkap ALWAYS EXISTS & CAN SWITCH TO ANY SERVICE) */}
+        <div className="pt-6 border-t border-zinc-200 dark:border-zinc-800">
+          {renderCatalogSection(
+            'Jelajahi 15 Solusi Digital Lainnya',
+            'Bandingkan alur kerja, spesifikasi teknis, dan estimasi waktu untuk solusi bisnis lainnya. Klik kartu untuk membuka detail solusi.'
+          )}
+        </div>
+
+        {/* SAAS SOLUTIONS SHOWCASE & SEKAWAN WEB SOLUTIONS */}
+        <SaaSSolutionsShowcase onWhatsAppInquiry={onWhatsAppInquiry} />
+
+        {showFlipbook && (
+          <div className="pt-2 animate-fade-in">
+            <InteractiveFlipbook onClose={() => setShowFlipbook(false)} />
+          </div>
+        )}
+
+        <SekawanWebSolutions
+          onWhatsAppInquiry={onWhatsAppInquiry}
+          onOpenFlipbook={() => {
+            setShowFlipbook(true);
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+          }}
+        />
+      </div>
     );
   }
 
+  // DEFAULT OVERVIEW VIEW (WHEN NO SPECIFIC SERVICE IS SELECTED IN URL)
   return (
     <div className="space-y-16 animate-fade-in">
       {/* ========================================================================= */}
@@ -324,132 +485,12 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. SPACIOUS BALANCED 3-COLUMN SERVICES CATALOG (NO UNEVEN/SQUISHED CARDS) */}
+      {/* 2. SPACIOUS BALANCED 3-COLUMN SERVICES CATALOG (16 SOLUSI DIGITAL)        */}
       {/* ========================================================================= */}
-      <div id="katalog-lengkap" className="space-y-8 pt-4 scroll-mt-24">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950 text-[#1E3A8A] dark:text-blue-300 font-mono text-[11px] font-bold uppercase tracking-wider mb-2">
-              <Layers className="w-3.5 h-3.5" />
-              <span>Katalog Solusi Lengkap 16 Layanan Digital</span>
-            </div>
-            <h2 className="text-2xl sm:text-4xl font-black text-zinc-950 dark:text-white tracking-tight">
-              Pilih Solusi yang Sesuai dengan Kebutuhan Bisnis Anda
-            </h2>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
-              Setiap solusi dikerjakan dengan standar arsitektur industri, deliverable jelas, kode bersih, dan garansi resmi. Klik kartu untuk melihat rincian alur kerja lengkap.
-            </p>
-          </div>
-
-          {/* Category Filter Tabs */}
-          <div className="flex flex-wrap items-center gap-2">
-            {[
-              { id: 'semua', label: 'Semua Solusi (16)' },
-              { id: 'website', label: 'Website (5)' },
-              { id: 'aplikasi', label: 'Aplikasi (6)' },
-              { id: 'marketing', label: 'AI & Marketing (3)' },
-              { id: 'infrastruktur', label: 'Infrastruktur (2)' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveCategoryFilter(tab.id)}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
-                  activeCategoryFilter === tab.id
-                    ? 'bg-[#1E3A8A] text-white shadow-md'
-                    : 'bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:border-zinc-300'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* SPACIOUS, BALANCED 3-COLUMN GRID (ELIMINATING "KEKECILAN DAN GA SEJAJAR") */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredServices.map((srv) => {
-            const categoryBadgeColor =
-              srv.category === 'website'
-                ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-900/60'
-                : srv.category === 'aplikasi'
-                ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900/60'
-                : srv.category === 'marketing'
-                ? 'bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-900/60'
-                : 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-900/60';
-
-            return (
-              <a
-                key={srv.id}
-                href={`${currentPrefix}/layanan?service=${srv.id}#katalog-lengkap`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setSelectedServiceId(srv.id);
-                  if (typeof window !== 'undefined') {
-                    window.history.pushState(null, '', `${currentPrefix}/layanan?service=${srv.id}#katalog-lengkap`);
-                  }
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="p-6 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200/90 dark:border-zinc-800 hover:border-[#1E3A8A] dark:hover:border-blue-500 shadow-xs hover:shadow-xl transition-all cursor-pointer group flex flex-col justify-between space-y-5"
-              >
-                <div className="space-y-4">
-                  {/* Top Bar: Icon + Category Badge */}
-                  <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 flex items-center justify-center text-[#1E3A8A] dark:text-blue-400 group-hover:scale-105 transition-transform shadow-xs">
-                      {renderCatalogIcon(srv.iconName, 'w-6 h-6 stroke-[2.2]')}
-                    </div>
-
-                    <div className="flex items-center gap-1.5">
-                      <span className={`px-2.5 py-1 rounded-full font-mono text-[10px] font-bold border uppercase tracking-wider ${categoryBadgeColor}`}>
-                        {srv.category}
-                      </span>
-                      {srv.badge && (
-                        <span className="px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 font-mono text-[9px] font-bold">
-                          {srv.badge}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Title & Tagline */}
-                  <div>
-                    <h3 className="font-black text-lg text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:group-hover:text-blue-400 transition-colors leading-snug">
-                      {srv.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
-                      {srv.tagline}
-                    </p>
-                  </div>
-
-                  {/* Deliverables Checklist (2 bullets) */}
-                  <div className="space-y-1.5 pt-1 text-xs">
-                    {srv.deliverables.slice(0, 2).map((sec, idx) => (
-                      <div key={idx} className="flex items-start gap-2 text-zinc-600 dark:text-zinc-400">
-                        <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                        <span className="line-clamp-1 font-medium">{sec.title}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Bottom Card Footer: Price & CTA */}
-                <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] font-mono text-zinc-400 uppercase block">Investasi Mulai</span>
-                    <span className="font-extrabold text-xs sm:text-sm text-zinc-950 dark:text-white font-mono">
-                      {srv.price}
-                    </span>
-                  </div>
-
-                  <span className="text-xs font-bold text-[#1E3A8A] dark:text-blue-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                    <span>Lihat Alur</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </span>
-                </div>
-              </a>
-            );
-          })}
-        </div>
-      </div>
+      {renderCatalogSection(
+        'Pilih Solusi yang Sesuai dengan Kebutuhan Bisnis Anda',
+        'Setiap solusi dikerjakan dengan standar arsitektur industri, deliverable jelas, kode bersih, dan garansi resmi. Klik kartu untuk melihat rincian alur kerja lengkap.'
+      )}
 
       {/* ========================================================================= */}
       {/* 2.5 SAAS INTERACTIVE BENTO GRID & PRICING TABLE (NGODINGPAKEAI.COM STYLE) */}

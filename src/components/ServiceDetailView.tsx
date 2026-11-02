@@ -31,6 +31,12 @@ import {
   Calendar,
   Layers,
   HelpCircle,
+  Terminal,
+  Activity,
+  CheckCircle2,
+  Users,
+  Cpu,
+  Database,
 } from 'lucide-react';
 import { SubServiceItem } from '../data/servicesCatalogData';
 
@@ -38,24 +44,30 @@ interface ServiceDetailViewProps {
   service: SubServiceItem;
   onBack: () => void;
   onWhatsAppInquiry: (serviceName?: string, budget?: string) => void;
+  themePrefix?: string;
 }
 
 export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
   service,
   onBack,
   onWhatsAppInquiry,
+  themePrefix = '/corporation',
 }) => {
   // Defensive fallbacks in case service is undefined or partially loaded
   if (!service) {
     return (
       <div id="katalog-lengkap" className="p-8 text-center space-y-4">
         <p className="text-zinc-600 dark:text-zinc-400">Layanan tidak ditemukan atau sedang diperbarui.</p>
-        <button
-          onClick={onBack}
-          className="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs"
+        <a
+          href={`${themePrefix}/layanan#katalog-lengkap`}
+          onClick={(e) => {
+            e.preventDefault();
+            onBack();
+          }}
+          className="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs inline-block"
         >
           Kembali ke Katalog
-        </button>
+        </a>
       </div>
     );
   }
@@ -65,6 +77,12 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
   const workflow = service.workflow || [];
   const techStack = service.techStack || [];
   const faqs = service.faqs || [];
+  const featurePills = service.featurePills || [
+    { iconName: 'ShieldCheck', label: 'Keamanan Grade A+' },
+    { iconName: 'Gauge', label: 'Performa Tinggi' },
+    { iconName: 'Lock', label: '100% Hak Milik' },
+    { iconName: 'Globe', label: 'Cloud Infrastructure' },
+  ];
 
   // Helper to render icon based on name
   const renderIcon = (name: string, className = 'w-5 h-5') => {
@@ -109,9 +127,334 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
         return <LayoutGrid className={className} />;
       case 'ShieldCheck':
         return <ShieldCheck className={className} />;
+      case 'Terminal':
+        return <Terminal className={className} />;
+      case 'Lock':
+        return <Lock className={className} />;
+      case 'Cpu':
+        return <Cpu className={className} />;
+      case 'Database':
+        return <Database className={className} />;
+      case 'Zap':
+        return <Zap className={className} />;
+      case 'Users':
+        return <Users className={className} />;
       default:
         return <Sparkles className={className} />;
     }
+  };
+
+  // Render contextual mockup based on service.mockupType
+  const renderVisualMockup = () => {
+    const type = service.mockupType || 'website';
+
+    if (type === 'terminal') {
+      return (
+        <div className="rounded-2xl bg-[#0B0F19] border border-zinc-700/80 p-4 shadow-xl text-zinc-100 font-mono text-xs space-y-3">
+          <div className="flex items-center justify-between border-b border-zinc-800 pb-2.5">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+              <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+            </div>
+            <span className="text-[10px] text-zinc-400">fitran@vps-prod: ~ (ssh ed25519)</span>
+          </div>
+
+          <div className="space-y-2 text-[11px] leading-relaxed text-zinc-300">
+            <div>
+              <span className="text-emerald-400 font-bold">fitran@vps-prod:~$</span>{' '}
+              <span className="text-white">sudo ufw status verbose</span>
+            </div>
+            <div className="text-zinc-400 pl-2 border-l-2 border-emerald-500/50 space-y-0.5">
+              <p>Status: <span className="text-emerald-400 font-bold">active</span> (Default: deny incoming)</p>
+              <p>2222/tcp (SSH Ed25519) <span className="text-emerald-400">ALLOW IN</span></p>
+              <p>443/tcp (HTTPS TLS 1.3) <span className="text-emerald-400">ALLOW IN</span></p>
+            </div>
+
+            <div>
+              <span className="text-emerald-400 font-bold">fitran@vps-prod:~$</span>{' '}
+              <span className="text-white">fail2ban-client status sshd</span>
+            </div>
+            <div className="text-zinc-400 pl-2 border-l-2 border-blue-500/50 space-y-0.5">
+              <p>Jail: sshd | Filter: 0 failed</p>
+              <p>Actions: <span className="text-emerald-400 font-bold">14 IP banned</span> (Auto-Defense active)</p>
+            </div>
+
+            <div>
+              <span className="text-emerald-400 font-bold">fitran@vps-prod:~$</span>{' '}
+              <span className="text-white">borg info /backup/s3/repo</span>
+            </div>
+            <div className="text-zinc-400 pl-2 border-l-2 border-purple-500/50">
+              <p>Last snapshot: <span className="text-purple-300">03:00 WIB (Encrypted, Verified)</span></p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (type === 'ai') {
+      return (
+        <div className="rounded-2xl bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden text-xs">
+          {/* WhatsApp Header */}
+          <div className="bg-[#075E54] text-white p-3 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs">
+                <Bot className="w-4 h-4 text-emerald-200" />
+              </div>
+              <div>
+                <div className="font-bold text-xs flex items-center gap-1">
+                  <span>Fitran AI Business Care</span>
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-300" />
+                </div>
+                <div className="text-[10px] text-emerald-100/80">Online 24/7 • Responsif Kilat</div>
+              </div>
+            </div>
+            <div className="px-2 py-0.5 rounded bg-emerald-700/80 text-[10px] font-mono">Meta Verified</div>
+          </div>
+
+          {/* WhatsApp Chat Bubbles */}
+          <div className="p-4 space-y-3 bg-[#EFEAE2] dark:bg-zinc-900/90 min-h-[200px]">
+            {/* Customer Bubble */}
+            <div className="flex justify-end">
+              <div className="max-w-[85%] bg-[#E7FFDB] dark:bg-emerald-950 text-zinc-900 dark:text-zinc-100 p-3 rounded-2xl rounded-tr-none shadow-xs space-y-1">
+                <p className="text-[11px] leading-relaxed">
+                  Halo kak! Kami distributor, mau tanya apakah sistem web grosir bisa langsung kalkulasi harga bertingkat dan unduh RFQ PDF?
+                </p>
+                <div className="text-[9px] text-zinc-400 text-right">14:02 ✓✓</div>
+              </div>
+            </div>
+
+            {/* AI Assistant Bubble */}
+            <div className="flex justify-start">
+              <div className="max-w-[85%] bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 p-3 rounded-2xl rounded-tl-none shadow-xs space-y-1.5 border border-zinc-200/50 dark:border-zinc-700">
+                <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                  <Bot className="w-3 h-3" />
+                  <span>AI Agent • RAG SOP Verified</span>
+                </div>
+                <p className="text-[11px] leading-relaxed">
+                  Halo Bapak! Tentu bisa sekali. Sistem E-Commerce B2B kami dilengkapi fitur Tiered Pricing otomatis (misal: 100 unit @ Rp 45.000, 500 unit @ Rp 38.000). Calon pembeli juga dapat mengunduh dokumen penawaran harga resmi (Quotation PDF) dalam 1 klik sebelum persetujuan direksi.
+                </p>
+                <div className="flex items-center justify-between pt-1 border-t border-zinc-100 dark:border-zinc-700 text-[9px] text-zinc-400">
+                  <span className="text-blue-600 dark:text-blue-400 font-medium">[Dokumen SOP v2.1]</span>
+                  <span>14:02 (1.8s)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (type === 'ecommerce') {
+      return (
+        <div className="rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 p-4 shadow-xl space-y-3.5 text-xs">
+          <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2.5">
+            <div>
+              <span className="font-mono text-[10px] text-blue-600 dark:text-blue-400 font-bold block">KATALOG B2B GROSIR</span>
+              <span className="font-bold text-zinc-900 dark:text-white">Baja Ringan Profil C75 (SKU: MAT-092)</span>
+            </div>
+            <span className="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-mono text-[10px] font-bold">
+              MOQ: 50 Btg
+            </span>
+          </div>
+
+          {/* Tiered Pricing Table */}
+          <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+            <div className="grid grid-cols-3 bg-zinc-50 dark:bg-zinc-900 p-2 font-mono text-[10px] font-bold text-zinc-500">
+              <span>Tier Kuantitas</span>
+              <span className="text-center">Harga / Unit</span>
+              <span className="text-right">Diskon</span>
+            </div>
+            <div className="divide-y divide-zinc-100 dark:divide-zinc-800 text-[11px]">
+              <div className="grid grid-cols-3 p-2">
+                <span>1 - 49 Batang</span>
+                <span className="text-center font-mono">Rp 55.000</span>
+                <span className="text-right text-zinc-400">-</span>
+              </div>
+              <div className="grid grid-cols-3 p-2 bg-blue-50/50 dark:bg-blue-950/30">
+                <span className="font-bold text-blue-700 dark:text-blue-300">50 - 199 Batang</span>
+                <span className="text-center font-mono font-bold text-blue-700 dark:text-blue-300">Rp 48.000</span>
+                <span className="text-right font-bold text-emerald-600">Hemat 12%</span>
+              </div>
+              <div className="grid grid-cols-3 p-2">
+                <span className="font-bold text-emerald-700 dark:text-emerald-300">≥ 200 Batang</span>
+                <span className="text-center font-mono font-bold text-emerald-700 dark:text-emerald-300">Rp 42.000</span>
+                <span className="text-right font-bold text-emerald-600">Grosir Pabrik</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-[11px]">
+            <div>
+              <span className="text-zinc-500 block text-[10px]">Simulasi Order: 250 Batang</span>
+              <span className="font-black text-zinc-900 dark:text-white font-mono">Rp 10.500.000 (Tier 3)</span>
+            </div>
+            <span className="px-2.5 py-1 rounded-lg bg-blue-600 text-white font-bold text-[10px] flex items-center gap-1">
+              <span>Unduh RFQ PDF</span>
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    if (type === 'database') {
+      return (
+        <div className="rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 p-4 shadow-xl space-y-3 text-xs">
+          <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2">
+            <div className="flex items-center gap-1.5">
+              <Database className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <span className="font-mono text-[10px] font-bold text-zinc-700 dark:text-zinc-300">
+                PostgreSQL 16 • Connection Pool (42/100)
+              </span>
+            </div>
+            <span className="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-mono text-[9px] font-bold">
+              ACID Safe
+            </span>
+          </div>
+
+          <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden font-mono text-[10px]">
+            <div className="grid grid-cols-4 bg-zinc-50 dark:bg-zinc-900 p-2 font-bold text-zinc-500">
+              <span>ID Transaksi</span>
+              <span>SKU Barang</span>
+              <span>Gudang</span>
+              <span className="text-right">Approval</span>
+            </div>
+            <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
+              <div className="grid grid-cols-4 p-2">
+                <span className="text-blue-600 font-bold">TRX-8941</span>
+                <span>Baja C75 (+500)</span>
+                <span>Cikarang</span>
+                <span className="text-right text-emerald-600 font-bold">Approved</span>
+              </div>
+              <div className="grid grid-cols-4 p-2 bg-zinc-50/50 dark:bg-zinc-900/50">
+                <span className="text-blue-600 font-bold">TRX-8942</span>
+                <span>Baut M8 (-120)</span>
+                <span>Surabaya</span>
+                <span className="text-right text-amber-600 font-bold">Pending</span>
+              </div>
+              <div className="grid grid-cols-4 p-2">
+                <span className="text-blue-600 font-bold">TRX-8943</span>
+                <span>Semen 50kg (+1K)</span>
+                <span>Medan</span>
+                <span className="text-right text-emerald-600 font-bold">Approved</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-[10px] font-mono text-zinc-500 flex items-center justify-between pt-1">
+            <span>Audit Trail Log: Recorded</span>
+            <span className="text-blue-600 dark:text-blue-400 font-bold">AES-256 Encrypted</span>
+          </div>
+        </div>
+      );
+    }
+
+    if (type === 'analytics') {
+      return (
+        <div className="rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 p-4 shadow-xl space-y-3.5 text-xs">
+          <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2">
+            <div className="flex items-center gap-1.5">
+              <Activity className="w-4 h-4 text-emerald-500" />
+              <span className="font-mono text-[10px] font-bold text-zinc-700 dark:text-zinc-300">
+                Server-Side Telemetry Gateway
+              </span>
+            </div>
+            <span className="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-mono text-[9px] font-bold">
+              Live Feed
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2.5">
+            <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+              <span className="text-[10px] font-mono text-zinc-400 block">Event Match Quality</span>
+              <span className="text-lg font-black text-emerald-600 font-mono">9.4 / 10</span>
+              <span className="text-[9px] text-zinc-500 block">Rating: Excellent</span>
+            </div>
+
+            <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+              <span className="text-[10px] font-mono text-zinc-400 block">Deduplication Rate</span>
+              <span className="text-lg font-black text-blue-600 font-mono">100.0%</span>
+              <span className="text-[9px] text-zinc-500 block">Zero Double Count</span>
+            </div>
+          </div>
+
+          <div className="p-2.5 rounded-xl bg-[#0B0F19] text-zinc-300 font-mono text-[10px] space-y-1">
+            <p className="text-emerald-400">[200 OK] Purchase (ID: ev_948201) -&gt; Meta Graph API v20.0 (14ms)</p>
+            <p className="text-blue-400">[200 OK] Lead (ID: ev_948202) -&gt; Telegram Webhook Dispatched</p>
+          </div>
+        </div>
+      );
+    }
+
+    if (type === 'mobile') {
+      return (
+        <div className="max-w-[280px] mx-auto rounded-3xl bg-zinc-950 border-4 border-zinc-800 p-3 shadow-2xl text-white text-xs space-y-3">
+          {/* Phone Speaker Notch */}
+          <div className="flex justify-center">
+            <div className="w-16 h-3 rounded-full bg-zinc-800" />
+          </div>
+
+          <div className="flex items-center justify-between text-[10px] font-mono text-zinc-400 px-1">
+            <span>09:41</span>
+            <span>5G • 100%</span>
+          </div>
+
+          <div className="p-3 rounded-2xl bg-linear-to-br from-blue-600 to-indigo-700 space-y-1.5">
+            <span className="text-[9px] font-mono bg-white/20 px-2 py-0.5 rounded text-white font-bold">
+              Flutter 120 FPS
+            </span>
+            <h4 className="font-bold text-xs">Aplikasi Mobile Klien</h4>
+            <p className="text-[10px] text-blue-100">Tersinkronisasi otomatis dengan server cloud.</p>
+          </div>
+
+          <div className="space-y-1.5">
+            <div className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-between text-[10px]">
+              <span>SQLite Cache Lokal</span>
+              <span className="text-emerald-400 font-bold">Aktif Offline</span>
+            </div>
+            <div className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-between text-[10px]">
+              <span>Biometric Login</span>
+              <span className="text-blue-400 font-bold">Face ID / Touch ID</span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Default: 'website'
+    return (
+      <div className="rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm space-y-4">
+        <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
+          <div className="flex items-center gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-rose-400" />
+            <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+            <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+          </div>
+          <div className="px-3 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 text-[10px] font-mono text-zinc-500">
+            https://{service.id}.fitran.dev
+          </div>
+        </div>
+
+        {/* Wireframe Mockup Lines */}
+        <div className="space-y-2.5 py-2">
+          <div className="h-4 bg-blue-600 rounded-md w-3/4" />
+          <div className="h-2.5 bg-zinc-200 dark:bg-zinc-800 rounded-md w-full" />
+          <div className="h-2.5 bg-zinc-200 dark:bg-zinc-800 rounded-md w-5/6" />
+
+          <div className="grid grid-cols-3 gap-2 pt-2">
+            <div className="h-14 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
+              <span className="text-[10px] font-mono text-zinc-700 dark:text-zinc-300 font-bold">&lt;0.8s LCP</span>
+            </div>
+            <div className="h-14 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
+              <span className="text-[10px] font-mono text-emerald-600 font-bold">100% PageSpeed</span>
+            </div>
+            <div className="h-14 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
+              <span className="text-[10px] font-mono text-blue-600 font-bold">SSL TLS 1.3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -119,26 +462,44 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
       {/* 1. TOP BREADCRUMB & BACK ACTION */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
         <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500">
-          <span className="hover:underline cursor-pointer" onClick={onBack}>
+          <a
+            href={`${themePrefix}`}
+            onClick={(e) => {
+              e.preventDefault();
+              onBack();
+            }}
+            className="hover:underline cursor-pointer"
+          >
             Beranda
-          </span>
+          </a>
           <span>/</span>
-          <span className="hover:underline cursor-pointer" onClick={onBack}>
+          <a
+            href={`${themePrefix}/layanan#katalog-lengkap`}
+            onClick={(e) => {
+              e.preventDefault();
+              onBack();
+            }}
+            className="hover:underline cursor-pointer"
+          >
             Layanan
-          </span>
+          </a>
           <span>/</span>
           <span className="text-[#1E3A8A] dark:text-blue-400 font-semibold">{service.categoryLabel}</span>
           <span>/</span>
           <span className="text-zinc-950 dark:text-white font-bold truncate max-w-xs">{service.title}</span>
         </nav>
 
-        <button
-          onClick={onBack}
+        <a
+          href={`${themePrefix}/layanan#katalog-lengkap`}
+          onClick={(e) => {
+            e.preventDefault();
+            onBack();
+          }}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-[#111319] hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs font-bold text-zinc-800 dark:text-zinc-200 transition-all cursor-pointer self-start sm:self-auto"
         >
           <ChevronLeft className="w-4 h-4 text-zinc-500" />
           <span>Kembali ke Semua Layanan</span>
-        </button>
+        </a>
       </div>
 
       {/* 2. SUB-SERVICE HERO SECTION */}
@@ -198,19 +559,19 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
         </div>
       </div>
 
-      {/* 3. SECTION: YANG SELALU ADA DI SETIAP SOLUSI BUATAN KAMI (EXACT MATCH TO USER IMAGE 3) */}
+      {/* 3. SECTION: FITUR UNGGULAN & SPESIFIKASI KHUSUS LAYANAN INI */}
       <div className="space-y-6 pt-4">
         <div>
           <h2 className="text-2xl sm:text-3xl font-black text-zinc-950 dark:text-white tracking-tight">
-            Yang selalu ada di setiap website &amp; solusi buatan kami
+            {service.featureSectionTitle || 'Standar Rekayasa Arsitektur & Keunggulan Utama'}
           </h2>
           <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
-            Semua ini sudah termasuk di setiap proyek, tanpa biaya tambahan.
+            {service.featureSectionSubtitle || 'Semua fitur ini sudah termasuk di setiap proyek, tanpa biaya tambahan.'}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: 6 Standard Feature Cards with clean vector icons */}
+          {/* Left Column: 6 Distinct Feature Cards with clean vector icons */}
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {standardFeatures.map((feat, idx) => (
               <div
@@ -232,62 +593,21 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
             ))}
           </div>
 
-          {/* Right Column: Webzoo-style Mockup Illustration with Feature Pills (Matches Image 3) */}
+          {/* Right Column: Tailored Visual Mockup matching service category */}
           <div className="lg:col-span-5 p-6 rounded-3xl bg-linear-to-b from-blue-50/70 via-sky-50/50 to-white dark:from-zinc-900 dark:via-zinc-900/90 dark:to-[#111319] border border-blue-200 dark:border-zinc-800 shadow-sm space-y-5">
-            {/* Browser Frame Header */}
-            <div className="rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-rose-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-                </div>
-                <div className="px-3 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 text-[10px] font-mono text-zinc-500">
-                  https://{service.id}.fitran.dev
-                </div>
-              </div>
+            {renderVisualMockup()}
 
-              {/* Wireframe Mockup Lines */}
-              <div className="space-y-2.5 py-2">
-                <div className="h-4 bg-blue-600 rounded-md w-3/4" />
-                <div className="h-2.5 bg-zinc-200 dark:bg-zinc-800 rounded-md w-full" />
-                <div className="h-2.5 bg-zinc-200 dark:bg-zinc-800 rounded-md w-5/6" />
-
-                <div className="grid grid-cols-3 gap-2 pt-2">
-                  <div className="h-14 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
-                    <span className="text-[10px] font-mono text-zinc-400 font-bold">&lt;0.8s</span>
-                  </div>
-                  <div className="h-14 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
-                    <span className="text-[10px] font-mono text-emerald-600 font-bold">100% SLA</span>
-                  </div>
-                  <div className="h-14 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
-                    <span className="text-[10px] font-mono text-blue-600 font-bold">SSL A+</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Feature Badges Under Mockup (Exact match to Image 3 pill row) */}
+            {/* Dynamic Feature Pills Under Mockup */}
             <div className="flex flex-wrap items-center gap-2 pt-1">
-              <span className="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5 shadow-2xs">
-                <Smartphone className="w-3.5 h-3.5 text-blue-600" />
-                <span>Cepat di ponsel</span>
-              </span>
-
-              <span className="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5 shadow-2xs">
-                <Search className="w-3.5 h-3.5 text-blue-600" />
-                <span>SEO teknis</span>
-              </span>
-
-              <span className="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5 shadow-2xs">
-                <Lock className="w-3.5 h-3.5 text-blue-600" />
-                <span>SSL dan backup</span>
-              </span>
-
-              <span className="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5 shadow-2xs">
-                <Globe className="w-3.5 h-3.5 text-blue-600" />
-                <span>Indonesia dan Inggris</span>
-              </span>
+              {featurePills.map((pill, idx) => (
+                <span
+                  key={idx}
+                  className="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5 shadow-2xs"
+                >
+                  {renderIcon(pill.iconName, 'w-3.5 h-3.5 text-blue-600 dark:text-blue-400')}
+                  <span>{pill.label}</span>
+                </span>
+              ))}
             </div>
           </div>
         </div>
@@ -318,7 +638,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
               </div>
 
               <ul className="space-y-2.5 text-xs text-zinc-600 dark:text-zinc-400">
-                {sec.items.map((it, i) => (
+                {sec.items?.map((it, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                     <span>{it}</span>
@@ -432,12 +752,16 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
             <MessageSquare className="w-4 h-4" />
             <span>Chat WhatsApp Sekarang</span>
           </button>
-          <button
-            onClick={onBack}
+          <a
+            href={`${themePrefix}/layanan#katalog-lengkap`}
+            onClick={(e) => {
+              e.preventDefault();
+              onBack();
+            }}
             className="px-5 py-3 rounded-xl bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 font-bold text-xs hover:bg-zinc-50 transition-colors cursor-pointer"
           >
             Lihat Layanan Lainnya
-          </button>
+          </a>
         </div>
       </div>
     </div>
