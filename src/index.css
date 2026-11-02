@@ -149,14 +149,14 @@
 @keyframes pageEnter {
   0% {
     opacity: 0.01;
-    transform: translate3d(0, 14px, 0) scale(0.992);
+    transform: translate3d(0, 6px, 0);
   }
   100% {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
 }
 
 .animate-page-enter {
-  animation: pageEnter 380ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: pageEnter 150ms ease-out forwards;
 }

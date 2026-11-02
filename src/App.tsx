@@ -49,16 +49,14 @@ function resolveRouteFromWindow(): { tab: SectionId; cert: CertificateItem | nul
     return { tab: 'home', cert: null };
   }
 
+  let rawPath = decodeURIComponent(window.location.pathname || '/').replace(/^\/+|\/+$/g, '');
+
   if (window.location.hash) {
     const legacyHash = window.location.hash.replace(/^#\/?/, '').trim();
     if (legacyHash) {
-      window.history.replaceState(null, '', `/${legacyHash}`);
-    } else {
-      window.history.replaceState(null, '', window.location.pathname || '/');
+      rawPath = decodeURIComponent(legacyHash).replace(/^\/+|\/+$/g, '');
     }
   }
-
-  const rawPath = decodeURIComponent(window.location.pathname || '/').replace(/^\/+|\/+$/g, '');
 
   if (!rawPath || rawPath === 'home' || rawPath === 'overview' || rawPath === 'beranda') {
     return { tab: 'home', cert: null };
@@ -138,9 +136,6 @@ function resolveRouteFromWindow(): { tab: SectionId; cert: CertificateItem | nul
   );
 
   if (matchedCert) {
-    if (typeof window !== 'undefined') {
-      window.history.replaceState(null, '', getCertPreviewPath(matchedCert));
-    }
     return { tab: 'certificates', cert: matchedCert };
   }
 
@@ -330,7 +325,13 @@ export default function App() {
                   onSelectCert={handleSelectCertificate}
                   designTheme={designTheme}
                 />
-              ) : designTheme === 'arcade' ? (
+              ) : designTheme === 'arcade' ||
+                activeTab === 'services' ||
+                activeTab === 'learning' ||
+                activeTab === 'blog' ||
+                activeTab === 'tools' ||
+                activeTab === 'kamus' ||
+                activeTab === 'security' ? (
                 <KlasikEcosystemView
                   activePage={activeTab}
                   onNavigate={handleNavigate}
