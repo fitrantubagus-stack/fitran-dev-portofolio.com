@@ -216,8 +216,8 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
   useEffect(() => {
     if (activePage === 'learning') {
-      const ch = KLASIK_LEARNING_CHAPTERS.find((c) => c.id === activeChapterId);
-      const sub = ch?.subchapters.find((s) => s.id === activeSubchapterId);
+      const ch = KLASIK_LEARNING_CHAPTERS?.find((c) => c?.id === activeChapterId);
+      const sub = ch?.subchapters?.find((s) => s?.id === activeSubchapterId);
       if (sub && ch) {
         document.title = `${sub.title} | Belajar ${ch.title} — fitran.dev`;
       }
@@ -247,16 +247,18 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
         setActiveTrackId('digital-marketing');
       } else if (fullUrl.includes('vibe-coding') || fullUrl.includes('vc-')) {
         setActiveTrackId('vibe-coding');
-      } else if (fullUrl.includes('ai')) {
+      } else if (fullUrl.includes('/belajar/ai') || fullUrl.includes('track=ai')) {
         setActiveTrackId('ai');
       }
 
       // Sync learning subchapter from URL hash (e.g. #/ai-00-1 or #ai-00-1)
       const rawHash = window.location.hash.replace(/^#\/?/, '').trim().toLowerCase();
-      if (rawHash) {
-        for (const ch of KLASIK_LEARNING_CHAPTERS) {
+      // Ignore non-belajar hashes like #katalog-lengkap
+      if (rawHash && !rawHash.includes('katalog') && (rawHash.startsWith('ai-') || rawHash.startsWith('mkt-') || rawHash.startsWith('vc-'))) {
+        for (const ch of KLASIK_LEARNING_CHAPTERS || []) {
+          if (!ch || !ch.subchapters || !Array.isArray(ch.subchapters)) continue;
           const matchedSub = ch.subchapters.find(
-            (s) => s.id.toLowerCase() === rawHash || rawHash.includes(s.id.toLowerCase())
+            (s) => s && (s.id.toLowerCase() === rawHash || rawHash.includes(s.id.toLowerCase()))
           );
           if (matchedSub) {
             setActiveTrackId(ch.trackId);
@@ -264,10 +266,12 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             setActiveSubchapterId(matchedSub.id);
             setOpenChapters((prev) => ({ ...prev, [ch.id]: true }));
             break;
-          } else if (ch.id.toLowerCase() === rawHash || rawHash.includes(ch.id.toLowerCase())) {
+          } else if (ch.id && (ch.id.toLowerCase() === rawHash || rawHash.includes(ch.id.toLowerCase()))) {
             setActiveTrackId(ch.trackId);
             setActiveChapterId(ch.id);
-            setActiveSubchapterId(ch.subchapters[0].id);
+            if (ch.subchapters[0]?.id) {
+              setActiveSubchapterId(ch.subchapters[0].id);
+            }
             setOpenChapters((prev) => ({ ...prev, [ch.id]: true }));
             break;
           }
@@ -432,42 +436,82 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
   // Track & Chapter resolution for Belajar
   const currentTrackChapters = useMemo(() => {
-    return KLASIK_LEARNING_CHAPTERS.filter((c) => c.trackId === activeTrackId);
+    if (!KLASIK_LEARNING_CHAPTERS || !Array.isArray(KLASIK_LEARNING_CHAPTERS)) return [];
+    return KLASIK_LEARNING_CHAPTERS.filter((c) => c && c.trackId === activeTrackId);
   }, [activeTrackId]);
 
   const activeChapter = useMemo(() => {
+    const list = currentTrackChapters && currentTrackChapters.length > 0
+      ? currentTrackChapters
+      : (KLASIK_LEARNING_CHAPTERS || []);
     return (
-      currentTrackChapters.find((c) => c.id === activeChapterId) ||
-      currentTrackChapters[0] ||
-      KLASIK_LEARNING_CHAPTERS[0]
+      list.find((c) => c && c.id === activeChapterId) ||
+      list[0] ||
+      (KLASIK_LEARNING_CHAPTERS && KLASIK_LEARNING_CHAPTERS[0]) || {
+        id: 'ai-00',
+        trackId: 'ai' as const,
+        title: 'Materi Belajar',
+        summary: '',
+        audience: '',
+        subchapters: [
+          {
+            id: 'ai-00-1',
+            num: '00.1',
+            title: 'Pengantar',
+            situation: '',
+            explanation: '',
+            practice: '',
+            mistakes: '',
+            checklist: [],
+          },
+        ],
+      }
     );
   }, [currentTrackChapters, activeChapterId]);
 
   const activeSubchapter = useMemo(() => {
+    const subs = activeChapter?.subchapters;
+    if (!subs || !Array.isArray(subs) || subs.length === 0) {
+      return {
+        id: 'ai-00-1',
+        num: '00.1',
+        title: activeChapter?.title || 'Pengantar',
+        situation: '',
+        explanation: '',
+        practice: '',
+        mistakes: '',
+        checklist: [],
+      };
+    }
     return (
-      activeChapter.subchapters.find((s) => s.id === activeSubchapterId) ||
-      activeChapter.subchapters[0]
+      subs.find((s) => s && s.id === activeSubchapterId) ||
+      subs[0]
     );
   }, [activeChapter, activeSubchapterId]);
 
   // Filtering Chapters based on search
   const filteredChapters = useMemo(() => {
-    if (!materiSearch) return currentTrackChapters;
-    return currentTrackChapters.filter(
+    const list = currentTrackChapters || [];
+    if (!materiSearch) return list;
+    const q = materiSearch.toLowerCase();
+    return list.filter(
       (c) =>
-        c.title.toLowerCase().includes(materiSearch.toLowerCase()) ||
-        c.summary.toLowerCase().includes(materiSearch.toLowerCase()) ||
-        c.subchapters.some((s) => s.title.toLowerCase().includes(materiSearch.toLowerCase()))
+        c &&
+        (c.title?.toLowerCase().includes(q) ||
+          c.summary?.toLowerCase().includes(q) ||
+          c.subchapters?.some((s) => s?.title?.toLowerCase().includes(q)))
     );
   }, [currentTrackChapters, materiSearch]);
 
   // Toggle chapter accordion
   const toggleChapter = (chapterId: string) => {
+    if (!chapterId) return;
     setOpenChapters((prev) => ({ ...prev, [chapterId]: !prev[chapterId] }));
   };
 
   // Handle select subchapter with URL hash update
   const handleSelectSubchapter = (chapter: LearningChapter, sub: SubchapterItem) => {
+    if (!chapter || !sub) return;
     setActiveChapterId(chapter.id);
     setActiveSubchapterId(sub.id);
     setOpenChapters((prev) => ({ ...prev, [chapter.id]: true }));
@@ -477,14 +521,17 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   };
 
   const allCurrentSubchapters = useMemo(() => {
-    return currentTrackChapters.flatMap((ch) =>
-      ch.subchapters.map((sub) => ({ chapter: ch, sub }))
-    );
+    if (!currentTrackChapters || !Array.isArray(currentTrackChapters)) return [];
+    return currentTrackChapters.flatMap((ch) => {
+      if (!ch || !ch.subchapters || !Array.isArray(ch.subchapters)) return [];
+      return ch.subchapters.map((sub) => ({ chapter: ch, sub }));
+    });
   }, [currentTrackChapters]);
 
   const currentSubIndex = useMemo(() => {
+    if (!activeSubchapter?.id || !activeChapter?.id) return -1;
     return allCurrentSubchapters.findIndex(
-      (item) => item.sub.id === activeSubchapter.id && item.chapter.id === activeChapter.id
+      (item) => item?.sub?.id === activeSubchapter.id && item?.chapter?.id === activeChapter.id
     );
   }, [allCurrentSubchapters, activeSubchapter, activeChapter]);
 
@@ -505,7 +552,9 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
   // Copy Markdown handler
   const handleCopyMarkdown = () => {
-    const md = `# ${activeChapter.code}: ${activeChapter.title}\n\n**Untuk Siapa:** ${activeChapter.audience}\n\n${activeChapter.summary}\n\n## ${activeSubchapter.num}: ${activeSubchapter.title}\n\n### Masalah di Lapangan:\n${activeSubchapter.situation}\n\n### Penjelasan Arsitektur:\n${activeSubchapter.explanation}\n\n### Praktik Implementasi:\n${activeSubchapter.practice}\n\n### Kesalahan Umum:\n${activeSubchapter.mistakes}\n\n### Checklist:\n${activeSubchapter.checklist.map((c) => `- [x] ${c}`).join('\n')}\n\n---\nSumber: fitran.dev (Tubagus Fitran Badruttamam)`;
+    if (!activeChapter || !activeSubchapter) return;
+    const checklistText = (activeSubchapter.checklist || []).map((c) => `- [x] ${c}`).join('\n');
+    const md = `# ${activeChapter.code || ''}: ${activeChapter.title || ''}\n\n**Untuk Siapa:** ${activeChapter.audience || ''}\n\n${activeChapter.summary || ''}\n\n## ${activeSubchapter.num || ''}: ${activeSubchapter.title || ''}\n\n### Masalah di Lapangan:\n${activeSubchapter.situation || ''}\n\n### Penjelasan Arsitektur:\n${activeSubchapter.explanation || ''}\n\n### Praktik Implementasi:\n${activeSubchapter.practice || ''}\n\n### Kesalahan Umum:\n${activeSubchapter.mistakes || ''}\n\n### Checklist:\n${checklistText}\n\n---\nSumber: fitran.dev (Tubagus Fitran Badruttamam)`;
     navigator.clipboard.writeText(md);
     setToastMessage('Dokumentasi Markdown berhasil disalin ke clipboard!');
   };
@@ -513,14 +562,14 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   // Open in AI assistants
   const handleOpenChatGPT = () => {
     const query = encodeURIComponent(
-      `Saya sedang mempelajari materi dari fitran.dev (${activeChapter.title} - ${activeSubchapter.title}). Tolong jelaskan lebih dalam dan berikan contoh penerapannya:\n\n${activeSubchapter.explanation}`
+      `Saya sedang mempelajari materi dari fitran.dev (${activeChapter?.title || ''} - ${activeSubchapter?.title || ''}). Tolong jelaskan lebih dalam dan berikan contoh penerapannya:\n\n${activeSubchapter?.explanation || ''}`
     );
     window.open(`https://chatgpt.com/?q=${query}`, '_blank', 'noopener,noreferrer');
   };
 
   const handleOpenClaude = () => {
     const query = encodeURIComponent(
-      `Saya sedang mempelajari materi dari fitran.dev (${activeChapter.title} - ${activeSubchapter.title}). Tolong analisa arsitektur dan berikan rekomendasi teknis:\n\n${activeSubchapter.explanation}`
+      `Saya sedang mempelajari materi dari fitran.dev (${activeChapter?.title || ''} - ${activeSubchapter?.title || ''}). Tolong analisa arsitektur dan berikan rekomendasi teknis:\n\n${activeSubchapter?.explanation || ''}`
     );
     window.open(`https://claude.ai/new?q=${query}`, '_blank', 'noopener,noreferrer');
   };
@@ -1899,10 +1948,12 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     onChange={(e) => {
                       const t = e.target.value as 'ai' | 'digital-marketing' | 'vibe-coding';
                       setActiveTrackId(t);
-                      const firstChapter = KLASIK_LEARNING_CHAPTERS.find((c) => c.trackId === t);
+                      const firstChapter = KLASIK_LEARNING_CHAPTERS?.find((c) => c?.trackId === t);
                       if (firstChapter) {
                         setActiveChapterId(firstChapter.id);
-                        setActiveSubchapterId(firstChapter.subchapters[0].id);
+                        if (firstChapter.subchapters?.[0]?.id) {
+                          setActiveSubchapterId(firstChapter.subchapters[0].id);
+                        }
                       }
                     }}
                     className="px-4 py-2 rounded-xl bg-white dark:bg-[#111319] border border-zinc-300 dark:border-zinc-700 text-xs font-bold text-zinc-900 dark:text-white cursor-pointer focus:outline-hidden focus:border-[#1E3A8A]"
@@ -1957,7 +2008,8 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               {/* Chapters Accordion Tree */}
               <div className="space-y-1.5 text-xs">
                 {filteredChapters.map((chapter, idx) => {
-                  const isCurrentChapter = chapter.id === activeChapter.id;
+                  if (!chapter) return null;
+                  const isCurrentChapter = chapter.id === activeChapter?.id;
                   const isOpen = openChapters[chapter.id] || isCurrentChapter;
 
                   return (
@@ -1965,7 +2017,9 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       <button
                         onClick={() => {
                           setActiveChapterId(chapter.id);
-                          setActiveSubchapterId(chapter.subchapters[0].id);
+                          if (chapter.subchapters?.[0]?.id) {
+                            setActiveSubchapterId(chapter.subchapters[0].id);
+                          }
                           toggleChapter(chapter.id);
                         }}
                         className={`w-full p-3 text-left flex items-center justify-between gap-2 transition-colors cursor-pointer ${
@@ -1986,8 +2040,9 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       {/* Subchapters */}
                       {isOpen && (
                         <div className="px-3 pb-2 pt-1 space-y-1 border-t border-zinc-100 dark:border-zinc-800/60 bg-zinc-50/50 dark:bg-zinc-900/40">
-                          {chapter.subchapters.map((sub) => {
-                            const isSubActive = sub.id === activeSubchapter.id && isCurrentChapter;
+                          {(chapter.subchapters || []).map((sub) => {
+                            if (!sub) return null;
+                            const isSubActive = sub.id === activeSubchapter?.id && isCurrentChapter;
                             return (
                               <a
                                 key={sub.id}
@@ -2018,7 +2073,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             {/* COLUMN 2: CENTER READING AREA */}
             <div className="lg:col-span-6 space-y-6 bg-white dark:bg-[#111319] p-6 sm:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
               <MateriCoverBanner
-                title={activeSubchapter?.title || activeChapter.title}
+                title={activeSubchapter?.title || activeChapter?.title || 'Materi Belajar'}
                 category={activeTrackId === 'ai' ? 'AI UNTUK BISNIS' : activeTrackId === 'digital-marketing' ? 'DIGITAL MARKETING' : 'VIBE CODING'}
                 readTime="5 MENIT BACA"
                 mascotVariant={activeTrackId === 'ai' ? 'idea' : activeTrackId === 'digital-marketing' ? 'rocket' : 'code'}
@@ -2026,10 +2081,10 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               />
               <div>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white">
-                  {activeChapter.title}
+                  {activeChapter?.title || 'Materi Belajar'}
                 </h2>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-2 leading-relaxed">
-                  {activeChapter.summary}
+                  {activeChapter?.summary || ''}
                 </p>
               </div>
 
@@ -2039,7 +2094,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   Untuk siapa bab ini
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                  {activeChapter.audience}
+                  {activeChapter?.audience || ''}
                 </p>
               </div>
 
@@ -2068,10 +2123,10 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               <div id="subbab" className="space-y-6 pt-4 border-t border-zinc-100 dark:border-zinc-800">
                 <div>
                   <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-400">
-                    SUBBAB {activeSubchapter.num}
+                    SUBBAB {activeSubchapter?.num || ''}
                   </span>
                   <h3 className="text-xl font-bold text-zinc-950 dark:text-white mt-1">
-                    {activeSubchapter.title}
+                    {activeSubchapter?.title || ''}
                   </h3>
                 </div>
 
@@ -2081,7 +2136,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     Masalah Riil di Lapangan:
                   </p>
                   <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                    {activeSubchapter.situation}
+                    {activeSubchapter?.situation || ''}
                   </p>
                 </div>
 
@@ -2091,7 +2146,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     Penjelasan Logika &amp; Arsitektur:
                   </p>
                   <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-line">
-                    {activeSubchapter.explanation}
+                    {activeSubchapter?.explanation || ''}
                   </p>
                 </div>
 
@@ -2101,7 +2156,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     Praktik Implementasi:
                   </p>
                   <div className="p-4 rounded-xl bg-zinc-950 text-zinc-200 font-mono text-xs leading-relaxed overflow-x-auto border border-zinc-800 shadow-inner">
-                    <pre className="whitespace-pre-wrap">{activeSubchapter.practice}</pre>
+                    <pre className="whitespace-pre-wrap">{activeSubchapter?.practice || ''}</pre>
                   </div>
                 </div>
 
@@ -2111,7 +2166,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     Kesalahan Fatal yang Sering Terjadi:
                   </p>
                   <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                    {activeSubchapter.mistakes}
+                    {activeSubchapter?.mistakes || ''}
                   </p>
                 </div>
 
@@ -2121,7 +2176,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     Checklist Verifikasi:
                   </p>
                   <div className="space-y-1.5">
-                    {activeSubchapter.checklist.map((item, idx) => (
+                    {(activeSubchapter?.checklist || []).map((item, idx) => (
                       <label key={idx} className="flex items-center gap-2.5 p-2 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-xs cursor-pointer">
                         <input type="checkbox" defaultChecked className="rounded text-[#1E3A8A] dark:text-blue-400 focus:ring-[#1E3A8A]" />
                         <span className="text-zinc-700 dark:text-zinc-300">{item}</span>
@@ -2283,7 +2338,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   <span className="text-[10px] font-mono text-zinc-500">26 Bab Lengkap Teruji</span>
                 </div>
                 <h4 className="text-sm font-bold text-zinc-950 dark:text-white mt-1">
-                  {activeChapter.title} — Dokumentasi Terverifikasi
+                  {activeChapter?.title || 'Kurikulum Resmi'} — Dokumentasi Terverifikasi
                 </h4>
                 <p className="text-xs text-zinc-500 line-clamp-1">
                   Semua modul dan template kode siap pakai untuk efisiensi bisnis riil di lapangan.
@@ -2299,7 +2354,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <span>Baca Versi Flipbook 3D</span>
               </button>
               <button
-                onClick={() => handleWhatsAppConsultation(`Konsultasi materi belajar: ${activeChapter.title}`)}
+                onClick={() => handleWhatsAppConsultation(`Konsultasi materi belajar: ${activeChapter?.title || 'Materi Belajar'}`)}
                 className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-xs"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
