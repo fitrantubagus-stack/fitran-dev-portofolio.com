@@ -25,6 +25,7 @@ import { ProfileAvatar } from './ProfileAvatar';
 import { FitranMascot } from './FitranMascot';
 import { MateriCoverBanner } from './MateriCoverBanner';
 import { SekawanEnterpriseLayanan } from './SekawanEnterpriseLayanan';
+import { WebzooServiceCatalog } from './WebzooServiceCatalog';
 import { SekawanWebSolutions } from './SekawanWebSolutions';
 import { InteractiveFlipbook } from './InteractiveFlipbook';
 import { MateriArticleVisual } from './MateriArticleVisuals';
@@ -77,6 +78,11 @@ import {
   TrendingUp,
   Download,
   FolderOpen,
+  Bot,
+  Target,
+  BarChart3,
+  LineChart,
+  Workflow,
 } from 'lucide-react';
 
 interface KlasikEcosystemViewProps {
@@ -115,6 +121,23 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
   const [selectedService, setSelectedService] = useState<ServicePackage | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Helper to render clean Lucide vector icons for chapters (Zero Emojis!)
+  const renderChapterVectorIcon = (trackId: string, index: number) => {
+    if (trackId === 'ai') {
+      const aiIcons = [Bot, Sparkles, Cpu, Database, Workflow, MessageSquare, ShieldCheck, Zap];
+      const IconC = aiIcons[index % aiIcons.length] || Bot;
+      return <IconC className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />;
+    }
+    if (trackId === 'digital-marketing') {
+      const mktIcons = [TrendingUp, Target, BarChart3, Globe, LineChart, Share2, Activity, Zap];
+      const IconC = mktIcons[index % mktIcons.length] || TrendingUp;
+      return <IconC className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />;
+    }
+    const vibeIcons = [Terminal, Code2, Cpu, Wrench, Layers, Server, ShieldCheck, Zap, Database];
+    const IconC = vibeIcons[index % vibeIcons.length] || Code2;
+    return <IconC className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />;
+  };
 
   // Belajar Studio States
   const [activeTrackId, setActiveTrackId] = useState<'ai' | 'digital-marketing' | 'vibe-coding'>('ai');
@@ -1819,7 +1842,8 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             </div>
           ) : (
           /* 3-COLUMN DOCUMENTATION STUDIO (Matches media_1793550777405_70e0ce2c.png) */
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* COLUMN 1: LEFT SIDEBAR (Search + Chapter Accordion) */}
             <div className="lg:col-span-3 space-y-4 lg:sticky lg:top-20 self-start max-h-[calc(100vh-6rem)] overflow-y-auto pr-1">
               {/* Search Bar */}
@@ -1836,7 +1860,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
               {/* Chapters Accordion Tree */}
               <div className="space-y-1.5 text-xs">
-                {filteredChapters.map((chapter) => {
+                {filteredChapters.map((chapter, idx) => {
                   const isCurrentChapter = chapter.id === activeChapter.id;
                   const isOpen = openChapters[chapter.id] || isCurrentChapter;
 
@@ -1854,8 +1878,10 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                             : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300'
                         }`}
                       >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-sm shrink-0">{chapter.icon || '📘'}</span>
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span className="w-6 h-6 rounded-lg bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/70 dark:border-zinc-700 flex items-center justify-center shrink-0">
+                            {renderChapterVectorIcon(chapter.trackId, idx)}
+                          </span>
                           <span className="truncate">{chapter.title}</span>
                         </div>
                         <ChevronDown className={`w-3.5 h-3.5 text-zinc-400 shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -2132,56 +2158,58 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 </button>
               </div>
             </div>
+            {/* End of 3-column grid container */}
+          </div>
 
-            {/* Grounded Equalizer Footer Strip across all 12 columns */}
-            <div className="lg:col-span-12 mt-4 p-6 rounded-2xl bg-gradient-to-r from-blue-50/90 via-sky-50/50 to-emerald-50/90 dark:from-zinc-900 dark:via-[#111319] dark:to-zinc-900 border border-zinc-200 dark:border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
-              <div className="flex items-center gap-3.5">
-                <div className="w-11 h-11 rounded-xl bg-[#1E3A8A] text-white flex items-center justify-center font-bold text-xl shadow-sm shrink-0">
-                  {activeChapter.icon || '🎓'}
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300">
-                      Kurikulum Resmi fitran.dev
-                    </span>
-                    <span className="text-[10px] font-mono text-zinc-500">26 Bab Lengkap Teruji</span>
-                  </div>
-                  <h4 className="text-sm font-bold text-zinc-950 dark:text-white mt-1">
-                    {activeChapter.title} — Dokumentasi Terverifikasi
-                  </h4>
-                  <p className="text-xs text-zinc-500 line-clamp-1">
-                    Semua modul dan template kode siap pakai untuk efisiensi bisnis riil di lapangan.
-                  </p>
-                </div>
+          {/* Grounded Equalizer Footer Strip - Positioned completely outside the 3-column grid to eliminate ANY chance of sticky sidebar overlap! */}
+          <div className="mt-8 relative z-10 p-6 rounded-2xl bg-gradient-to-r from-blue-50/90 via-sky-50/50 to-emerald-50/90 dark:from-zinc-900 dark:via-[#111319] dark:to-zinc-900 border border-zinc-200 dark:border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-xl bg-[#1E3A8A] text-white flex items-center justify-center font-bold text-xl shadow-sm shrink-0">
+                <BookOpen className="w-5 h-5 text-white" />
               </div>
-              <div className="flex flex-wrap items-center gap-3 shrink-0">
-                <button
-                  onClick={() => setLearningViewMode('flipbook')}
-                  className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-xs"
-                >
-                  <BookOpen className="w-3.5 h-3.5" />
-                  <span>Baca Versi Flipbook 3D</span>
-                </button>
-                <button
-                  onClick={() => handleWhatsAppConsultation(`Konsultasi materi belajar: ${activeChapter.title}`)}
-                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-xs"
-                >
-                  <MessageSquare className="w-3.5 h-3.5" />
-                  <span>Tanya Mentor via WhatsApp</span>
-                </button>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300">
+                    Kurikulum Resmi fitran.dev
+                  </span>
+                  <span className="text-[10px] font-mono text-zinc-500">26 Bab Lengkap Teruji</span>
+                </div>
+                <h4 className="text-sm font-bold text-zinc-950 dark:text-white mt-1">
+                  {activeChapter.title} — Dokumentasi Terverifikasi
+                </h4>
+                <p className="text-xs text-zinc-500 line-clamp-1">
+                  Semua modul dan template kode siap pakai untuk efisiensi bisnis riil di lapangan.
+                </p>
               </div>
             </div>
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <button
+                onClick={() => setLearningViewMode('flipbook')}
+                className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-xs"
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>Baca Versi Flipbook 3D</span>
+              </button>
+              <button
+                onClick={() => handleWhatsAppConsultation(`Konsultasi materi belajar: ${activeChapter.title}`)}
+                className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-xs"
+              >
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>Tanya Mentor via WhatsApp</span>
+              </button>
+            </div>
           </div>
-          )}
         </div>
-      )}
+        )}
+      </div>
+    )}
 
       {/* ========================================================================= */}
-      {/* VIEW 3: DEDICATED LAYANAN KATALOG (SERVICES VIEW)                        */}
+      {/* VIEW 3: DEDICATED LAYANAN KATALOG (SERVICES VIEW - WEBZOO STYLE)          */}
       {/* ========================================================================= */}
       {activePage === 'services' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <SekawanEnterpriseLayanan
+          <WebzooServiceCatalog
             onWhatsAppInquiry={handleWhatsAppConsultation}
             onNavigateHome={() => navigateTo('home')}
           />

@@ -28,6 +28,16 @@ import {
   TrendingUp,
   Zap,
   Cpu,
+  ShoppingBag,
+  MousePointerClick,
+  AppWindow,
+  Boxes,
+  Target,
+  Server,
+  Workflow,
+  Cable,
+  Building2,
+  Code2,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -55,6 +65,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
   const [belajarDropdownOpen, setBelajarDropdownOpen] = useState(false);
+  const [layananDropdownOpen, setLayananDropdownOpen] = useState(false);
   const [wibTime, setWibTime] = useState('');
   const { language } = useLanguage();
 
@@ -80,6 +91,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   useEffect(() => {
     const handleClickOutside = () => {
       setBelajarDropdownOpen(false);
+      setLayananDropdownOpen(false);
       setThemeMenuOpen(false);
     };
     window.addEventListener('click', handleClickOutside);
@@ -193,14 +205,253 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {/* Desktop Nav Links */}
               <div className="hidden md:flex items-center gap-4 lg:gap-5 text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-300">
-                <button
-                  onClick={(e) => handleNavClick('services', e)}
-                  className={`hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
-                    activeSection === 'services' ? 'font-bold text-zinc-950 dark:text-white' : ''
-                  }`}
-                >
-                  Layanan
-                </button>
+                {/* Layanan with Webzoo-style Mega Dropdown (Matching User Image 2) */}
+                <div className="relative">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLayananDropdownOpen((prev) => !prev);
+                      setBelajarDropdownOpen(false);
+                    }}
+                    className={`flex items-center gap-1 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
+                      activeSection === 'services' ? 'font-bold text-zinc-950 dark:text-white' : ''
+                    }`}
+                  >
+                    <span>Layanan</span>
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 opacity-70 transition-transform ${
+                        layananDropdownOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+
+                  {/* Mega Menu Popover */}
+                  <AnimatePresence>
+                    {layananDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 6, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 4, scale: 0.96 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute -left-12 sm:-left-24 mt-2.5 w-[330px] sm:w-[580px] max-h-[80vh] overflow-y-auto p-4 sm:p-5 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-2xl z-50 text-xs"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800 mb-3">
+                          <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#1E3A8A] dark:text-blue-400">
+                            Katalog Layanan &amp; Solusi Digital
+                          </span>
+                          <button
+                            onClick={(e) => {
+                              setLayananDropdownOpen(false);
+                              handleNavClick('services', e);
+                            }}
+                            className="text-[11px] font-mono text-blue-600 hover:underline font-bold cursor-pointer"
+                          >
+                            Buka Semua Layanan →
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {/* Column 1: Website */}
+                          <div className="space-y-2">
+                            <span className="text-[10px] font-mono font-black text-zinc-400 uppercase tracking-wider">
+                              WEBSITE
+                            </span>
+                            <div className="space-y-1">
+                              <button
+                                onClick={(e) => {
+                                  setLayananDropdownOpen(false);
+                                  handleNavClick('services', e);
+                                }}
+                                className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
+                              >
+                                <Globe className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="font-bold text-zinc-900 dark:text-white group-hover:text-blue-600 transition-colors leading-tight">
+                                    Jasa Pembuatan Website
+                                  </p>
+                                  <p className="text-[10px] text-zinc-500 line-clamp-1">
+                                    Website kilat &lt;0.8s mudah dikelola
+                                  </p>
+                                </div>
+                              </button>
+
+                              <button
+                                onClick={(e) => {
+                                  setLayananDropdownOpen(false);
+                                  handleNavClick('services', e);
+                                }}
+                                className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
+                              >
+                                <Code2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="font-bold text-zinc-900 dark:text-white group-hover:text-blue-600 transition-colors leading-tight">
+                                    Website Custom &amp; Portal
+                                  </p>
+                                  <p className="text-[10px] text-zinc-500 line-clamp-1">
+                                    Fitur khusus di luar batasan template
+                                  </p>
+                                </div>
+                              </button>
+
+                              <button
+                                onClick={(e) => {
+                                  setLayananDropdownOpen(false);
+                                  handleNavClick('services', e);
+                                }}
+                                className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
+                              >
+                                <Building2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="font-bold text-zinc-900 dark:text-white group-hover:text-blue-600 transition-colors leading-tight">
+                                    Website Korporat
+                                  </p>
+                                  <p className="text-[10px] text-zinc-500 line-clamp-1">
+                                    Profil bisnis dua bahasa kredibel
+                                  </p>
+                                </div>
+                              </button>
+
+                              <button
+                                onClick={(e) => {
+                                  setLayananDropdownOpen(false);
+                                  handleNavClick('services', e);
+                                }}
+                                className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
+                              >
+                                <ShoppingBag className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="font-bold text-zinc-900 dark:text-white group-hover:text-blue-600 transition-colors leading-tight">
+                                    E-commerce &amp; B2B
+                                  </p>
+                                  <p className="text-[10px] text-zinc-500 line-clamp-1">
+                                    Katalog harga grosir &amp; pesanan WhatsApp
+                                  </p>
+                                </div>
+                              </button>
+
+                              <button
+                                onClick={(e) => {
+                                  setLayananDropdownOpen(false);
+                                  handleNavClick('services', e);
+                                }}
+                                className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
+                              >
+                                <MousePointerClick className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="font-bold text-zinc-900 dark:text-white group-hover:text-blue-600 transition-colors leading-tight">
+                                    Landing Page Kampanye
+                                  </p>
+                                  <p className="text-[10px] text-zinc-500 line-clamp-1">
+                                    Halaman iklan dengan CAPI presisi
+                                  </p>
+                                </div>
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Column 2: Aplikasi & AI */}
+                          <div className="space-y-2">
+                            <span className="text-[10px] font-mono font-black text-zinc-400 uppercase tracking-wider">
+                              APLIKASI &amp; AI
+                            </span>
+                            <div className="space-y-1">
+                              <button
+                                onClick={(e) => {
+                                  setLayananDropdownOpen(false);
+                                  handleNavClick('services', e);
+                                }}
+                                className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
+                              >
+                                <AppWindow className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="font-bold text-zinc-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-tight">
+                                    Aplikasi Custom
+                                  </p>
+                                  <p className="text-[10px] text-zinc-500 line-clamp-1">
+                                    Aplikasi web &amp; mobile proses bisnis
+                                  </p>
+                                </div>
+                              </button>
+
+                              <button
+                                onClick={(e) => {
+                                  setLayananDropdownOpen(false);
+                                  handleNavClick('services', e);
+                                }}
+                                className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
+                              >
+                                <Bot className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="font-bold text-zinc-900 dark:text-white group-hover:text-purple-600 transition-colors leading-tight">
+                                    WhatsApp AI Agent
+                                  </p>
+                                  <p className="text-[10px] text-zinc-500 line-clamp-1">
+                                    Bot AI 24/7 SOP &amp; katalog perusahaan
+                                  </p>
+                                </div>
+                              </button>
+
+                              <button
+                                onClick={(e) => {
+                                  setLayananDropdownOpen(false);
+                                  handleNavClick('services', e);
+                                }}
+                                className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
+                              >
+                                <Boxes className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="font-bold text-zinc-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-tight">
+                                    ERP &amp; Inventori
+                                  </p>
+                                  <p className="text-[10px] text-zinc-500 line-clamp-1">
+                                    Multi-gudang, PO &amp; laba rugi
+                                  </p>
+                                </div>
+                              </button>
+
+                              <button
+                                onClick={(e) => {
+                                  setLayananDropdownOpen(false);
+                                  handleNavClick('services', e);
+                                }}
+                                className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
+                              >
+                                <Target className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="font-bold text-zinc-900 dark:text-white group-hover:text-purple-600 transition-colors leading-tight">
+                                    Meta CAPI &amp; Google Ads
+                                  </p>
+                                  <p className="text-[10px] text-zinc-500 line-clamp-1">
+                                    Tracking presisi kebal ad-blocker
+                                  </p>
+                                </div>
+                              </button>
+
+                              <button
+                                onClick={(e) => {
+                                  setLayananDropdownOpen(false);
+                                  handleNavClick('services', e);
+                                }}
+                                className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
+                              >
+                                <Server className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="font-bold text-zinc-900 dark:text-white group-hover:text-amber-600 transition-colors leading-tight">
+                                    Setup Cloud VPS
+                                  </p>
+                                  <p className="text-[10px] text-zinc-500 line-clamp-1">
+                                    Server mandiri &amp; proteksi 5 lapis
+                                  </p>
+                                </div>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
 
                 <button
                   onClick={(e) => handleNavClick('certificates', e)}
