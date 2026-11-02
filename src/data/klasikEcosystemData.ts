@@ -50,6 +50,7 @@ export interface LearningChapter {
   summary: string;
   audience: string;
   subchapters: SubchapterItem[];
+  icon?: string;
 }
 
 export interface LearningTrack {
@@ -92,7 +93,8 @@ export interface BlogPost {
       heading: string;
       body: string;
       codeSnippet?: string;
-    }[];
+      icon?: string;
+}[];
     conclusion: string;
   };
 }
@@ -126,7 +128,7 @@ export const KLASIK_LEARNING_TRACKS: LearningTrack[] = [
     tagline: 'Claude Code CLI, Cursor, MCP Server, dan arsitektur pengembangan berbasis AI.',
     description:
       'Metodologi rekayasa modern di mana insinyur perangkat lunak bertindak sebagai arsitek orkestrator yang mengarahkan LLM untuk menulis kode bersih, aman, dan langsung deploy ke cloud.',
-    chaptersCount: 6,
+    chaptersCount: 9,
   },
 ];
 
@@ -1048,6 +1050,75 @@ export const KLASIK_LEARNING_CHAPTERS: LearningChapter[] = [
         checklist: ['Pipeline build otomatis berjalan lancar.', 'Rollback instan tersedia jika terjadi error darurat.'],
       },
     ],
+  },,
+  {
+    id: 'vc-06',
+    trackId: 'vibe-coding',
+    code: 'Bab 06',
+    title: 'Pipeline CI/CD Otomatis: Push Kode Langsung Live',
+    kicker: 'Otomasi Rilis & Build Verification',
+    icon: 'GitBranch',
+    summary:
+      'Menyusun pipeline GitHub Actions yang memvalidasi TypeScript, menjalankan tes otomatis, dan mendeploy langsung ke Edge Cloud tanpa campur tangan manual.',
+    audience: 'Developer yang ingin merilis update kode dengan rasa tenang tanpa takut merusak sistem produksi.',
+    subchapters: [
+      {
+        id: 'vc-06-1',
+        num: '06.1',
+        title: 'Konfigurasi GitHub Actions untuk Build & Typecheck Otomatis',
+        situation: 'Sering ada error TypeScript yang baru ketahuan setelah kode di-push dan merusak website live.',
+        explanation: 'Jalankan action otomatis setiap ada Pull Request atau push ke branch main. Pipeline akan menjalankan tsc --noEmit dan linter sebelum mengizinkan rilis.',
+        practice: 'Buat file .github/workflows/deploy.yml dengan step: checkout -> setup node -> npm ci -> npm run build.',
+        mistakes: 'Mematikan typecheck demi deploy cepat, yang berujung pada bug fatal di tangan pengunjung.',
+        checklist: ['Action berjalan otomatis di setiap push.', 'Build gagal memblokir rilis ke server produksi.'],
+      },
+    ],
+  },
+  {
+    id: 'vc-07',
+    trackId: 'vibe-coding',
+    code: 'Bab 07',
+    title: 'Testing Otomatis & Regresi: Bebas Dari Error Tak Terduga',
+    kicker: 'Jaminan Kualitas Kode',
+    icon: 'ShieldCheck',
+    summary:
+      'Menulis unit test dan integration test ringkas untuk alur bisnis kritis agar fitur baru tidak merusak fitur lama yang sudah stabil.',
+    audience: 'Engineer yang ingin menjaga stabilitas aplikasi dalam jangka panjang.',
+    subchapters: [
+      {
+        id: 'vc-07-1',
+        num: '07.1',
+        title: 'Menguji Alur Kritis: Form, Transaksi, & API Webhook',
+        situation: 'Perubahan pada komponen navigasi tidak sengaja membuat tombol transaksi WhatsApp berhenti berfungsi.',
+        explanation: 'Fokuskan pengujian pada golden path (jalur kritis bisnis): tombol kontak, form input, dan respon API serverless.',
+        practice: 'Gunakan testing library ringan seperti Vitest untuk memverifikasi fungsi utilitas dan state penting.',
+        mistakes: 'Menulis tes untuk hal sepele namun mengabaikan alur checkout yang menghasilkan uang.',
+        checklist: ['Alur checkout WhatsApp teruji otomatis.', 'Zero-warning pada suite pengujian.'],
+      },
+    ],
+  },
+  {
+    id: 'vc-08',
+    trackId: 'vibe-coding',
+    code: 'Bab 08',
+    title: 'Monitoring, Error Tracking Sentry, & Log Performa',
+    kicker: 'Pemantauan Sistem 24/7',
+    icon: 'Gauge',
+    summary:
+      'Menangkap runtime error sebelum pengunjung sempat komplain menggunakan Sentry, serta memantau skor Core Web Vitals secara langsung.',
+    audience: 'Tim teknis yang bertanggung jawab atas uptime dan keandalan sistem bisnis.',
+    subchapters: [
+      {
+        id: 'vc-08-1',
+        num: '08.1',
+        title: 'Setup Error Tracking Real-time Tanpa Memperlambat Web',
+        situation: 'Pengunjung mengalami halaman blank putih saat membuka dari browser tertentu tanpa pernah ada log tercatat.',
+        explanation: 'Pasang Sentry / Logtail dengan bundle ringan untuk mencatat uncaught exception secara real-time ke dashboard privat developer.',
+        practice: 'Integrasikan Sentry client SDK dengan sampling rate 10% agar tetap hemat kuota kueri.',
+        mistakes: 'Membiarkan error terjadi berhari-hari tanpa ada notifikasi peringatan ke Telegram / WhatsApp admin.',
+        checklist: ['Alert error otomatis masuk ke email/chat.', 'Source maps privat terunggah untuk debug cepat.'],
+      },
+    ],
   },
 ];
 
@@ -1248,6 +1319,48 @@ export const KLASIK_TOOLS: ToolItem[] = [
     description: 'Manajemen script pelacak terpusat dan pengukuran jalur konversi pengunjung secara terstruktur.',
     badge: 'Analitik',
   },
+  {
+    name: 'Vercel Edge Network',
+    category: 'Cloud & Security',
+    tagline: 'Platform Deployment Kilat',
+    description: 'Infrastruktur serverless global dengan revalidasi instan, routing edge, dan optimasi aset otomatis.',
+    badge: 'Edge Hosting',
+  },
+  {
+    name: 'Python & FastAPI',
+    category: 'Backend & Data',
+    tagline: 'Backend AI & Pemrosesan Data',
+    description: 'Bahasa utama untuk pipeline embedding vektor, scraping data terstruktur, dan microservice agen AI.',
+    badge: 'AI Backend',
+  },
+  {
+    name: 'AWS Cloud Services',
+    category: 'Cloud & Security',
+    tagline: 'Infrastruktur Cloud Skala Global',
+    description: 'Penyimpanan S3, komputasi EC2/Lambda, dan IAM security hardening terverifikasi resmi AWS.',
+    badge: 'Cloud Infra',
+  },
+  {
+    name: 'Caddy Web Server',
+    category: 'Cloud & Security',
+    tagline: 'Reverse Proxy TLS Otomatis',
+    description: 'Web server modern berkinerja tinggi dengan HTTPS Let\'s Encrypt otomatis tanpa certbot manual.',
+    badge: 'Web Server',
+  },
+  {
+    name: 'Git & GitHub Actions',
+    category: 'Cloud & Security',
+    tagline: 'Automated CI/CD Workflows',
+    description: 'Kontrol versi terpusat dengan pengujian otomatis sebelum deployment ke lingkungan produksi.',
+    badge: 'CI/CD',
+  },
+  {
+    name: 'Redis & Upstash',
+    category: 'Backend & Data',
+    tagline: 'In-Memory Cache & Rate Limiter',
+    description: 'Penyimpanan cache semantik super cepat di bawah 10ms untuk membatasi frekuensi API dan respon instan.',
+    badge: 'Cache & Rate-Limit',
+  },
 ];
 
 // -----------------------------------------------------------------------------
@@ -1429,5 +1542,525 @@ export const KLASIK_BLOG_POSTS: BlogPost[] = [
       conclusion:
         'Memahami dasar-dasar sistem operasi dan infrastruktur server memberi Anda kebebasan penuh sebagai insinyur perangkat lunak untuk menjalankan eksperimen apapun tanpa memikirkan tagihan cloud yang membengkak.',
     },
+  },,
+  {
+    id: 'keamanan-website-5-lapisan-produksi',
+    slug: 'keamanan-website-5-lapisan',
+    title: '5 Lapisan Keamanan Website Produksi: Dari Cloudflare WAF Hingga Query Terparameter',
+    excerpt: 'Menerapkan pertahanan berlapis pada website bisnis untuk mencegah SQL Injection, DDoS, brute force, dan kebocoran data pelanggan.',
+    category: 'Keamanan & Arsitektur',
+    readTime: '6 min read',
+    date: '18 Okt 2026',
+    featured: true,
+    icon: 'ShieldCheck',
+    content: {
+      intro: 'Banyak pengembang menganggap keamanan adalah urusan belakangan setelah aplikasi selesai. Padahal satu celah keamanan dapat merusak reputasi bisnis yang dibangun bertahun-tahun. Keamanan sistem yang baik dibangun dengan prinsip defense-in-depth.',
+      keyTakeaways: [
+        'Tidak ada satu sistem yang 100% aman; kuncinya adalah membuat setiap lapisan saling menopang.',
+        'WAF di edge memblokir 90% bot jahat sebelum menyentuh server komputasi Anda.',
+        'Parameterized query adalah pertahanan mutlak terhadap serangan SQL Injection.'
+      ],
+      sections: [
+        {
+          heading: '1. Arsitektur 5 Lapis Pertahanan',
+          body: 'Pertahanan dibagi menjadi: 1) Cloudflare WAF di edge; 2) Reverse Proxy TLS Caddy; 3) Linux OS Hardening & UFW; 4) WireGuard Mesh Tailscale; 5) Enkripsi Database dan Prepared Statements.'
+        }
+      ],
+      conclusion: 'Investasi pada keamanan adalah asuransi kelangsungan operasional bisnis digital Anda.'
+    }
   },
+  {
+    id: 'arsitektur-rag-whatsapp-bot-latensi-rendah',
+    slug: 'arsitektur-rag-whatsapp-bot',
+    title: 'Merancang Arsitektur RAG WhatsApp Bot dengan Latensi di Bawah 1.5 Detik',
+    excerpt: 'Strategi optimasi embedding vector, cache semantic, dan streaming webhook untuk respon customer care cerdas yang kilat.',
+    category: 'AI & Agents',
+    readTime: '8 min read',
+    date: '15 Okt 2026',
+    featured: true,
+    icon: 'Bot',
+    content: {
+      intro: 'Pengguna WhatsApp menuntut balasan instan. Jika bot AI Anda butuh 8 detik untuk menjawab pertanyaan stok barang, pelanggan akan menutup obrolan dan beralih ke kompetitor.',
+      keyTakeaways: [
+        'Model embedding harus dipilih yang berdimensi efisien (misal text-embedding-3-small).',
+        'Pertanyaan umum (FAQ) wajib disimpan dalam Redis Semantic Cache untuk respon <150ms.',
+        'Kirimkan sinyal status "sedang mengetik..." segera setelah webhook pesan diterima.'
+      ],
+      sections: [
+        {
+          heading: '1. Alur Webhook dan Eksekusi Vector Search',
+          body: 'Saat pesan masuk ke nomor WhatsApp Business, webhook mengirim payload ke serverless backend. Teks di-embed dan dicocokkan dengan pgvector di Supabase dalam radius cosinus > 0.82.'
+        }
+      ],
+      conclusion: 'Kecepatan dan akurasi adalah dua pilar yang membuat AI agent benar-benar diadopsi oleh pelanggan.'
+    }
+  },
+  {
+    id: 'mengapa-skor-lighthouse-penting-untuk-iklan',
+    slug: 'mengapa-skor-lighthouse-penting',
+    title: 'Mengapa Skor Google Lighthouse 95+ Berdampak Langsung pada Penurunan Biaya Iklan',
+    excerpt: 'Korelasi teknis antara kecepatan render halaman (LCP < 1.2s), Google Quality Score, dan biaya per klik (CPC) Meta Ads.',
+    category: 'Web Engineering',
+    readTime: '5 min read',
+    date: '10 Okt 2026',
+    featured: true,
+    icon: 'Zap',
+    content: {
+      intro: 'Banyak pemasar mengeluhkan biaya iklan Meta dan Google yang terus melonjak, tanpa menyadari bahwa 40% calon pembeli pergi sebelum landing page mereka sempat tampil sempurna di layar ponsel.',
+      keyTakeaways: [
+        'Waktu muat lebih lambat 1 detik meningkatkan bounce rate pengunjung iklan hingga 32%.',
+        'Google Ads memberikan diskon CPC hingga 20% untuk landing page dengan skor kecepatan tinggi.',
+        'Website statis kilat (<0.8 detik) menghasilkan rasio kontak WhatsApp yang jauh lebih tinggi.'
+      ],
+      sections: [
+        {
+          heading: '1. Menekan Bobot Aset di Bawah 300KB',
+          body: 'Gunakan format gambar modern AVIF, hilangkan pustaka JavaScript pihak ketiga yang berat, dan pastikan CSS critical di-inlining langsung di tag head dokumen HTML.'
+        }
+      ],
+      conclusion: 'Optimasi kecepatan website adalah cara paling efektif melipatgandakan ROI anggaran iklan Anda.'
+    }
+  },
+  {
+    id: 'panduan-migrasi-ke-nextjs-app-router-stabil',
+    slug: 'panduan-migrasi-ke-nextjs-app-router',
+    title: 'Panduan Praktis Migrasi ke Next.js App Router Tanpa Downtime',
+    excerpt: 'Langkah bertahap memindahkan routing Pages Router lama ke App Router modern dengan Server Components dan Streaming SSR.',
+    category: 'Web Engineering',
+    readTime: '7 min read',
+    date: '02 Okt 2026',
+    featured: false,
+    icon: 'Layers',
+    content: {
+      intro: 'Next.js App Router menghadirkan kapabilitas React Server Components yang revolusioner. Namun melakukan migrasi sekaligus pada aplikasi yang sedang berjalan di produksi bisa sangat berisiko.',
+      keyTakeaways: [
+        'Pages Router dan App Router dapat berjalan berdampingan dalam satu proyek yang sama.',
+        'Mulailah migrasi dari halaman statis seperti About dan Kontak sebelum menyentuh halaman dashboard dinamis.',
+        'Manfaatkan layout.tsx untuk mencegah re-render komponen navigasi utama.'
+      ],
+      sections: [
+        {
+          heading: '1. Strategi Koeksistensi Rute Bertahap',
+          body: 'Buat folder app/ berdampingan dengan pages/. Rute di app/ akan memiliki prioritas lebih tinggi, memungkinkan Anda menguji satu rute baru di staging sebelum merilisnya ke pengguna nyata.'
+        }
+      ],
+      conclusion: 'Migrasi bertahap menjamin stabilitas bisnis tanpa mengorbankan keuntungan arsitektur modern.'
+    }
+  },
+  {
+    id: 'setup-cloud-vps-caddy-server-otomatis-ssl',
+    slug: 'panduan-setup-cloud-vps-caddy',
+    title: 'Setup Cloud VPS Linux dengan Caddy Web Server: Otomatis SSL Tanpa Certbot',
+    excerpt: 'Cara mudah mengelola puluhan aplikasi web di VPS Linux murah dengan Caddyfile yang bersih dan perpanjangan SSL otomatis.',
+    category: 'Cloud & DevOps',
+    readTime: '6 min read',
+    date: '28 Sep 2026',
+    featured: false,
+    icon: 'Server',
+    content: {
+      intro: 'Mengonfigurasi Nginx dengan certbot dan crontab perpanjangan sertifikat seringkali menimbulkan error tak terduga. Caddy Web Server hadir sebagai alternatif modern dengan HTTPS otomatis bawaan.',
+      keyTakeaways: [
+        'Caddyfile hanya membutuhkan 3 baris konfigurasi untuk reverse proxy ber-HTTPS.',
+        'Sertifikat Let\'s Encrypt dan ZeroSSL diperpanjang otomatis secara redundan.',
+        'Mendukung protokol HTTP/3 secara native tanpa instalasi modul tambahan.'
+      ],
+      sections: [
+        {
+          heading: '1. Contoh Caddyfile Bersih',
+          body: 'domainanda.com {\n    reverse_proxy localhost:3000\n    encode gzip zstd\n}'
+        }
+      ],
+      conclusion: 'Alat yang sederhana dan andal mengurangi beban kognitif pemeliharaan infrastruktur cloud Anda.'
+    }
+  },
+  {
+    id: 'cara-kerja-vector-database-supabase-pgvector',
+    slug: 'cara-kerja-vector-database-supabase',
+    title: 'Memahami Cara Kerja Vector Database pgvector di Supabase untuk Pencarian Semantik',
+    excerpt: 'Menyimpan embedding teks dokumen bisnis dan melakukan similarity search menggunakan ekstensi pgvector di PostgreSQL.',
+    category: 'AI & Agents',
+    readTime: '7 min read',
+    date: '24 Sep 2026',
+    featured: false,
+    icon: 'Database',
+    content: {
+      intro: 'Pencarian kata kunci konvensional (LIKE %keyword%) gagal memahami makna sinonim. Vector database memungkinkan AI menemukan dokumen yang relevan berdasarkan konteks makna, bukan ejaan kata.',
+      keyTakeaways: [
+        'Vektor adalah array angka mengambang (misal 1536 float) yang merepresentasikan koordinat makna.',
+        'Ekstensi pgvector menambahkan tipe data vector dan operator jarak cosinus (<=>).',
+        'Indeks HNSW memungkinkan pencarian cepat di antara jutaan dokumen dalam hitungan milidetik.'
+      ],
+      sections: [
+        {
+          heading: '1. Definisi Tabel Embedding di Postgres',
+          body: 'CREATE EXTENSION IF NOT EXISTS vector;\nCREATE TABLE dokumen_sop (\n    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),\n    konten text NOT NULL,\n    embedding vector(1536)\n);'
+        }
+      ],
+      conclusion: 'Memanfaatkan PostgreSQL untuk data relasional dan vektor sekaligus mengeliminasi kebutuhan database terpisah.'
+    }
+  },
+  {
+    id: 'mengamankan-api-dengan-rate-limiting-upstash',
+    slug: 'mengamankan-api-dengan-rate-limiting',
+    title: 'Mengamankan Endpoint API Publik dengan Upstash Redis Rate Limiting',
+    excerpt: 'Mencegah pembengkakan tagihan LLM akibat serangan spammer dengan sliding window rate limiter di edge server.',
+    category: 'Keamanan & Arsitektur',
+    readTime: '5 min read',
+    date: '20 Sep 2026',
+    featured: false,
+    icon: 'Lock',
+    content: {
+      intro: 'Endpoint API yang memanggil LLM berbayar (seperti Claude atau OpenAI) adalah target empuk serangan pemborosan biaya jika dibiarkan tanpa pembatasan frekuensi kueri.',
+      keyTakeaways: [
+        'Algoritma Sliding Window lebih adil daripada Fixed Window untuk membatasi lonjakan request.',
+        'Upstash Redis berbasis serverless dengan latensi global di bawah 15ms.',
+        'Tolak request berlebih dengan status code HTTP 429 Too Many Requests.'
+      ],
+      sections: [
+        {
+          heading: '1. Penerapan di Middleware Edge',
+          body: 'import { Ratelimit } from "@upstash/ratelimit";\nconst ratelimit = new Ratelimit({\n  redis: Redis.fromEnv(),\n  limiter: Ratelimit.slidingWindow(10, "10 s"),\n});'
+        }
+      ],
+      conclusion: 'Rate limiting adalah dinding pengaman pertama yang melindungi dompet dan infrastruktur Anda.'
+    }
+  },
+  {
+    id: 'mencegah-adblocker-dengan-server-side-gtm',
+    slug: 'mencegah-adblocker-dengan-server-gtm',
+    title: 'Mencegah Kehilangan Data Akibat AdBlocker Menggunakan Server-Side GTM',
+    excerpt: 'Menjalankan container Google Tag Manager di sub-domain first-party (data.domainanda.com) untuk tracking analitik bersih.',
+    category: 'Keamanan & Arsitektur',
+    readTime: '6 min read',
+    date: '14 Sep 2026',
+    featured: false,
+    icon: 'Network',
+    content: {
+      intro: 'Hingga sepertiga pengguna internet di Asia Tenggara memasang pemblokir iklan di browser mereka. Akibatnya, script gtm.js standar dari google.com langsung diblokir sebelum sempat dimuat.',
+      keyTakeaways: [
+        'Subdomain first-party menyamarkan endpoint analitik sebagai bagian dari sistem web Anda.',
+        'Cookie first-party memiliki umur retensi yang jauh lebih panjang di Safari (ITP).',
+        'Data dapat disaring dan dianonimisasi sebelum dikirim ke platform analitik pihak ketiga.'
+      ],
+      sections: [
+        {
+          heading: '1. Setup DNS Routing ke Cloud Run / Stape',
+          body: 'Arahkan CNAME data.domainanda.com ke container sGTM. Script GTM dimuat dari https://data.domainanda.com/gtm.js sehingga tidak terdeteksi oleh daftar blokir adblocker publik.'
+        }
+      ],
+      conclusion: 'Data analitik yang utuh memberikan peta jalan yang jelas bagi keputusan ekspansi bisnis Anda.'
+    }
+  },
+  {
+    id: 'vibe-coding-dengan-claude-code-cli-modern',
+    slug: 'vibe-coding-dengan-claude-code-cli',
+    title: 'Vibe Coding yang Benar: Alur Spec-Driven Development dengan Claude Code CLI',
+    excerpt: 'Bagaimana developer profesional memanfaatkan agen terminal untuk membangun software 5x lebih cepat tanpa mengorbankan kualitas.',
+    category: 'Web Engineering',
+    readTime: '7 min read',
+    date: '08 Sep 2026',
+    featured: true,
+    icon: 'Terminal',
+    content: {
+      intro: 'Banyak orang salah kaprah mengartikan vibe coding sebagai koding malas tanpa pemahaman. Kenyataannya, vibe coder terbaik adalah mereka yang memiliki pemahaman arsitektur paling matang.',
+      keyTakeaways: [
+        'Spesifikasi tertulis yang presisi menghasilkan kode yang 90% langsung bekerja.',
+        'Gunakan agen terminal yang mampu membaca file dan menjalankan uji mandiri.',
+        'Lakukan commit git kecil secara berkala setelah setiap tugas selesai.'
+      ],
+      sections: [
+        {
+          heading: '1. Tiga Tahap: Plan, Execute, Verify',
+          body: 'Jangan langsung meminta agen koding menulis 500 baris. Minta ia membuat rencana langkah kerja, lakukan eksekusi satu per satu, dan verifikasi dengan perintah npm run build.'
+        }
+      ],
+      conclusion: 'AI tidak menggantikan developer; AI melipatgandakan kecepatan developer yang terstruktur.'
+    }
+  },
+  {
+    id: 'mengapa-tidak-boleh-pakai-wordpress-berat-untuk-iklan',
+    slug: 'mengapa-tidak-boleh-pakai-wordpress-berat',
+    title: 'Mengapa Landing Page Iklan Lebih Baik Pakai Static Code Ketimbang CMS Lambat',
+    excerpt: 'Perbandingan riil konsumsi sumber daya, kerentanan plugin bocor, dan kecepatan konversi antara WordPress berat vs Next.js/Static.',
+    category: 'Web Engineering',
+    readTime: '6 min read',
+    date: '04 Sep 2026',
+    featured: false,
+    icon: 'Cpu',
+    content: {
+      intro: 'WordPress memang mudah dipasang, namun menumpuk 30 plugin pihak ketiga dan pembuat halaman lambat di shared hosting adalah resep pasti menghasilkan landing page lelet yang membakar budget iklan.',
+      keyTakeaways: [
+        'Website statis tidak memerlukan query database MySQL setiap kali pengunjung membuka halaman.',
+        'Tidak ada risiko celah keamanan login /wp-admin atau eksploitasi plugin kadaluarsa.',
+        'Waktu Time to First Byte (TTFB) dari CDN statis adalah di bawah 30 milidetik.'
+      ],
+      sections: [
+        {
+          heading: '1. Analisis Beban Server saat Iklan Skala Besar',
+          body: 'Ketika ribuan pengunjung datang bersamaan dari kampanye iklan flash sale, website statis tetap santai melayani dari edge cache. Sebaliknya, CMS konvensional sering tumbang kehabisan memori RAM.'
+        }
+      ],
+      conclusion: 'Untuk halaman penawaran produk yang dibiayai iklan, pilihlah arsitektur kode statis yang tahan banting.'
+    }
+  },
+  {
+    id: 'tips-desain-bento-grid-modern-ui-ux',
+    slug: 'tips-desain-bento-grid-modern',
+    title: 'Prinsip Desain Bento Grid: Menyajikan Informasi Kompleks dengan Visual Bersih',
+    excerpt: 'Evolusi tata letak antarmuka modern yang diadopsi Apple, Vercel, dan Stripe untuk menyajikan fitur produk secara intuitif.',
+    category: 'Web Engineering',
+    readTime: '5 min read',
+    date: '30 Agt 2026',
+    featured: false,
+    icon: 'Layers',
+    content: {
+      intro: 'Menyajikan terlalu banyak teks di halaman beranda membuat pengunjung bosan dan pergi. Pola desain Bento Grid memecah informasi ke dalam kompartemen visual yang seimbang dan menyenangkan dilihat.',
+      keyTakeaways: [
+        'Gunakan variasi ukuran sel (span 1, span 2) untuk menciptakan ritme visual yang dinamis.',
+        'Sertakan micro-interaction halus seperti hover elevation dan ring border halus.',
+        'Prioritaskan keterbacaan tipografi di atas sekadar ornamen hiasan grafis.'
+      ],
+      sections: [
+        {
+          heading: '1. Susunan Grid CSS Responsif',
+          body: 'Gunakan CSS Grid dengan auto-fit dan minmax: grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) dengan gap proporsional untuk tampilan mobile yang tetap rapi.'
+        }
+      ],
+      conclusion: 'Desain yang baik adalah desain yang membuat informasi rumit terasa mudah dicerna oleh siapa saja.'
+    }
+  },
+  {
+    id: 'otomasi-workflow-n8n-self-hosted-docker',
+    slug: 'otomasi-workflow-n8n-self-hosted',
+    title: 'Menggantikan Biaya Langganan Zapier dengan n8n Self-Hosted di Docker',
+    excerpt: 'Membangun mesin integrasi operasional bisnis tanpa batas eksekusi dengan biaya VPS hemat $5 per bulan.',
+    category: 'Cloud & DevOps',
+    readTime: '7 min read',
+    date: '25 Agt 2026',
+    featured: false,
+    icon: 'Workflow',
+    content: {
+      intro: 'Layanan otomasi cloud komersial seringkali mengenakan biaya mahal begitu alur kerja bisnis Anda mengeksekusi ribuan task per bulan. n8n self-hosted memberikan kendali penuh tanpa batasan task.',
+      keyTakeaways: [
+        'n8n mendukung eksekusi kode JavaScript/Python kustom di dalam node workflow.',
+        'Data transaksi sensitif tetap berada di server privat Anda tanpa dikirim ke pihak ketiga.',
+        'Dapat dihubungkan langsung ke WhatsApp Gateway, Supabase, dan model AI LLM.'
+      ],
+      sections: [
+        {
+          heading: '1. Docker Compose Ringkas n8n',
+          body: 'version: "3.8"\nservices:\n  n8n:\n    image: docker.n8n.io/n8nio/n8n\n    restart: always\n    ports:\n      - "5678:5678"\n    environment:\n      - N8N_HOST=otomasi.domainanda.com'
+        }
+      ],
+      conclusion: 'Otomasi mandiri memberi Anda kemerdekaan infrastruktur dan efisiensi margin operasional.'
+    }
+  },
+  {
+    id: 'panduan-deduplikasi-event-capi-browser-server',
+    slug: 'panduan-deduplikasi-event-capi',
+    title: 'Panduan Teknis Deduplikasi Event CAPI: Browser Event vs Server Event ID',
+    excerpt: 'Mekanisme pencocokan sinyal piksel iklan di server Meta agar metrik ROAS dan rasio konversi Anda akurat 100%.',
+    category: 'Keamanan & Arsitektur',
+    readTime: '6 min read',
+    date: '21 Agt 2026',
+    featured: false,
+    icon: 'TrendingUp',
+    content: {
+      intro: 'Jika Anda mengirimkan event pembelian dari browser DAN dari server secara bersamaan tanpa penanganan deduplikasi, Meta akan mencatat dua transaksi untuk satu pesanan yang sama, merusak laporan ROAS Anda.',
+      keyTakeaways: [
+        'Nama event (eventName) dan Event ID (eventID) HARUS sama persis di kedua sisi.',
+        'Meta memberikan jendela deduplikasi hingga 48 jam untuk mencocokkan sinyal.',
+        'Sinyal server yang membawa fbp, fbc, dan IP address akan melengkapi sinyal browser.'
+      ],
+      sections: [
+        {
+          heading: '1. Pembuatan ID Transaksi Deterministik',
+          body: 'const eventId = "ORDER_" + order.id;\n// Tembakkan ke fbq("track", "Purchase", {...}, { eventID: eventId });\n// Kirimkan juga dari webhook backend dengan event_id: eventId.'
+        }
+      ],
+      conclusion: 'Data yang bersih dan tidak duplikat adalah kompas bagi algoritma iklan untuk menemukan pembeli berikutnya.'
+    }
+  },
+  {
+    id: 'ci-cd-github-actions-untuk-umkm-dan-startup',
+    slug: 'ci-cd-github-actions-untuk-umkm',
+    title: 'Pipeline CI/CD GitHub Actions Otomatis: Push Kode Langsung Live ke Server',
+    excerpt: 'Menghilangkan stres saat merilis pembaruan website dengan alur kerja git otomatis yang andal dan terstruktur.',
+    category: 'Cloud & DevOps',
+    readTime: '5 min read',
+    date: '16 Agt 2026',
+    featured: false,
+    icon: 'GitBranch',
+    content: {
+      intro: 'Banyak pemilik usaha takut memperbarui websitenya karena trauma halaman web pernah blank putih saat diubah. Dengan pipeline CI/CD, setiap perubahan diuji dulu sebelum diterapkan ke server live.',
+      keyTakeaways: [
+        'Setiap commit memicu build di lingkungan terisolasi untuk memastikan tidak ada file korup.',
+        'Rollback ke versi sebelumnya dapat dilakukan dalam 1 klik jika ada kendala mendesak.',
+        'Menghilangkan kebiasaan berbahaya mengedit file live via file manager cPanel.'
+      ],
+      sections: [
+        {
+          heading: '1. Tiga Pilar Pipeline Rilis Sehat',
+          body: '1. Lint & Format Check; 2. Type Checking TypeScript; 3. Atomic Deployment ke edge network dengan rute zero-downtime.'
+        }
+      ],
+      conclusion: 'Otomatisasi rilis mengembalikan ketenangan pikiran developer dan pemilik bisnis.'
+    }
+  },
+  {
+    id: 'cara-memilih-domain-dan-dns-cloudflare-tercepat',
+    slug: 'cara-memilih-domain-dan-dns-cloudflare',
+    title: 'Strategi Memilih Domain Bisnis dan Optimasi DNS Resolver via Cloudflare 1.1.1.1',
+    excerpt: 'Tips memilih ekstensi domain yang kredibel (.id vs .com) dan memangkas waktu resolusi DNS global hingga di bawah 10ms.',
+    category: 'Cloud & DevOps',
+    readTime: '5 min read',
+    date: '12 Agt 2026',
+    featured: false,
+    icon: 'Globe',
+    content: {
+      intro: 'Nama domain adalah aset merek digital pertama Anda. Namun kecepatan nameserver DNS registrar bawaan seringkali lambat merespon pengguna di Indonesia.',
+      keyTakeaways: [
+        'Ekstensi .id memberikan sinyal lokalisasi kuat di mata mesin pencari Google Indonesia.',
+        'Pindahkan nameserver ke Cloudflare untuk waktu lookup DNS tercepat di dunia.',
+        'Aktifkan DNSSEC untuk mencegah serangan pembajakan DNS cache poisoning.'
+      ],
+      sections: [
+        {
+          heading: '1. Optimasi TTL dan Flat CNAME',
+          body: 'Cloudflare CNAME Flattening memungkinkan domain root (tanpa www) menunjuk ke target serverless tanpa melanggar standar RFC DNS.'
+        }
+      ],
+      conclusion: 'Fondasi domain yang solid memastikan website Anda selalu dapat ditemukan dengan instan.'
+    }
+  },
+  {
+    id: 'desain-basis-data-postgresql-multitenant-saas',
+    slug: 'desain-basis-data-postgresql-multitenant',
+    title: 'Pola Desain Basis Data PostgreSQL untuk Aplikasi SaaS Multi-Tenant',
+    excerpt: 'Memilih antara isolasi skema vs Row Level Security (RLS) untuk keamanan data pelanggan bisnis yang ketat.',
+    category: 'Cloud & DevOps',
+    readTime: '7 min read',
+    date: '06 Agt 2026',
+    featured: false,
+    icon: 'Database',
+    content: {
+      intro: 'Dalam aplikasi multi-pengguna atau SaaS, kebocoran data antar perusahaan klien adalah bencana hukum dan bisnis. Desain database harus menjamin isolasi data sejak baris query pertama.',
+      keyTakeaways: [
+        'PostgreSQL Row Level Security (RLS) menerapkan aturan filter tenant_id langsung di level mesin database.',
+        'Aplikasi tidak bisa secara tidak sengaja membaca data tenant lain bahkan bila developer lupa menulis klausa WHERE.',
+        'Indeks gabungan (tenant_id, created_at) menjaga query tetap kilat pada jutaan baris data.'
+      ],
+      sections: [
+        {
+          heading: '1. Kebijakan RLS di PostgreSQL',
+          body: 'ALTER TABLE orders ENABLE ROW LEVEL SECURITY;\\nCREATE POLICY tenant_isolation ON orders\\n    USING (tenant_id = current_setting("app.current_tenant_id"));'
+        }
+      ],
+      conclusion: 'Keamanan data multi-tenant yang ditegakkan di level database memberikan jaminan kepatuhan regulasi terkuat.'
+    }
+  },
+  {
+    id: 'strategi-lead-generation-whatsapp-presisi',
+    slug: 'strategi-lead-generation-whatsapp',
+    title: 'Meningkatkan Konversi WhatsApp Leads dari Iklan Berbayar Menggunakan Click-to-Chat',
+    excerpt: 'Teknik merancang tautan WhatsApp berparameter dinamis untuk mengetahui dari mana asal kampanye setiap prospek.',
+    category: 'Web Engineering',
+    readTime: '5 min read',
+    date: '01 Agt 2026',
+    featured: false,
+    icon: 'Sparkles',
+    content: {
+      intro: 'Banyak bisnis menyematkan tombol WhatsApp biasa tanpa pesan pembuka otomatis. Akibatnya, calon pembeli merasa canggung untuk memulai chat pertama mereka.',
+      keyTakeaways: [
+        'Sediakan draft pesan pembuka ramah yang mencantumkan nama produk yang sedang dilihat.',
+        'Sematkan kode referensi unik (ref: PROD-98) di pesan untuk pelacakan sumber iklan.',
+        'Gunakan tombol fixed melayang di layar ponsel untuk aksesibilitas jempol pengguna.'
+      ],
+      sections: [
+        {
+          heading: '1. Tautan URL Enkripsi Ramah Pengguna',
+          body: 'const text = encodeURIComponent("Halo Kak Fitran, saya tertarik dengan Paket Web Kilat.");\nconst waUrl = "https://wa.me/628123456789?text=" + text;'
+        }
+      ],
+      conclusion: 'Mempermudah calon klien memulai percakapan adalah separuh dari keberhasilan penjualan Anda.'
+    }
+  },
+  {
+    id: 'membedah-latensi-llm-streaming-sse',
+    slug: 'membedah-latensi-llm-streaming',
+    title: 'Membedah Latensi LLM: Mengapa Server-Sent Events (SSE) Wajib untuk AI Chat',
+    excerpt: 'Mengeliminasi waktu tunggu membosankan pengguna dengan mengalirkan token jawaban secara real-time dari server ke browser.',
+    category: 'AI & Agents',
+    readTime: '6 min read',
+    date: '28 Jul 2026',
+    featured: false,
+    icon: 'Zap',
+    content: {
+      intro: 'Menunggu 6 detik untuk sebuah paragraf AI yang muncul sekaligus terasa seperti keabadian. Dengan streaming token, pengguna membaca kata pertama dalam waktu 400 milidetik.',
+      keyTakeaways: [
+        'Server-Sent Events (SSE) lebih ringan daripada WebSocket untuk komunikasi satu arah server-ke-klien.',
+        'Time to First Token (TTFT) adalah metrik terpenting dalam persepsi kecepatan antarmuka AI.',
+        'ReadableStream di browser modern memungkinkan pembaruan DOM yang sangat mulus.'
+      ],
+      sections: [
+        {
+          heading: '1. Respon Streaming di Edge Endpoint',
+          body: 'return new Response(stream, {\n  headers: { "Content-Type": "text/event-stream", "Cache-Control": "no-cache" },\n});'
+        }
+      ],
+      conclusion: 'Persepsi kecepatan adalah segalanya dalam membangun pengalaman aplikasi berbasis AI.'
+    }
+  },
+  {
+    id: 'zero-trust-network-dengan-tailscale-mesh',
+    slug: 'zero-trust-network-dengan-tailscale',
+    title: 'Menutup Port SSH 22 ke Publik: Implementasi Zero-Trust Mesh Network dengan Tailscale',
+    excerpt: 'Menghilangkan bot pemindai IP dan serangan password brute-force dengan jaringan privat WireGuard terenkripsi.',
+    category: 'Keamanan & Arsitektur',
+    readTime: '6 min read',
+    date: '22 Jul 2026',
+    featured: false,
+    icon: 'ShieldCheck',
+    content: {
+      intro: 'Dalam hitungan jam setelah sebuah VPS cloud diaktifkan, ribuan bot dari seluruh dunia akan mencoba membobol port SSH 22 Anda dengan jutaan kombinasi kata sandi.',
+      keyTakeaways: [
+        'Tutup port 22 di firewall UFW untuk seluruh antarmuka publik.',
+        'Hubungkan VPS dan laptop/HP Anda ke Tailscale mesh network privat.',
+        'Akses SSH hanya dibuka ke antarmuka jaringan tailscale0 ber-IP 100.x.y.z.'
+      ],
+      sections: [
+        {
+          heading: '1. Firewall UFW Khusus Tailscale',
+          body: 'sudo ufw default deny incoming\nsudo ufw allow in on tailscale0 to any port 22 proto tcp\nsudo ufw enable'
+        }
+      ],
+      conclusion: 'Server yang tidak terlihat oleh publik adalah server yang tidak bisa diserang dari luar.'
+    }
+  },
+  {
+    id: 'audit-performa-web-core-web-vitals-checklist',
+    slug: 'audit-performa-web-core-web-vitals',
+    title: 'Checklist 10 Langkah Audit Core Web Vitals (LCP, FID, CLS) Sebelum Meluncurkan Iklan',
+    excerpt: 'Panduan sistematis memeriksa stabilitas visual, respon interaksi, dan elemen Largest Contentful Paint halaman Anda.',
+    category: 'Web Engineering',
+    readTime: '7 min read',
+    date: '15 Jul 2026',
+    featured: true,
+    icon: 'Gauge',
+    content: {
+      intro: 'Core Web Vitals adalah standar baku Google untuk menilai kualitas pengalaman penjelajahan pengguna di dunia nyata. Nilai yang buruk akan menurunkan peringkat SEO dan menaikkan biaya iklan.',
+      keyTakeaways: [
+        'LCP (Largest Contentful Paint) harus di bawah 2.5 detik (target optimal fitran.dev < 0.8s).',
+        'CLS (Cumulative Layout Shift) harus mendekati 0 untuk mencegah elemen melompat saat gambar dimuat.',
+        'INP (Interaction to Next Paint) mengukur responsivitas klik tombol di ponsel berspesifikasi rendah.'
+      ],
+      sections: [
+        {
+          heading: '1. Mengunci Dimensi Gambar untuk Mencegah CLS',
+          body: 'Selalu berikan atribut width dan height eksplisit pada tag <img> atau gunakan container ber-rasio aspek (aspect-ratio) agar ruang tampilan sudah dicadangkan sebelum gambar selesai diunduh.'
+        }
+      ],
+      conclusion: 'Audit performa sebelum rilis adalah jaminan bahwa budget pemasaran Anda tidak menguap sia-sia.'
+    }
+  }
 ];

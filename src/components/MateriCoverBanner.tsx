@@ -18,28 +18,28 @@ export const MateriCoverBanner: React.FC<MateriCoverBannerProps> = ({
 }) => {
   return (
     <div
-      className={`relative overflow-hidden rounded-3xl bg-[#0B0F19] text-white border border-zinc-800 shadow-xl p-6 sm:p-8 flex flex-col justify-between min-h-[200px] sm:min-h-[220px] select-none ${className}`}
+      className={`relative overflow-hidden rounded-3xl bg-linear-to-br from-[#1E3A8A] via-[#1d4ed8] to-[#059669] text-white border-2 border-blue-400/40 shadow-xl p-6 sm:p-8 flex flex-col justify-between min-h-[200px] sm:min-h-[220px] select-none ${className}`}
     >
       {/* Background Curved Graphic Ring (Clean solid styling inspired by Sekawan Media) */}
-      <div className="absolute -right-12 -top-12 w-64 h-64 rounded-full border-[18px] border-emerald-500/10 pointer-events-none" />
-      <div className="absolute right-16 -bottom-16 w-48 h-48 rounded-full border-[12px] border-blue-500/10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-blue-950/20 pointer-events-none" />
+      <div className="absolute -right-12 -top-12 w-64 h-64 rounded-full border-[18px] border-white/10 pointer-events-none" />
+      <div className="absolute right-16 -bottom-16 w-48 h-48 rounded-full border-[12px] border-emerald-300/15 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-white/5 pointer-events-none" />
 
       {/* Top Header: Official fitran.dev Logo Mark + Category Pill */}
       <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
         {/* Official Brand Watermark: FD fitran.dev */}
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md bg-[#1E3A8A] border border-blue-400/40 flex items-center justify-center text-white text-[10px] font-black tracking-tight shadow-xs">
+          <div className="w-6 h-6 rounded-md bg-white text-[#1E3A8A] flex items-center justify-center text-[10px] font-black tracking-tight shadow-xs">
             FD
           </div>
-          <span className="font-mono text-xs font-black tracking-tight text-zinc-200">
-            fitran<span className="text-emerald-400">.dev</span>
+          <span className="font-mono text-xs font-black tracking-tight text-white">
+            fitran<span className="text-emerald-300">.dev</span>
           </span>
         </div>
 
         {/* Category Pill */}
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950/70 border border-blue-700/60 text-blue-300 font-mono text-[10px] font-bold tracking-wider uppercase">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/30 text-white font-mono text-[10px] font-bold tracking-wider uppercase">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse" />
           <span>{category}</span>
         </span>
       </div>

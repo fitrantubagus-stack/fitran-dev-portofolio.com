@@ -370,21 +370,22 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
 
       {/* ========================================================================= */}
       {/* 3. FLIPBOOK MATERI BELAJAR BANNER (ENGINEERING HANDBOOK SERIES)           */}
+      {/* Warna Cerah, Bersih, dan Elegan Sesuai Permintaan User                    */}
       {/* ========================================================================= */}
-      <div className="p-8 sm:p-10 rounded-3xl bg-zinc-950 text-white border border-blue-900/60 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden">
+      <div className="p-8 sm:p-10 rounded-3xl bg-linear-to-br from-blue-50/90 via-sky-50/70 to-emerald-50/90 text-zinc-950 dark:text-white dark:from-zinc-900 dark:via-[#111827] dark:to-zinc-900 border-2 border-blue-200/90 dark:border-blue-900/60 shadow-lg flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden">
         <div className="space-y-3 max-w-2xl relative z-10">
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-blue-950 border border-blue-700 text-blue-300 font-mono text-[11px] font-bold uppercase">
+            <span className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950 border border-blue-300 dark:border-blue-700 text-[#1E3A8A] dark:text-blue-300 font-mono text-[11px] font-bold uppercase">
               ★ FITRAN DEV ENGINEERING HANDBOOK
             </span>
-            <span className="text-zinc-400 font-mono text-xs">10 Bab Kurikulum Terpadu</span>
+            <span className="text-zinc-500 dark:text-zinc-400 font-mono text-xs">10 Bab Kurikulum Terpadu</span>
           </div>
 
-          <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+          <h3 className="text-2xl sm:text-3xl font-black text-zinc-950 dark:text-white tracking-tight">
             Pelajari Materi Web Kilat &amp; AI dalam Format Buku 3D Interaktif (Flipbook)
           </h3>
 
-          <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+          <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">
             Rasakan sensasi membaca buku materi teknis dengan animasi pembalikan lembar kertas 3D realistis di atas meja
             kayu: mencakup panduan render kilat &lt;0.8s, keamanan server 5 lapis, arsitektur RAG WhatsApp Agent, serta
             optimasi Meta Conversions API (CAPI).
@@ -394,7 +395,7 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
             {onOpenFlipbook && (
               <button
                 onClick={onOpenFlipbook}
-                className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg group"
+                className="px-6 py-3 rounded-xl bg-[#1E3A8A] hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-md group"
               >
                 <span>Buka Buku Materi 3D (Flipbook)</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -407,19 +408,19 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
         <div className="relative z-10 shrink-0">
           <div
             onClick={onOpenFlipbook}
-            className="w-48 sm:w-56 h-36 sm:h-40 rounded-2xl bg-[#f5efe6] text-zinc-900 border-4 border-amber-900/30 shadow-2xl p-4 flex flex-col justify-between cursor-pointer hover:scale-105 transition-transform"
+            className="w-48 sm:w-56 h-36 sm:h-40 rounded-2xl bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white border-2 border-amber-300 dark:border-amber-700 shadow-xl p-4 flex flex-col justify-between cursor-pointer hover:scale-105 transition-transform"
           >
-            <div className="flex items-center justify-between border-b border-zinc-300 pb-1">
-              <span className="font-mono text-[9px] font-bold text-blue-900">Fitran Dev Handbook</span>
+            <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-700 pb-1">
+              <span className="font-mono text-[9px] font-bold text-[#1E3A8A] dark:text-blue-400">Fitran Dev Handbook</span>
               <span className="font-mono text-[9px] text-zinc-500">10 Bab</span>
             </div>
             <div className="space-y-1">
-              <p className="font-serif font-black text-xs text-zinc-900 leading-snug line-clamp-2">
+              <p className="font-serif font-black text-xs text-zinc-900 dark:text-white leading-snug line-clamp-2">
                 Arsitektur Web Kilat, Keamanan &amp; AI Engineering
               </p>
-              <p className="text-[10px] font-sans text-zinc-600">Panduan Teknis Terverifikasi</p>
+              <p className="text-[10px] font-sans text-zinc-500">Panduan Teknis Terverifikasi</p>
             </div>
-            <p className="text-[9px] font-mono text-blue-700 font-bold flex items-center gap-1">
+            <p className="text-[9px] font-mono text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
               <span>Klik untuk Baca Materi</span>
               <span>📖</span>
             </p>

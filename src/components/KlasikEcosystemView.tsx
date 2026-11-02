@@ -32,6 +32,8 @@ import { FitranPixelLogo, FitranPixelIcon, TealBot, BlueBot, OrangeBot } from '.
 import { WebsiteKilatPromoPoster, CybersecurityOperationsPoster, MetaCapiPromoPoster } from './PromotionalShowcasePosters';
 import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
 import { SpotifyPlaylist } from './SpotifyPlaylist';
+import { ToolLogo } from './ToolLogo';
+import { InteractiveToolsShowcase } from './InteractiveToolsShowcase';
 import { CertificateItem, ProjectItem, SectionId } from '../types';
 import {
   Award,
@@ -1222,11 +1224,14 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               {KLASIK_TOOLS.slice(0, 12).map((t, idx) => (
-                <div key={idx} className="p-3.5 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-center space-y-1">
+                <div key={idx} className="p-3.5 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-center space-y-2 hover:border-[#1E3A8A]/50 transition-all shadow-xs">
+                  <div className="flex justify-center pt-1">
+                    <ToolLogo name={t.name} size={28} />
+                  </div>
+                  <p className="font-bold text-xs text-zinc-900 dark:text-white line-clamp-1">{t.name}</p>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
                     {t.badge || 'Tech'}
                   </span>
-                  <p className="font-bold text-xs text-zinc-900 dark:text-white mt-1">{t.name}</p>
                 </div>
               ))}
             </div>
@@ -1785,7 +1790,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   >
                     <option value="ai">AI untuk Bisnis (8 Bab Studio)</option>
                     <option value="digital-marketing">Digital Marketing &amp; CAPI (8 Bab)</option>
-                    <option value="vibe-coding">Vibe Coding &amp; Tooling (6 Bab)</option>
+                    <option value="vibe-coding">Vibe Coding &amp; Tooling (9 Bab)</option>
                   </select>
                 </div>
               </div>
@@ -1816,7 +1821,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           /* 3-COLUMN DOCUMENTATION STUDIO (Matches media_1793550777405_70e0ce2c.png) */
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* COLUMN 1: LEFT SIDEBAR (Search + Chapter Accordion) */}
-            <div className="lg:col-span-3 space-y-4">
+            <div className="lg:col-span-3 space-y-4 lg:sticky lg:top-20 self-start max-h-[calc(100vh-6rem)] overflow-y-auto pr-1">
               {/* Search Bar */}
               <div className="relative">
                 <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -1850,7 +1855,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                         }`}
                       >
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isCurrentChapter ? 'bg-[#1E3A8A]' : 'bg-zinc-300 dark:bg-zinc-700'}`} />
+                          <span className="text-sm shrink-0">{chapter.icon || '📘'}</span>
                           <span className="truncate">{chapter.title}</span>
                         </div>
                         <ChevronDown className={`w-3.5 h-3.5 text-zinc-400 shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -2033,7 +2038,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             </div>
 
             {/* COLUMN 3: RIGHT SIDEBAR (Actions + Table of Contents + Related Service) */}
-            <div className="lg:col-span-3 space-y-6">
+            <div className="lg:col-span-3 space-y-6 lg:sticky lg:top-20 self-start">
               {/* Action Buttons */}
               <div className="space-y-2">
                 <button
@@ -2127,6 +2132,45 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 </button>
               </div>
             </div>
+
+            {/* Grounded Equalizer Footer Strip across all 12 columns */}
+            <div className="lg:col-span-12 mt-4 p-6 rounded-2xl bg-gradient-to-r from-blue-50/90 via-sky-50/50 to-emerald-50/90 dark:from-zinc-900 dark:via-[#111319] dark:to-zinc-900 border border-zinc-200 dark:border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-xl bg-[#1E3A8A] text-white flex items-center justify-center font-bold text-xl shadow-sm shrink-0">
+                  {activeChapter.icon || '🎓'}
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300">
+                      Kurikulum Resmi fitran.dev
+                    </span>
+                    <span className="text-[10px] font-mono text-zinc-500">26 Bab Lengkap Teruji</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-zinc-950 dark:text-white mt-1">
+                    {activeChapter.title} — Dokumentasi Terverifikasi
+                  </h4>
+                  <p className="text-xs text-zinc-500 line-clamp-1">
+                    Semua modul dan template kode siap pakai untuk efisiensi bisnis riil di lapangan.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-3 shrink-0">
+                <button
+                  onClick={() => setLearningViewMode('flipbook')}
+                  className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-xs"
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>Baca Versi Flipbook 3D</span>
+                </button>
+                <button
+                  onClick={() => handleWhatsAppConsultation(`Konsultasi materi belajar: ${activeChapter.title}`)}
+                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-xs"
+                >
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  <span>Tanya Mentor via WhatsApp</span>
+                </button>
+              </div>
+            </div>
           </div>
           )}
         </div>
@@ -2176,7 +2220,10 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          {/* Interactive 3D Card Deck Fan Showcase (Inspired by eka-revandi.vercel.app) */}
+          <InteractiveToolsShowcase />
+
+          <div className="flex flex-wrap items-center gap-2 pt-4">
             {['Semua', 'Frontend & Web', 'AI & LLMs', 'Backend & Data', 'Cloud & Security', 'Marketing & Analytics'].map((cat) => (
               <button
                 key={cat}
@@ -2194,19 +2241,23 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredTools.map((tool, idx) => (
-              <div key={idx} className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-3 shadow-xs">
+              <div key={idx} className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-4 shadow-xs hover:border-[#1E3A8A]/50 transition-all">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
-                    {tool.category}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center shrink-0 shadow-xs">
+                      <ToolLogo name={tool.name} size={30} />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-base text-zinc-950 dark:text-white leading-tight">{tool.name}</h3>
+                      <p className="text-[11px] text-zinc-500 font-medium">{tool.tagline}</p>
+                    </div>
+                  </div>
                   {tool.badge && (
-                    <span className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
                       {tool.badge}
                     </span>
                   )}
                 </div>
-                <h3 className="font-bold text-lg text-zinc-950 dark:text-white">{tool.name}</h3>
-                <p className="text-xs text-zinc-500 font-medium">{tool.tagline}</p>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed pt-2 border-t border-zinc-100 dark:border-zinc-800">
                   {tool.description}
                 </p>
@@ -2584,7 +2635,12 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                         }}
                         className="p-5 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A]/50 cursor-pointer transition-all space-y-2 group"
                       >
-                        <span className="text-[10px] font-mono text-zinc-400 uppercase">{post.category} · {post.readTime}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 rounded-md bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900/60 flex items-center justify-center text-xs shrink-0">
+                            {post.icon || '📝'}
+                          </span>
+                          <span className="text-[10px] font-mono text-zinc-400 uppercase">{post.category} · {post.readTime}</span>
+                        </div>
                         <h4 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:text-blue-400 dark:group-hover:text-red-400 transition-colors line-clamp-2">
                           {post.title}
                         </h4>
@@ -2608,7 +2664,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   Tulisan Pilihan seputar AI, Web &amp; Keamanan
                 </h1>
                 <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
-                  Catatan arsitektur dan pengalaman lapangan mengenai implementasi teknologi nyata untuk bisnis.
+                  26 artikel mendalam dan catatan arsitektur riil lapangan mengenai implementasi AI, tracking iklan, dan rekayasa web modern.
                 </p>
               </div>
 
@@ -2644,10 +2700,15 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
-                        <span className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
-                          {post.category}
-                        </span>
-                        <span>{post.date} • {post.readTime}</span>
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900/60 flex items-center justify-center text-base shrink-0 shadow-xs">
+                            {post.icon || '📝'}
+                          </span>
+                          <span className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold truncate">
+                            {post.category}
+                          </span>
+                        </div>
+                        <span className="shrink-0">{post.date} • {post.readTime}</span>
                       </div>
                       <h3 className="font-bold text-lg text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:text-blue-400 dark:group-hover:text-red-400 transition-colors">
                         {post.title}

@@ -2,21 +2,9 @@ import React, { useState } from 'react';
 import {
   ChevronLeft,
   ChevronRight,
-  BookOpen,
   X,
-  Sparkles,
-  Code2,
-  ShieldCheck,
-  Cpu,
-  Layers,
-  Terminal,
-  TrendingUp,
-  CheckCircle2,
-  Database,
-  ArrowRight,
-  Zap,
+  BookOpen,
 } from 'lucide-react';
-import { FitranPixelLogo, TealBot, BlueBot, OrangeBot } from './FitranPixelLogo';
 
 interface InteractiveFlipbookProps {
   onClose?: () => void;
@@ -26,7 +14,6 @@ interface InteractiveFlipbookProps {
 
 interface BookSpread {
   id: string;
-  moduleId: string;
   moduleName: string;
   leftPageNum: number;
   rightPageNum: number;
@@ -44,390 +31,284 @@ export const InteractiveFlipbook: React.FC<InteractiveFlipbookProps> = ({
   className = '',
 }) => {
   const [spreadIndex, setSpreadIndex] = useState<number>(initialSpreadIndex);
-  const [isFlipping, setIsFlipping] = useState<boolean>(false);
-  const [zoomLevel, setZoomLevel] = useState<number>(1);
+  const [flipDirection, setFlipDirection] = useState<'next' | 'prev' | null>(null);
 
-  // =========================================================================
-  // MATERI BELAJAR BUKU FISIK 3D (FITRAN DEV HANDBOOK SERIES)
-  // Referensi animasi & tata letak buku fisik, isi materi rekayasa web & AI murni
-  // =========================================================================
+  // 10 Bab Kurikulum Terpadu Fitran Dev Handbook
   const MATERI_SPREADS: BookSpread[] = [
-    // -----------------------------------------------------------------------
-    // SPREAD 1: ARSITEKTUR WEB KILAT & KEAMANAN SERVER (MODUL 1)
-    // -----------------------------------------------------------------------
     {
       id: 'web-kilat-keamanan',
-      moduleId: 'web-kilat',
       moduleName: 'Modul 1: Web Kilat & Keamanan',
       leftPageNum: 1,
       rightPageNum: 2,
       leftTitle: 'Bab 01: Arsitektur Website Kilat (<0.8s)',
       leftSubtitle: 'Prinsip Rekayasa Performa Tinggi & Core Web Vitals',
       leftContent: (
-        <div className="space-y-3.5 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
+        <div className="space-y-3 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
           <p>
             Kecepatan bukan sekadar estetika, melainkan penentu utama konversi bisnis. Setiap penundaan 100 milidetik
             dapat menurunkan tingkat konversi penjualan hingga 7%. Dalam buku panduan ini, kita menerapkan pola
             arsitektur hibrida modern yang menggabungkan <strong>Static Site Generation (SSG)</strong> dengan{' '}
             <strong>Edge Caching</strong>.
           </p>
-
-          <div className="p-3.5 rounded-xl bg-blue-50/80 border border-blue-200 space-y-1.5 font-sans">
+          <div className="p-3 rounded-xl bg-blue-50/80 border border-blue-200 space-y-1 font-sans">
             <span className="font-mono text-[10px] font-bold text-blue-900 uppercase">
               Alur Distribusi Konten Kilat:
             </span>
-            <div className="font-mono text-[11px] text-blue-950 space-y-1">
+            <div className="font-mono text-[11px] text-blue-950 space-y-0.5">
               <p>1. Permintaan Browser Pengunjung</p>
               <p>2. Edge Cloudflare CDN Cache Hit (&lt;25ms)</p>
               <p>3. Dynamic Revalidation di Serverless Edge</p>
               <p>4. Render DOM Pertama &lt; 0.8 Detik</p>
             </div>
           </div>
-
           <p>
-            Dengan mengompres aset gambar ke format modern <code>AVIF / WebP</code> dan menghilangkan Javascript yang
-            tidak digunakan, skor Google Lighthouse dapat bertahan konsisten di angka 95 hingga 100 poin.
+            Aset gambar dikompresi ke <code>AVIF / WebP</code> dan JavaScript di-tree-shake menyeluruh agar skor Lighthouse
+            selalu stabil di kisaran 95–100 poin.
           </p>
         </div>
       ),
       rightTitle: 'Bab 02: 5 Lapisan Keamanan Server',
       rightSubtitle: 'Konfigurasi Hardening Zero-Trust Kelas Enterprise',
       rightContent: (
-        <div className="space-y-3.5 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
+        <div className="space-y-3 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
           <p>
-            Website bisnis harus tahan terhadap serangan bot dan eksploitasi data. Kami menerapkan struktur pertahanan
+            Website bisnis harus tahan terhadap bot jahat dan eksploitasi data. Kami menerapkan struktur pertahanan
             berlapis (defense-in-depth) pada setiap server produksi:
           </p>
-
-          <div className="space-y-2 font-mono text-[11px]">
-            <div className="p-2 rounded-lg bg-zinc-100 border border-zinc-300">
-              <span className="font-bold text-zinc-900">L1: Enkripsi TLS 1.3 &amp; HSTS</span>
-              <p className="text-[10px] text-zinc-600 font-sans">Menjamin keamanan transfer data perbankan &amp; kontak.</p>
+          <div className="space-y-1.5 font-sans text-xs">
+            <div className="p-2 rounded-lg bg-zinc-100 border border-zinc-200">
+              <strong className="text-blue-900 font-mono">Lapisan 1:</strong> Cloudflare Edge WAF &amp; Rate-Limiting.
             </div>
-            <div className="p-2 rounded-lg bg-zinc-100 border border-zinc-300">
-              <span className="font-bold text-zinc-900">L2: Zero-Trust UFW &amp; Fail2Ban</span>
-              <p className="text-[10px] text-zinc-600 font-sans">Blokir otomatis IP penyerang brute-force SSH.</p>
+            <div className="p-2 rounded-lg bg-zinc-100 border border-zinc-200">
+              <strong className="text-blue-900 font-mono">Lapisan 2:</strong> Reverse Proxy Caddy dengan isolasi HTTPS otomatis.
             </div>
-            <div className="p-2 rounded-lg bg-zinc-100 border border-zinc-300">
-              <span className="font-bold text-zinc-900">L3: Parameterized Sanitasi Anti-SQLi</span>
-              <p className="text-[10px] text-zinc-600 font-sans">Mencegah kebocoran basis data lewat formulir publik.</p>
+            <div className="p-2 rounded-lg bg-zinc-100 border border-zinc-200">
+              <strong className="text-blue-900 font-mono">Lapisan 3:</strong> OS Linux Hardened, UFW Firewall &amp; Fail2ban.
             </div>
-            <div className="p-2 rounded-lg bg-zinc-100 border border-zinc-300">
-              <span className="font-bold text-zinc-900">L4: Cloudflare Web Application Firewall</span>
-              <p className="text-[10px] text-zinc-600 font-sans">Mitigasi serangan DDoS &amp; bot scraping otomatis.</p>
+            <div className="p-2 rounded-lg bg-zinc-100 border border-zinc-200">
+              <strong className="text-blue-900 font-mono">Lapisan 4:</strong> Private WireGuard Mesh Tunnel via Tailscale.
+            </div>
+            <div className="p-2 rounded-lg bg-zinc-100 border border-zinc-200">
+              <strong className="text-blue-900 font-mono">Lapisan 5:</strong> Enkripsi Data Database &amp; Parameterized Query.
             </div>
           </div>
         </div>
       ),
     },
-
-    // -----------------------------------------------------------------------
-    // SPREAD 2: UI/UX BENTO GRID & DATABASE RELASIONAL (MODUL 1 PART 2)
-    // -----------------------------------------------------------------------
     {
-      id: 'uiux-database',
-      moduleId: 'web-kilat',
-      moduleName: 'Modul 1: Web Kilat & Keamanan',
+      id: 'bento-db',
+      moduleName: 'Modul 2: Desain & Database',
       leftPageNum: 3,
       rightPageNum: 4,
-      leftTitle: 'Bab 03: Desain UI/UX & Pola Bento Grid',
-      leftSubtitle: 'Standar Antarmuka Profesional Sekawan Media Style',
+      leftTitle: 'Bab 03: Prinsip Desain Bento Grid',
+      leftSubtitle: 'Struktur Visual Padat Informasi yang Mudah Dipindai',
       leftContent: (
-        <div className="space-y-3.5 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
+        <div className="space-y-3 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
           <p>
-            Pola tata letak Bento Grid membagi informasi kompleks menjadi kartu-kartu terfokus dengan hierarki visual
-            yang seimbang. Kunci keberhasilan desain ini adalah konsistensi kontras, ruang kosong (whitespace), dan
-            tipografi proporsional.
+            Bento Grid mengadaptasi konsep kotak makan siang Jepang: mengelompokkan berbagai fungsi ke dalam kompartemen
+            proporsional yang saling melengkapi. Pola ini memecah kejenuhan tata letak baris konvensional.
           </p>
-
-          <div className="p-3 rounded-xl bg-amber-50/90 border border-amber-200 text-xs space-y-1">
-            <span className="font-bold text-amber-900 font-mono">Pedoman Warna Non-Gradasi:</span>
-            <p className="text-zinc-700">
-              Gunakan warna solid terukur: Biru Navy (<code>#1E3A8A</code>) untuk otoritas dan stabilitas, Hijau Emerald (
-              <code>#059669</code>) untuk tombol aksi utama / WhatsApp, dan Dark Slate (<code>#111319</code>) untuk teks
-              tajam tanpa silau.
-            </p>
+          <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200 space-y-1">
+            <span className="font-mono text-[10px] font-bold text-amber-900 uppercase">Hierarki Kompartemen:</span>
+            <ul className="list-disc list-inside space-y-0.5 text-xs text-zinc-800">
+              <li>Kompartemen Utama (2x2): Value proposition terbesar.</li>
+              <li>Kompartemen Sekunder (1x2): Bukti sosial &amp; metrik HUD.</li>
+              <li>Kompartemen Aksi (1x1): Tombol interaktif langsung WhatsApp.</li>
+            </ul>
           </div>
-
-          <p>
-            Setiap komponen visual dilengkapi micro-interactions halus saat disentuh atau diarahkan kursor, memberikan
-            kesan responsif tanpa membebani thread pemrosesan CPU browser.
-          </p>
         </div>
       ),
-      rightTitle: 'Bab 04: Database & Offline-First Sync',
-      rightSubtitle: 'Arsitektur Basis Data Berkecepatan Tinggi',
+      rightTitle: 'Bab 04: Database PostgreSQL Offline-First',
+      rightSubtitle: 'Integritas Relasional, Enkripsi, & Replikasi Cepat',
       rightContent: (
-        <div className="space-y-3.5 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
+        <div className="space-y-3 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
           <p>
-            Untuk aplikasi bisnis yang beroperasi di wilayah minim sinyal (seperti perkebunan atau kawasan industri),
-            arsitektur <strong>offline-first</strong> menyimpan transaksi secara lokal di IndexedDB dan melakukan
-            sinkronisasi otomatis ke server saat internet kembali terhubung.
+            Data adalah aset bisnis paling berharga. Memilih PostgreSQL dengan Supabase memberikan fondasi ACID compliance
+            yang menjamin tidak ada transaksi yang hilang atau korup.
           </p>
-
-          <div className="p-3 rounded-xl bg-zinc-100 border border-zinc-300 font-mono text-[11px] space-y-1.5">
-            <p className="font-bold text-zinc-900">Optimasi Query PostgreSQL:</p>
-            <p className="text-zinc-700">✓ B-Tree Indexing pada kolom pencarian aktif</p>
-            <p className="text-zinc-700">✓ Connection pooling via PgBouncer</p>
-            <p className="text-zinc-700">✓ Response payload JSON terkompresi Brotli</p>
+          <div className="p-3 rounded-xl bg-emerald-50/80 border border-emerald-200 space-y-1">
+            <span className="font-mono text-[10px] font-bold text-emerald-900 uppercase">Praktek Terbaik Basis Data:</span>
+            <p className="text-xs text-zinc-800">
+              1. Row Level Security (RLS) untuk membatasi akses per-pengguna.<br />
+              2. Indeks B-Tree &amp; GIN untuk query pencarian semantik kilat.<br />
+              3. Backup snapshot harian terenkripsi otomatis.
+            </p>
           </div>
-
-          <p>
-            Hasilnya adalah waktu tanggap query API di bawah 15 milidetik dengan jaminan data tidak hilang meski terjadi
-            koneksi terputus tiba-tiba.
-          </p>
         </div>
       ),
     },
-
-    // -----------------------------------------------------------------------
-    // SPREAD 3: AI ENGINEERING & RETRIEVAL-AUGMENTED GENERATION (MODUL 2)
-    // -----------------------------------------------------------------------
     {
-      id: 'ai-engineering-rag',
-      moduleId: 'ai-engineering',
-      moduleName: 'Modul 2: AI Engineering & WhatsApp Agent',
+      id: 'ai-rag',
+      moduleName: 'Modul 3: AI Engineering & RAG',
       leftPageNum: 5,
       rightPageNum: 6,
       leftTitle: 'Bab 05: Fondasi AI Agent untuk Bisnis',
-      leftSubtitle: 'Strategi Otomasi Cerdas Tanpa Halusinasi',
+      leftSubtitle: 'Mengubah LLM Menjadi Karyawan Digital yang Disiplin',
       leftContent: (
-        <div className="space-y-3.5 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
+        <div className="space-y-3 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
           <p>
-            Banyak perusahaan gagal memanfaatkan model kecerdasan buatan karena menyangka AI dapat langsung menjawab
-            semua hal tanpa aturan. Model bahasa besar (LLM) seperti Gemini 2.5 pada dasarnya adalah mesin penalaran,
-            bukan basis data terverifikasi.
+            AI Agent berbeda dengan chatbot sederhana. Agent memiliki <strong>persepsi</strong>, <strong>kemampuan bernalar</strong>,
+            serta <strong>akses pemanggilan tool</strong> ke sistem eksternal untuk menyelesaikan transaksi bisnis secara mandiri.
           </p>
-
-          <div className="p-3.5 rounded-xl bg-purple-50/80 border border-purple-200 text-xs space-y-1.5">
-            <span className="font-bold text-purple-900 font-mono">Dua Pilar Agen Sukses:</span>
-            <p className="text-zinc-800">
-              1. <strong>Guardrails Ketat:</strong> Instruksi tegas agar model menolak menjawab hal di luar dokumen SOP.
-            </p>
-            <p className="text-zinc-800">
-              2. <strong>Jalur Eskalasi Manusia:</strong> Jika pengguna terdeteksi bingung atau komplain, tiket langsung
-              diteruskan ke WhatsApp admin manusia.
+          <div className="p-3 rounded-xl bg-purple-50/80 border border-purple-200 space-y-1">
+            <span className="font-mono text-[10px] font-bold text-purple-900 uppercase">Siklus Kerja Agent:</span>
+            <p className="text-xs text-zinc-800 font-mono">
+              Persepsi Pesan → Ekstraksi Intensi → Pencarian RAG Dokumen → Eksekusi Tool API → Respon Terverifikasi
             </p>
           </div>
-
-          <p>
-            Pendekatan ini menghemat hingga 80% waktu penanganan pesan masuk tanpa merusak reputasi layanan pelanggan bisnis.
-          </p>
         </div>
       ),
-      rightTitle: 'Bab 06: Arsitektur RAG & Vector Database',
-      rightSubtitle: 'Menghubungkan SOP Perusahaan ke Otak AI',
+      rightTitle: 'Bab 06: WhatsApp AI Agent & Vector RAG',
+      rightSubtitle: 'Integrasi Dokumen Bisnis dengan Guardrails Ketat',
       rightContent: (
-        <div className="space-y-3.5 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
+        <div className="space-y-3 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
           <p>
-            <strong>Retrieval-Augmented Generation (RAG)</strong> adalah teknik membedah dokumen PDF katalog, daftar harga,
-            dan syarat ketentuan menjadi potongan teks (chunks) lalu mengubahnya menjadi vektor semantik.
+            Dengan menyematkan <strong>Retrieval-Augmented Generation (RAG)</strong>, AI hanya menjawab berdasarkan SOP,
+            katalog produk, dan harga resmi bisnis Anda tanpa risiko halusinasi.
           </p>
-
-          <div className="p-3 rounded-xl bg-zinc-100 border border-zinc-300 font-mono text-[11px] space-y-1">
-            <p className="font-bold text-zinc-900">Alur Kerja Retrieval Semantik:</p>
-            <p>1. User chat: "Apakah ada garansi 60 hari?"</p>
-            <p>2. Vektor pencarian menemukan Bab 4 SOP Garansi</p>
-            <p>3. Konteks resmi disematkan ke prompt LLM</p>
-            <p>4. Jawaban faktual 100% sesuai kebijakan perusahaan</p>
+          <div className="p-3 rounded-xl bg-blue-50/80 border border-blue-200 space-y-1">
+            <span className="font-mono text-[10px] font-bold text-blue-900 uppercase">Protokol Keamanan Eskalasi:</span>
+            <p className="text-xs text-zinc-800">
+              Bila pelanggan meminta diskon khusus atau mengajukan komplain kritis, bot otomatis menahan diri dan meneruskan
+              percakapan ke nomor WhatsApp staf manusia.
+            </p>
           </div>
-
-          <p>
-            Dengan RAG, Anda tidak perlu melatih ulang (fine-tuning) model yang mahal setiap kali harga produk berubah.
-            Cukup perbarui dokumen sumber, dan agen AI seketika mengetahui informasi terbaru.
-          </p>
         </div>
       ),
     },
-
-    // -----------------------------------------------------------------------
-    // SPREAD 4: TECHNICAL MARKETING & META CONVERSIONS API (MODUL 3)
-    // -----------------------------------------------------------------------
     {
-      id: 'marketing-capi-tracking',
-      moduleId: 'technical-marketing',
-      moduleName: 'Modul 3: Technical Marketing & CAPI',
+      id: 'marketing-capi',
+      moduleName: 'Modul 4: Technical Marketing & CAPI',
       leftPageNum: 7,
       rightPageNum: 8,
-      leftTitle: 'Bab 07: Mengatasi Kebocoran Data Iklan',
-      leftSubtitle: 'Dampak Pemblokiran Cookie Safari ITP & iOS 14',
+      leftTitle: 'Bab 07: Meta Conversions API (CAPI)',
+      leftSubtitle: 'Memulihkan 30% Sinyal Konversi yang Hilang Akibat AdBlocker',
       leftContent: (
-        <div className="space-y-3.5 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
+        <div className="space-y-3 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
           <p>
-            Sejak Safari Intelligent Tracking Prevention (ITP) dan pembaruan privasi seluler diluncurkan, pelacak piksel
-            berbasis browser kehilangan hingga 35% data transaksi. Akibatnya, mesin AI Meta dan Google Ads tidak dapat
-            mengenali siapa pembeli sesungguhnya.
+            Browser modern semakin agresif memblokir third-party cookies. Akibatnya, pelaporan iklan di dashboard Meta
+            atau Google sering tidak sinkron dengan transaksi riil di rekening bank bisnis Anda.
           </p>
-
-          <div className="p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-200 text-xs space-y-1.5">
-            <span className="font-bold text-emerald-900 font-mono">Solusi: Server-to-Server Tracking</span>
-            <p className="text-zinc-800">
-              Sinyal pembelian dikirim langsung dari backend web server Anda ke Meta Graph API via HTTPS terenkripsi,
-              melewati ad-blocker dan batasan browser sepenuhnya.
+          <div className="p-3 rounded-xl bg-rose-50/80 border border-rose-200 space-y-1">
+            <span className="font-mono text-[10px] font-bold text-rose-900 uppercase">Solusi Server-Side CAPI:</span>
+            <p className="text-xs text-zinc-800">
+              Data transaksi dikirim langsung dari server backend ke endpoint Graph API Meta, menjamin 98%+ data terselamatkan
+              secara legal dan mematuhi aturan privasi global.
             </p>
           </div>
-
-          <p>
-            Data pembeli yang utuh memungkinkan algoritma iklan mengoptimalkan anggaran secara presisi ke target audiens
-            yang benar-benar berpotensi melakukan pembelian berulang.
-          </p>
         </div>
       ),
-      rightTitle: 'Bab 08: sGTM & Deduplikasi Event ID',
-      rightSubtitle: 'Mencapai Skor Event Match Quality (EMQ) 9.0+',
+      rightTitle: 'Bab 08: Deduplikasi Event & sGTM',
+      rightSubtitle: 'Sinkronisasi Event ID Browser & Server Tanpa Duplikasi',
       rightContent: (
-        <div className="space-y-3.5 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
+        <div className="space-y-3 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
           <p>
-            Dengan menjalankan <strong>Server-side Google Tag Manager (sGTM)</strong> di bawah subdomain sendiri (seperti{' '}
-            <code>data.bisnisanda.com</code>), cookie diperlakukan sebagai first-party oleh browser dengan retensi penuh.
+            Tantangan terbesar sistem hibrida adalah mencegah transaksi dihitung dua kali. Kuncinya terletak pada
+            <strong>Event ID unik</strong> yang dibagikan secara serentak antara tembakan browser dan webhook backend.
           </p>
-
-          <div className="p-3 rounded-xl bg-zinc-100 border border-zinc-300 font-mono text-[11px] space-y-1.5">
-            <p className="font-bold text-zinc-900">Mekanisme Deduplikasi Unik:</p>
-            <p>• Browser Event: <code>event_id: "trx_98213"</code></p>
-            <p>• Server CAPI: <code>event_id: "trx_98213"</code></p>
-            <p>• Meta Graph API otomatis menyatukan 1 pembelian</p>
+          <div className="p-3 rounded-xl bg-emerald-50/80 border border-emerald-200 space-y-1">
+            <span className="font-mono text-[10px] font-bold text-emerald-900 uppercase">Jendela Pencocokan 48 Jam:</span>
+            <p className="text-xs text-zinc-800 font-mono">
+              Event ID: "ORD-9821" dicocokkan otomatis oleh algoritma Meta. Sinyal server yang lebih lengkap disimpan,
+              duplikasi browser otomatis dibuang.
+            </p>
           </div>
-
-          <p>
-            Hasil implementasi riil: biaya akuisisi pelanggan (CPA) turun 20-30% karena mesin iklan tidak membuang anggaran
-            pada audiens yang sudah terkonversi.
-          </p>
         </div>
       ),
     },
-
-    // -----------------------------------------------------------------------
-    // SPREAD 5: VIBE CODING & DEVELOPER TOOLING (MODUL 4)
-    // -----------------------------------------------------------------------
     {
-      id: 'vibe-coding-tooling',
-      moduleId: 'vibe-coding',
-      moduleName: 'Modul 4: Vibe Coding & Tooling AI',
+      id: 'vibe-coding',
+      moduleName: 'Modul 5: Vibe Coding & Tooling',
       leftPageNum: 9,
       rightPageNum: 10,
-      leftTitle: 'Bab 09: Paradigma Vibe Coding Modern',
-      leftSubtitle: 'Membangun Software Terukur Bersama AI Coding Agents',
+      leftTitle: 'Bab 09: Vibe Coding Berbasis Spesifikasi',
+      leftSubtitle: 'Membangun Software Cepat Menggunakan Claude Code CLI',
       leftContent: (
-        <div className="space-y-3.5 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
+        <div className="space-y-3 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
           <p>
-            <strong>Vibe Coding</strong> bukanlah menulis kode sembarangan tanpa pemahaman, melainkan pergeseran peran
-            rekayasawan dari mengetik sintaks secara manual menjadi <em>arsitek sistem</em> yang mengarahkan agen AI
-            otonom (seperti Claude Code dan Antigravity).
+            Vibe Coding bukan berarti asal memberi instruksi sembarangan. Vibe coding yang benar adalah
+            <strong>Spec-Driven Development</strong>: menyusun dokumen desain, batasan arsitektur, dan kontrak API yang jelas
+            sebelum meminta AI menuliskan kode implementasi.
           </p>
-
-          <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200 text-xs space-y-1">
-            <span className="font-bold text-amber-900 font-mono">Aturan Emas Spec-Driven:</span>
-            <p className="text-zinc-800">
-              Kode yang baik berawal dari spesifikasi yang jelas. Definisikan kontrak antarmuka tipe (TypeScript
-              interfaces), batas tanggung jawab fungsi, dan penanganan kegagalan sebelum menulis implementasi.
+          <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200 space-y-1">
+            <span className="font-mono text-[10px] font-bold text-amber-900 uppercase">Alur Kerja Efisien:</span>
+            <p className="text-xs text-zinc-800">
+              Tulis spesifikasi ringkas → Jalankan AI agent per-tugas terisolasi → Verifikasi dengan build &amp; testing
+              otomatis sebelum melakukan commit ke GitHub.
             </p>
           </div>
-
-          <p>
-            Kombinasi ketelitian arsitektur dengan kecepatan eksekusi AI memungkinkan pengembangan fitur kompleks selesai
-            dalam hitungan jam dengan standar pengujian unit yang lengkap.
-          </p>
         </div>
       ),
-      rightTitle: 'Bab 10: CI/CD & Zero-Downtime Deploy',
-      rightSubtitle: 'Otomatisasi Linting, Pengujian & Rilis Cloud',
+      rightTitle: 'Bab 10: CI/CD & Deploy Tanpa Downtime',
+      rightSubtitle: 'Otomasi Rilis GitHub Actions Menuju Edge Network',
       rightContent: (
-        <div className="space-y-3.5 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
+        <div className="space-y-3 text-xs sm:text-[13px] leading-relaxed font-sans text-zinc-900 text-justify">
           <p>
-            Setiap perubahan kode yang di-commit ke Git otomatis melewati jalur verifikasi bertingkat sebelum menyentuh
-            pengunjung publik.
+            Software yang baik harus bisa diperbarui kapan saja tanpa membuat pengguna mengalami error. Kami menyusun
+            pipeline CI/CD yang mengotomatisasi pengujian, optimasi bundle, dan rilis zero-downtime.
           </p>
-
-          <div className="p-3 rounded-xl bg-zinc-100 border border-zinc-300 font-mono text-[11px] space-y-1.5">
-            <p className="font-bold text-zinc-900">Pipeline Otomatisasi GitHub Actions:</p>
-            <p>1. Static Type Checking (<code>tsc --noEmit</code>)</p>
-            <p>2. Unit Testing &amp; Regresi (<code>vitest run</code>)</p>
-            <p>3. Build Bundle Optimization (<code>vite build</code>)</p>
-            <p>4. Atomic Zero-Downtime Rollout ke Edge Cloud</p>
+          <div className="p-3 rounded-xl bg-blue-50/80 border border-blue-200 space-y-1">
+            <span className="font-mono text-[10px] font-bold text-blue-900 uppercase">Praktek Terbaik Rilis:</span>
+            <p className="text-xs text-zinc-800">
+              Setiap kali kode di-push ke branch <code>main</code>, GitHub Actions memvalidasi TypeScript, menjalankan linter,
+              dan memicu rolling update ke serverless edge dalam 60 detik.
+            </p>
           </div>
-
-          <p>
-            Dengan alur kerja ini, risiko regresi antarmuka mendekati nol dan pembaruan sistem dapat dirilis kapan saja tanpa
-            mengganggu operasional bisnis Anda.
-          </p>
         </div>
       ),
     },
   ];
 
-  const currentSpread = MATERI_SPREADS[spreadIndex] || MATERI_SPREADS[0];
+  const currentSpread = MATERI_SPREADS[spreadIndex];
 
   const handleNextPage = () => {
-    if (spreadIndex < MATERI_SPREADS.length - 1 && !isFlipping) {
-      setIsFlipping(true);
+    if (spreadIndex < MATERI_SPREADS.length - 1 && !flipDirection) {
+      setFlipDirection('next');
       setTimeout(() => {
         setSpreadIndex((prev) => prev + 1);
-        setIsFlipping(false);
-      }, 300);
+        setFlipDirection(null);
+      }, 450);
     }
   };
 
   const handlePrevPage = () => {
-    if (spreadIndex > 0 && !isFlipping) {
-      setIsFlipping(true);
+    if (spreadIndex > 0 && !flipDirection) {
+      setFlipDirection('prev');
       setTimeout(() => {
         setSpreadIndex((prev) => prev - 1);
-        setIsFlipping(false);
-      }, 300);
+        setFlipDirection(null);
+      }, 450);
     }
   };
 
   return (
     <div
-      className={`relative w-full rounded-3xl overflow-hidden shadow-2xl border border-amber-950/40 select-none ${className}`}
+      className={`relative rounded-3xl overflow-hidden shadow-2xl border border-amber-950/20 select-none ${className}`}
       style={{
-        // REALISTIC WOODEN DESK TEXTURE (Referensi Flipbook Fisik)
-        backgroundColor: '#c8ad88',
-        backgroundImage: `
-          repeating-linear-gradient(90deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 40px),
-          repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 30px)
-        `,
+        backgroundColor: '#C5A880',
+        backgroundImage: 'radial-gradient(circle at 50% 50%, #d4b892 0%, #b8986d 100%)',
       }}
     >
-      {/* Top Controls Bar */}
-      <div className="px-4 sm:px-6 py-3.5 bg-zinc-950/90 text-white border-b border-zinc-800 backdrop-blur-md flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-amber-400" />
-            <span className="font-serif font-bold text-xs sm:text-sm text-zinc-100">
-              Buku Materi Belajar 3D (Flipbook)
-            </span>
-          </div>
-
-          {/* Module Quick Selector */}
-          <div className="hidden lg:flex items-center gap-1.5 text-xs font-mono">
-            {MATERI_SPREADS.map((sp, idx) => (
-              <button
-                key={sp.id}
-                onClick={() => setSpreadIndex(idx)}
-                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
-                  spreadIndex === idx
-                    ? 'bg-blue-600 text-white font-bold shadow-xs'
-                    : 'text-zinc-400 hover:text-white bg-zinc-900 border border-zinc-800'
-                }`}
-              >
-                Bab {sp.leftPageNum}-{sp.rightPageNum}
-              </button>
-            ))}
-          </div>
+      {/* Sleek Floating Header: Minimal & Distraction-Free */}
+      <div className="px-6 py-3.5 bg-black/30 backdrop-blur-md text-white flex items-center justify-between z-20 relative">
+        <div className="flex items-center gap-2">
+          <BookOpen className="w-4 h-4 text-amber-300" />
+          <span className="font-serif font-black text-sm tracking-wide text-amber-100">
+            Fitran Dev Engineering Handbook
+          </span>
+          <span className="text-amber-200/60 text-xs hidden sm:inline">
+            · Klik lembar buku untuk membalik halaman
+          </span>
         </div>
 
-        {/* Action Controls */}
-        <div className="flex items-center gap-2">
-          <span className="text-[11px] font-mono text-amber-400 font-bold hidden sm:inline">
-            fitran.dev Handbook Series
+        <div className="flex items-center gap-3">
+          <span className="font-mono text-xs text-amber-200">
+            {spreadIndex + 1} / {MATERI_SPREADS.length} Lembar
           </span>
-
           {onClose && (
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white cursor-pointer"
+              className="p-1 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
               title="Tutup Flipbook"
             >
               <X className="w-4 h-4" />
@@ -436,33 +317,60 @@ export const InteractiveFlipbook: React.FC<InteractiveFlipbookProps> = ({
         </div>
       </div>
 
-      {/* Main Wooden Desk Canvas with 3D Book Spread */}
-      <div className="p-4 sm:p-8 lg:p-12 overflow-x-auto flex items-center justify-center min-h-[580px] sm:min-h-[660px]">
-        {/* Book Container with Realistic Drop Shadows & Stacked Pages Effect */}
-        <div
-          className={`relative max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.6)] rounded-lg overflow-hidden transition-all duration-300 ${
-            isFlipping ? 'opacity-85 scale-[0.99]' : 'opacity-100 scale-100'
+      {/* Main Wooden Desk Canvas with Real 3D Book */}
+      <div className="p-4 sm:p-8 lg:p-10 flex items-center justify-center relative min-h-[580px] sm:min-h-[640px]">
+        {/* Floating Left Paddle */}
+        <button
+          onClick={handlePrevPage}
+          disabled={spreadIndex === 0 || flipDirection !== null}
+          className={`absolute left-3 sm:left-6 z-40 w-11 h-11 rounded-full bg-white/90 hover:bg-white dark:bg-zinc-900/90 text-zinc-800 dark:text-zinc-100 shadow-xl flex items-center justify-center transition-all cursor-pointer ${
+            spreadIndex === 0 ? 'opacity-20 cursor-not-allowed' : 'hover:scale-110 active:scale-95'
           }`}
+          title="Halaman Sebelumnya"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+
+        {/* Floating Right Paddle */}
+        <button
+          onClick={handleNextPage}
+          disabled={spreadIndex === MATERI_SPREADS.length - 1 || flipDirection !== null}
+          className={`absolute right-3 sm:right-6 z-40 w-11 h-11 rounded-full bg-white/90 hover:bg-white dark:bg-zinc-900/90 text-zinc-800 dark:text-zinc-100 shadow-xl flex items-center justify-center transition-all cursor-pointer ${
+            spreadIndex === MATERI_SPREADS.length - 1 ? 'opacity-20 cursor-not-allowed' : 'hover:scale-110 active:scale-95'
+          }`}
+          title="Halaman Selanjutnya"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+
+        {/* 3D BOOK SPREAD WRAPPER */}
+        <div
+          className="relative max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-4 border-[#8B5A2B]/40"
           style={{
-            transform: `scale(${zoomLevel})`,
-            transformOrigin: 'center center',
+            perspective: '1400px',
+            transformStyle: 'preserve-3d',
           }}
         >
-          {/* Central Book Spine Shadow Crease (Simulasi Lipatan Buku Fisik) */}
-          <div className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-12 pointer-events-none z-30 bg-gradient-to-r from-black/25 via-black/10 to-transparent" />
-          <div className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-6 pointer-events-none z-30 bg-black/15" />
+          {/* Central Crease Shadow */}
+          <div className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-8 pointer-events-none z-30 bg-linear-to-r from-black/25 via-black/10 to-transparent" />
+          <div className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-3 pointer-events-none z-30 bg-black/20" />
 
-          {/* SISI KIRI: HALAMAN KIRI (GENAP) */}
+          {/* LEFT PAGE (Interactive Click to Flip Back) */}
           <div
-            className="relative p-6 sm:p-10 flex flex-col justify-between border-r border-zinc-300/80 min-h-[520px] sm:min-h-[600px]"
+            onClick={handlePrevPage}
+            className={`relative p-6 sm:p-9 flex flex-col justify-between border-r border-zinc-300/80 min-h-[500px] sm:min-h-[560px] cursor-pointer transition-transform duration-500 ease-out ${
+              flipDirection === 'prev' ? 'rotate-y-[-15deg] shadow-2xl' : ''
+            }`}
             style={{
               backgroundColor: '#FCFAF5',
               backgroundImage: 'linear-gradient(to right, #EDE5D8 0%, #FAF8F2 6%, #FFFFFF 96%, #EDE5D8 100%)',
+              transformOrigin: 'right center',
             }}
+            title="Klik untuk ke halaman sebelumnya"
           >
-            {/* Header: Title */}
-            <div className="space-y-2">
-              <span className="font-mono text-[10px] uppercase font-bold text-blue-700 tracking-wider">
+            {/* Header */}
+            <div className="space-y-1.5">
+              <span className="font-mono text-[10px] uppercase font-bold text-blue-800 tracking-wider">
                 {currentSpread.moduleName}
               </span>
               <h3 className="font-serif font-black text-lg sm:text-2xl text-zinc-950 tracking-tight leading-snug">
@@ -476,28 +384,34 @@ export const InteractiveFlipbook: React.FC<InteractiveFlipbookProps> = ({
               <div className="w-12 h-0.5 bg-zinc-300 my-2" />
             </div>
 
-            {/* Content Body */}
+            {/* Content */}
             <div className="my-auto py-2">
               {currentSpread.leftContent}
             </div>
 
-            {/* Footer: Page Number */}
-            <div className="pt-4 border-t border-zinc-200/60 text-center font-serif text-xs text-zinc-500">
+            {/* Footer */}
+            <div className="pt-3 border-t border-zinc-200/60 flex items-center justify-between font-serif text-xs text-zinc-500">
+              <span className="text-[10px] font-mono text-zinc-400">← Hal. Sebelumnya</span>
               <span>— {currentSpread.leftPageNum} —</span>
             </div>
           </div>
 
-          {/* SISI KANAN: HALAMAN KANAN (GANJIL) */}
+          {/* RIGHT PAGE (Interactive Click to Flip Forward with 3D Page Turn) */}
           <div
-            className="relative p-6 sm:p-10 flex flex-col justify-between min-h-[520px] sm:min-h-[600px]"
+            onClick={handleNextPage}
+            className={`relative p-6 sm:p-9 flex flex-col justify-between min-h-[500px] sm:min-h-[560px] cursor-pointer transition-transform duration-500 ease-out ${
+              flipDirection === 'next' ? 'rotate-y-[-45deg] scale-98 shadow-2xl origin-left' : ''
+            }`}
             style={{
               backgroundColor: '#FCFAF5',
               backgroundImage: 'linear-gradient(to right, #EDE5D8 0%, #FFFFFF 4%, #FAF8F2 94%, #EDE5D8 100%)',
+              transformOrigin: 'left center',
             }}
+            title="Klik untuk ke halaman selanjutnya"
           >
-            {/* Header: Title */}
-            <div className="space-y-2">
-              <span className="font-mono text-[10px] uppercase font-bold text-emerald-700 tracking-wider">
+            {/* Header */}
+            <div className="space-y-1.5">
+              <span className="font-mono text-[10px] uppercase font-bold text-emerald-800 tracking-wider">
                 {currentSpread.moduleName}
               </span>
               <h3 className="font-serif font-black text-lg sm:text-2xl text-zinc-950 tracking-tight leading-snug">
@@ -511,61 +425,32 @@ export const InteractiveFlipbook: React.FC<InteractiveFlipbookProps> = ({
               <div className="w-12 h-0.5 bg-zinc-300 my-2" />
             </div>
 
-            {/* Content Body */}
+            {/* Content */}
             <div className="my-auto py-2">
               {currentSpread.rightContent}
             </div>
 
-            {/* Footer: Page Number */}
-            <div className="pt-4 border-t border-zinc-200/60 text-center font-serif text-xs text-zinc-500">
+            {/* Footer */}
+            <div className="pt-3 border-t border-zinc-200/60 flex items-center justify-between font-serif text-xs text-zinc-500">
               <span>— {currentSpread.rightPageNum} —</span>
+              <span className="text-[10px] font-mono text-blue-600 font-bold">Hal. Selanjutnya →</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Floating Navigation Toolbar */}
-      <div className="px-6 py-4 bg-zinc-950/95 border-t border-zinc-800 text-white flex flex-wrap items-center justify-between gap-4">
-        {/* Left: Previous Page Button */}
-        <button
-          onClick={handlePrevPage}
-          disabled={spreadIndex === 0 || isFlipping}
-          className={`px-4 py-2 rounded-xl border text-xs font-bold font-mono flex items-center gap-1.5 transition-all cursor-pointer ${
-            spreadIndex === 0
-              ? 'opacity-30 border-zinc-800 text-zinc-600 cursor-not-allowed'
-              : 'bg-zinc-900 border-zinc-700 hover:bg-zinc-800 text-white shadow-xs'
-          }`}
-        >
-          <ChevronLeft className="w-4 h-4" />
-          <span>Halaman Sebelumnya</span>
-        </button>
-
-        {/* Center: Current Page Spread Badge */}
-        <div className="flex items-center gap-2">
-          <span className="font-mono text-xs text-zinc-400">
-            Menampilkan Materi:
-          </span>
-          <span className="px-3 py-1 rounded-full bg-blue-950 border border-blue-800/80 text-blue-300 font-mono text-xs font-bold">
-            Halaman {currentSpread.leftPageNum} - {currentSpread.rightPageNum}
-          </span>
-          <span className="text-zinc-500 text-xs font-mono">
-            ({spreadIndex + 1} dari {MATERI_SPREADS.length} lembar)
-          </span>
-        </div>
-
-        {/* Right: Next Page Button */}
-        <button
-          onClick={handleNextPage}
-          disabled={spreadIndex === MATERI_SPREADS.length - 1 || isFlipping}
-          className={`px-4 py-2 rounded-xl border text-xs font-bold font-mono flex items-center gap-1.5 transition-all cursor-pointer ${
-            spreadIndex === MATERI_SPREADS.length - 1
-              ? 'opacity-30 border-zinc-800 text-zinc-600 cursor-not-allowed'
-              : 'bg-blue-600 border-blue-500 hover:bg-blue-700 text-white shadow-xs'
-          }`}
-        >
-          <span>Halaman Selanjutnya</span>
-          <ChevronRight className="w-4 h-4" />
-        </button>
+      {/* Clean Bottom Bar: Just Page Indicators */}
+      <div className="px-6 py-3 bg-black/25 backdrop-blur-md text-white flex items-center justify-center gap-1.5 z-20 relative">
+        {MATERI_SPREADS.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => setSpreadIndex(idx)}
+            className={`h-2 rounded-full transition-all cursor-pointer ${
+              idx === spreadIndex ? 'w-8 bg-amber-300' : 'w-2 bg-white/40 hover:bg-white/70'
+            }`}
+            title={`Buka Lembar ${idx + 1}`}
+          />
+        ))}
       </div>
     </div>
   );
