@@ -25,6 +25,8 @@ import { ProfileAvatar } from './ProfileAvatar';
 import { FitranMascot } from './FitranMascot';
 import { MateriCoverBanner } from './MateriCoverBanner';
 import { SekawanEnterpriseLayanan } from './SekawanEnterpriseLayanan';
+import { FitranPixelLogo, FitranPixelIcon, TealBot, BlueBot, OrangeBot } from './FitranPixelLogo';
+import { WebsiteKilatPromoPoster, CybersecurityOperationsPoster, MetaCapiPromoPoster } from './PromotionalShowcasePosters';
 import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
 import { SpotifyPlaylist } from './SpotifyPlaylist';
 import { CertificateItem, ProjectItem, SectionId } from '../types';
@@ -95,8 +97,17 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Modals
+  // State
   const [selectedArticle, setSelectedArticle] = useState<BlogPost | null>(null);
+  // Seamless Article Navigation (Full-page, NEVER a floating popup modal)
+  const openArticle = (post: BlogPost) => {
+    setSelectedArticle(post);
+    navigateTo('blog');
+    if (typeof window !== 'undefined') {
+      window.history.pushState(null, '', '/blog/' + post.slug);
+    }
+  };
+
   const [selectedService, setSelectedService] = useState<ServicePackage | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -784,7 +795,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               {KLASIK_SERVICES.map((s) => (
                 <div
                   key={s.id}
-                  onClick={() => setSelectedService(s)}
+                  onClick={() => navigateTo('services')}
                   className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A]/60 dark:hover:border-blue-500/60 transition-all shadow-xs flex flex-col justify-between cursor-pointer group relative overflow-hidden"
                 >
                   {s.badge && (
@@ -819,47 +830,14 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             </div>
           </section>
 
-          {/* 5. 5 LAPISAN ARSITEKTUR KEAMANAN SISTEM (SECURITY BLUEPRINT) */}
-          <section className="p-7 sm:p-9 rounded-3xl bg-zinc-950 dark:bg-[#0D0F14] text-white border border-zinc-800 space-y-6">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-              <div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-950/60 border border-red-800/80 text-red-300 font-mono text-[10px] font-bold uppercase mb-2">
-                  <ShieldCheck className="w-3.5 h-3.5 text-red-400" />
-                  <span>5 Lapisan Keamanan Terstruktur</span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-                  Sistem Aman, Cepat, dan Tahan Serangan.
-                </h2>
-                <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-2xl leading-relaxed">
-                  Setiap website, web app, dan AI agent yang dibangun menerapkan protokol keamanan industri berlapis untuk melindungi data bisnis dan kredensial Anda.
-                </p>
-              </div>
-            </div>
+          {/* PROMOTIONAL SHOWCASE 1: WEBSITE KILAT 24 JAM Rp 500.000 */}
+          <WebsiteKilatPromoPoster onWhatsAppInquiry={handleWhatsAppConsultation} />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-2">
-              {KLASIK_SECURITY_LAYERS.map((layer) => (
-                <div
-                  key={layer.id}
-                  className="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 hover:border-[#1E3A8A] transition-colors space-y-2 flex flex-col justify-between"
-                >
-                  <div className="space-y-1.5">
-                    <span className="font-mono text-[10px] font-bold text-red-400">
-                      {layer.layerNumber}
-                    </span>
-                    <h3 className="font-bold text-xs text-white leading-snug">
-                      {layer.title}
-                    </h3>
-                    <p className="text-[11px] text-zinc-400 leading-relaxed">
-                      {layer.subtitle}
-                    </p>
-                  </div>
-                  <div className="pt-2 border-t border-zinc-800/80 text-[10px] font-mono text-zinc-500">
-                    <span className="text-emerald-400">✓ {layer.benefit}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+          {/* 5. CYBERSECURITY OPERATIONS CENTER & HARDENING POSTER (REPLACING BARE CARD WITH HIGH-TECH SHOWCASE) */}
+          <CybersecurityOperationsPoster onWhatsAppInquiry={handleWhatsAppConsultation} />
+
+          {/* PROMOTIONAL SHOWCASE 2: META CAPI & TRACKING */}
+          <MetaCapiPromoPoster onWhatsAppInquiry={handleWhatsAppConsultation} />
 
           {/* 6. SERTIFIKAT, KOMPETISI & LISENSI RESMI (LENGKAP 36+ SERTIFIKAT!) */}
           <section id="sertifikat-showcase" className="space-y-6 pt-4">
@@ -1254,7 +1232,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               {KLASIK_BLOG_POSTS.map((p) => (
                 <div
                   key={p.id}
-                  onClick={() => setSelectedArticle(p)}
+                  onClick={() => openArticle(p)}
                   className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A]/50 transition-all cursor-pointer group flex flex-col justify-between"
                 >
                   <div className="space-y-2">
@@ -2734,7 +2712,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-sm text-zinc-900 dark:text-white">Fitran Dev</span>
+              <FitranPixelLogo size="sm" />
               <span>—</span>
               <span>Fullstack Developer &amp; AI Engineer</span>
             </div>
@@ -2757,170 +2735,6 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           </div>
         </div>
       </footer>
-
-      {/* ========================================================================= */}
-      {/* SERVICE MODAL                                                             */}
-      {/* ========================================================================= */}
-      {selectedService && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 p-6 sm:p-8 shadow-2xl space-y-5">
-            <button
-              onClick={() => setSelectedService(null)}
-              className="absolute top-5 right-5 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div>
-              <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
-                {selectedService.code} · {selectedService.category}
-              </span>
-              <h3 className="text-xl sm:text-2xl font-bold text-zinc-950 dark:text-white mt-1.5">
-                {selectedService.title}
-              </h3>
-              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1">
-                {selectedService.description}
-              </p>
-            </div>
-
-            <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-xs text-zinc-400 font-mono">Biaya Investasi:</p>
-                <p className="text-2xl font-black font-mono text-zinc-950 dark:text-white mt-0.5">{selectedService.price}</p>
-                {selectedService.originalPrice && (
-                  <p className="text-xs font-mono text-zinc-400 line-through">{selectedService.originalPrice}</p>
-                )}
-              </div>
-              <div>
-                <p className="text-xs text-zinc-400 font-mono">Estimasi Waktu:</p>
-                <p className="text-sm font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1">
-                  <Clock className="w-4 h-4" />
-                  <span>{selectedService.duration}</span>
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-2 text-xs">
-              <p className="font-bold text-zinc-900 dark:text-white uppercase font-mono tracking-wider">Cakupan Scope:</p>
-              <ul className="space-y-1.5 text-zinc-700 dark:text-zinc-300">
-                {selectedService.scope.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex items-center gap-3 pt-3 border-t border-zinc-100 dark:border-zinc-800">
-              <button
-                onClick={() => {
-                  handleWhatsAppConsultation(selectedService.title, selectedService.price);
-                  setSelectedService(null);
-                }}
-                className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md"
-              >
-                <MessageSquare className="w-4 h-4" />
-                <span>Pesan Layanan via WhatsApp</span>
-              </button>
-              <button
-                onClick={() => setSelectedService(null)}
-                className="py-3 px-4 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold text-xs transition-colors cursor-pointer"
-              >
-                Tutup
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ========================================================================= */}
-      {/* BLOG ARTICLE READER MODAL                                                 */}
-      {/* ========================================================================= */}
-      {selectedArticle && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-          <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 p-6 sm:p-10 shadow-2xl space-y-6">
-            <button
-              onClick={() => setSelectedArticle(null)}
-              className="absolute top-5 right-5 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="border-b border-zinc-100 dark:border-zinc-800 pb-4">
-              <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 mb-2">
-                <span className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-bold">
-                  {selectedArticle.category}
-                </span>
-                <span>•</span>
-                <span>{selectedArticle.date}</span>
-                <span>•</span>
-                <span>{selectedArticle.readTime}</span>
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white leading-tight">
-                {selectedArticle.title}
-              </h2>
-            </div>
-
-            <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">
-              {selectedArticle.content.intro}
-            </p>
-
-            <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-2">
-              <p className="font-mono text-xs font-bold uppercase tracking-wider text-[#1E3A8A] dark:text-blue-400">
-                Poin Kunci (Key Takeaways):
-              </p>
-              <ul className="space-y-1.5 text-xs text-zinc-700 dark:text-zinc-300">
-                {selectedArticle.content.keyTakeaways.map((point, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="space-y-6 pt-2">
-              {selectedArticle.content.sections.map((sec, idx) => (
-                <div key={idx} className="space-y-2">
-                  <h3 className="font-bold text-lg text-zinc-950 dark:text-white">
-                    {sec.heading}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed whitespace-pre-line">
-                    {sec.body}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
-              <p className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-500">
-                Kesimpulan:
-              </p>
-              <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                {selectedArticle.content.conclusion}
-              </p>
-            </div>
-
-            <div className="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800">
-              <button
-                onClick={() => handleWhatsAppConsultation(selectedArticle.title)}
-                className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors flex items-center gap-2 cursor-pointer"
-              >
-                <MessageSquare className="w-3.5 h-3.5" />
-                <span>Diskusikan via WhatsApp</span>
-              </button>
-
-              <button
-                onClick={() => setSelectedArticle(null)}
-                className="py-2.5 px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold text-xs transition-colors cursor-pointer"
-              >
-                Tutup
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

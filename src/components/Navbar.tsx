@@ -182,21 +182,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           {designTheme === 'arcade' ? (
             /* EXACT FIKRAN DEV FLOATING NAVBAR (Matches Attached Screenshot) */
             <nav className="flex items-center gap-2 sm:gap-5 px-3 sm:px-5 py-2 rounded-full bg-white/95 dark:bg-[#111319]/95 border border-zinc-200/90 dark:border-zinc-800 shadow-[0_12px_36px_rgba(0,0,0,0.12)] backdrop-blur-md transition-all">
-              {/* Brand Logo & Name */}
+              {/* Brand Logo & Name (Authentic Pixel Art Logo from User Image 4) */}
               <button
                 onClick={(e) => handleNavClick('home', e)}
-                className="flex items-center gap-2.5 text-zinc-900 dark:text-white font-extrabold text-sm sm:text-base hover:opacity-90 transition-opacity cursor-pointer shrink-0 pr-1"
+                className="flex items-center hover:opacity-90 transition-opacity cursor-pointer shrink-0 pr-1"
                 title="fitran.dev • Beranda"
               >
-                <div className="w-7 h-7 rounded-lg bg-[#1E3A8A] border border-blue-400/40 flex items-center justify-center text-white text-[11px] font-black tracking-tight shadow-xs shrink-0">
-                  FD
-                </div>
-                <div className="flex flex-col text-left leading-none">
-                  <span className="font-extrabold text-sm tracking-tight text-zinc-950 dark:text-white">
-                    fitran<span className="text-emerald-500">.dev</span>
-                  </span>
-                  <span className="text-[9px] font-mono text-zinc-400">Fullstack &amp; AI</span>
-                </div>
+                <FitranPixelLogo size="sm" />
               </button>
 
               {/* Desktop Nav Links */}
@@ -574,17 +566,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             {designTheme === 'arcade' ? (
               <div className="space-y-1">
-                {/* Mobile Official fitran.dev Brand */}
-                <div className="flex items-center gap-2.5 pb-2 mb-2 border-b border-zinc-100 dark:border-zinc-800">
-                  <div className="w-6 h-6 rounded-md bg-[#1E3A8A] border border-blue-400/40 flex items-center justify-center text-white text-[10px] font-black tracking-tight shadow-xs">
-                    FD
-                  </div>
-                  <div className="flex flex-col text-left leading-none">
-                    <span className="font-extrabold text-sm tracking-tight text-zinc-950 dark:text-white">
-                      fitran<span className="text-emerald-500">.dev</span>
-                    </span>
-                    <span className="text-[9px] font-mono text-zinc-400">Fullstack &amp; AI Engineer</span>
-                  </div>
+                {/* Mobile Official fitran.dev Pixel Brand */}
+                <div className="flex items-center pb-2 mb-2 border-b border-zinc-100 dark:border-zinc-800">
+                  <FitranPixelLogo size="xs" />
                 </div>
 
                 <button
