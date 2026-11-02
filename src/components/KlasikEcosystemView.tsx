@@ -27,6 +27,7 @@ import { MateriCoverBanner } from './MateriCoverBanner';
 import { SekawanEnterpriseLayanan } from './SekawanEnterpriseLayanan';
 import { SekawanWebSolutions } from './SekawanWebSolutions';
 import { InteractiveFlipbook } from './InteractiveFlipbook';
+import { MateriArticleVisual } from './MateriArticleVisuals';
 import { FitranPixelLogo, FitranPixelIcon, TealBot, BlueBot, OrangeBot } from './FitranPixelLogo';
 import { WebsiteKilatPromoPoster, CybersecurityOperationsPoster, MetaCapiPromoPoster } from './PromotionalShowcasePosters';
 import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
@@ -2321,7 +2322,15 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 title={selectedArticle.title}
                 category={selectedArticle.category.toUpperCase()}
                 readTime={selectedArticle.readTime.toUpperCase()}
-                mascotVariant="code"
+                mascotVariant={
+                  selectedArticle.slug === 'apa-itu-ai-agent'
+                    ? 'robot'
+                    : selectedArticle.slug === 'biaya-pembuatan-website'
+                    ? 'speed'
+                    : selectedArticle.slug === 'cara-tracking-konversi-meta-ads'
+                    ? 'security'
+                    : 'code'
+                }
                 className="mb-2"
               />
               {/* Back to Blog Button + Breadcrumb */}
@@ -2376,10 +2385,12 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   {selectedArticle.excerpt}
                 </p>
 
-                {/* Author Info Bar + Share Controls */}
+                {/* Author Info Bar + Share Controls (Strictly Engineering Byline, Zero Large Portrait) */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 px-5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800">
                   <div className="flex items-center gap-3">
-                    <ProfileAvatar size="nav" showBadge={false} />
+                    <div className="w-9 h-9 rounded-xl bg-[#1E3A8A] border border-blue-400/40 flex items-center justify-center text-white text-xs font-black font-mono shadow-xs shrink-0">
+                      FD
+                    </div>
                     <div>
                       <div className="flex items-center gap-1.5">
                         <p className="font-bold text-xs text-zinc-950 dark:text-white">Tubagus Fitran Badruttamam</p>
@@ -2421,6 +2432,12 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
                   {selectedArticle.content.intro}
                 </p>
+
+                {/* DEDICATED TECHNICAL MATERI VISUAL & INFOGRAPHIC (DOMAIN, HOSTING, SSL, ARCHITECTURE) */}
+                <MateriArticleVisual
+                  slug={selectedArticle.slug}
+                  onConsultation={handleWhatsAppConsultation}
+                />
 
                 {/* PRINSIP UTAMA / KEY TAKEAWAYS (Matching Fikran Dev Callout) */}
                 <div className="p-6 rounded-2xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-900/60 space-y-3">
@@ -2505,8 +2522,11 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
                 {/* Author Bio Card (End of Article) */}
                 <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col sm:flex-row items-center gap-6">
-                  <div className="shrink-0">
-                    <ProfileAvatar size="hero" showBadge={true} />
+                  <div className="shrink-0 flex items-center justify-center">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-linear-to-br from-[#1E3A8A] to-[#0D1F4D] border-2 border-blue-400/40 flex flex-col items-center justify-center text-white shadow-md">
+                      <span className="font-mono text-xl sm:text-2xl font-black tracking-tight">FD</span>
+                      <span className="text-[9px] font-mono font-bold text-emerald-400">ENGINEER</span>
+                    </div>
                   </div>
                   <div className="space-y-2 text-center sm:text-left">
                     <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
