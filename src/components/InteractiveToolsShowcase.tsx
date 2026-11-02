@@ -89,16 +89,17 @@ export const InteractiveToolsShowcase: React.FC = () => {
         </p>
       </div>
 
-      {/* 3D FANNED DECK CAROUSEL (Directly matching media_1793606391923_72e2508b.png) */}
+      {/* 3D FANNED DECK CAROUSEL (Responsive on Mobile & Desktop) */}
       <div
         onMouseLeave={() => setHoveredIndex(null)}
-        className="relative py-12 px-4 flex items-center justify-center overflow-x-auto min-h-[220px]"
+        className="w-full overflow-x-auto no-scrollbar py-8 sm:py-12 px-2 flex justify-start sm:justify-center touch-pan-x"
       >
-        {/* The Card Fan Deck */}
-        <div className="flex items-center justify-center -space-x-4 sm:-space-x-6 py-4 px-6">
+        {/* The Card Fan Deck - Centered on Desktop, Smoothly Scrollable with End Paddings on Mobile */}
+        <div className="flex items-center -space-x-3.5 sm:-space-x-6 px-10 sm:px-6 min-w-max mx-auto py-4">
           {SHOWCASE_DECK.map((tool, idx) => {
             const isHovered = hoveredIndex === idx;
-            const isElevated = isHovered;
+            const isSelected = selectedIndex === idx;
+            const isElevated = isHovered || isSelected;
 
             // Calculate rotational tilt offset relative to center or active card
             const baseCenter = hoveredIndex !== null ? hoveredIndex : 4.5;
@@ -116,16 +117,16 @@ export const InteractiveToolsShowcase: React.FC = () => {
                   transform: `translateY(${translateY}px) rotate(${rotateDeg}deg)`,
                   zIndex,
                 }}
-                className={`relative w-16 h-20 sm:w-20 sm:h-24 rounded-2xl bg-white dark:bg-[#161B22] border transition-all duration-300 cursor-pointer flex flex-col items-center justify-center shadow-md hover:shadow-2xl ${
+                className={`relative w-15 h-20 sm:w-20 sm:h-24 rounded-2xl bg-white dark:bg-[#161B22] border transition-all duration-300 cursor-pointer flex flex-col items-center justify-center shadow-md hover:shadow-2xl shrink-0 ${
                   isElevated
                     ? 'border-[#1E3A8A] dark:border-blue-500 ring-2 ring-[#1E3A8A]/30 scale-110 shadow-2xl'
                     : 'border-zinc-200/90 dark:border-zinc-800 opacity-90 hover:opacity-100 hover:scale-105'
                 }`}
                 title={tool.name}
               >
-                {/* TOOLTIP ANCHORED DIRECTLY ABOVE THIS SPECIFIC CARD */}
+                {/* TOOLTIP ANCHORED DIRECTLY ABOVE THIS SPECIFIC CARD (Visible on Desktop) */}
                 {isHovered && (
-                  <div className="absolute -top-12 sm:-top-14 left-1/2 -translate-x-1/2 z-50 pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-150">
+                  <div className="hidden sm:block absolute -top-12 sm:-top-14 left-1/2 -translate-x-1/2 z-50 pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-150">
                     <div className="relative px-3 py-1.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 font-bold text-xs shadow-xl flex items-center gap-1.5 border border-zinc-700 dark:border-zinc-200">
                       <span>{tool.name}</span>
                       <span className="text-[10px] font-mono text-emerald-400 dark:text-emerald-600 font-semibold">
@@ -138,7 +139,7 @@ export const InteractiveToolsShowcase: React.FC = () => {
                 )}
 
                 <div className="p-2 flex items-center justify-center">
-                  <ToolLogo name={tool.name} size={36} className="transition-transform group-hover:scale-110" />
+                  <ToolLogo name={tool.name} size={32} className="transition-transform group-hover:scale-110" />
                 </div>
               </div>
             );

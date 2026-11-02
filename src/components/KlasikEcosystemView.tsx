@@ -504,10 +504,13 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
     );
   }, [currentTrackChapters, materiSearch]);
 
-  // Toggle chapter accordion
+  // Toggle chapter accordion (can be opened and closed anytime)
   const toggleChapter = (chapterId: string) => {
     if (!chapterId) return;
-    setOpenChapters((prev) => ({ ...prev, [chapterId]: !prev[chapterId] }));
+    setOpenChapters((prev) => {
+      const currentlyOpen = prev[chapterId] !== undefined ? prev[chapterId] : chapterId === activeChapter?.id;
+      return { ...prev, [chapterId]: !currentlyOpen };
+    });
   };
 
   // Handle select subchapter with URL hash update
@@ -1898,7 +1901,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       {/* VIEW 2: DEDICATED BELAJAR DOCUMENTATION STUDIO (ALA FIKRAN.DEV/BELAJAR)   */}
       {/* ========================================================================= */}
       {activePage === 'learning' && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-12 sm:py-10">
           {/* Top Breadcrumb & Title */}
           <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
@@ -2011,17 +2014,20 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 {filteredChapters.map((chapter, idx) => {
                   if (!chapter) return null;
                   const isCurrentChapter = chapter.id === activeChapter?.id;
-                  const isOpen = openChapters[chapter.id] || isCurrentChapter;
+                  const isOpen = openChapters[chapter.id] !== undefined ? openChapters[chapter.id] : isCurrentChapter;
 
                   return (
                     <div key={chapter.id} className="rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 overflow-hidden bg-white dark:bg-[#111319]">
                       <button
                         onClick={() => {
-                          setActiveChapterId(chapter.id);
-                          if (chapter.subchapters?.[0]?.id) {
-                            setActiveSubchapterId(chapter.subchapters[0].id);
+                          const currentlyOpen = openChapters[chapter.id] !== undefined ? openChapters[chapter.id] : isCurrentChapter;
+                          setOpenChapters((prev) => ({ ...prev, [chapter.id]: !currentlyOpen }));
+                          if (!currentlyOpen) {
+                            setActiveChapterId(chapter.id);
+                            if (chapter.subchapters?.[0]?.id) {
+                              setActiveSubchapterId(chapter.subchapters[0].id);
+                            }
                           }
-                          toggleChapter(chapter.id);
                         }}
                         className={`w-full p-3 text-left flex items-center justify-between gap-2 transition-colors cursor-pointer ${
                           isCurrentChapter
@@ -2084,7 +2090,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white">
                   {activeChapter?.title || 'Materi Belajar'}
                 </h2>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-2 leading-relaxed">
+                <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 mt-2 leading-relaxed font-normal">
                   {activeChapter?.summary || ''}
                 </p>
               </div>
@@ -2094,7 +2100,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <h3 className="font-bold text-base text-zinc-950 dark:text-white">
                   Untuk siapa bab ini
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">
                   {activeChapter?.audience || ''}
                 </p>
               </div>
@@ -2372,7 +2378,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       {/* VIEW 3: DEDICATED LAYANAN KATALOG (SERVICES VIEW - WEBZOO STYLE)          */}
       {/* ========================================================================= */}
       {activePage === 'services' && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-12 sm:pb-12">
           <WebzooServiceCatalog
             onWhatsAppInquiry={handleWhatsAppConsultation}
             onNavigateHome={() => navigateTo('home')}
@@ -2384,7 +2390,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       {/* VIEW 4: DEDICATED TOOLS YANG SAYA PAKAI (TOOLS VIEW)                      */}
       {/* ========================================================================= */}
       {activePage === 'tools' && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-12 sm:pb-12 space-y-8">
           {/* Tools Mascot Banner */}
           <div className="p-6 rounded-3xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="space-y-2">
@@ -2557,7 +2563,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       {/* VIEW 6: DEDICATED BLOG (FULL-PAGE EDITORIAL ALA FIKRAN.DEV/BLOG)           */}
       {/* ========================================================================= */}
       {activePage === 'blog' && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-12 sm:pb-12">
           {selectedArticle ? (
             /* DEDICATED FULL-PAGE ARTICLE READING VIEW (MATCHING FIKRAN.DEV/BLOG/<SLUG>) */
             <article className="space-y-8 animate-fade-in max-w-4xl mx-auto">

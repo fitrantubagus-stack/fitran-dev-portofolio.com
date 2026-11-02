@@ -173,7 +173,7 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
           <h2 className="text-2xl sm:text-4xl font-black text-zinc-950 dark:text-white tracking-tight">
             Keunggulan Strategis untuk Daya Saing Global
           </h2>
-          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">
             Setiap komponen visual dan arsitektur website dirancang mendorong konversi nyata dan memperluas otoritas brand Anda.
           </p>
         </div>
@@ -181,48 +181,48 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
         {/* Bento Grid Layout (Matches Image 2 & 3) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           {/* BENTO 1: TINGKATKAN KEHADIRAN BRAND (Large Left Card with Concentric Orbit Rings) */}
-          <div className="lg:col-span-5 rounded-3xl bg-blue-600 text-white p-8 sm:p-10 flex flex-col justify-between shadow-xl relative overflow-hidden min-h-[420px]">
-            {/* Concentric Orbital Ripple Vector Graphics */}
-            <div className="absolute top-8 left-1/2 -translate-x-1/2 w-80 h-80 pointer-events-none">
-              {/* Outer Ring */}
-              <div className="absolute inset-0 rounded-full border border-white/20 animate-spin-slow" />
-              {/* Middle Ring */}
-              <div className="absolute inset-8 rounded-full border border-white/25" />
-              {/* Inner Ring */}
-              <div className="absolute inset-16 rounded-full border border-white/30" />
-              {/* Core Pulse Rocket */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-lg">
-                  <Rocket className="w-8 h-8 text-white -rotate-45" />
+          <div className="lg:col-span-5 rounded-3xl bg-blue-600 text-white p-6 sm:p-10 flex flex-col justify-between shadow-xl relative overflow-hidden">
+            {/* Concentric Orbital Ripple Vector Graphics Container */}
+            <div className="relative w-full h-60 sm:h-72 flex items-center justify-center overflow-hidden">
+              <div className="relative w-60 h-60 sm:w-72 sm:h-72 shrink-0">
+                {/* Outer Ring */}
+                <div className="absolute inset-0 rounded-full border border-white/20 animate-spin-slow" />
+                {/* Middle Ring */}
+                <div className="absolute inset-6 rounded-full border border-white/25" />
+                {/* Inner Ring */}
+                <div className="absolute inset-12 rounded-full border border-white/30" />
+                {/* Core Pulse Rocket */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-lg">
+                    <Rocket className="w-7 h-7 text-white -rotate-45" />
+                  </div>
                 </div>
-              </div>
 
-              {/* Orbiting Avatar Badges with clean vector icons */}
-              <div className="absolute top-3 left-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
-                <Briefcase className="w-4 h-4" />
-              </div>
-              <div className="absolute top-16 left-6 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
-                <Code2 className="w-3.5 h-3.5" />
-              </div>
-              <div className="absolute top-24 right-6 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
-                <Cpu className="w-3.5 h-3.5" />
-              </div>
-              <div className="absolute bottom-16 left-12 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
-                <TrendingUp className="w-3.5 h-3.5" />
-              </div>
-              <div className="absolute bottom-12 right-12 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
-                <Sparkles className="w-3.5 h-3.5" />
+                {/* Orbiting Avatar Badges */}
+                <div className="absolute top-2 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                  <Briefcase className="w-3.5 h-3.5" />
+                </div>
+                <div className="absolute top-12 left-3 w-7 h-7 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                  <Code2 className="w-3 h-3" />
+                </div>
+                <div className="absolute top-16 right-3 w-7 h-7 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                  <Cpu className="w-3 h-3" />
+                </div>
+                <div className="absolute bottom-5 left-6 w-7 h-7 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                  <TrendingUp className="w-3 h-3" />
+                </div>
+                <div className="absolute bottom-5 right-6 w-7 h-7 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                  <Sparkles className="w-3 h-3" />
+                </div>
               </div>
             </div>
 
-            <div className="h-48" />
-
-            {/* Bottom Content (Matches Image 3 Text) */}
-            <div className="relative z-10 space-y-2 pt-6">
-              <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
+            {/* Bottom Content (Zero Collision with Graphic) */}
+            <div className="relative z-10 space-y-2 pt-4">
+              <h3 className="text-xl sm:text-3xl font-black text-white tracking-tight leading-tight">
                 Tingkatkan Kehadiran Brand
               </h3>
-              <p className="text-xs sm:text-sm text-blue-100 leading-relaxed font-normal">
+              <p className="text-xs sm:text-sm text-blue-100/95 leading-relaxed font-normal">
                 Bangun kredibilitas brand Anda dan perluas jangkauan bisnis melalui kehadiran website yang optimal.
               </p>
             </div>
@@ -236,7 +236,7 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
                 <h3 className="text-xl sm:text-2xl font-black text-zinc-950 dark:text-white tracking-tight">
                   Visibilitas Global
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">
                   Tampil paling atas dengan penguatan struktur SEO pada setiap aspek website Anda.
                 </p>
                 <div className="flex flex-wrap gap-1.5 pt-1">
@@ -280,7 +280,7 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
                   <h3 className="text-xl font-black text-zinc-950 dark:text-white tracking-tight">
                     Aman dan Berkesan
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">
                     Diciptakan dengan standar tinggi untuk impresi dan keamanan yang maksimal.
                   </p>
                 </div>
@@ -338,7 +338,7 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
                   <h3 className="text-xl font-black text-zinc-950 dark:text-white tracking-tight">
                     Melampaui Waktu
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">
                     Website design yang siap menghadapi kebutuhan dan perkembangan teknologi di masa depan.
                   </p>
                 </div>

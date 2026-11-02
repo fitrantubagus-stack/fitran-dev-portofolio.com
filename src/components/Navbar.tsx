@@ -180,7 +180,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full py-2.5 px-4 sm:px-8 transition-all pointer-events-none">
+    <header className="sticky top-0 z-50 w-full py-2 px-3 sm:py-2.5 sm:px-8 transition-all pointer-events-none bg-[#FAFAFA]/90 dark:bg-[#09090B]/90 backdrop-blur-md sm:bg-transparent sm:backdrop-blur-none border-b border-zinc-200/40 dark:border-zinc-800/40 sm:border-b-0">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
         {/* LEFT: Desktop fitran.dev Pixel Logo + Timezone Label (Theme 1 & 2 only) */}
         {designTheme !== 'arcade' && (

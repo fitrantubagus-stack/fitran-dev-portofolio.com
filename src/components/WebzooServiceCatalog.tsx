@@ -261,7 +261,7 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
                   <h3 className="font-black text-lg text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:group-hover:text-blue-400 transition-colors leading-snug">
                     {srv.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 mt-1.5 leading-relaxed font-normal">
                     {srv.tagline}
                   </p>
                 </div>
@@ -269,7 +269,7 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
                 {/* Deliverables Checklist (2 bullets) */}
                 <div className="space-y-1.5 pt-1 text-xs">
                   {srv.deliverables?.slice(0, 2).map((sec, idx) => (
-                    <div key={idx} className="flex items-start gap-2 text-zinc-600 dark:text-zinc-400">
+                    <div key={idx} className="flex items-start gap-2 text-zinc-700 dark:text-zinc-300">
                       <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
                       <span className="line-clamp-1 font-medium">{sec.title}</span>
                     </div>
@@ -351,7 +351,7 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
       {/* ========================================================================= */}
       {/* 1. WEBZOO-STYLE ROYAL BLUE HERO (EXACT MATCH TO USER IMAGE 1)             */}
       {/* ========================================================================= */}
-      <div className="rounded-3xl bg-linear-to-br from-[#0B3B82] via-[#0F4C81] to-[#1E3A8A] text-white p-8 sm:p-12 lg:p-14 shadow-2xl relative overflow-hidden">
+      <div className="rounded-3xl bg-linear-to-br from-[#0B3B82] via-[#0F4C81] to-[#1E3A8A] text-white p-6 sm:p-12 lg:p-14 shadow-2xl relative overflow-hidden">
         {/* Subtle background radial glow */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-blue-400/10 blur-3xl pointer-events-none" />
 

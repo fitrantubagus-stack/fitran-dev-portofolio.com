@@ -88,7 +88,7 @@ export const SaaSSolutionsShowcase: React.FC<SaaSSolutionsShowcaseProps> = ({
           <h2 className="text-2xl sm:text-4xl font-black text-zinc-950 dark:text-white tracking-tight">
             Alat &amp; Alur Kerja Terintegrasi untuk Eksekusi Kilat
           </h2>
-          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+          <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">
             Dari perencanaan PRD terstruktur, UI canvas responsif, hingga orkestrasi multi-model AI terbaik untuk membangun sistem bisnis yang tangguh dan siap scale.
           </p>
         </div>
@@ -112,7 +112,7 @@ export const SaaSSolutionsShowcase: React.FC<SaaSSolutionsShowcaseProps> = ({
                 <h3 className="text-xl sm:text-2xl font-black text-zinc-950 dark:text-white tracking-tight">
                   Bikin PRD, Arsitektur Database &amp; Task Lebih Terstruktur
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1 leading-relaxed">
+                <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 mt-1 leading-relaxed font-normal">
                   Tidak ada lagi spekulasi liar. Semua spesifikasi teknis, skema relasi data, dan integrasi API dipetakan sebelum coding dimulai.
                 </p>
               </div>
@@ -207,7 +207,7 @@ export const SaaSSolutionsShowcase: React.FC<SaaSSolutionsShowcaseProps> = ({
                 <h3 className="text-xl font-black text-zinc-950 dark:text-white tracking-tight">
                   Pilih AI Terbaik Sesuai Karakter Masalah
                 </h3>
-                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1 leading-relaxed">
+                <p className="text-xs text-zinc-700 dark:text-zinc-300 mt-1 leading-relaxed font-normal">
                   Tidak bergantung pada satu vendor. Kami mengorkestrasi model terkuat di kelasnya untuk efisiensi biaya dan performa maksimal.
                 </p>
               </div>
@@ -343,7 +343,7 @@ export const SaaSSolutionsShowcase: React.FC<SaaSSolutionsShowcaseProps> = ({
                     31% OFF
                   </span>
                 </div>
-                <p className="text-xs text-zinc-500 mt-2">
+                <p className="text-xs text-zinc-700 dark:text-zinc-300 mt-2 font-normal">
                   Unlimited skala bisnis dengan database PostgreSQL &amp; dashboard.
                 </p>
               </div>

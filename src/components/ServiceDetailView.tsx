@@ -503,46 +503,46 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
       </div>
 
       {/* 2. SUB-SERVICE HERO SECTION */}
-      <div className="p-8 sm:p-12 rounded-3xl bg-linear-to-br from-blue-900 via-[#1E3A8A] to-[#0A2540] text-white shadow-xl relative overflow-hidden">
+      <div className="p-6 sm:p-12 rounded-3xl bg-linear-to-br from-blue-900 via-[#1E3A8A] to-[#0A2540] text-white shadow-xl relative overflow-hidden">
         {/* Background glow circle */}
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-blue-500/15 blur-3xl pointer-events-none" />
 
-        <div className="max-w-3xl space-y-5 relative z-10">
+        <div className="max-w-3xl space-y-4 sm:space-y-5 relative z-10">
           <div className="flex flex-wrap items-center gap-2.5">
-            <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-blue-200 font-mono text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5">
-              {renderIcon(service.iconName, 'w-3.5 h-3.5 text-blue-300')}
+            <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-blue-100 font-mono text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5">
+              {renderIcon(service.iconName, 'w-3.5 h-3.5 text-blue-200')}
               <span>{service.categoryLabel}</span>
             </span>
 
             {service.badge && (
-              <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 font-mono text-[11px] font-bold">
+              <span className="px-3 py-1 rounded-full bg-emerald-500/25 text-emerald-200 border border-emerald-400/40 font-mono text-[11px] font-bold">
                 {service.badge}
               </span>
             )}
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+          <h1 className="text-2xl sm:text-5xl font-black text-white tracking-tight leading-tight">
             {service.title}
           </h1>
 
-          <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed font-normal">
+          <p className="text-sm sm:text-lg text-blue-100 leading-relaxed font-medium">
             {service.tagline}
           </p>
 
-          <p className="text-xs sm:text-sm text-blue-200/80 leading-relaxed pt-1">
+          <p className="text-xs sm:text-sm text-blue-100/90 leading-relaxed pt-1">
             {service.overview}
           </p>
 
           {/* Price & Duration HUD */}
-          <div className="pt-4 flex flex-wrap items-center gap-4">
+          <div className="pt-4 flex flex-wrap items-center gap-3 sm:gap-4">
             <div className="px-4 py-2.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
               <span className="text-[10px] font-mono uppercase text-blue-200 block">Estimasi Investasi</span>
-              <span className="text-lg font-black text-white">{service.price}</span>
+              <span className="text-base sm:text-lg font-black text-white">{service.price}</span>
             </div>
 
             <div className="px-4 py-2.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
               <span className="text-[10px] font-mono uppercase text-blue-200 block">Estimasi Waktu</span>
-              <span className="text-lg font-black text-white flex items-center gap-1.5">
+              <span className="text-base sm:text-lg font-black text-white flex items-center gap-1.5">
                 <Clock className="w-4 h-4 text-blue-300" />
                 <span>{service.duration}</span>
               </span>
@@ -550,7 +550,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
 
             <button
               onClick={() => onWhatsAppInquiry(service.title, service.price)}
-              className="px-6 py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm flex items-center gap-2 shadow-lg hover:shadow-emerald-500/25 transition-all cursor-pointer"
+              className="w-full sm:w-auto justify-center px-6 py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg hover:shadow-emerald-500/25 transition-all cursor-pointer"
             >
               <MessageSquare className="w-4 h-4" />
               <span>Konsultasi Layanan Ini via WhatsApp</span>
@@ -565,7 +565,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
           <h2 className="text-2xl sm:text-3xl font-black text-zinc-950 dark:text-white tracking-tight">
             {service.featureSectionTitle || 'Standar Rekayasa Arsitektur & Keunggulan Utama'}
           </h2>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+          <p className="text-sm text-zinc-700 dark:text-zinc-300 mt-1 max-w-2xl font-normal">
             {service.featureSectionSubtitle || 'Semua fitur ini sudah termasuk di setiap proyek, tanpa biaya tambahan.'}
           </p>
         </div>
@@ -585,7 +585,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
                   <h3 className="font-bold text-sm text-zinc-950 dark:text-white leading-snug">
                     {feat.title}
                   </h3>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1.5 leading-relaxed">
+                  <p className="text-xs text-zinc-700 dark:text-zinc-300 mt-1.5 leading-relaxed font-normal">
                     {feat.desc}
                   </p>
                 </div>
@@ -619,7 +619,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
           <h2 className="text-2xl sm:text-3xl font-black text-zinc-950 dark:text-white tracking-tight">
             Rincian Deliverables &amp; Spesifikasi Teknis
           </h2>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+          <p className="text-sm text-zinc-700 dark:text-zinc-300 mt-1 max-w-2xl font-normal">
             Semua komponen yang Anda terima tertulis jelas dalam kontrak kerja tanpa biaya siluman.
           </p>
         </div>
@@ -637,7 +637,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
                 <h3 className="font-bold text-base text-zinc-950 dark:text-white">{sec.title}</h3>
               </div>
 
-              <ul className="space-y-2.5 text-xs text-zinc-600 dark:text-zinc-400">
+              <ul className="space-y-2.5 text-xs text-zinc-700 dark:text-zinc-300">
                 {sec.items?.map((it, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
@@ -656,7 +656,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
           <h2 className="text-2xl sm:text-3xl font-black text-zinc-950 dark:text-white tracking-tight">
             Alur Pengerjaan 4 Tahap Terstruktur
           </h2>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+          <p className="text-sm text-zinc-700 dark:text-zinc-300 mt-1 max-w-2xl font-normal">
             Proses kerja transparan dengan progres harian yang dapat Anda pantau setiap saat.
           </p>
         </div>
@@ -671,12 +671,12 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
                 <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-400">
                   Tahap 0{stage.step}
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-bold">
                   {stage.duration}
                 </span>
               </div>
               <h4 className="font-bold text-sm text-zinc-950 dark:text-white">{stage.title}</h4>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">{stage.desc}</p>
+              <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">{stage.desc}</p>
             </div>
           ))}
         </div>
@@ -686,7 +686,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
       <div className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h4 className="font-bold text-sm text-zinc-950 dark:text-white">Teknologi &amp; Framework yang Digunakan:</h4>
-          <p className="text-xs text-zinc-500 mt-0.5">Standar industri global, bukan software usang atau plugin rentan.</p>
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5 font-normal">Standar industri global, bukan software usang atau plugin rentan.</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -707,7 +707,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
           <h2 className="text-2xl sm:text-3xl font-black text-zinc-950 dark:text-white tracking-tight">
             Pertanyaan yang Sering Diajukan (FAQ)
           </h2>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
+          <p className="text-sm text-zinc-700 dark:text-zinc-300 mt-1 max-w-2xl font-normal">
             Jawaban lugas seputar proses pengerjaan, kepemilikan kode, dan garansi.
           </p>
         </div>
@@ -722,7 +722,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
                 <HelpCircle className="w-4 h-4 text-blue-600 shrink-0" />
                 <span>{faq.question}</span>
               </h4>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed pl-6">
+              <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed pl-6 font-normal">
                 {faq.answer}
               </p>
             </div>
@@ -731,7 +731,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
       </div>
 
       {/* 8. BOTTOM GROUNDED ACTION BANNER */}
-      <div className="p-8 sm:p-10 rounded-3xl bg-linear-to-r from-blue-50/90 via-sky-50/70 to-emerald-50/90 dark:from-zinc-900 dark:via-[#111319] dark:to-zinc-900 border-2 border-blue-200 dark:border-blue-900 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+      <div className="p-6 sm:p-10 rounded-3xl bg-linear-to-r from-blue-50/90 via-sky-50/70 to-emerald-50/90 dark:from-zinc-900 dark:via-[#111319] dark:to-zinc-900 border-2 border-blue-200 dark:border-blue-900 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
         <div className="space-y-2 max-w-xl">
           <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#1E3A8A] dark:text-blue-400">
             KONSULTASI TANPA KOMITMEN
@@ -739,7 +739,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
           <h3 className="text-xl sm:text-2xl font-black text-zinc-950 dark:text-white">
             Siap Membangun {service.title} untuk Bisnis Anda?
           </h3>
-          <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+          <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">
             Diskusikan kebutuhan spesifik Anda langsung dengan Tubagus Fitran. Dapatkan estimasi durasi dan solusi arsitektur terbaik secara gratis.
           </p>
         </div>
