@@ -472,7 +472,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
     setActiveSubchapterId(sub.id);
     setOpenChapters((prev) => ({ ...prev, [chapter.id]: true }));
     if (typeof window !== 'undefined') {
-      window.history.pushState(null, '', `/belajar/${chapter.trackId}#/${sub.id}`);
+      window.history.pushState(null, '', `${themePrefix}/belajar/${chapter.trackId}#/${sub.id}`);
     }
   };
 
@@ -1009,9 +1009,13 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             {/* Certificates Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredCerts.slice(0, 9).map((cert) => (
-                <div
+                <a
                   key={cert.id}
-                  onClick={() => onSelectCertificate && onSelectCertificate(cert)}
+                  href={getCertPreviewPath(cert)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSelectCertificate && onSelectCertificate(cert);
+                  }}
                   className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A]/50 dark:hover:border-blue-500/50 transition-all shadow-xs flex flex-col justify-between group cursor-pointer space-y-3"
                 >
                   <div className="space-y-2.5">
@@ -1030,11 +1034,15 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
                     {cert.credentialId && (
                       <div
-                        onClick={(e) => handleCopyCertId(e, cert.credentialId!)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleCopyCertId(e, cert.credentialId!);
+                        }}
                         className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-[10px] font-mono text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
                         title="Klik untuk menyalin ID"
                       >
-                        <Copy className="w-3 h-3" />
+                        <Copy className="w-3.5 h-3.5" />
                         <span className="truncate max-w-[170px]">ID: {cert.credentialId}</span>
                         {copiedCertId === cert.credentialId && (
                           <span className="text-emerald-500 font-bold ml-1">Tersalin!</span>
@@ -1047,7 +1055,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     <span>Lihat Bukti Kredensial</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
-                </div>
+                </a>
               ))}
             </div>
 
@@ -1708,13 +1716,17 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
                 {/* Action Buttons */}
                 <div className="pt-4 mt-4 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between gap-2">
-                  <button
-                    onClick={() => onSelectCertificate && onSelectCertificate(cert)}
+                  <a
+                    href={getCertPreviewPath(cert)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onSelectCertificate && onSelectCertificate(cert);
+                    }}
                     className="py-1.5 px-3 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5"
                   >
                     <Award className="w-3.5 h-3.5 text-[#1E3A8A] dark:text-blue-400" />
                     <span>Lihat Sertifikat</span>
-                  </button>
+                  </a>
 
                   {cert.verifyUrl ? (
                     <a
@@ -1977,9 +1989,13 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                           {chapter.subchapters.map((sub) => {
                             const isSubActive = sub.id === activeSubchapter.id && isCurrentChapter;
                             return (
-                              <button
+                              <a
                                 key={sub.id}
-                                onClick={() => handleSelectSubchapter(chapter, sub)}
+                                href={`${themePrefix}/belajar/${chapter.trackId}#/${sub.id}`}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleSelectSubchapter(chapter, sub);
+                                }}
                                 className={`w-full text-left py-1.5 px-2.5 rounded-lg text-[11px] transition-all cursor-pointer flex items-center gap-2 ${
                                   isSubActive
                                     ? 'bg-[#1E3A8A] text-white font-bold shadow-xs'
@@ -1988,7 +2004,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                               >
                                 <span className="font-mono text-[10px] opacity-75">{sub.num}</span>
                                 <span className="truncate">{sub.title}</span>
-                              </button>
+                              </a>
                             );
                           })}
                         </div>
@@ -2117,8 +2133,12 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 {/* Next / Previous Subchapter Navigation Buttons (Ala Fikran Dev) */}
                 <div className="pt-6 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
                   {prevSubItem ? (
-                    <button
-                      onClick={() => handleSelectSubchapter(prevSubItem.chapter, prevSubItem.sub)}
+                    <a
+                      href={`${themePrefix}/belajar/${prevSubItem.chapter.trackId}#/${prevSubItem.sub.id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSelectSubchapter(prevSubItem.chapter, prevSubItem.sub);
+                      }}
                       className="w-full sm:w-auto p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A] bg-zinc-50 dark:bg-zinc-900/60 text-left transition-all cursor-pointer group"
                     >
                       <span className="block text-[10px] font-mono uppercase text-zinc-400 group-hover:text-[#1E3A8A] dark:text-blue-400">
@@ -2127,12 +2147,16 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       <span className="text-xs font-bold text-zinc-950 dark:text-white line-clamp-1">
                         {prevSubItem.sub.num} {prevSubItem.sub.title}
                       </span>
-                    </button>
+                    </a>
                   ) : <div />}
 
                   {nextSubItem && (
-                    <button
-                      onClick={() => handleSelectSubchapter(nextSubItem.chapter, nextSubItem.sub)}
+                    <a
+                      href={`${themePrefix}/belajar/${nextSubItem.chapter.trackId}#/${nextSubItem.sub.id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSelectSubchapter(nextSubItem.chapter, nextSubItem.sub);
+                      }}
                       className="w-full sm:w-auto p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A] bg-zinc-50 dark:bg-zinc-900/60 text-right transition-all cursor-pointer group ml-auto"
                     >
                       <span className="block text-[10px] font-mono uppercase text-zinc-400 group-hover:text-[#1E3A8A] dark:text-blue-400">
@@ -2141,7 +2165,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       <span className="text-xs font-bold text-zinc-950 dark:text-white line-clamp-1">
                         {nextSubItem.sub.num} {nextSubItem.sub.title}
                       </span>
-                    </button>
+                    </a>
                   )}
                 </div>
               </div>
@@ -2296,6 +2320,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           <WebzooServiceCatalog
             onWhatsAppInquiry={handleWhatsAppConsultation}
             onNavigateHome={() => navigateTo('home')}
+            themePrefix={themePrefix}
           />
         </div>
       )}

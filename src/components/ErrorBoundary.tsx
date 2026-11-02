@@ -55,6 +55,14 @@ export class ErrorBoundary extends Component<Props, State> {
               <p className="text-xs text-zinc-500 leading-relaxed">
                 Halaman mengalami kesalahan runtime yang berhasil diisolasi agar aplikasi tidak blank.
               </p>
+              {this.state.error && (
+                <div className="mt-2 text-left p-3 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-xs font-mono text-red-600 dark:text-red-400 overflow-x-auto max-h-40">
+                  <p className="font-bold">{this.state.error.name}: {this.state.error.message}</p>
+                  {this.state.error.stack && (
+                    <pre className="text-[10px] mt-1 whitespace-pre-wrap opacity-80">{this.state.error.stack}</pre>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="pt-2 flex items-center justify-center gap-3">

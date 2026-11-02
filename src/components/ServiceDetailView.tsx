@@ -45,6 +45,27 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
   onBack,
   onWhatsAppInquiry,
 }) => {
+  // Defensive fallbacks in case service is undefined or partially loaded
+  if (!service) {
+    return (
+      <div id="katalog-lengkap" className="p-8 text-center space-y-4">
+        <p className="text-zinc-600 dark:text-zinc-400">Layanan tidak ditemukan atau sedang diperbarui.</p>
+        <button
+          onClick={onBack}
+          className="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs"
+        >
+          Kembali ke Katalog
+        </button>
+      </div>
+    );
+  }
+
+  const standardFeatures = service.standardFeatures || [];
+  const deliverables = service.deliverables || [];
+  const workflow = service.workflow || [];
+  const techStack = service.techStack || [];
+  const faqs = service.faqs || [];
+
   // Helper to render icon based on name
   const renderIcon = (name: string, className = 'w-5 h-5') => {
     switch (name) {
@@ -94,7 +115,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
   };
 
   return (
-    <div className="space-y-12 animate-fade-in">
+    <div id="katalog-lengkap" className="space-y-12 animate-fade-in scroll-mt-24">
       {/* 1. TOP BREADCRUMB & BACK ACTION */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
         <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500">
@@ -191,7 +212,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: 6 Standard Feature Cards with clean vector icons */}
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {service.standardFeatures.map((feat, idx) => (
+            {standardFeatures.map((feat, idx) => (
               <div
                 key={idx}
                 className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200/90 dark:border-zinc-800 shadow-xs space-y-3 hover:border-blue-400/60 transition-colors"
@@ -284,7 +305,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {service.deliverables.map((sec, idx) => (
+          {deliverables.map((sec, idx) => (
             <div
               key={idx}
               className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-xs space-y-4"
@@ -321,7 +342,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {service.workflow.map((stage) => (
+          {workflow.map((stage) => (
             <div
               key={stage.step}
               className="p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 space-y-3 relative"
@@ -349,7 +370,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          {service.techStack.map((tech, i) => (
+          {techStack.map((tech, i) => (
             <span
               key={i}
               className="px-3 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200"
@@ -372,7 +393,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
         </div>
 
         <div className="space-y-3">
-          {service.faqs.map((faq, i) => (
+          {faqs.map((faq, i) => (
             <div
               key={i}
               className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-2"

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CertificateItem } from '../types';
-import { CERTIFICATES_DATA, CERTIFICATES_DRIVE_URL, PERSONAL_INFO } from '../data/portfolioData';
+import { CERTIFICATES_DATA, CERTIFICATES_DRIVE_URL, PERSONAL_INFO, getCertPreviewPath } from '../data/portfolioData';
 import { ScrambleText } from './ScrambleText';
 import { CertificatePreview } from './CertificatePreview';
 import { ScrollReveal } from './ScrollReveal';
@@ -958,8 +958,12 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCerts.map((cert, index) => (
             <ScrollReveal key={cert.id} variant="fade-up" delay={(index % 3) * 65}>
-              <div
-                onClick={() => onSelectCert(cert)}
+              <a
+                href={getCertPreviewPath(cert)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSelectCert(cert);
+                }}
                 className={`group h-full flex flex-col justify-between p-5 transition-all cursor-pointer relative overflow-hidden ${
                   isAnimasi
                     ? 'rounded-3xl border-2 border-indigo-500/40 bg-slate-900/90 backdrop-blur-xl shadow-[0_12px_35px_rgba(79,70,229,0.2)] hover:border-cyan-400 hover:shadow-[0_18px_45px_rgba(6,182,212,0.32)] hover:-translate-y-2'
@@ -1307,8 +1311,10 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
                       </a>
                     )}
 
-                    <button
+                    <a
+                      href={getCertPreviewPath(cert)}
                       onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
                         onSelectCert(cert);
                       }}
@@ -1323,10 +1329,10 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
                     >
                       <span>Buka</span>
                       <ArrowUpRight className="w-3.5 h-3.5" />
-                    </button>
+                    </a>
                   </div>
                 </div>
-              </div>
+              </a>
             </ScrollReveal>
           ))}
         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import {
   Globe,
   Code2,
@@ -44,19 +44,33 @@ interface WebzooServiceCatalogProps {
   onWhatsAppInquiry: (serviceName?: string, budget?: string) => void;
   onNavigateHome: () => void;
   initialServiceId?: string | null;
+  themePrefix?: string;
 }
 
 export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
   onWhatsAppInquiry,
   onNavigateHome,
   initialServiceId = null,
+  themePrefix,
 }) => {
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(initialServiceId);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<string>('semua');
   const [showFlipbook, setShowFlipbook] = useState<boolean>(false);
 
+  // Derive theme prefix safely
+  const currentPrefix = useMemo(() => {
+    if (themePrefix) return themePrefix;
+    if (typeof window !== 'undefined') {
+      const p = window.location.pathname.toLowerCase();
+      if (p.startsWith('/corporation')) return '/corporation';
+      if (p.startsWith('/portofolio-me')) return '/portofolio-me';
+      if (p.startsWith('/profesional')) return '/profesional';
+    }
+    return '/corporation';
+  }, [themePrefix]);
+
   // Sync initial service from query parameter & handle #katalog-lengkap anchor jump
-  useEffect(() => {
+  const syncServiceFromUrl = useCallback(() => {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
     const serviceParam = params.get('service');
@@ -65,6 +79,8 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
       if (match) {
         setSelectedServiceId(match.id);
       }
+    } else {
+      setSelectedServiceId(null);
     }
     if (window.location.hash === '#katalog-lengkap') {
       setTimeout(() => {
@@ -75,6 +91,16 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
       }, 150);
     }
   }, []);
+
+  useEffect(() => {
+    syncServiceFromUrl();
+    window.addEventListener('popstate', syncServiceFromUrl);
+    window.addEventListener('app-route-change', syncServiceFromUrl);
+    return () => {
+      window.removeEventListener('popstate', syncServiceFromUrl);
+      window.removeEventListener('app-route-change', syncServiceFromUrl);
+    };
+  }, [syncServiceFromUrl]);
 
   // Active sub-service object
   const selectedService = useMemo(() => {
@@ -142,7 +168,8 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
         onBack={() => {
           setSelectedServiceId(null);
           if (typeof window !== 'undefined') {
-            window.history.pushState(null, '', '/layanan');
+            window.history.pushState(null, '', `${currentPrefix}/layanan#katalog-lengkap`);
+            window.dispatchEvent(new Event('app-route-change'));
           }
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
@@ -351,10 +378,15 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
                 : 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-900/60';
 
             return (
-              <div
+              <a
                 key={srv.id}
-                onClick={() => {
+                href={`${currentPrefix}/layanan?service=${srv.id}#katalog-lengkap`}
+                onClick={(e) => {
+                  e.preventDefault();
                   setSelectedServiceId(srv.id);
+                  if (typeof window !== 'undefined') {
+                    window.history.pushState(null, '', `${currentPrefix}/layanan?service=${srv.id}#katalog-lengkap`);
+                  }
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="p-6 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200/90 dark:border-zinc-800 hover:border-[#1E3A8A] dark:hover:border-blue-500 shadow-xs hover:shadow-xl transition-all cursor-pointer group flex flex-col justify-between space-y-5"
@@ -413,7 +445,7 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
                     <ArrowRight className="w-4 h-4" />
                   </span>
                 </div>
-              </div>
+              </a>
             );
           })}
         </div>

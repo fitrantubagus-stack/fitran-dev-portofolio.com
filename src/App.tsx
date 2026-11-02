@@ -295,6 +295,9 @@ export default function App() {
     setActiveTab(sectionId);
     const nextPath = customPath || getRoutePath(sectionId, designTheme);
     window.history.pushState(null, '', nextPath);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('app-route-change'));
+    }
 
     if (nextPath.includes('#')) {
       const hash = nextPath.split('#')[1];
