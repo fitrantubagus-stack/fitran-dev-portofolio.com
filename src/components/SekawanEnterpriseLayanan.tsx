@@ -27,6 +27,9 @@ import {
   Zap,
 } from 'lucide-react';
 import { FitranMascot } from './FitranMascot';
+import { FitranPixelLogo } from './FitranPixelLogo';
+import { SekawanWebSolutions } from './SekawanWebSolutions';
+import { InteractiveFlipbook } from './InteractiveFlipbook';
 
 interface SekawanEnterpriseLayananProps {
   onWhatsAppInquiry: (serviceName?: string, budget?: string) => void;
@@ -54,6 +57,7 @@ export const SekawanEnterpriseLayanan: React.FC<SekawanEnterpriseLayananProps> =
 }) => {
   // Sector filter
   const [activeSector, setActiveSector] = useState<string>('Semua');
+  const [showFlipbook, setShowFlipbook] = useState<boolean>(false);
 
   // Interactive Calculator State
   const [calcPlatform, setCalcPlatform] = useState<string>('website');
@@ -301,19 +305,12 @@ export const SekawanEnterpriseLayanan: React.FC<SekawanEnterpriseLayananProps> =
           <span className="text-[#1E3A8A] dark:text-blue-400 font-semibold">Layanan Enterprise</span>
         </nav>
 
-        {/* Official Brand Watermark / Logo Pill */}
+        {/* Official Brand Pixel Logo */}
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#1E3A8A] flex items-center justify-center text-white font-black text-xs shadow-sm">
-            FD
-          </div>
-          <div>
-            <p className="font-mono text-xs font-black tracking-tight text-zinc-900 dark:text-white">
-              fitran<span className="text-emerald-500">.dev</span>
-            </p>
-            <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-mono">
-              Enterprise Software House &amp; AI Engineering
-            </p>
-          </div>
+          <FitranPixelLogo size="sm" />
+          <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-mono hidden sm:inline">
+            Enterprise Software House &amp; AI Engineering
+          </span>
         </div>
 
         <div className="max-w-4xl space-y-3 pt-2">
@@ -347,6 +344,22 @@ export const SekawanEnterpriseLayanan: React.FC<SekawanEnterpriseLayananProps> =
           </div>
         </div>
       </div>
+
+      {/* 3D INTERACTIVE FLIPBOOK MODAL / EXPANDED VIEW (ALA PERPUSNAS RI IMAGE 4) */}
+      {showFlipbook && (
+        <div className="pt-2 animate-fade-in">
+          <InteractiveFlipbook onClose={() => setShowFlipbook(false)} />
+        </div>
+      )}
+
+      {/* SEKAWAN MEDIA WEB SOLUTIONS & INTERACTIVE BENTO GRID (MATCHES USER IMAGES 1, 2, 3) */}
+      <SekawanWebSolutions
+        onWhatsAppInquiry={onWhatsAppInquiry}
+        onOpenFlipbook={() => {
+          setShowFlipbook(true);
+          window.scrollTo({ top: 400, behavior: 'smooth' });
+        }}
+      />
 
       {/* 2. SECTORAL CASE STUDIES (SEKAWAN MEDIA STYLE) */}
       <div className="space-y-6">
