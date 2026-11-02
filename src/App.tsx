@@ -23,21 +23,34 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { motion, AnimatePresence } from 'motion/react';
 import { Terminal, ArrowRight } from 'lucide-react';
 
-const SECTION_TO_PATH: Record<SectionId, string> = {
-  home: '/',
-  about: '/about-me',
-  work: '/projects',
-  certificates: '/certificates',
-  ecosystem: '/ecosystem',
-  'craft-lab': '/craft-lab',
-  contact: '/contact',
-  services: '/layanan',
-  security: '/keamanan',
-  learning: '/belajar',
-  blog: '/blog',
-  tools: '/tools',
-  kamus: '/kamus',
+export const THEME_PREFIXES: Record<DesignTheme, string> = {
+  modern: '/portofolio-me',
+  clipboard: '/profesional',
+  arcade: '/corporation',
 };
+
+export const SECTION_SUBPATHS: Record<SectionId, string> = {
+  home: '',
+  about: 'about-me',
+  work: 'projects',
+  certificates: 'certificates',
+  ecosystem: 'ecosystem',
+  'craft-lab': 'craft-lab',
+  contact: 'contact',
+  services: 'layanan',
+  security: 'keamanan',
+  learning: 'belajar',
+  blog: 'blog',
+  tools: 'tools',
+  kamus: 'kamus',
+};
+
+export function getRoutePath(section: SectionId, theme: DesignTheme): string {
+  const prefix = THEME_PREFIXES[theme] || '/corporation';
+  const sub = SECTION_SUBPATHS[section];
+  if (!sub) return prefix;
+  return `${prefix}/${sub}`;
+}
 
 const normalizeStr = (s: string) =>
   s
@@ -45,31 +58,51 @@ const normalizeStr = (s: string) =>
     .toLowerCase()
     .replace(/\s+/g, ' ');
 
-function resolveRouteFromWindow(): { tab: SectionId; cert: CertificateItem | null } {
+export function resolveRouteFromWindow(): {
+  tab: SectionId;
+  cert: CertificateItem | null;
+  theme?: DesignTheme;
+} {
   if (typeof window === 'undefined') {
     return { tab: 'home', cert: null };
   }
 
   let rawPath = decodeURIComponent(window.location.pathname || '/').replace(/^\/+|\/+$/g, '');
 
-  if (window.location.hash) {
+  // Only fall back to hash if rawPath is empty (never overwrite /layanan with #katalog-lengkap!)
+  if (!rawPath && window.location.hash) {
     const legacyHash = window.location.hash.replace(/^#\/?/, '').trim();
     if (legacyHash) {
       rawPath = decodeURIComponent(legacyHash).replace(/^\/+|\/+$/g, '');
     }
   }
 
-  if (!rawPath || rawPath === 'home' || rawPath === 'overview' || rawPath === 'beranda') {
-    return { tab: 'home', cert: null };
+  let detectedTheme: DesignTheme | undefined = undefined;
+  let pathWithoutTheme = rawPath;
+
+  const lower = rawPath.toLowerCase();
+  if (lower === 'corporation' || lower.startsWith('corporation/')) {
+    detectedTheme = 'arcade';
+    pathWithoutTheme = rawPath.replace(/^corporation\/?/i, '');
+  } else if (lower === 'portofolio-me' || lower.startsWith('portofolio-me/')) {
+    detectedTheme = 'modern';
+    pathWithoutTheme = rawPath.replace(/^portofolio-me\/?/i, '');
+  } else if (lower === 'profesional' || lower.startsWith('profesional/')) {
+    detectedTheme = 'clipboard';
+    pathWithoutTheme = rawPath.replace(/^profesional\/?/i, '');
   }
 
-  const lowerPath = rawPath.toLowerCase();
+  if (!pathWithoutTheme || pathWithoutTheme === 'home' || pathWithoutTheme === 'overview' || pathWithoutTheme === 'beranda') {
+    return { tab: 'home', cert: null, theme: detectedTheme };
+  }
+
+  const lowerPath = pathWithoutTheme.toLowerCase();
 
   if (lowerPath === 'about-me' || lowerPath === 'about' || lowerPath === 'tentang') {
-    return { tab: 'about', cert: null };
+    return { tab: 'about', cert: null, theme: detectedTheme };
   }
   if (lowerPath === 'projects' || lowerPath === 'work' || lowerPath === 'proyek') {
-    return { tab: 'work', cert: null };
+    return { tab: 'work', cert: null, theme: detectedTheme };
   }
   if (
     lowerPath === 'certificates' ||
@@ -78,25 +111,25 @@ function resolveRouteFromWindow(): { tab: SectionId; cert: CertificateItem | nul
     lowerPath === 'sertifikat' ||
     lowerPath.startsWith('sertifikat/')
   ) {
-    return { tab: 'certificates', cert: null };
+    return { tab: 'certificates', cert: null, theme: detectedTheme };
   }
   if (lowerPath === 'ecosystem' || lowerPath === 'ekosistem') {
-    return { tab: 'ecosystem', cert: null };
+    return { tab: 'ecosystem', cert: null, theme: detectedTheme };
   }
   if (lowerPath === 'craft-lab' || lowerPath === 'cli' || lowerPath === 'fitran-cli') {
-    return { tab: 'craft-lab', cert: null };
+    return { tab: 'craft-lab', cert: null, theme: detectedTheme };
   }
   if (lowerPath === 'contact' || lowerPath === 'kontak') {
-    return { tab: 'contact', cert: null };
+    return { tab: 'contact', cert: null, theme: detectedTheme };
   }
-  if (lowerPath === 'services' || lowerPath === 'layanan') {
-    return { tab: 'services', cert: null };
+  if (lowerPath === 'services' || lowerPath === 'layanan' || lowerPath.startsWith('layanan')) {
+    return { tab: 'services', cert: null, theme: detectedTheme };
   }
   if (lowerPath === 'security' || lowerPath === 'keamanan') {
-    return { tab: 'security', cert: null };
+    return { tab: 'security', cert: null, theme: detectedTheme };
   }
   if (lowerPath === 'learning' || lowerPath.startsWith('belajar')) {
-    return { tab: 'learning', cert: null };
+    return { tab: 'learning', cert: null, theme: detectedTheme };
   }
   if (
     lowerPath === 'blog' ||
@@ -104,13 +137,13 @@ function resolveRouteFromWindow(): { tab: SectionId; cert: CertificateItem | nul
     lowerPath === 'artikel' ||
     lowerPath.startsWith('artikel/')
   ) {
-    return { tab: 'blog', cert: null };
+    return { tab: 'blog', cert: null, theme: detectedTheme };
   }
   if (lowerPath === 'tools' || lowerPath === 'alat') {
-    return { tab: 'tools', cert: null };
+    return { tab: 'tools', cert: null, theme: detectedTheme };
   }
   if (lowerPath === 'kamus' || lowerPath === 'glossary') {
-    return { tab: 'kamus', cert: null };
+    return { tab: 'kamus', cert: null, theme: detectedTheme };
   }
 
   if (lowerPath === 'preview') {
@@ -125,35 +158,37 @@ function resolveRouteFromWindow(): { tab: SectionId; cert: CertificateItem | nul
     });
 
     if (matchedCert) {
-      return { tab: 'certificates', cert: matchedCert };
+      return { tab: 'certificates', cert: matchedCert, theme: detectedTheme };
     }
-    return { tab: 'certificates', cert: null };
+    return { tab: 'certificates', cert: null, theme: detectedTheme };
   }
 
   const matchedCert = CERTIFICATES_DATA.find(
     (c) =>
-      normalizeStr(c.title) === normalizeStr(rawPath) ||
-      normalizeStr(c.id) === normalizeStr(rawPath)
+      normalizeStr(c.title) === normalizeStr(pathWithoutTheme) ||
+      normalizeStr(c.id) === normalizeStr(pathWithoutTheme)
   );
 
   if (matchedCert) {
-    return { tab: 'certificates', cert: matchedCert };
+    return { tab: 'certificates', cert: matchedCert, theme: detectedTheme };
   }
 
-  return { tab: 'home', cert: null };
+  return { tab: 'home', cert: null, theme: detectedTheme };
 }
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<SectionId>(() => resolveRouteFromWindow().tab);
   const [isCommandMenuOpen, setIsCommandMenuOpen] = useState(false);
   const [designTheme, setDesignTheme] = useState<DesignTheme>(() => {
+    const route = resolveRouteFromWindow();
+    if (route.theme) return route.theme;
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('designTheme') as DesignTheme | null;
       if (saved === 'modern' || saved === 'clipboard' || saved === 'arcade') {
         return saved;
       }
     }
-    return 'modern';
+    return 'arcade'; // Corporation theme
   });
   const [isDark, setIsDark] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
@@ -183,11 +218,13 @@ export default function App() {
     }
   }, [isDark]);
 
-  // Persist designTheme
+  // Persist designTheme & sync URL prefix
   const handleChangeDesignTheme = (theme: DesignTheme) => {
     setDesignTheme(theme);
     if (typeof window !== 'undefined') {
       localStorage.setItem('designTheme', theme);
+      const nextPath = getRoutePath(activeTab, theme);
+      window.history.pushState(null, '', nextPath);
     }
   };
 
@@ -229,12 +266,18 @@ export default function App() {
     }
   }, [activeTab, selectedCertificate]);
 
-  // Resolve pathname (and legacy hash if present) into activeTab or selectedCertificate
+  // Resolve pathname into activeTab, theme and selectedCertificate
   const syncRouteFromLocation = useCallback(() => {
     const resolved = resolveRouteFromWindow();
     setSelectedCertificate(resolved.cert);
     setActiveTab(resolved.tab);
-  }, []);
+    if (resolved.theme && resolved.theme !== designTheme) {
+      setDesignTheme(resolved.theme);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('designTheme', resolved.theme);
+      }
+    }
+  }, [designTheme]);
 
   useEffect(() => {
     window.addEventListener('popstate', syncRouteFromLocation);
@@ -247,11 +290,22 @@ export default function App() {
     return () => window.removeEventListener('open-command-menu', handleOpenMenu);
   }, []);
 
-  const handleNavigate = (sectionId: SectionId) => {
+  const handleNavigate = (sectionId: SectionId, customPath?: string) => {
     setSelectedCertificate(null);
     setActiveTab(sectionId);
-    const nextPath = SECTION_TO_PATH[sectionId] || '/';
+    const nextPath = customPath || getRoutePath(sectionId, designTheme);
     window.history.pushState(null, '', nextPath);
+
+    if (nextPath.includes('#')) {
+      const hash = nextPath.split('#')[1];
+      setTimeout(() => {
+        const el = document.getElementById(hash);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 120);
+      return;
+    }
 
     if (designTheme === 'arcade') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -340,6 +394,7 @@ export default function App() {
                   onOpenCV={() => setIsCVModalOpen(true)}
                   onSelectCertificate={handleSelectCertificate}
                   onSelectProject={(p) => setSelectedProject(p)}
+                  designTheme={designTheme}
                 />
               ) : (
                 <>

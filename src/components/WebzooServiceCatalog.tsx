@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Globe,
   Code2,
@@ -54,6 +54,27 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(initialServiceId);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<string>('semua');
   const [showFlipbook, setShowFlipbook] = useState<boolean>(false);
+
+  // Sync initial service from query parameter & handle #katalog-lengkap anchor jump
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const serviceParam = params.get('service');
+    if (serviceParam) {
+      const match = ALL_SERVICES_CATALOG.find((s) => s.id === serviceParam || s.category === serviceParam);
+      if (match) {
+        setSelectedServiceId(match.id);
+      }
+    }
+    if (window.location.hash === '#katalog-lengkap') {
+      setTimeout(() => {
+        const el = document.getElementById('katalog-lengkap');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 150);
+    }
+  }, []);
 
   // Active sub-service object
   const selectedService = useMemo(() => {
@@ -278,7 +299,7 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
       {/* ========================================================================= */}
       {/* 2. SPACIOUS BALANCED 3-COLUMN SERVICES CATALOG (NO UNEVEN/SQUISHED CARDS) */}
       {/* ========================================================================= */}
-      <div id="katalog-lengkap" className="space-y-8 pt-4">
+      <div id="katalog-lengkap" className="space-y-8 pt-4 scroll-mt-24">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950 text-[#1E3A8A] dark:text-blue-300 font-mono text-[11px] font-bold uppercase tracking-wider mb-2">

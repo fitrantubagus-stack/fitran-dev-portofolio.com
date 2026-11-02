@@ -17,25 +17,18 @@ import {
   Palette,
   Search,
   Briefcase,
-  ShieldCheck,
-  Compass,
-  BookOpen,
-  FileText,
   ChevronDown,
-  Wrench,
   MessageSquare,
   Bot,
   TrendingUp,
   Zap,
-  Cpu,
+  BookOpen,
   ShoppingBag,
   MousePointerClick,
   AppWindow,
   Boxes,
   Target,
   Server,
-  Workflow,
-  Cable,
   Building2,
   Code2,
 } from 'lucide-react';
@@ -45,7 +38,7 @@ export type DesignTheme = 'modern' | 'clipboard' | 'arcade';
 
 interface NavbarProps {
   activeSection: SectionId;
-  onNavigate: (section: SectionId) => void;
+  onNavigate: (section: SectionId, customPath?: string) => void;
   isDark: boolean;
   onToggleTheme: () => void;
   designTheme: DesignTheme;
@@ -98,66 +91,83 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('click', handleClickOutside);
   }, []);
 
+  const themePrefix =
+    designTheme === 'modern'
+      ? '/portofolio-me'
+      : designTheme === 'clipboard'
+      ? '/profesional'
+      : '/corporation';
+
+  const themes: { id: DesignTheme; name: string; path: string; icon: React.ReactNode }[] = [
+    {
+      id: 'modern',
+      name: 'portofolio-me',
+      path: '/portofolio-me',
+      icon: <UserCircle className="w-4 h-4 text-cyan-500 shrink-0" />,
+    },
+    {
+      id: 'clipboard',
+      name: 'profesional',
+      path: '/profesional',
+      icon: <Briefcase className="w-4 h-4 text-indigo-500 shrink-0" />,
+    },
+    {
+      id: 'arcade',
+      name: 'corporation',
+      path: '/corporation',
+      icon: <Building2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />,
+    },
+  ];
+
   // Default nav items for Theme 1 (Modern) & Theme 2 (Clipboard / Animasi)
-  const defaultNavItems: { id: SectionId; label: string; icon: React.ReactNode }[] = [
+  const defaultNavItems: { id: SectionId; label: string; path: string; icon: React.ReactNode }[] = [
     {
       id: 'about',
       label: 'About',
+      path: `${themePrefix}/about-me`,
       icon: <UserCircle className="w-3.5 h-3.5" />,
     },
     {
       id: 'work',
       label: language === 'id' ? 'Proyek' : 'Work',
+      path: `${themePrefix}/projects`,
       icon: <LayoutGrid className="w-3.5 h-3.5" />,
     },
     {
       id: 'certificates',
       label: language === 'id' ? 'Sertifikat' : 'Certs',
+      path: `${themePrefix}/certificates`,
       icon: <Award className="w-3.5 h-3.5" />,
     },
     {
       id: 'ecosystem',
       label: language === 'id' ? 'Ekosistem' : 'Ecosystem',
+      path: `${themePrefix}/ecosystem`,
       icon: <Globe className="w-3.5 h-3.5" />,
     },
     {
       id: 'craft-lab',
       label: 'CLI',
+      path: `${themePrefix}/craft-lab`,
       icon: <Terminal className="w-3.5 h-3.5" />,
     },
     {
       id: 'contact',
       label: language === 'id' ? 'Kontak' : 'Contact',
+      path: `${themePrefix}/contact`,
       icon: <Mail className="w-3.5 h-3.5" />,
     },
   ];
 
-  const themes: { id: DesignTheme; name: string; desc: string; dotClass: string }[] = [
-    {
-      id: 'modern',
-      name: '1. Modern Tech',
-      desc: 'Clean Blueprint & Isometric 3D (Default)',
-      dotClass: 'bg-cyan-400',
-    },
-    {
-      id: 'clipboard',
-      name: '2. Full Animasi Desain',
-      desc: 'Interactive Kinetic Bento & Motion UI/UX',
-      dotClass: 'bg-indigo-500',
-    },
-    {
-      id: 'arcade',
-      name: '3. Fikran Dev Concept',
-      desc: 'Ekosistem Multi-Halaman: Layanan Enterprise & Studio Belajar',
-      dotClass: 'bg-[#1E3A8A]',
-    },
-  ];
-
-  const handleNavClick = (id: SectionId, e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    onNavigate(id);
+  const handleNavClick = (id: SectionId, e?: React.MouseEvent, customPath?: string) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    onNavigate(id, customPath);
     setMobileMenuOpen(false);
     setBelajarDropdownOpen(false);
+    setLayananDropdownOpen(false);
   };
 
   const handleWhatsAppClick = (e: React.MouseEvent) => {
@@ -175,14 +185,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* LEFT: Desktop fitran.dev Pixel Logo + Timezone Label (Theme 1 & 2 only) */}
         {designTheme !== 'arcade' && (
           <div className="hidden sm:flex items-center gap-3 text-xs font-sans font-medium text-zinc-700 dark:text-zinc-300 pointer-events-auto shrink-0">
-            <button
-              type="button"
-              onClick={(e) => handleNavClick('home', e)}
+            <a
+              href={themePrefix}
+              onClick={(e) => handleNavClick('home', e, themePrefix)}
               className="hidden lg:inline-flex items-center hover:opacity-85 hover:scale-105 transition-all cursor-pointer bg-transparent border-0 p-0"
               title="fitran.dev — Beranda"
             >
               <FitranPixelLogo size="sm" />
-            </button>
+            </a>
             <span>Asia/Jakarta</span>
           </div>
         )}
@@ -192,34 +202,37 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* ===================================================================== */}
         <div className="mx-auto pointer-events-auto relative">
           {designTheme === 'arcade' ? (
-            /* EXACT FIKRAN DEV FLOATING NAVBAR (Matches Attached Screenshot) */
+            /* EXACT CORPORATION FLOATING NAVBAR (Interactive Multi-Page Hub) */
             <nav className="flex items-center gap-2 sm:gap-5 px-3 sm:px-5 py-2 rounded-full bg-white/95 dark:bg-[#111319]/95 border border-zinc-200/90 dark:border-zinc-800 shadow-[0_12px_36px_rgba(0,0,0,0.12)] backdrop-blur-md transition-all">
-              {/* Brand Logo & Name (Authentic Pixel Art Logo from User Image 4) */}
-              <button
-                onClick={(e) => handleNavClick('home', e)}
+              {/* Brand Logo & Name */}
+              <a
+                href={themePrefix}
+                onClick={(e) => handleNavClick('home', e, themePrefix)}
                 className="flex items-center hover:opacity-90 transition-opacity cursor-pointer shrink-0 pr-1"
-                title="fitran.dev • Beranda"
+                title="fitran.dev • Beranda Corporation"
               >
                 <FitranPixelLogo size="sm" />
-              </button>
+              </a>
 
               {/* Desktop Nav Links */}
               <div className="hidden md:flex items-center gap-4 lg:gap-5 text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-300">
-                {/* Layanan with Webzoo-style Mega Dropdown (Matching User Image 2) */}
+                {/* Layanan with Webzoo-style Mega Dropdown */}
                 <div className="relative">
                   <div className="flex items-center gap-0.5">
-                    <button
+                    <a
+                      href={`${themePrefix}/layanan`}
                       onClick={(e) => {
                         setLayananDropdownOpen(false);
-                        handleNavClick('services', e);
+                        handleNavClick('services', e, `${themePrefix}/layanan`);
                       }}
                       className={`hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
                         activeSection === 'services' ? 'font-bold text-zinc-950 dark:text-white' : ''
                       }`}
                     >
                       <span>Layanan</span>
-                    </button>
+                    </a>
                     <button
+                      type="button"
                       onClick={(e) => {
                         e.stopPropagation();
                         setLayananDropdownOpen((prev) => !prev);
@@ -251,15 +264,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                           <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#1E3A8A] dark:text-blue-400">
                             Katalog Layanan &amp; Solusi Digital
                           </span>
-                          <button
+                          <a
+                            href={`${themePrefix}/layanan#katalog-lengkap`}
                             onClick={(e) => {
                               setLayananDropdownOpen(false);
-                              handleNavClick('services', e);
+                              handleNavClick('services', e, `${themePrefix}/layanan#katalog-lengkap`);
                             }}
                             className="text-[11px] font-mono text-blue-600 hover:underline font-bold cursor-pointer"
                           >
                             Buka Semua Layanan →
-                          </button>
+                          </a>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -269,10 +283,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                               WEBSITE
                             </span>
                             <div className="space-y-1">
-                              <button
+                              <a
+                                href={`${themePrefix}/layanan?service=jasa-pembuatan-website#katalog-lengkap`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=jasa-pembuatan-website#katalog-lengkap`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -285,12 +300,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                                     Website kilat &lt;0.8s mudah dikelola
                                   </p>
                                 </div>
-                              </button>
+                              </a>
 
-                              <button
+                              <a
+                                href={`${themePrefix}/layanan?service=jasa-pembuatan-website-custom#katalog-lengkap`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=jasa-pembuatan-website-custom#katalog-lengkap`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -303,12 +319,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                                     Fitur khusus di luar batasan template
                                   </p>
                                 </div>
-                              </button>
+                              </a>
 
-                              <button
+                              <a
+                                href={`${themePrefix}/layanan?service=website-korporat#katalog-lengkap`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=website-korporat#katalog-lengkap`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -321,12 +338,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                                     Profil bisnis dua bahasa kredibel
                                   </p>
                                 </div>
-                              </button>
+                              </a>
 
-                              <button
+                              <a
+                                href={`${themePrefix}/layanan?service=ecommerce-b2b#katalog-lengkap`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=ecommerce-b2b#katalog-lengkap`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -339,12 +357,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                                     Katalog harga grosir &amp; pesanan WhatsApp
                                   </p>
                                 </div>
-                              </button>
+                              </a>
 
-                              <button
+                              <a
+                                href={`${themePrefix}/layanan?service=landing-page-kampanye#katalog-lengkap`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=landing-page-kampanye#katalog-lengkap`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -357,7 +376,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                                     Halaman iklan dengan CAPI presisi
                                   </p>
                                 </div>
-                              </button>
+                              </a>
                             </div>
                           </div>
 
@@ -367,10 +386,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                               APLIKASI &amp; AI
                             </span>
                             <div className="space-y-1">
-                              <button
+                              <a
+                                href={`${themePrefix}/layanan?service=aplikasi-custom#katalog-lengkap`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=aplikasi-custom#katalog-lengkap`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -383,12 +403,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                                     Aplikasi web &amp; mobile proses bisnis
                                   </p>
                                 </div>
-                              </button>
+                              </a>
 
-                              <button
+                              <a
+                                href={`${themePrefix}/layanan?service=whatsapp-ai-agent#katalog-lengkap`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=whatsapp-ai-agent#katalog-lengkap`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -401,12 +422,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                                     Bot AI 24/7 SOP &amp; katalog perusahaan
                                   </p>
                                 </div>
-                              </button>
+                              </a>
 
-                              <button
+                              <a
+                                href={`${themePrefix}/layanan?service=erp-crm-inventory#katalog-lengkap`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=erp-crm-inventory#katalog-lengkap`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -419,12 +441,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                                     Multi-gudang, PO &amp; laba rugi
                                   </p>
                                 </div>
-                              </button>
+                              </a>
 
-                              <button
+                              <a
+                                href={`${themePrefix}/layanan?service=meta-capi-ads-tracking#katalog-lengkap`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=meta-capi-ads-tracking#katalog-lengkap`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -437,12 +460,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                                     Tracking presisi kebal ad-blocker
                                   </p>
                                 </div>
-                              </button>
+                              </a>
 
-                              <button
+                              <a
+                                href={`${themePrefix}/layanan?service=setup-cloud-vps-hardening#katalog-lengkap`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=setup-cloud-vps-hardening#katalog-lengkap`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -455,7 +479,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                                     Server mandiri &amp; proteksi 5 lapis
                                   </p>
                                 </div>
-                              </button>
+                              </a>
                             </div>
                           </div>
                         </div>
@@ -464,22 +488,24 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </AnimatePresence>
                 </div>
 
-                <button
-                  onClick={(e) => handleNavClick('certificates', e)}
+                <a
+                  href={`${themePrefix}/certificates`}
+                  onClick={(e) => handleNavClick('certificates', e, `${themePrefix}/certificates`)}
                   className={`hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
                     activeSection === 'certificates' ? 'font-bold text-zinc-950 dark:text-white' : ''
                   }`}
                 >
                   Sertifikat
-                </button>
+                </a>
 
                 {/* Belajar with Dropdown */}
                 <div className="relative">
                   <div className="flex items-center gap-0.5">
-                    <button
+                    <a
+                      href={`${themePrefix}/belajar`}
                       onClick={(e) => {
                         setBelajarDropdownOpen(false);
-                        handleNavClick('learning', e);
+                        handleNavClick('learning', e, `${themePrefix}/belajar`);
                       }}
                       className={`hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
                         activeSection === 'learning' || activeSection === 'kamus'
@@ -488,8 +514,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                       }`}
                     >
                       <span>Belajar</span>
-                    </button>
+                    </a>
                     <button
+                      type="button"
                       onClick={(e) => {
                         e.stopPropagation();
                         setBelajarDropdownOpen((prev) => !prev);
@@ -521,10 +548,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                           Peta Belajar &amp; Kurikulum
                         </p>
 
-                        <button
+                        <a
+                          href={`${themePrefix}/belajar/ai`}
                           onClick={(e) => {
-                            window.history.pushState(null, '', '/belajar/ai');
-                            handleNavClick('learning', e);
+                            setBelajarDropdownOpen(false);
+                            handleNavClick('learning', e, `${themePrefix}/belajar/ai`);
                           }}
                           className="w-full px-3 py-2.5 rounded-xl text-left hover:bg-zinc-100 dark:hover:bg-zinc-800/80 flex items-start gap-3 transition-colors cursor-pointer group"
                         >
@@ -533,12 +561,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                             <p className="font-bold text-zinc-900 dark:text-white">AI untuk Bisnis</p>
                             <p className="text-[11px] text-zinc-400">8 Bab Fondasi, RAG &amp; WhatsApp Agent</p>
                           </div>
-                        </button>
+                        </a>
 
-                        <button
+                        <a
+                          href={`${themePrefix}/belajar/digital-marketing`}
                           onClick={(e) => {
-                            window.history.pushState(null, '', '/belajar/digital-marketing');
-                            handleNavClick('learning', e);
+                            setBelajarDropdownOpen(false);
+                            handleNavClick('learning', e, `${themePrefix}/belajar/digital-marketing`);
                           }}
                           className="w-full px-3 py-2.5 rounded-xl text-left hover:bg-zinc-100 dark:hover:bg-zinc-800/80 flex items-start gap-3 transition-colors cursor-pointer group"
                         >
@@ -547,12 +576,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                             <p className="font-bold text-zinc-900 dark:text-white">Digital Marketing</p>
                             <p className="text-[11px] text-zinc-400">8 Bab Ads, GTM &amp; Conversions API</p>
                           </div>
-                        </button>
+                        </a>
 
-                        <button
+                        <a
+                          href={`${themePrefix}/belajar/vibe-coding`}
                           onClick={(e) => {
-                            window.history.pushState(null, '', '/belajar/vibe-coding');
-                            handleNavClick('learning', e);
+                            setBelajarDropdownOpen(false);
+                            handleNavClick('learning', e, `${themePrefix}/belajar/vibe-coding`);
                           }}
                           className="w-full px-3 py-2.5 rounded-xl text-left hover:bg-zinc-100 dark:hover:bg-zinc-800/80 flex items-start gap-3 transition-colors cursor-pointer group"
                         >
@@ -561,12 +591,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                             <p className="font-bold text-zinc-900 dark:text-white">Vibe Coding</p>
                             <p className="text-[11px] text-zinc-400">6 Bab Claude Code CLI &amp; Tooling</p>
                           </div>
-                        </button>
+                        </a>
 
                         <div className="border-t border-zinc-100 dark:border-zinc-800 my-1" />
 
-                        <button
-                          onClick={(e) => handleNavClick('kamus', e)}
+                        <a
+                          href={`${themePrefix}/kamus`}
+                          onClick={(e) => {
+                            setBelajarDropdownOpen(false);
+                            handleNavClick('kamus', e, `${themePrefix}/kamus`);
+                          }}
                           className="w-full px-3 py-2.5 rounded-xl text-left hover:bg-zinc-100 dark:hover:bg-zinc-800/80 flex items-start gap-3 transition-colors cursor-pointer group"
                         >
                           <BookOpen className="w-4 h-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors shrink-0 mt-0.5" />
@@ -574,44 +608,48 @@ export const Navbar: React.FC<NavbarProps> = ({
                             <p className="font-bold text-zinc-900 dark:text-white">Kamus Istilah Digital</p>
                             <p className="text-[11px] text-zinc-400">40+ Istilah AI, Web &amp; Marketing</p>
                           </div>
-                        </button>
+                        </a>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
 
-                <button
-                  onClick={(e) => handleNavClick('blog', e)}
+                <a
+                  href={`${themePrefix}/blog`}
+                  onClick={(e) => handleNavClick('blog', e, `${themePrefix}/blog`)}
                   className={`hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
                     activeSection === 'blog' ? 'font-bold text-zinc-950 dark:text-white' : ''
                   }`}
                 >
                   Blog
-                </button>
+                </a>
 
-                <button
-                  onClick={(e) => handleNavClick('tools', e)}
+                <a
+                  href={`${themePrefix}/tools`}
+                  onClick={(e) => handleNavClick('tools', e, `${themePrefix}/tools`)}
                   className={`hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
                     activeSection === 'tools' ? 'font-bold text-zinc-950 dark:text-white' : ''
                   }`}
                 >
                   Tools
-                </button>
+                </a>
 
-                <button
-                  onClick={(e) => handleNavClick('about', e)}
+                <a
+                  href={`${themePrefix}/about-me`}
+                  onClick={(e) => handleNavClick('about', e, `${themePrefix}/about-me`)}
                   className={`hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
                     activeSection === 'about' ? 'font-bold text-zinc-950 dark:text-white' : ''
                   }`}
                 >
                   Tentang
-                </button>
+                </a>
               </div>
 
-              {/* Right Controls: Dark Mode Toggle + WhatsApp Konsultasi Button */}
+              {/* Right Controls: Dark Mode Toggle + WhatsApp Konsultasi Button + Theme Switcher */}
               <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 pl-1">
                 {/* Dark Mode Icon Button */}
                 <button
+                  type="button"
                   onClick={onToggleTheme}
                   className="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-700/80 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer shrink-0"
                   title="Ganti Mode Gelap / Terang"
@@ -624,8 +662,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                   )}
                 </button>
 
-                {/* WhatsApp Konsultasi Button (Solid Emerald Green) */}
+                {/* WhatsApp Konsultasi Button */}
                 <button
+                  type="button"
                   onClick={handleWhatsAppClick}
                   className="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#059669] hover:bg-[#047857] text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md cursor-pointer shrink-0"
                   title="Konsultasi Langsung via WhatsApp"
@@ -634,17 +673,20 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span className="whitespace-nowrap">Konsultasi</span>
                 </button>
 
-                {/* 3-Theme Switcher Icon Button */}
+                {/* Theme Selector (Strictly Icon + Exact Name) */}
                 <div className="relative">
                   <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       setThemeMenuOpen((prev) => !prev);
                     }}
-                    className="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer shrink-0"
-                    title="Pilih 3 Tema Desain Web"
+                    className="px-2.5 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer shrink-0"
+                    title="Pilih Tema: portofolio-me, profesional, corporation"
                   >
-                    <Palette className="w-3.5 h-3.5 text-[#1E3A8A] dark:text-blue-400" />
+                    <Building2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                    <span className="font-mono text-xs font-bold">corporation</span>
+                    <ChevronDown className="w-3 h-3 opacity-60" />
                   </button>
 
                   <AnimatePresence>
@@ -654,31 +696,30 @@ export const Navbar: React.FC<NavbarProps> = ({
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 6, scale: 0.95 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl p-1.5 z-50 text-xs"
+                        className="absolute right-0 mt-2 w-48 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl p-1.5 z-50 text-xs"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <p className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">
-                          Pilih 3 Tema Desain Web
+                          Pilih Tema
                         </p>
                         {themes.map((th) => (
-                          <button
+                          <a
                             key={th.id}
-                            onClick={() => {
+                            href={th.path}
+                            onClick={(e) => {
+                              e.preventDefault();
                               onChangeDesignTheme(th.id);
                               setThemeMenuOpen(false);
                             }}
-                            className={`w-full text-left px-2.5 py-2 rounded-xl flex items-start gap-2.5 transition-colors cursor-pointer ${
+                            className={`w-full text-left px-2.5 py-2 rounded-xl flex items-center gap-2.5 transition-colors cursor-pointer ${
                               designTheme === th.id
                                 ? 'bg-zinc-100 dark:bg-zinc-800 font-bold text-zinc-950 dark:text-white'
                                 : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/60'
                             }`}
                           >
-                            <span className={`w-2.5 h-2.5 rounded-full mt-1 shrink-0 ${th.dotClass}`} />
-                            <div>
-                              <p className="leading-tight">{th.name}</p>
-                              <p className="text-[10px] text-zinc-400 font-normal mt-0.5">{th.desc}</p>
-                            </div>
-                          </button>
+                            {th.icon}
+                            <span className="font-mono text-xs font-bold leading-none">{th.name}</span>
+                          </a>
                         ))}
                       </motion.div>
                     )}
@@ -687,6 +728,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 {/* Mobile Menu Toggle */}
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     setMobileMenuOpen(!mobileMenuOpen);
@@ -698,7 +740,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             </nav>
           ) : (
-            /* DEFAULT MINIMALIST FLOATING PILL NAVBAR FOR THEME 1 & 2 (UNTOUCHED) */
+            /* MINIMALIST FLOATING PILL NAVBAR FOR THEME 1 (portofolio-me) & THEME 2 (profesional) */
             <nav
               className={`flex items-center gap-0.5 sm:gap-1 px-2 py-1.5 rounded-full shadow-[0_6px_24px_rgba(0,0,0,0.08)] backdrop-blur-md transition-all ${
                 designTheme === 'clipboard'
@@ -706,8 +748,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : 'bg-white/95 dark:bg-zinc-900/95 border border-zinc-200/90 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200'
               }`}
             >
-              <button
-                onClick={(e) => handleNavClick('home', e)}
+              <a
+                href={themePrefix}
+                onClick={(e) => handleNavClick('home', e, themePrefix)}
                 className={`w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer shrink-0 ${
                   activeSection === 'home'
                     ? designTheme === 'clipboard'
@@ -719,7 +762,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 aria-label="Home"
               >
                 <Home className="w-3.5 h-3.5" />
-              </button>
+              </a>
 
               <span className="w-px h-4 bg-zinc-200 dark:bg-zinc-700/80 mx-0.5 shrink-0" />
 
@@ -727,9 +770,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {defaultNavItems.map((item) => {
                   const isActive = activeSection === item.id;
                   return (
-                    <button
+                    <a
                       key={item.id}
-                      onClick={(e) => handleNavClick(item.id, e)}
+                      href={item.path}
+                      onClick={(e) => handleNavClick(item.id, e, item.path)}
                       className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                         isActive
                           ? designTheme === 'clipboard'
@@ -740,30 +784,37 @@ export const Navbar: React.FC<NavbarProps> = ({
                     >
                       <span className="opacity-80">{item.icon}</span>
                       <span>{item.label}</span>
-                    </button>
+                    </a>
                   );
                 })}
               </div>
 
               <span className="hidden md:inline-block w-px h-4 bg-zinc-200 dark:bg-zinc-700/80 mx-0.5 shrink-0" />
 
+              {/* Theme Selector for Theme 1 & 2 */}
               <div className="relative">
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     setThemeMenuOpen((prev) => !prev);
                   }}
-                  className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     designTheme === 'clipboard'
                       ? 'bg-amber-100 text-zinc-900 border border-zinc-900'
                       : 'bg-cyan-50 dark:bg-zinc-800 text-cyan-800 dark:text-cyan-300 border border-cyan-200/80 dark:border-zinc-700'
                   }`}
-                  title="Ganti Tema Desain Website (3 Tema)"
+                  title="Pilih Tema Desain Website"
                 >
-                  <Palette className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">
-                    {designTheme === 'modern' ? 'Modern' : 'Animasi'}
+                  {designTheme === 'modern' ? (
+                    <UserCircle className="w-3.5 h-3.5" />
+                  ) : (
+                    <Briefcase className="w-3.5 h-3.5" />
+                  )}
+                  <span className="font-mono text-xs font-bold">
+                    {designTheme === 'modern' ? 'portofolio-me' : 'profesional'}
                   </span>
+                  <ChevronDown className="w-3 h-3 opacity-60" />
                 </button>
 
                 <AnimatePresence>
@@ -773,31 +824,30 @@ export const Navbar: React.FC<NavbarProps> = ({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 6, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl p-1.5 z-50 text-xs"
+                      className="absolute right-0 mt-2 w-48 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl p-1.5 z-50 text-xs"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <p className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">
-                        Pilih 3 Tema Desain Web
+                        Pilih Tema
                       </p>
                       {themes.map((th) => (
-                        <button
+                        <a
                           key={th.id}
-                          onClick={() => {
+                          href={th.path}
+                          onClick={(e) => {
+                            e.preventDefault();
                             onChangeDesignTheme(th.id);
                             setThemeMenuOpen(false);
                           }}
-                          className={`w-full text-left px-2.5 py-2 rounded-xl flex items-start gap-2.5 transition-colors cursor-pointer ${
+                          className={`w-full text-left px-2.5 py-2 rounded-xl flex items-center gap-2.5 transition-colors cursor-pointer ${
                             designTheme === th.id
                               ? 'bg-zinc-100 dark:bg-zinc-800 font-bold text-zinc-950 dark:text-white'
                               : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/60'
                           }`}
                         >
-                          <span className={`w-2.5 h-2.5 rounded-full mt-1 shrink-0 ${th.dotClass}`} />
-                          <div>
-                            <p className="leading-tight">{th.name}</p>
-                            <p className="text-[10px] text-zinc-400 font-normal mt-0.5">{th.desc}</p>
-                          </div>
-                        </button>
+                          {th.icon}
+                          <span className="font-mono text-xs font-bold leading-none">{th.name}</span>
+                        </a>
                       ))}
                     </motion.div>
                   )}
@@ -806,6 +856,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {onOpenCommandMenu && (
                 <button
+                  type="button"
                   onClick={onOpenCommandMenu}
                   className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer shrink-0"
                   title="Quick Search (Ctrl+K)"
@@ -816,6 +867,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
 
               <button
+                type="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   setMobileMenuOpen(!mobileMenuOpen);
@@ -829,7 +881,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile Drawer Menu for Theme 3 */}
+      {/* Mobile Drawer Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -845,57 +897,66 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <FitranPixelLogo size="xs" />
                 </div>
 
-                <button
-                  onClick={(e) => handleNavClick('home', e)}
-                  className="w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
+                <a
+                  href={themePrefix}
+                  onClick={(e) => handleNavClick('home', e, themePrefix)}
+                  className="block w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
                 >
                   Beranda
-                </button>
-                <button
-                  onClick={(e) => handleNavClick('services', e)}
-                  className="w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
+                </a>
+                <a
+                  href={`${themePrefix}/layanan`}
+                  onClick={(e) => handleNavClick('services', e, `${themePrefix}/layanan`)}
+                  className="block w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
                 >
                   Layanan (Mulai 500rb)
-                </button>
-                <button
-                  onClick={(e) => handleNavClick('certificates', e)}
-                  className="w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold text-[#1E3A8A] dark:text-blue-400"
+                </a>
+                <a
+                  href={`${themePrefix}/certificates`}
+                  onClick={(e) => handleNavClick('certificates', e, `${themePrefix}/certificates`)}
+                  className="block w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold text-[#1E3A8A] dark:text-blue-400"
                 >
                   Sertifikat (36+ Terverifikasi)
-                </button>
-                <button
-                  onClick={(e) => handleNavClick('learning', e)}
-                  className="w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
+                </a>
+                <a
+                  href={`${themePrefix}/belajar`}
+                  onClick={(e) => handleNavClick('learning', e, `${themePrefix}/belajar`)}
+                  className="block w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
                 >
                   Belajar AI, Ads &amp; Vibe Coding
-                </button>
-                <button
-                  onClick={(e) => handleNavClick('kamus', e)}
-                  className="w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
+                </a>
+                <a
+                  href={`${themePrefix}/kamus`}
+                  onClick={(e) => handleNavClick('kamus', e, `${themePrefix}/kamus`)}
+                  className="block w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
                 >
                   Kamus Istilah Digital
-                </button>
-                <button
-                  onClick={(e) => handleNavClick('blog', e)}
-                  className="w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
+                </a>
+                <a
+                  href={`${themePrefix}/blog`}
+                  onClick={(e) => handleNavClick('blog', e, `${themePrefix}/blog`)}
+                  className="block w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
                 >
                   Blog &amp; Tulisan Pilihan
-                </button>
-                <button
-                  onClick={(e) => handleNavClick('tools', e)}
-                  className="w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
+                </a>
+                <a
+                  href={`${themePrefix}/tools`}
+                  onClick={(e) => handleNavClick('tools', e, `${themePrefix}/tools`)}
+                  className="block w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
                 >
                   Tools yang Saya Pakai
-                </button>
-                <button
-                  onClick={(e) => handleNavClick('about', e)}
-                  className="w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
+                </a>
+                <a
+                  href={`${themePrefix}/about-me`}
+                  onClick={(e) => handleNavClick('about', e, `${themePrefix}/about-me`)}
+                  className="block w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
                 >
                   Tentang Tubagus Fitran
-                </button>
+                </a>
                 <button
+                  type="button"
                   onClick={handleWhatsAppClick}
-                  className="w-full mt-2 py-2.5 px-3 rounded-xl bg-[#059669] hover:bg-[#047857] text-white font-bold text-center flex items-center justify-center gap-2 shadow-md"
+                  className="w-full mt-2 py-2.5 px-3 rounded-xl bg-[#059669] hover:bg-[#047857] text-white font-bold text-center flex items-center justify-center gap-2 shadow-md cursor-pointer"
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
                   <span>Chat via WhatsApp</span>
@@ -904,14 +965,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             ) : (
               <div className="space-y-1">
                 {defaultNavItems.map((item) => (
-                  <button
+                  <a
                     key={item.id}
-                    onClick={(e) => handleNavClick(item.id, e)}
+                    href={item.path}
+                    onClick={(e) => handleNavClick(item.id, e, item.path)}
                     className="w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-medium flex items-center gap-2"
                   >
                     <span>{item.icon}</span>
                     <span>{item.label}</span>
-                  </button>
+                  </a>
                 ))}
               </div>
             )}

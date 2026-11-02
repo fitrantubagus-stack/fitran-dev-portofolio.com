@@ -37,6 +37,7 @@ import { ToolLogo } from './ToolLogo';
 import { InteractiveToolsShowcase } from './InteractiveToolsShowcase';
 import { CertificateLogoMarquee } from './CertificateLogoMarquee';
 import { CertificateItem, ProjectItem, SectionId } from '../types';
+import { DesignTheme } from './Navbar';
 import {
   Award,
   BookOpen,
@@ -90,10 +91,11 @@ import {
 
 interface KlasikEcosystemViewProps {
   activePage?: SectionId;
-  onNavigate?: (section: SectionId) => void;
+  onNavigate?: (section: SectionId, customPath?: string) => void;
   onOpenCV?: () => void;
   onSelectCertificate?: (cert: CertificateItem) => void;
   onSelectProject?: (project: ProjectItem) => void;
+  designTheme?: DesignTheme;
 }
 
 export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
@@ -102,11 +104,19 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   onOpenCV,
   onSelectCertificate,
   onSelectProject,
+  designTheme = 'arcade',
 }) => {
+  const themePrefix =
+    designTheme === 'modern'
+      ? '/portofolio-me'
+      : designTheme === 'clipboard'
+      ? '/profesional'
+      : '/corporation';
+
   // Navigation helper
-  const navigateTo = (page: SectionId) => {
+  const navigateTo = (page: SectionId, customPath?: string) => {
     if (onNavigate) {
-      onNavigate(page);
+      onNavigate(page, customPath);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -114,12 +124,17 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   // State
   const [selectedArticle, setSelectedArticle] = useState<BlogPost | null>(null);
   // Seamless Article Navigation (Full-page, NEVER a floating popup modal)
-  const openArticle = (post: BlogPost) => {
-    setSelectedArticle(post);
-    navigateTo('blog');
-    if (typeof window !== 'undefined') {
-      window.history.pushState(null, '', '/blog/' + post.slug);
+  const openArticle = (post: BlogPost, e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
     }
+    setSelectedArticle(post);
+    const targetUrl = `${themePrefix}/blog/${post.slug}`;
+    if (typeof window !== 'undefined') {
+      window.history.pushState(null, '', targetUrl);
+    }
+    navigateTo('blog', targetUrl);
   };
 
   const [selectedService, setSelectedService] = useState<ServicePackage | null>(null);
@@ -217,16 +232,13 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       const fullUrl = (window.location.pathname + window.location.hash).toLowerCase();
       const path = window.location.pathname.toLowerCase();
 
-      // Sync blog article from URL slug (e.g. /blog/cara-membuat-mvp-dan-menentukan-fitur)
-      if (path.startsWith('/blog/') || path.startsWith('/artikel/')) {
-        const slug = path.replace(/^\/(blog|artikel)\/?/, '').trim();
-        if (slug) {
-          const found = KLASIK_BLOG_POSTS.find((p) => p.slug === slug || p.id === slug);
-          setSelectedArticle(found || null);
-        } else {
-          setSelectedArticle(null);
-        }
-      } else {
+      // Sync blog article from URL slug (handles /blog/<slug>, /corporation/blog/<slug>, etc.)
+      const blogMatch = path.match(/\/(?:blog|artikel)\/([a-z0-9-]+)/i);
+      if (blogMatch && blogMatch[1]) {
+        const slug = blogMatch[1].trim();
+        const found = KLASIK_BLOG_POSTS.find((p) => p.slug === slug || p.id === slug);
+        setSelectedArticle(found || null);
+      } else if (!path.includes('/blog') && !path.includes('/artikel')) {
         setSelectedArticle(null);
       }
 
@@ -1325,20 +1337,25 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   Tulisan pilihan.
                 </h2>
               </div>
-              <button
-                onClick={() => navigateTo('blog')}
+              <a
+                href={`${themePrefix}/blog`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo('blog', `${themePrefix}/blog`);
+                }}
                 className="text-xs font-bold text-[#1E3A8A] dark:text-blue-400 hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>Lihat Semua Tulisan</span>
                 <ChevronRight className="w-4 h-4" />
-              </button>
+              </a>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {KLASIK_BLOG_POSTS.map((p) => (
-                <div
+                <a
                   key={p.id}
-                  onClick={() => openArticle(p)}
+                  href={`${themePrefix}/blog/${p.slug}`}
+                  onClick={(e) => openArticle(p, e)}
                   className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A]/50 transition-all cursor-pointer group flex flex-col justify-between"
                 >
                   <div className="space-y-2">
@@ -1351,11 +1368,16 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       {p.title}
                     </h3>
                   </div>
-                  <div className="pt-3 mt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs font-semibold text-[#1E3A8A] dark:text-blue-400">
-                    <span>Baca Selengkapnya</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  <div className="pt-3 mt-3 border-t border-zinc-100 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                    <span className="font-mono text-[11px] text-zinc-500">
+                      Ditulis oleh: <strong className="text-zinc-800 dark:text-zinc-200 font-semibold">Tubagus Fitran Badruttamam</strong>
+                    </span>
+                    <span className="font-semibold text-[#1E3A8A] dark:text-blue-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform shrink-0">
+                      <span>Baca Selengkapnya</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
                   </div>
-                </div>
+                </a>
               ))}
             </div>
           </section>
@@ -2534,7 +2556,9 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     </div>
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <p className="font-bold text-xs text-zinc-950 dark:text-white">Tubagus Fitran Badruttamam</p>
+                        <p className="font-bold text-xs text-zinc-950 dark:text-white">
+                          Ditulis oleh: Tubagus Fitran Badruttamam
+                        </p>
                         <ShieldCheck className="w-3.5 h-3.5 text-blue-500" />
                       </div>
                       <p className="text-[11px] text-zinc-400">Fullstack Developer &amp; AI Engineer · Cilegon</p>
@@ -2701,41 +2725,50 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 <div className="pt-8 space-y-4">
                   <div className="flex items-center justify-between">
                     <h3 className="font-bold text-lg text-zinc-950 dark:text-white">Artikel Pilihan Lainnya</h3>
-                    <button
-                      onClick={() => {
+                    <a
+                      href={`${themePrefix}/blog`}
+                      onClick={(e) => {
+                        e.preventDefault();
                         setSelectedArticle(null);
-                        if (typeof window !== 'undefined') window.history.pushState(null, '', '/blog');
+                        if (typeof window !== 'undefined') window.history.pushState(null, '', `${themePrefix}/blog`);
                       }}
                       className="text-xs text-[#1E3A8A] dark:text-blue-400 font-bold hover:underline cursor-pointer"
                     >
                       Lihat Semua Artikel →
-                    </button>
+                    </a>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {KLASIK_BLOG_POSTS.filter((p) => p.id !== selectedArticle.id).slice(0, 2).map((post) => (
-                      <div
+                      <a
                         key={post.id}
-                        onClick={() => {
+                        href={`${themePrefix}/blog/${post.slug}`}
+                        onClick={(e) => {
+                          e.preventDefault();
                           setSelectedArticle(post);
                           if (typeof window !== 'undefined') {
-                            window.history.pushState(null, '', '/blog/' + post.slug);
+                            window.history.pushState(null, '', `${themePrefix}/blog/${post.slug}`);
                           }
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="p-5 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A]/50 cursor-pointer transition-all space-y-2 group"
+                        className="p-5 rounded-xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A]/50 cursor-pointer transition-all space-y-2 group flex flex-col justify-between"
                       >
-                        <div className="flex items-center gap-2">
-                          <span className="w-6 h-6 rounded-md bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900/60 flex items-center justify-center shrink-0">
-                            {renderBlogIcon(post.icon, 'w-3.5 h-3.5 text-blue-600 dark:text-blue-400')}
-                          </span>
-                          <span className="text-[10px] font-mono text-zinc-400 uppercase">{post.category} · {post.readTime}</span>
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-md bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900/60 flex items-center justify-center shrink-0">
+                              {renderBlogIcon(post.icon, 'w-3.5 h-3.5 text-blue-600 dark:text-blue-400')}
+                            </span>
+                            <span className="text-[10px] font-mono text-zinc-400 uppercase">{post.category} · {post.readTime}</span>
+                          </div>
+                          <h4 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:text-blue-400 dark:group-hover:text-red-400 transition-colors line-clamp-2">
+                            {post.title}
+                          </h4>
+                          <p className="text-xs text-zinc-500 line-clamp-2">{post.excerpt}</p>
                         </div>
-                        <h4 className="font-bold text-sm text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:text-blue-400 dark:group-hover:text-red-400 transition-colors line-clamp-2">
-                          {post.title}
-                        </h4>
-                        <p className="text-xs text-zinc-500 line-clamp-2">{post.excerpt}</p>
-                      </div>
+                        <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800/60 font-mono text-[10px] text-zinc-400">
+                          Ditulis oleh: Tubagus Fitran Badruttamam
+                        </div>
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -2777,12 +2810,15 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {KLASIK_BLOG_POSTS.filter((p) => blogFilter === 'Semua' || p.category === blogFilter).map((post) => (
-                  <div
+                  <a
                     key={post.id}
-                    onClick={() => {
+                    href={`${themePrefix}/blog/${post.slug}`}
+                    onClick={(e) => {
+                      e.preventDefault();
                       setSelectedArticle(post);
+                      const targetUrl = `${themePrefix}/blog/${post.slug}`;
                       if (typeof window !== 'undefined') {
-                        window.history.pushState(null, '', '/blog/' + post.slug);
+                        window.history.pushState(null, '', targetUrl);
                       }
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
@@ -2807,11 +2843,16 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                         {post.excerpt}
                       </p>
                     </div>
-                    <div className="pt-4 mt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs font-bold text-[#1E3A8A] dark:text-blue-400">
-                      <span>Baca Selengkapnya</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <div className="pt-4 mt-4 border-t border-zinc-100 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                      <div className="font-mono text-[11px] text-zinc-500">
+                        Ditulis oleh: <strong className="text-zinc-800 dark:text-zinc-200 font-semibold">Tubagus Fitran Badruttamam</strong>
+                      </div>
+                      <div className="flex items-center gap-1 font-bold text-[#1E3A8A] dark:text-blue-400 group-hover:translate-x-1 transition-transform shrink-0">
+                        <span>Baca Selengkapnya</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
