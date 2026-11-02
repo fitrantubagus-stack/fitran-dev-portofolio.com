@@ -3,23 +3,24 @@
   "short_name": "fitran.dev",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#EDE6D3",
-  "theme_color": "#1E2265",
+  "background_color": "#09090B",
+  "theme_color": "#1E3A8A",
   "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48 64x64 128x128 256x256",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "48x48 96x96 192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
       "src": "/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml"
-    },
-    {
-      "src": "/favicon.png",
-      "sizes": "256x256",
-      "type": "image/png"
-    },
-    {
-      "src": "/favicon.ico",
-      "sizes": "256x256",
-      "type": "image/x-icon"
     }
   ]
 }
