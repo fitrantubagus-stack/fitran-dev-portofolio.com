@@ -23,6 +23,10 @@ import {
   Rocket,
   Shield,
   Zap,
+  Briefcase,
+  Code2,
+  Cpu,
+  BookOpen,
 } from 'lucide-react';
 import { FitranPixelLogo, TealBot, BlueBot, OrangeBot } from './FitranPixelLogo';
 
@@ -193,21 +197,21 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
                 </div>
               </div>
 
-              {/* Orbiting Avatar Badges (Matches Image 2 user heads) */}
-              <div className="absolute top-3 left-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-xs font-bold text-zinc-800">
-                👨‍💼
+              {/* Orbiting Avatar Badges with clean vector icons */}
+              <div className="absolute top-3 left-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                <Briefcase className="w-4 h-4" />
               </div>
-              <div className="absolute top-16 left-6 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-xs">
-                👩‍💻
+              <div className="absolute top-16 left-6 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                <Code2 className="w-3.5 h-3.5" />
               </div>
-              <div className="absolute top-24 right-6 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-xs">
-                👨‍🔬
+              <div className="absolute top-24 right-6 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                <Cpu className="w-3.5 h-3.5" />
               </div>
-              <div className="absolute bottom-16 left-12 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-xs">
-                🧑‍💼
+              <div className="absolute bottom-16 left-12 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                <TrendingUp className="w-3.5 h-3.5" />
               </div>
-              <div className="absolute bottom-12 right-12 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-xs">
-                👩‍🎨
+              <div className="absolute bottom-12 right-12 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                <Sparkles className="w-3.5 h-3.5" />
               </div>
             </div>
 
@@ -420,9 +424,9 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
               </p>
               <p className="text-[10px] font-sans text-zinc-500">Panduan Teknis Terverifikasi</p>
             </div>
-            <p className="text-[9px] font-mono text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+            <p className="text-[9px] font-mono text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5">
               <span>Klik untuk Baca Materi</span>
-              <span>📖</span>
+              <BookOpen className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
             </p>
           </div>
         </div>

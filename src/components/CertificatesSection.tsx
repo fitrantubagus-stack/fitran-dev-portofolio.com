@@ -7,6 +7,7 @@ import { ScrollReveal } from './ScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
 import { useTextStyle } from '../context/TextStyleContext';
 import { DesignTheme } from './Navbar';
+import { CertificateLogoMarquee } from './CertificateLogoMarquee';
 import {
   ExternalLink,
   ShieldCheck,
@@ -489,6 +490,14 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
               </a>
             </div>
           </div>
+        </div>
+
+        {/* HORIZONTAL CONTINUOUS MOVING LOGO MARQUEE (MATCHING USER IMAGE 4) */}
+        <div className="mb-8 p-4 sm:p-5 rounded-3xl bg-white/80 dark:bg-[#111319]/80 border-2 border-black/80 dark:border-zinc-800 shadow-[4px_4px_0px_#000] dark:shadow-none">
+          <CertificateLogoMarquee
+            title={language === 'id' ? 'Lembaga Penerbit & Ekosistem Terverifikasi' : 'Accredited Issuers & Global Ecosystems'}
+            subtitle={language === 'id' ? 'Kredensial dan lisensi resmi dari mitra teknologi global' : 'Official credentials from global tech leaders'}
+          />
         </div>
 
         {/* OFFICIAL DEVELOPER BADGES & MULTI-CLOUD LOGOS SHOWCASE BAR */}

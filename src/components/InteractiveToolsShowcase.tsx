@@ -73,9 +73,12 @@ const SHOWCASE_DECK: ShowcaseTool[] = [
 ];
 
 export const InteractiveToolsShowcase: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  const activeTool = SHOWCASE_DECK[activeIndex];
+  // If hovering, show hovered tool; otherwise show clicked/selected or default 0
+  const displayIndex = hoveredIndex !== null ? hoveredIndex : (selectedIndex !== null ? selectedIndex : 0);
+  const activeTool = SHOWCASE_DECK[displayIndex];
 
   return (
     <div className="space-y-6 select-none">
@@ -87,45 +90,54 @@ export const InteractiveToolsShowcase: React.FC = () => {
       </div>
 
       {/* 3D FANNED DECK CAROUSEL (Directly matching media_1793606391923_72e2508b.png) */}
-      <div className="relative py-12 px-4 flex flex-col items-center justify-center overflow-x-auto min-h-[220px]">
-        {/* Floating Tooltip Pill (Active Card Badge) */}
-        <div className="mb-4 transition-all duration-300 transform -translate-y-1">
-          <div className="relative px-3.5 py-1.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 font-bold text-xs shadow-xl flex items-center gap-2">
-            <span>{activeTool.name}</span>
-            <span className="text-[10px] font-mono text-emerald-400 dark:text-emerald-600 font-semibold">
-              · {activeTool.role}
-            </span>
-            {/* Tooltip caret down triangle */}
-            <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-zinc-900 dark:bg-white rotate-45" />
-          </div>
-        </div>
-
+      <div
+        onMouseLeave={() => setHoveredIndex(null)}
+        className="relative py-12 px-4 flex items-center justify-center overflow-x-auto min-h-[220px]"
+      >
         {/* The Card Fan Deck */}
-        <div className="flex items-center justify-center -space-x-4 sm:-space-x-6 py-2 px-6">
+        <div className="flex items-center justify-center -space-x-4 sm:-space-x-6 py-4 px-6">
           {SHOWCASE_DECK.map((tool, idx) => {
-            const isActive = idx === activeIndex;
-            // Calculate rotational tilt offset
-            const offsetFromCenter = idx - activeIndex;
-            const rotateDeg = isActive ? 0 : offsetFromCenter * 3;
-            const translateY = isActive ? -12 : Math.abs(offsetFromCenter) * 2;
-            const zIndex = isActive ? 30 : 20 - Math.abs(offsetFromCenter);
+            const isHovered = hoveredIndex === idx;
+            const isSelected = selectedIndex === idx;
+            const isElevated = isHovered || (hoveredIndex === null && isSelected);
+
+            // Calculate rotational tilt offset relative to center or active card
+            const baseCenter = hoveredIndex !== null ? hoveredIndex : 4.5;
+            const offsetFromCenter = idx - baseCenter;
+            const rotateDeg = isElevated ? 0 : offsetFromCenter * 3;
+            const translateY = isElevated ? -16 : Math.abs(offsetFromCenter) * 2;
+            const zIndex = isElevated ? 40 : 20 - Math.round(Math.abs(offsetFromCenter));
 
             return (
               <div
                 key={idx}
-                onClick={() => setActiveIndex(idx)}
-                onMouseEnter={() => setActiveIndex(idx)}
+                onClick={() => setSelectedIndex(idx)}
+                onMouseEnter={() => setHoveredIndex(idx)}
                 style={{
                   transform: `translateY(${translateY}px) rotate(${rotateDeg}deg)`,
                   zIndex,
                 }}
-                className={`relative w-16 h-20 sm:w-20 sm:h-24 rounded-2xl bg-white dark:bg-[#161B22] border transition-all duration-300 cursor-pointer flex flex-col items-center justify-center shadow-md hover:shadow-xl ${
-                  isActive
+                className={`relative w-16 h-20 sm:w-20 sm:h-24 rounded-2xl bg-white dark:bg-[#161B22] border transition-all duration-300 cursor-pointer flex flex-col items-center justify-center shadow-md hover:shadow-2xl ${
+                  isElevated
                     ? 'border-[#1E3A8A] dark:border-blue-500 ring-2 ring-[#1E3A8A]/30 scale-110 shadow-2xl'
                     : 'border-zinc-200/90 dark:border-zinc-800 opacity-90 hover:opacity-100 hover:scale-105'
                 }`}
                 title={tool.name}
               >
+                {/* TOOLTIP ANCHORED DIRECTLY ABOVE THIS SPECIFIC CARD */}
+                {isHovered && (
+                  <div className="absolute -top-12 sm:-top-14 left-1/2 -translate-x-1/2 z-50 pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-150">
+                    <div className="relative px-3 py-1.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 font-bold text-xs shadow-xl flex items-center gap-1.5 border border-zinc-700 dark:border-zinc-200">
+                      <span>{tool.name}</span>
+                      <span className="text-[10px] font-mono text-emerald-400 dark:text-emerald-600 font-semibold">
+                        · {tool.role}
+                      </span>
+                      {/* Tooltip caret down triangle */}
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-zinc-900 dark:bg-white rotate-45 border-r border-b border-zinc-700 dark:border-zinc-200" />
+                    </div>
+                  </div>
+                )}
+
                 <div className="p-2 flex items-center justify-center">
                   <ToolLogo name={tool.name} size={36} className="transition-transform group-hover:scale-110" />
                 </div>

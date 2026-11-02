@@ -35,6 +35,7 @@ import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
 import { SpotifyPlaylist } from './SpotifyPlaylist';
 import { ToolLogo } from './ToolLogo';
 import { InteractiveToolsShowcase } from './InteractiveToolsShowcase';
+import { CertificateLogoMarquee } from './CertificateLogoMarquee';
 import { CertificateItem, ProjectItem, SectionId } from '../types';
 import {
   Award,
@@ -1494,6 +1495,14 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 </button>
               )}
             </div>
+          </div>
+
+          {/* Infinite Sideways Scrolling Certificate Logo Marquee (Matching User Image 4) */}
+          <div className="p-4 sm:p-5 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200/90 dark:border-zinc-800 shadow-xs">
+            <CertificateLogoMarquee
+              title="MITRA & LEMBAGA RESMI PEMBERI KREDENSIAL"
+              subtitle="Geser horizontal otomatis · Terhubung langsung dengan basis data resmi"
+            />
           </div>
 
           {/* Metric Highlights Strip */}

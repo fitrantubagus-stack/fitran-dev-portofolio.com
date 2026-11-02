@@ -37,6 +37,8 @@ import { ALL_SERVICES_CATALOG, SubServiceItem } from '../data/servicesCatalogDat
 import { ServiceDetailView } from './ServiceDetailView';
 import { InteractiveFlipbook } from './InteractiveFlipbook';
 import { SekawanWebSolutions } from './SekawanWebSolutions';
+import { CertificateLogoMarquee } from './CertificateLogoMarquee';
+import { SaaSSolutionsShowcase } from './SaaSSolutionsShowcase';
 
 interface WebzooServiceCatalogProps {
   onWhatsAppInquiry: (serviceName?: string, budget?: string) => void;
@@ -264,27 +266,37 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. MULTI-COLUMN MEGA CATALOG MENU (EXACT MATCH TO USER IMAGE 2)            */}
+      {/* 1.5 CERTIFICATE & PARTNER LOGO MARQUEE (SCROLLING CONTINUOUSLY SIDEWAYS)  */}
+      {/* ========================================================================= */}
+      <div className="py-2">
+        <CertificateLogoMarquee
+          title="EKOSISTEM & LISENSI RESMI TERVERIFIKASI"
+          subtitle="Teknologi dan kredensial resmi Google, AWS, Meta, NVIDIA, Perpusnas, dan Anthropic"
+        />
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 2. SPACIOUS BALANCED 3-COLUMN SERVICES CATALOG (NO UNEVEN/SQUISHED CARDS) */}
       {/* ========================================================================= */}
       <div id="katalog-lengkap" className="space-y-8 pt-4">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950 text-[#1E3A8A] dark:text-blue-300 font-mono text-[11px] font-bold uppercase tracking-wider mb-2">
               <Layers className="w-3.5 h-3.5" />
-              <span>Katalog Solusi Lengkap 16 Layanan</span>
+              <span>Katalog Solusi Lengkap 16 Layanan Digital</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-black text-zinc-950 dark:text-white tracking-tight">
               Pilih Solusi yang Sesuai dengan Kebutuhan Bisnis Anda
             </h2>
             <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
-              Klik setiap layanan untuk melihat rincian spesifikasi, fitur bawaan, deliverable resmi, dan alur pengerjaan lengkap.
+              Setiap solusi dikerjakan dengan standar arsitektur industri, deliverable jelas, kode bersih, dan garansi resmi. Klik kartu untuk melihat rincian alur kerja lengkap.
             </p>
           </div>
 
-          {/* Category Filter Pills */}
+          {/* Category Filter Tabs */}
           <div className="flex flex-wrap items-center gap-2">
             {[
-              { id: 'semua', label: 'Semua Solusi' },
+              { id: 'semua', label: 'Semua Solusi (16)' },
               { id: 'website', label: 'Website (5)' },
               { id: 'aplikasi', label: 'Aplikasi (6)' },
               { id: 'marketing', label: 'AI & Marketing (3)' },
@@ -293,10 +305,10 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
               <button
                 key={tab.id}
                 onClick={() => setActiveCategoryFilter(tab.id)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
                   activeCategoryFilter === tab.id
-                    ? 'bg-[#1E3A8A] text-white shadow-xs'
-                    : 'bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
+                    ? 'bg-[#1E3A8A] text-white shadow-md'
+                    : 'bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:border-zinc-300'
                 }`}
               >
                 {tab.label}
@@ -305,211 +317,91 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
           </div>
         </div>
 
-        {/* 4-COLUMN MEGA GRID (MATCHING IMAGE 2 EXACT STRUCTURE) */}
-        {activeCategoryFilter === 'semua' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
-            {/* COLUMN 1: WEBSITE */}
-            <div className="space-y-4 p-5 rounded-3xl bg-zinc-50/70 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800">
-              <div className="flex items-center gap-2 pb-2 border-b border-zinc-200 dark:border-zinc-800">
-                <Globe className="w-4 h-4 text-blue-600" />
-                <h3 className="font-mono text-xs font-black uppercase tracking-wider text-zinc-950 dark:text-white">
-                  WEBSITE
-                </h3>
-              </div>
+        {/* SPACIOUS, BALANCED 3-COLUMN GRID (ELIMINATING "KEKECILAN DAN GA SEJAJAR") */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredServices.map((srv) => {
+            const categoryBadgeColor =
+              srv.category === 'website'
+                ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-900/60'
+                : srv.category === 'aplikasi'
+                ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900/60'
+                : srv.category === 'marketing'
+                ? 'bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-900/60'
+                : 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-900/60';
 
-              <div className="space-y-3">
-                {websiteServices.map((srv) => (
-                  <div
-                    key={srv.id}
-                    onClick={() => {
-                      setSelectedServiceId(srv.id);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    className="p-3.5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200/90 dark:border-zinc-800 hover:border-blue-500 hover:shadow-md transition-all cursor-pointer group space-y-1.5"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900/60 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
-                        {renderCatalogIcon(srv.iconName, 'w-3.5 h-3.5')}
-                      </div>
-                      <h4 className="font-bold text-xs text-zinc-950 dark:text-white group-hover:text-blue-600 transition-colors leading-tight">
-                        {srv.title}
-                      </h4>
-                    </div>
-                    <p className="text-[11px] text-zinc-500 line-clamp-2 leading-relaxed">
-                      {srv.tagline}
-                    </p>
-                    <div className="pt-1 flex items-center justify-between text-[10px] font-mono text-blue-700 dark:text-blue-300 font-bold">
-                      <span>{srv.price}</span>
-                      <span className="group-hover:translate-x-1 transition-transform">Detail →</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* COLUMN 2: APLIKASI */}
-            <div className="space-y-4 p-5 rounded-3xl bg-zinc-50/70 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800">
-              <div className="flex items-center gap-2 pb-2 border-b border-zinc-200 dark:border-zinc-800">
-                <AppWindow className="w-4 h-4 text-emerald-600" />
-                <h3 className="font-mono text-xs font-black uppercase tracking-wider text-zinc-950 dark:text-white">
-                  APLIKASI
-                </h3>
-              </div>
-
-              <div className="space-y-3">
-                {aplikasiServices.map((srv) => (
-                  <div
-                    key={srv.id}
-                    onClick={() => {
-                      setSelectedServiceId(srv.id);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    className="p-3.5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200/90 dark:border-zinc-800 hover:border-emerald-500 hover:shadow-md transition-all cursor-pointer group space-y-1.5"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
-                        {renderCatalogIcon(srv.iconName, 'w-3.5 h-3.5')}
-                      </div>
-                      <h4 className="font-bold text-xs text-zinc-950 dark:text-white group-hover:text-emerald-600 transition-colors leading-tight">
-                        {srv.title}
-                      </h4>
-                    </div>
-                    <p className="text-[11px] text-zinc-500 line-clamp-2 leading-relaxed">
-                      {srv.tagline}
-                    </p>
-                    <div className="pt-1 flex items-center justify-between text-[10px] font-mono text-emerald-700 dark:text-emerald-300 font-bold">
-                      <span>{srv.price}</span>
-                      <span className="group-hover:translate-x-1 transition-transform">Detail →</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* COLUMN 3: DIGITAL MARKETING & AI */}
-            <div className="space-y-4 p-5 rounded-3xl bg-zinc-50/70 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800">
-              <div className="flex items-center gap-2 pb-2 border-b border-zinc-200 dark:border-zinc-800">
-                <Bot className="w-4 h-4 text-purple-600" />
-                <h3 className="font-mono text-xs font-black uppercase tracking-wider text-zinc-950 dark:text-white">
-                  AI &amp; MARKETING
-                </h3>
-              </div>
-
-              <div className="space-y-3">
-                {marketingServices.map((srv) => (
-                  <div
-                    key={srv.id}
-                    onClick={() => {
-                      setSelectedServiceId(srv.id);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    className="p-3.5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200/90 dark:border-zinc-800 hover:border-purple-500 hover:shadow-md transition-all cursor-pointer group space-y-1.5"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-purple-50 dark:bg-purple-950/60 border border-purple-200 dark:border-purple-900/60 flex items-center justify-center text-purple-600 dark:text-purple-400 shrink-0">
-                        {renderCatalogIcon(srv.iconName, 'w-3.5 h-3.5')}
-                      </div>
-                      <h4 className="font-bold text-xs text-zinc-950 dark:text-white group-hover:text-purple-600 transition-colors leading-tight">
-                        {srv.title}
-                      </h4>
-                    </div>
-                    <p className="text-[11px] text-zinc-500 line-clamp-2 leading-relaxed">
-                      {srv.tagline}
-                    </p>
-                    <div className="pt-1 flex items-center justify-between text-[10px] font-mono text-purple-700 dark:text-purple-300 font-bold">
-                      <span>{srv.price}</span>
-                      <span className="group-hover:translate-x-1 transition-transform">Detail →</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* COLUMN 4: INFRASTRUKTUR & CLOUD */}
-            <div className="space-y-4 p-5 rounded-3xl bg-zinc-50/70 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800">
-              <div className="flex items-center gap-2 pb-2 border-b border-zinc-200 dark:border-zinc-800">
-                <Server className="w-4 h-4 text-amber-600" />
-                <h3 className="font-mono text-xs font-black uppercase tracking-wider text-zinc-950 dark:text-white">
-                  INFRASTRUKTUR
-                </h3>
-              </div>
-
-              <div className="space-y-3">
-                {infrastrukturServices.map((srv) => (
-                  <div
-                    key={srv.id}
-                    onClick={() => {
-                      setSelectedServiceId(srv.id);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    className="p-3.5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200/90 dark:border-zinc-800 hover:border-amber-500 hover:shadow-md transition-all cursor-pointer group space-y-1.5"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-900/60 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
-                        {renderCatalogIcon(srv.iconName, 'w-3.5 h-3.5')}
-                      </div>
-                      <h4 className="font-bold text-xs text-zinc-950 dark:text-white group-hover:text-amber-600 transition-colors leading-tight">
-                        {srv.title}
-                      </h4>
-                    </div>
-                    <p className="text-[11px] text-zinc-500 line-clamp-2 leading-relaxed">
-                      {srv.tagline}
-                    </p>
-                    <div className="pt-1 flex items-center justify-between text-[10px] font-mono text-amber-700 dark:text-amber-300 font-bold">
-                      <span>{srv.price}</span>
-                      <span className="group-hover:translate-x-1 transition-transform">Detail →</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          /* Filtered Grid View */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredServices.map((srv) => (
+            return (
               <div
                 key={srv.id}
                 onClick={() => {
                   setSelectedServiceId(srv.id);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="p-6 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-[#1E3A8A] shadow-xs hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between space-y-4"
+                className="p-6 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200/90 dark:border-zinc-800 hover:border-[#1E3A8A] dark:hover:border-blue-500 shadow-xs hover:shadow-xl transition-all cursor-pointer group flex flex-col justify-between space-y-5"
               >
-                <div className="space-y-3">
+                <div className="space-y-4">
+                  {/* Top Bar: Icon + Category Badge */}
                   <div className="flex items-center justify-between">
-                    <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900/60 flex items-center justify-center text-blue-600 dark:text-blue-400">
-                      {renderCatalogIcon(srv.iconName, 'w-5 h-5')}
+                    <div className="w-12 h-12 rounded-2xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 flex items-center justify-center text-[#1E3A8A] dark:text-blue-400 group-hover:scale-105 transition-transform shadow-xs">
+                      {renderCatalogIcon(srv.iconName, 'w-6 h-6 stroke-[2.2]')}
                     </div>
-                    {srv.badge && (
-                      <span className="px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/80 text-[#1E3A8A] dark:text-blue-300 font-mono text-[10px] font-bold">
-                        {srv.badge}
+
+                    <div className="flex items-center gap-1.5">
+                      <span className={`px-2.5 py-1 rounded-full font-mono text-[10px] font-bold border uppercase tracking-wider ${categoryBadgeColor}`}>
+                        {srv.category}
                       </span>
-                    )}
+                      {srv.badge && (
+                        <span className="px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 font-mono text-[9px] font-bold">
+                          {srv.badge}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
+                  {/* Title & Tagline */}
                   <div>
-                    <h3 className="font-bold text-base text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] transition-colors">
+                    <h3 className="font-black text-lg text-zinc-950 dark:text-white group-hover:text-[#1E3A8A] dark:group-hover:text-blue-400 transition-colors leading-snug">
                       {srv.title}
                     </h3>
-                    <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
                       {srv.tagline}
                     </p>
                   </div>
+
+                  {/* Deliverables Checklist (2 bullets) */}
+                  <div className="space-y-1.5 pt-1 text-xs">
+                    {srv.deliverables.slice(0, 2).map((item, idx) => (
+                      <div key={idx} className="flex items-start gap-2 text-zinc-600 dark:text-zinc-400">
+                        <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                        <span className="line-clamp-1">{item}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs">
-                  <span className="font-bold text-zinc-900 dark:text-white font-mono">{srv.price}</span>
-                  <span className="text-[#1E3A8A] dark:text-blue-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                    <span>Lihat Rincian</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                {/* Bottom Card Footer: Price & CTA */}
+                <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+                  <div>
+                    <span className="text-[10px] font-mono text-zinc-400 uppercase block">Investasi Mulai</span>
+                    <span className="font-extrabold text-xs sm:text-sm text-zinc-950 dark:text-white font-mono">
+                      {srv.price}
+                    </span>
+                  </div>
+
+                  <span className="text-xs font-bold text-[#1E3A8A] dark:text-blue-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                    <span>Lihat Alur</span>
+                    <ArrowRight className="w-4 h-4" />
                   </span>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+            );
+          })}
+        </div>
       </div>
+
+      {/* ========================================================================= */}
+      {/* 2.5 SAAS INTERACTIVE BENTO GRID & PRICING TABLE (NGODINGPAKEAI.COM STYLE) */}
+      {/* ========================================================================= */}
+      <SaaSSolutionsShowcase onWhatsAppInquiry={onWhatsAppInquiry} />
 
       {/* 3D INTERACTIVE FLIPBOOK EXPANDED VIEW */}
       {showFlipbook && (
