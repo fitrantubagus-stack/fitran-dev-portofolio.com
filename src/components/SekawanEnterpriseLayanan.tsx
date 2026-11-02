@@ -345,7 +345,7 @@ export const SekawanEnterpriseLayanan: React.FC<SekawanEnterpriseLayananProps> =
         </div>
       </div>
 
-      {/* 3D INTERACTIVE FLIPBOOK MODAL / EXPANDED VIEW (ALA PERPUSNAS RI IMAGE 4) */}
+      {/* 3D INTERACTIVE FLIPBOOK EXPANDED VIEW (BUKU PANDUAN MATERI REKAYASA & AI) */}
       {showFlipbook && (
         <div className="pt-2 animate-fade-in">
           <InteractiveFlipbook onClose={() => setShowFlipbook(false)} />

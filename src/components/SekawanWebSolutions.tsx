@@ -369,24 +369,25 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. FLIPBOOK PERPUSNAS PRESS BANNER (TRIGGER FOR INTERACTIVE BOOK)         */}
+      {/* 3. FLIPBOOK MATERI BELAJAR BANNER (ENGINEERING HANDBOOK SERIES)           */}
       {/* ========================================================================= */}
       <div className="p-8 sm:p-10 rounded-3xl bg-zinc-950 text-white border border-blue-900/60 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden">
         <div className="space-y-3 max-w-2xl relative z-10">
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-emerald-950 border border-emerald-700 text-emerald-300 font-mono text-[11px] font-bold uppercase">
-              ★ KARYA BUKU RESMI PERPUSNAS RI
+            <span className="px-3 py-1 rounded-full bg-blue-950 border border-blue-700 text-blue-300 font-mono text-[11px] font-bold uppercase">
+              ★ FITRAN DEV ENGINEERING HANDBOOK
             </span>
-            <span className="text-zinc-400 font-mono text-xs">Halaman 278 - 279</span>
+            <span className="text-zinc-400 font-mono text-xs">10 Bab Kurikulum Terpadu</span>
           </div>
 
           <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-            Baca Tulisan &amp; Profil Tubagus Fitran dalam Mode Buku Digital (Flipbook)
+            Pelajari Materi Web Kilat &amp; AI dalam Format Buku 3D Interaktif (Flipbook)
           </h3>
 
           <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-            Rasakan sensasi membaca buku fisik interaktif dengan animasi pembalikan halaman 3D realistis dari buku
-            resmi terbitan Perpustakaan Nasional RI (*Press Perpusnas*): esai <em>"Gagasan: Literasi sebagai Senjata Produktivitas"</em> dan <em>"Profil Penulis"</em>.
+            Rasakan sensasi membaca buku materi teknis dengan animasi pembalikan lembar kertas 3D realistis di atas meja
+            kayu: mencakup panduan render kilat &lt;0.8s, keamanan server 5 lapis, arsitektur RAG WhatsApp Agent, serta
+            optimasi Meta Conversions API (CAPI).
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3">
@@ -395,20 +396,10 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
                 onClick={onOpenFlipbook}
                 className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg group"
               >
-                <span>Buka Mode Buku 3D (Flipbook)</span>
+                <span>Buka Buku Materi 3D (Flipbook)</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             )}
-
-            <a
-              href="https://press.perpusnas.go.id/files/flipbooks/1635/mobile/index.html#p=293"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 text-xs font-semibold flex items-center gap-2 transition-colors"
-            >
-              <span>Verifikasi di Portal Perpusnas</span>
-              <Globe className="w-3.5 h-3.5 text-zinc-400" />
-            </a>
           </div>
         </div>
 
@@ -419,17 +410,17 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
             className="w-48 sm:w-56 h-36 sm:h-40 rounded-2xl bg-[#f5efe6] text-zinc-900 border-4 border-amber-900/30 shadow-2xl p-4 flex flex-col justify-between cursor-pointer hover:scale-105 transition-transform"
           >
             <div className="flex items-center justify-between border-b border-zinc-300 pb-1">
-              <span className="font-mono text-[9px] font-bold text-zinc-500">Perpusnas Press</span>
-              <span className="font-mono text-[9px] text-zinc-400">p. 278-279</span>
+              <span className="font-mono text-[9px] font-bold text-blue-900">Fitran Dev Handbook</span>
+              <span className="font-mono text-[9px] text-zinc-500">10 Bab</span>
             </div>
             <div className="space-y-1">
               <p className="font-serif font-black text-xs text-zinc-900 leading-snug line-clamp-2">
-                Gagasan: Literasi sebagai Senjata Produktivitas
+                Arsitektur Web Kilat, Keamanan &amp; AI Engineering
               </p>
-              <p className="text-[10px] font-sans text-zinc-600">Oleh: Tubagus Fitran Badruttamam</p>
+              <p className="text-[10px] font-sans text-zinc-600">Panduan Teknis Terverifikasi</p>
             </div>
             <p className="text-[9px] font-mono text-blue-700 font-bold flex items-center gap-1">
-              <span>Klik untuk Buka Buku 3D</span>
+              <span>Klik untuk Baca Materi</span>
               <span>📖</span>
             </p>
           </div>
