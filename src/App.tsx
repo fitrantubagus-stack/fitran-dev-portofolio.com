@@ -240,7 +240,30 @@ export default function App() {
         document.title = '36+ Sertifikat & Kredensial Resmi — fitran.dev';
         break;
       case 'services':
-        document.title = 'Layanan & Solusi Digital Perusahaan — fitran.dev';
+        if (typeof window !== 'undefined') {
+          const p = window.location.pathname.toLowerCase();
+          if (p.includes('autopilot')) {
+            document.title = 'Sistem Bisnis Digital Autopilot Juara — fitran.dev';
+          } else if (p.includes('bisnis-kuliner')) {
+            document.title = 'Solusi Digital Bisnis Kuliner & F&B — fitran.dev';
+          } else if (p.includes('retail-lokal')) {
+            document.title = 'Solusi Toko Online Retail Lokal — fitran.dev';
+          } else if (p.includes('manufaktur-b2b')) {
+            document.title = 'Solusi Portal Manufaktur B2B & RFQ — fitran.dev';
+          } else if (p.includes('komunitas')) {
+            document.title = 'Website & Portal Keanggotaan Komunitas — fitran.dev';
+          } else if (p.includes('yayasan')) {
+            document.title = 'Portal Donasi & Laporan Akuntabel Yayasan — fitran.dev';
+          } else if (p.includes('klinik-kesehatan')) {
+            document.title = 'Website & Sistem Booking Janji Temu Klinik — fitran.dev';
+          } else if (p.includes('umkm')) {
+            document.title = 'Solusi Go Digital Sentra UMKM Juara — fitran.dev';
+          } else {
+            document.title = 'Layanan & Solusi Digital Perusahaan — fitran.dev';
+          }
+        } else {
+          document.title = 'Layanan & Solusi Digital Perusahaan — fitran.dev';
+        }
         break;
       case 'learning':
         document.title = 'Studio Belajar AI, Ads & Vibe Coding — fitran.dev';

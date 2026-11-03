@@ -31,6 +31,8 @@ import {
   Server,
   Building2,
   Code2,
+  Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -488,6 +490,67 @@ export const Navbar: React.FC<NavbarProps> = ({
                             </div>
                           </div>
                         </div>
+
+                        {/* Special Highlight: Inovasi Autopilot Juara & Sektor Industri */}
+                        <div className="mt-3.5 pt-3 border-t border-zinc-100 dark:border-zinc-800 space-y-2.5">
+                          <a
+                            href={`${themePrefix}/layanan/autopilot`}
+                            onClick={(e) => {
+                              setLayananDropdownOpen(false);
+                              handleNavClick('services', e, `${themePrefix}/layanan/autopilot`);
+                            }}
+                            className="p-2.5 rounded-2xl bg-linear-to-r from-lime-500/15 via-lime-400/10 to-transparent border border-lime-500/40 hover:border-lime-500 flex items-center justify-between gap-2 transition-all cursor-pointer group"
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <div className="w-7 h-7 rounded-xl bg-lime-400 text-black flex items-center justify-center font-bold shrink-0 shadow-xs">
+                                <Sparkles className="w-3.5 h-3.5 fill-black" />
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-1.5">
+                                  <span className="font-bold text-zinc-950 dark:text-white group-hover:text-lime-600 dark:group-hover:text-lime-400 transition-colors">
+                                    Sistem Bisnis Digital Autopilot
+                                  </span>
+                                  <span className="px-1.5 py-0.5 rounded-full bg-lime-400 text-black font-mono text-[8px] font-black uppercase">
+                                    Inovasi Juara
+                                  </span>
+                                </div>
+                                <p className="text-[10px] text-zinc-500 line-clamp-1">
+                                  Formula Ducok &amp; Pucok: 24/7 AI WhatsApp closing otomatis &amp; 100% hak milik
+                                </p>
+                              </div>
+                            </div>
+                            <ArrowRight className="w-3.5 h-3.5 text-lime-600 dark:text-lime-400 group-hover:translate-x-1 transition-transform shrink-0" />
+                          </a>
+
+                          <div>
+                            <span className="text-[9px] font-mono font-bold text-zinc-400 uppercase tracking-wider block mb-1.5">
+                              7 SEGMEN BIDANG USAHA KHUSUS:
+                            </span>
+                            <div className="flex flex-wrap gap-1">
+                              {[
+                                { slug: 'bisnis-kuliner', label: 'Kuliner (F&B)' },
+                                { slug: 'retail-lokal', label: 'Retail Lokal' },
+                                { slug: 'manufaktur-b2b', label: 'Manufaktur B2B' },
+                                { slug: 'komunitas', label: 'Komunitas' },
+                                { slug: 'yayasan', label: 'Yayasan' },
+                                { slug: 'klinik-kesehatan', label: 'Klinik Medis' },
+                                { slug: 'umkm', label: 'Sentra UMKM' },
+                              ].map((item) => (
+                                <a
+                                  key={item.slug}
+                                  href={`${themePrefix}/layanan/${item.slug}`}
+                                  onClick={(e) => {
+                                    setLayananDropdownOpen(false);
+                                    handleNavClick('services', e, `${themePrefix}/layanan/${item.slug}`);
+                                  }}
+                                  className="px-2 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 hover:bg-[#1E3A8A] hover:text-white dark:hover:bg-blue-600 text-zinc-700 dark:text-zinc-300 text-[10px] font-semibold transition-colors cursor-pointer"
+                                >
+                                  {item.label}
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -911,13 +974,52 @@ export const Navbar: React.FC<NavbarProps> = ({
                 >
                   Beranda
                 </a>
-                <a
-                  href={`${themePrefix}/layanan`}
-                  onClick={(e) => handleNavClick('services', e, `${themePrefix}/layanan`)}
-                  className="block w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
-                >
-                  Layanan (Mulai 500rb)
-                </a>
+                <div className="space-y-1">
+                  <a
+                    href={`${themePrefix}/layanan`}
+                    onClick={(e) => handleNavClick('services', e, `${themePrefix}/layanan`)}
+                    className="block w-full text-left py-2 px-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 font-semibold"
+                  >
+                    Layanan &amp; Solusi (Mulai 500rb)
+                  </a>
+                  <div className="pl-3 pr-2 pb-1 flex flex-wrap gap-1.5">
+                    <a
+                      href={`${themePrefix}/layanan/autopilot`}
+                      onClick={(e) => handleNavClick('services', e, `${themePrefix}/layanan/autopilot`)}
+                      className="px-2 py-0.5 rounded-full bg-lime-400 text-black text-[10px] font-black tracking-tight"
+                    >
+                      ⚡ Autopilot Juara
+                    </a>
+                    <a
+                      href={`${themePrefix}/layanan/bisnis-kuliner`}
+                      onClick={(e) => handleNavClick('services', e, `${themePrefix}/layanan/bisnis-kuliner`)}
+                      className="px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-[10px] font-medium"
+                    >
+                      Kuliner
+                    </a>
+                    <a
+                      href={`${themePrefix}/layanan/retail-lokal`}
+                      onClick={(e) => handleNavClick('services', e, `${themePrefix}/layanan/retail-lokal`)}
+                      className="px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-[10px] font-medium"
+                    >
+                      Retail
+                    </a>
+                    <a
+                      href={`${themePrefix}/layanan/manufaktur-b2b`}
+                      onClick={(e) => handleNavClick('services', e, `${themePrefix}/layanan/manufaktur-b2b`)}
+                      className="px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-[10px] font-medium"
+                    >
+                      B2B
+                    </a>
+                    <a
+                      href={`${themePrefix}/layanan/umkm`}
+                      onClick={(e) => handleNavClick('services', e, `${themePrefix}/layanan/umkm`)}
+                      className="px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-[10px] font-medium"
+                    >
+                      UMKM
+                    </a>
+                  </div>
+                </div>
                 <a
                   href={`${themePrefix}/certificates`}
                   onClick={(e) => handleNavClick('certificates', e, `${themePrefix}/certificates`)}
