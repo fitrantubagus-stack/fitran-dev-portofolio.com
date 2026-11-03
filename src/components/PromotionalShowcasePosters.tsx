@@ -39,9 +39,9 @@ export const WebsiteKilatPromoPoster: React.FC<PromotionalPosterProps> = ({
 }) => {
   return (
     <div
-      className={`relative overflow-hidden rounded-3xl bg-zinc-950 text-white border border-blue-900/60 shadow-2xl p-6 sm:p-10 select-none ${className}`}
+      className={`relative overflow-hidden rounded-3xl bg-linear-to-br from-white via-slate-50 to-emerald-50/30 dark:from-zinc-950 dark:via-[#111319] dark:to-zinc-950 text-zinc-950 dark:text-white border border-zinc-200/90 dark:border-zinc-800 shadow-xl p-6 sm:p-10 select-none ${className}`}
     >
-      {/* Background Decorative Tech Elements */}
+      {/* Background Decorative Subtle Rings */}
       <div className="absolute -right-16 -top-16 w-72 h-72 rounded-full border border-blue-500/10 pointer-events-none" />
       <div className="absolute right-20 -bottom-20 w-80 h-80 rounded-full border border-emerald-500/10 pointer-events-none" />
 
@@ -50,34 +50,34 @@ export const WebsiteKilatPromoPoster: React.FC<PromotionalPosterProps> = ({
         <div className="lg:col-span-7 space-y-5">
           {/* Top Brand & Promo Badge */}
           <div className="flex flex-wrap items-center gap-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-700/80 text-emerald-300 font-mono text-[11px] font-bold uppercase tracking-wider">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700/80 text-emerald-800 dark:text-emerald-300 font-mono text-[11px] font-bold uppercase tracking-wider">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>PROMO RESMI · UMKM &amp; PORTOFOLIO PROFESIONAL</span>
             </div>
-            <span className="px-2.5 py-1 rounded-full bg-blue-950/80 border border-blue-800 text-blue-300 font-mono text-[10px] font-bold">
+            <span className="px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 font-mono text-[10px] font-bold">
               GARANSI 30 HARI
             </span>
           </div>
 
           <div className="space-y-2">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-zinc-950 dark:text-white tracking-tight leading-tight">
               Website Online Kilat <br />
-              <span className="text-emerald-400">24 - 48 Jam Siap Pakai</span>
+              <span className="text-emerald-600 dark:text-emerald-400">24 - 48 Jam Siap Pakai</span>
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-xl">
+            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed max-w-xl">
               Solusi landing page performa tinggi tanpa ribet: langsung online di edge CDN global, terhubung tombol
               pemesanan WhatsApp otomatis, dan kepemilikan 100% full source code tanpa biaya sewa tahunan tersembunyi.
             </p>
           </div>
 
           {/* Pricing Highlight Pill */}
-          <div className="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 flex flex-wrap items-baseline gap-3">
+          <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-wrap items-baseline gap-3">
             <div>
-              <p className="text-[11px] font-mono text-zinc-400 uppercase">Investasi Promo Terbatas:</p>
+              <p className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 uppercase font-semibold">Investasi Promo Terbatas:</p>
               <div className="flex items-baseline gap-2 mt-0.5">
-                <span className="text-3xl sm:text-4xl font-black font-mono text-white">Rp 500.000</span>
-                <span className="text-xs font-mono text-zinc-500 line-through">Rp 1.200.000</span>
-                <span className="px-2 py-0.5 rounded bg-emerald-900/80 text-emerald-300 font-mono text-[10px] font-bold">
+                <span className="text-3xl sm:text-4xl font-black font-mono text-zinc-950 dark:text-white">Rp 500.000</span>
+                <span className="text-xs font-mono text-zinc-400 dark:text-zinc-500 line-through">Rp 1.200.000</span>
+                <span className="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/80 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold">
                   HEMAT 58%
                 </span>
               </div>
@@ -85,21 +85,21 @@ export const WebsiteKilatPromoPoster: React.FC<PromotionalPosterProps> = ({
           </div>
 
           {/* Real Deliverables Checklist */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-zinc-300 pt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-zinc-700 dark:text-zinc-300 pt-1">
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+              <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Gratis Hosting Selamanya di Vercel Edge</span>
             </div>
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+              <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Setup Domain Sendiri (.com / .id)</span>
             </div>
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+              <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Kecepatan Load di Bawah 0.8 Detik</span>
             </div>
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+              <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>100% Hak Milik Source Code Milik Anda</span>
             </div>
           </div>
@@ -113,7 +113,7 @@ export const WebsiteKilatPromoPoster: React.FC<PromotionalPosterProps> = ({
               <MessageSquare className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
               <span>Klaim Promo via WhatsApp Sekarang</span>
             </button>
-            <span className="text-[11px] font-mono text-zinc-400">
+            <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400">
               *Hanya untuk slot pengerjaan minggu ini
             </span>
           </div>
@@ -122,41 +122,41 @@ export const WebsiteKilatPromoPoster: React.FC<PromotionalPosterProps> = ({
         {/* SISI KANAN: Realistis UI Preview + Kartu Google Lighthouse 100/100 */}
         <div className="lg:col-span-5 space-y-4">
           {/* Browser Mockup Window */}
-          <div className="rounded-2xl bg-zinc-900 border border-zinc-700/80 overflow-hidden shadow-2xl">
+          <div className="rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700/80 overflow-hidden shadow-lg">
             {/* Browser Top Chrome */}
-            <div className="px-3.5 py-2.5 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between">
+            <div className="px-3.5 py-2.5 bg-zinc-100 dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
                 <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
               </div>
-              <div className="px-3 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-400 flex items-center gap-1.5">
-                <Lock className="w-2.5 h-2.5 text-emerald-400" />
+              <div className="px-3 py-0.5 rounded-md bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-[10px] font-mono text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5 shadow-xs">
+                <Lock className="w-2.5 h-2.5 text-emerald-500" />
                 <span>https://bisnis-klien.com</span>
               </div>
               <div className="w-6" />
             </div>
 
             {/* Browser Body Preview (Real UI) */}
-            <div className="p-4 bg-zinc-950/60 space-y-3">
+            <div className="p-4 bg-slate-50/70 dark:bg-zinc-950/60 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <TealBot size={16} />
-                  <span className="font-bold text-xs text-white">Bisnis Unggulan</span>
+                  <span className="font-bold text-xs text-zinc-900 dark:text-white">Bisnis Unggulan</span>
                 </div>
-                <span className="px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-800 text-[9px] font-mono text-emerald-400">
+                <span className="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800 text-[9px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">
                   Online 24/7
                 </span>
               </div>
 
-              <div className="p-3 rounded-xl bg-zinc-900/90 border border-zinc-800 space-y-1.5">
-                <p className="text-[10px] font-mono text-zinc-400 uppercase">Headline Bisnis:</p>
-                <p className="text-xs font-extrabold text-white">Layanan Terbaik &amp; Terpercaya untuk Kebutuhan Anda</p>
+              <div className="p-3 rounded-xl bg-white dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 space-y-1.5 shadow-xs">
+                <p className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 uppercase font-semibold">Headline Bisnis:</p>
+                <p className="text-xs font-extrabold text-zinc-900 dark:text-white">Layanan Terbaik &amp; Terpercaya untuk Kebutuhan Anda</p>
                 <div className="pt-1 flex items-center gap-2">
                   <span className="px-2.5 py-1 rounded-md bg-emerald-600 text-white text-[10px] font-bold">
                     Pesan via WhatsApp
                   </span>
-                  <span className="text-[9px] font-mono text-zinc-400">Respon &lt; 5 Menit</span>
+                  <span className="text-[9px] font-mono text-zinc-500 dark:text-zinc-400">Respon &lt; 5 Menit</span>
                 </div>
               </div>
             </div>
@@ -264,26 +264,26 @@ export const CybersecurityOperationsPoster: React.FC<PromotionalPosterProps> = (
 
   return (
     <div
-      className={`rounded-3xl bg-zinc-950 text-white border border-zinc-800 shadow-2xl p-6 sm:p-10 space-y-8 select-none ${className}`}
+      className={`rounded-3xl bg-linear-to-br from-white via-slate-50 to-blue-50/30 dark:from-zinc-950 dark:via-[#111319] dark:to-zinc-950 text-zinc-950 dark:text-white border border-zinc-200/90 dark:border-zinc-800 shadow-xl p-6 sm:p-10 space-y-8 select-none ${className}`}
     >
       {/* Top Header: Brand Emblem & Cybersecurity Badge */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-800/80 pb-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800/80 pb-6">
         <div className="space-y-3">
           <div className="flex items-center gap-2.5">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950 border border-blue-700/80 text-blue-300 font-mono text-[11px] font-bold uppercase tracking-wider">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-700/80 text-blue-700 dark:text-blue-300 font-mono text-[11px] font-bold uppercase tracking-wider">
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
               <span>5 LAPISAN KEAMANAN TERSTRUKTUR · FITRAN DEV PROTOCOL</span>
             </div>
-            <span className="px-2.5 py-1 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-300 font-mono text-[10px] font-bold flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 font-mono text-[10px] font-bold flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               <span>LIVE SOC MONITOR</span>
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-black text-zinc-950 dark:text-white tracking-tight">
             Sistem Aman, Cepat, dan Tahan Serangan Siber
           </h2>
-          <p className="text-xs sm:text-sm text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
             Standar rekayasa keamanan berlapis sekelas infrastruktur enterprise: melindungi basis data, kredensial server,
             dan alur kerja AI bisnis Anda dari ancaman eksploitasi di internet terbuka.
           </p>
@@ -293,14 +293,14 @@ export const CybersecurityOperationsPoster: React.FC<PromotionalPosterProps> = (
         <div className="flex items-center gap-3 shrink-0">
           <FitranPixelIcon size="md" />
           <div className="text-left font-mono">
-            <p className="text-xs font-bold text-white">fitran<span className="text-emerald-400">.dev</span></p>
+            <p className="text-xs font-bold text-zinc-900 dark:text-white">fitran<span className="text-emerald-600 dark:text-emerald-400">.dev</span></p>
             <p className="text-[10px] text-zinc-500">Security Engineering</p>
           </div>
         </div>
       </div>
 
       {/* REALISTIC LIVE TERMINAL SCANNER (Replacing the bare empty UI) */}
-      <div className="rounded-2xl bg-black border border-zinc-800 p-4 font-mono text-xs space-y-2 shadow-inner">
+      <div className="rounded-2xl bg-zinc-950 border border-zinc-800 p-4 font-mono text-xs space-y-2 shadow-inner text-white">
         <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2 text-zinc-400 text-[11px]">
           <div className="flex items-center gap-2">
             <Terminal className="w-3.5 h-3.5 text-emerald-400" />
@@ -327,30 +327,30 @@ export const CybersecurityOperationsPoster: React.FC<PromotionalPosterProps> = (
               onClick={() => setActiveLayer(idx)}
               className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 ${
                 isActive
-                  ? 'bg-blue-950/70 border-blue-500 text-white shadow-lg'
-                  : 'bg-zinc-900/80 border-zinc-800 hover:border-zinc-700 text-zinc-300'
+                  ? 'bg-blue-50 dark:bg-blue-950/70 border-blue-500 text-zinc-950 dark:text-white shadow-md ring-1 ring-blue-500'
+                  : 'bg-white dark:bg-zinc-900/80 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 text-zinc-800 dark:text-zinc-300 shadow-xs'
               }`}
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-black text-blue-400">
+                  <span className="font-mono text-xs font-black text-blue-600 dark:text-blue-400">
                     LAPIS {layer.num}
                   </span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-950 border border-zinc-800 text-emerald-400">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-emerald-600 dark:text-emerald-400 font-bold">
                     ✓ Aktif
                   </span>
                 </div>
 
-                <h3 className="font-bold text-xs sm:text-sm text-white leading-snug">
+                <h3 className="font-bold text-xs sm:text-sm text-zinc-950 dark:text-white leading-snug">
                   {layer.title}
                 </h3>
-                <p className="text-[11px] text-zinc-400 leading-relaxed line-clamp-3">
+                <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-3">
                   {layer.desc}
                 </p>
               </div>
 
-              <div className="pt-2 border-t border-zinc-800/80 flex items-center justify-between text-[10px] font-mono text-zinc-400">
-                <span className="text-emerald-300 font-bold">{layer.metric}</span>
+              <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-[10px] font-mono text-zinc-500 dark:text-zinc-400">
+                <span className="text-emerald-600 dark:text-emerald-300 font-bold">{layer.metric}</span>
               </div>
             </div>
           );
@@ -358,9 +358,9 @@ export const CybersecurityOperationsPoster: React.FC<PromotionalPosterProps> = (
       </div>
 
       {/* Bottom Action Row: Direct Security Audit Inquiry */}
-      <div className="pt-2 border-t border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2 text-xs text-zinc-400">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+      <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
           <span>Setiap baris kode diuji terhadap standar OWASP Top 10 sebelum diserahterimakan ke klien.</span>
         </div>
 

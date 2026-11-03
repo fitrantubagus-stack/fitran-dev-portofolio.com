@@ -33,6 +33,8 @@ import {
   Code2,
   Sparkles,
   ArrowRight,
+  Rocket,
+  Compass,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -61,6 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
   const [belajarDropdownOpen, setBelajarDropdownOpen] = useState(false);
   const [layananDropdownOpen, setLayananDropdownOpen] = useState(false);
+  const [tentangDropdownOpen, setTentangDropdownOpen] = useState(false);
   const [wibTime, setWibTime] = useState('');
   const { language } = useLanguage();
 
@@ -87,6 +90,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     const handleClickOutside = () => {
       setBelajarDropdownOpen(false);
       setLayananDropdownOpen(false);
+      setTentangDropdownOpen(false);
       setThemeMenuOpen(false);
     };
     window.addEventListener('click', handleClickOutside);
@@ -702,15 +706,84 @@ export const Navbar: React.FC<NavbarProps> = ({
                   Tools
                 </a>
 
-                <a
-                  href={`${themePrefix}/about-me`}
-                  onClick={(e) => handleNavClick('about', e, `${themePrefix}/about-me`)}
-                  className={`hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer ${
-                    activeSection === 'about' ? 'font-bold text-zinc-950 dark:text-white' : ''
-                  }`}
+                <div
+                  className="relative"
+                  onMouseEnter={() => setTentangDropdownOpen(true)}
+                  onMouseLeave={() => setTentangDropdownOpen(false)}
                 >
-                  Tentang
-                </a>
+                  <a
+                    href={`${themePrefix}/about-me`}
+                    onClick={(e) => {
+                      setTentangDropdownOpen(false);
+                      handleNavClick('about', e, `${themePrefix}/about-me`);
+                    }}
+                    className={`hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer flex items-center gap-1 ${
+                      activeSection === 'about' ? 'font-bold text-zinc-950 dark:text-white' : ''
+                    }`}
+                  >
+                    <span>Tentang</span>
+                    <ChevronDown className={`w-3 h-3 opacity-60 transition-transform ${tentangDropdownOpen ? 'rotate-180' : ''}`} />
+                  </a>
+
+                  <AnimatePresence>
+                    {tentangDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                        transition={{ duration: 0.16 }}
+                        className="absolute right-0 sm:left-1/2 sm:-translate-x-1/2 top-full mt-3 w-80 sm:w-96 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 shadow-2xl p-4 space-y-3 z-50 text-left"
+                      >
+                        {/* TAGLINE */}
+                        <div className="p-3 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200/60 dark:border-blue-900/60 space-y-1">
+                          <div className="flex items-center gap-1.5 text-blue-700 dark:text-blue-300 font-mono text-[10px] font-bold uppercase tracking-wider">
+                            <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                            <span>Tagline Resmi</span>
+                          </div>
+                          <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100 leading-snug">
+                            "Solusi Digital Cepat, Aman, &amp; 100% Hak Milik Tanpa Fee Bulanan."
+                          </p>
+                        </div>
+
+                        {/* VISI */}
+                        <div className="p-3 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-900/60 space-y-1">
+                          <div className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300 font-mono text-[10px] font-bold uppercase tracking-wider">
+                            <Target className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                            <span>Visi</span>
+                          </div>
+                          <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-snug">
+                            Menjadi mitra rekayasa perangkat lunak terpercaya yang memajukan bisnis dan UMKM Indonesia dengan infrastruktur digital modern berstandar internasional.
+                          </p>
+                        </div>
+
+                        {/* MISI */}
+                        <div className="p-3 rounded-xl bg-purple-50/70 dark:bg-purple-950/40 border border-purple-200/60 dark:border-purple-900/60 space-y-1">
+                          <div className="flex items-center gap-1.5 text-purple-700 dark:text-purple-300 font-mono text-[10px] font-bold uppercase tracking-wider">
+                            <Rocket className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+                            <span>Misi</span>
+                          </div>
+                          <ul className="text-[11px] text-zinc-600 dark:text-zinc-400 space-y-1 leading-snug list-disc pl-4">
+                            <li>Membangun website kilat dengan waktu muat &lt;0.8s berstandar Lighthouse 100/100.</li>
+                            <li>Mengintegrasikan AI agent WhatsApp cerdas untuk closing penjualan otomatis 24/7.</li>
+                            <li>Menyerahkan 100% hak milik kode sumber demi kedaulatan data bisnis klien.</li>
+                          </ul>
+                        </div>
+
+                        <a
+                          href={`${themePrefix}/about-me`}
+                          onClick={(e) => {
+                            setTentangDropdownOpen(false);
+                            handleNavClick('about', e, `${themePrefix}/about-me`);
+                          }}
+                          className="pt-2 text-xs font-bold text-[#1E3A8A] dark:text-blue-400 hover:underline flex items-center justify-between border-t border-zinc-100 dark:border-zinc-800"
+                        >
+                          <span>Buka Profil Lengkap &amp; Perjalanan Karir</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </a>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
 
               {/* Right Controls: Dark Mode Toggle + WhatsApp Konsultasi Button + Theme Switcher */}
@@ -1062,6 +1135,32 @@ export const Navbar: React.FC<NavbarProps> = ({
                 >
                   Tentang Tubagus Fitran
                 </a>
+
+                {/* Visi, Misi & Tagline Showcase in Mobile Menu */}
+                <div className="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 space-y-2.5 my-2 text-left">
+                  <div className="flex items-start gap-2">
+                    <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-[10px] font-mono font-bold uppercase text-blue-600 dark:text-blue-400">Tagline Resmi</p>
+                      <p className="text-xs font-bold text-zinc-900 dark:text-white leading-tight">Solusi Digital Cepat, Aman, &amp; 100% Hak Milik Tanpa Fee Bulanan</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2 pt-1.5 border-t border-zinc-200/60 dark:border-zinc-800">
+                    <Target className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-[10px] font-mono font-bold uppercase text-emerald-600 dark:text-emerald-400">Visi</p>
+                      <p className="text-[11px] text-zinc-600 dark:text-zinc-300 leading-snug">Menjadi mitra rekayasa perangkat lunak terpercaya yang memajukan bisnis &amp; UMKM Indonesia dengan infrastruktur digital modern.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2 pt-1.5 border-t border-zinc-200/60 dark:border-zinc-800">
+                    <Rocket className="w-4 h-4 text-purple-600 dark:text-purple-400 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-[10px] font-mono font-bold uppercase text-purple-600 dark:text-purple-400">Misi</p>
+                      <p className="text-[11px] text-zinc-600 dark:text-zinc-300 leading-snug">Website kilat &lt;0.8s, CS AI WhatsApp 24/7, dan 100% hak milik kode sumber bebas sewa tahunan.</p>
+                    </div>
+                  </div>
+                </div>
+
                 <button
                   type="button"
                   onClick={handleWhatsAppClick}

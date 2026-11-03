@@ -125,7 +125,16 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   };
 
   // State
-  const [selectedArticle, setSelectedArticle] = useState<BlogPost | null>(null);
+  const [selectedArticle, setSelectedArticle] = useState<BlogPost | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const path = window.location.pathname.toLowerCase();
+    const blogMatch = path.match(/\/(?:blog|artikel)\/([a-z0-9-]+)/i);
+    if (blogMatch && blogMatch[1]) {
+      const slug = blogMatch[1].trim();
+      return KLASIK_BLOG_POSTS.find((p) => p && (p.slug === slug || p.id === slug)) || null;
+    }
+    return null;
+  });
   // Seamless Article Navigation (Full-page, NEVER a floating popup modal)
   const openArticle = (post: BlogPost, e?: React.MouseEvent) => {
     if (e) {
@@ -239,7 +248,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       const blogMatch = path.match(/\/(?:blog|artikel)\/([a-z0-9-]+)/i);
       if (blogMatch && blogMatch[1]) {
         const slug = blogMatch[1].trim();
-        const found = KLASIK_BLOG_POSTS.find((p) => p.slug === slug || p.id === slug);
+        const found = KLASIK_BLOG_POSTS.find((p) => p && (p.slug === slug || p.id === slug));
         setSelectedArticle(found || null);
       } else if (!path.includes('/blog') && !path.includes('/artikel')) {
         setSelectedArticle(null);
@@ -1403,7 +1412,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   BLOG
                 </p>
                 <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
-                  Tulisan pilihan.
+                  Berita Pilihan Cerdas Pengetahuan.
                 </h2>
               </div>
               <a

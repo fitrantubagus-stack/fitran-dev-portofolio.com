@@ -104,8 +104,8 @@ export const ServiceWorkflowSection: React.FC<ServiceWorkflowSectionProps> = ({
 
           <div className="relative overflow-hidden bg-zinc-950">
             <img
-              src="/digital-transformation-workflow.jpg"
-              alt="Infografis Diagram 3D Alur Pengerjaan Layanan dan Transformasi Digital Fitran Dev"
+              src="/engineering-workflow-real.jpg"
+              alt="Dokumentasi Riil Kolaborasi Tim Rekayasa Perangkat Lunak dan Perencanaan Arsitektur Digital Fitran Dev"
               className="w-full max-h-56 sm:max-h-72 object-cover object-center group-hover:scale-101 transition-transform duration-500"
               loading="lazy"
             />

@@ -1050,7 +1050,7 @@ export const KLASIK_LEARNING_CHAPTERS: LearningChapter[] = [
         checklist: ['Pipeline build otomatis berjalan lancar.', 'Rollback instan tersedia jika terjadi error darurat.'],
       },
     ],
-  },,
+  },
   {
     id: 'vc-06',
     trackId: 'vibe-coding',
@@ -1542,7 +1542,7 @@ export const KLASIK_BLOG_POSTS: BlogPost[] = [
       conclusion:
         'Memahami dasar-dasar sistem operasi dan infrastruktur server memberi Anda kebebasan penuh sebagai insinyur perangkat lunak untuk menjalankan eksperimen apapun tanpa memikirkan tagihan cloud yang membengkak.',
     },
-  },,
+  },
   {
     id: 'keamanan-website-5-lapisan-produksi',
     slug: 'keamanan-website-5-lapisan',
