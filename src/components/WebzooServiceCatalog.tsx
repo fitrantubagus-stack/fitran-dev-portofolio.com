@@ -39,6 +39,7 @@ import { InteractiveFlipbook } from './InteractiveFlipbook';
 import { SekawanWebSolutions } from './SekawanWebSolutions';
 import { CertificateLogoMarquee } from './CertificateLogoMarquee';
 import { SaaSSolutionsShowcase } from './SaaSSolutionsShowcase';
+import { ServiceWorkflowSection } from './ServiceWorkflowSection';
 
 interface WebzooServiceCatalogProps {
   onWhatsAppInquiry: (serviceName?: string, budget?: string) => void;
@@ -490,6 +491,11 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
           subtitle="Teknologi dan kredensial resmi Google, AWS, Meta, NVIDIA, Perpusnas, dan Anthropic"
         />
       </div>
+
+      {/* ========================================================================= */}
+      {/* 1.8 HIGH-TECH 3D WORKFLOW & ROADMAP INFOGRAPHIC SHOWCASE                   */}
+      {/* ========================================================================= */}
+      <ServiceWorkflowSection onWhatsAppInquiry={onWhatsAppInquiry} />
 
       {/* ========================================================================= */}
       {/* 2. SPACIOUS BALANCED 3-COLUMN SERVICES CATALOG (16 SOLUSI DIGITAL)        */}

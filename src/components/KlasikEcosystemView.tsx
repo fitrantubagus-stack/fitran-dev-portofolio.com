@@ -32,6 +32,7 @@ import { InteractiveFlipbook } from './InteractiveFlipbook';
 import { MateriArticleVisual } from './MateriArticleVisuals';
 import { FitranPixelLogo, FitranPixelIcon, TealBot, BlueBot, OrangeBot } from './FitranPixelLogo';
 import { WebsiteKilatPromoPoster, CybersecurityOperationsPoster, MetaCapiPromoPoster } from './PromotionalShowcasePosters';
+import { BusinessDilemmaSection } from './BusinessDilemmaSection';
 import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
 import { SpotifyPlaylist } from './SpotifyPlaylist';
 import { ToolLogo } from './ToolLogo';
@@ -847,6 +848,12 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               </div>
             </div>
           </section>
+
+          {/* 2.5 DILEMA & KENDALA BISNIS DIGITAL (MENGGUNAKAN VISUAL EDITORIAL RESOLUSI MASALAH) */}
+          <BusinessDilemmaSection
+            onWhatsAppInquiry={handleWhatsAppConsultation}
+            onNavigateServices={() => navigateTo('services')}
+          />
 
           {/* 3. KAPABILITAS */}
           <section className="space-y-6">

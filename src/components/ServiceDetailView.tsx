@@ -661,6 +661,23 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
           </p>
         </div>
 
+        {/* Visual Workflow Infographic Banner */}
+        <div className="rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-950 shadow-md relative group">
+          <img
+            src="/digital-transformation-workflow.jpg"
+            alt="Infografis Diagram 3D Alur Pengerjaan Layanan dan Transformasi Digital Fitran Dev"
+            className="w-full h-auto max-h-[340px] object-cover group-hover:scale-101 transition-transform duration-500"
+            loading="lazy"
+          />
+          <div className="p-3 bg-zinc-900/90 border-t border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
+            <span className="text-emerald-400 font-bold flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Pipeline Rekayasa Arsitektur Sistem</span>
+            </span>
+            <span className="text-[11px] text-zinc-400">Tahap 1 s/d 4 Terverifikasi SLA</span>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {workflow.map((stage) => (
             <div
