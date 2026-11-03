@@ -63,10 +63,64 @@
     <priority>0.95</priority>
   </url>
   <url>
+    <loc>https://fitran-dev-portofolio-com.vercel.app/corporation/about-me</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://fitran-dev-portofolio-com.vercel.app/corporation/layanan</loc>
     <lastmod>2026-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://fitran-dev-portofolio-com.vercel.app/corporation/layanan/autopilot</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://fitran-dev-portofolio-com.vercel.app/corporation/layanan/bisnis-kuliner</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fitran-dev-portofolio-com.vercel.app/corporation/layanan/retail-lokal</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fitran-dev-portofolio-com.vercel.app/corporation/layanan/manufaktur-b2b</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fitran-dev-portofolio-com.vercel.app/corporation/layanan/komunitas</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fitran-dev-portofolio-com.vercel.app/corporation/layanan/yayasan</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fitran-dev-portofolio-com.vercel.app/corporation/layanan/klinik-medis</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fitran-dev-portofolio-com.vercel.app/corporation/layanan/umkm-indonesia</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://fitran-dev-portofolio-com.vercel.app/corporation/blog</loc>
@@ -97,5 +151,21 @@
     <lastmod>2026-11-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+
+  <!-- THEME: PORTOFOLIO ME -->
+  <url>
+    <loc>https://fitran-dev-portofolio-com.vercel.app/portofolio-me</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- THEME: PROFESIONAL -->
+  <url>
+    <loc>https://fitran-dev-portofolio-com.vercel.app/profesional</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
 </urlset>

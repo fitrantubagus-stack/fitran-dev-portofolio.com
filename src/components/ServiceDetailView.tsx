@@ -59,7 +59,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
       <div id="katalog-lengkap" className="p-8 text-center space-y-4">
         <p className="text-zinc-600 dark:text-zinc-400">Layanan tidak ditemukan atau sedang diperbarui.</p>
         <a
-          href={`${themePrefix}/layanan#katalog-lengkap`}
+          href={`${themePrefix}/layanan`}
           onClick={(e) => {
             e.preventDefault();
             onBack();
@@ -474,7 +474,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
           </a>
           <span>/</span>
           <a
-            href={`${themePrefix}/layanan#katalog-lengkap`}
+            href={`${themePrefix}/layanan`}
             onClick={(e) => {
               e.preventDefault();
               onBack();
@@ -490,7 +490,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
         </nav>
 
         <a
-          href={`${themePrefix}/layanan#katalog-lengkap`}
+          href={`${themePrefix}/layanan`}
           onClick={(e) => {
             e.preventDefault();
             onBack();
@@ -772,7 +772,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
             <span>Chat WhatsApp Sekarang</span>
           </button>
           <a
-            href={`${themePrefix}/layanan#katalog-lengkap`}
+            href={`${themePrefix}/layanan`}
             onClick={(e) => {
               e.preventDefault();
               onBack();

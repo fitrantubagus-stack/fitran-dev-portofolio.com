@@ -59,8 +59,8 @@ export const INDUSTRY_SEGMENTS_DATA: Record<string, IndustrySegment> = {
     title: 'Website & Sistem Digital Bisnis Kuliner',
     targetSubtitle: 'Restoran, Coffee Shop, Kafe Modern, Cloud Kitchen, Bakery & Franchise F&B',
     categoryBadge: 'F&B & Kuliner',
-    heroPhoto: '/reference-mobile-desk.jpg',
-    photoAlt: 'Setup meja kerja modern untuk operasional bisnis kuliner',
+    heroPhoto: '/img-kuliner-hero.jpg',
+    photoAlt: 'Suasana restoran dan kafe modern dengan hidangan kuliner dan menu QR meja digital',
     heroTagline: 'Hemat Biaya Potongan Ojol 20-30% dengan Saluran Pemesanan Mandiri & Menu Digital QR',
     summary:
       'Solusi website restoran dan kafe yang dirancang khusus untuk memotong ketergantungan pada komisi aplikasi ojek online. Dilengkapi menu digital interaktif, sistem takeaway/delivery langsung ke WhatsApp kasir, reservasi meja instan, serta integrasi QRIS dinamis tanpa biaya bulanan memberatkan.',
@@ -254,8 +254,8 @@ export const INDUSTRY_SEGMENTS_DATA: Record<string, IndustrySegment> = {
     title: 'Website & Toko Online Retail Lokal',
     targetSubtitle: 'Toko Fashion, Distro, Gadget, Oleh-Oleh Khas, Toko Buku, Kosmetik & Home Living',
     categoryBadge: 'Retail & E-Commerce',
-    heroPhoto: '/reference-web-design-sketch.png',
-    photoAlt: 'Sketsa konsep website katalog toko online retail lokal',
+    heroPhoto: '/img-retail-hero.jpg',
+    photoAlt: 'Butik fashion modern dengan busana rapi dan etalase toko retail online',
     heroTagline: 'Toko Online Berkecepatan Tinggi dengan Hitung Ongkir Otomatis & Checkout WhatsApp',
     summary:
       'Tingkatkan skala penjualan toko retail Anda melampaui batas geografis. Hadirkan website toko online profesional berkecepatan tinggi dengan hitung ongkir kurir nasional (JNE, J&T, SiCepat, Anteraja), katalog variasi ukuran/warna, dan alur checkout langsung ke WhatsApp tanpa potongan admin marketplace.',
@@ -449,8 +449,8 @@ export const INDUSTRY_SEGMENTS_DATA: Record<string, IndustrySegment> = {
     title: 'Website & Portal Penjualan Manufaktur B2B',
     targetSubtitle: 'Pabrik Industri, Distributor Grosir, Supplier Bahan Baku, Bengkel Fabrikasi & Kontraktor EPC',
     categoryBadge: 'Manufaktur & B2B',
-    heroPhoto: '/reference-team-wireframing.png',
-    photoAlt: 'Kolaborasi tim dalam merancang alur sistem manufaktur dan rantai pasok B2B',
+    heroPhoto: '/img-manufaktur-hero.jpg',
+    photoAlt: 'Lantai pabrik presisi modern dengan mesin robotik CNC industri berteknologi tinggi',
     heroTagline: 'Tingkatkan Kredibilitas Tender dengan Profil Korporat Berstandar Global & Portal RFQ Otomatis',
     summary:
       'Solusi digital komprehensif untuk industri manufaktur, produsen, dan distributor B2B. Dilengkapi etalase spesifikasi teknis mesin/produk berstandar ISO, formulir Request for Quotation (RFQ) cerdas penghasil draft penawaran PDF otomatis, serta portal verifikasi legalitas izin usaha untuk memenangkan tender bernilai miliaran rupiah.',
@@ -644,8 +644,8 @@ export const INDUSTRY_SEGMENTS_DATA: Record<string, IndustrySegment> = {
     title: 'Website & Portal Keanggotaan Komunitas',
     targetSubtitle: 'Komunitas Hobi, Asosiasi Profesi, Klub Olahraga, Ikatan Alumni & Organisasi Kepemudaan',
     categoryBadge: 'Komunitas & Asosiasi',
-    heroPhoto: '/reference-team-wireframing.png',
-    photoAlt: 'Anggota komunitas berdiskusi merancang kegiatan dan kolaborasi organisasi',
+    heroPhoto: '/img-komunitas-hero.jpg',
+    photoAlt: 'Pertemuan kolaboratif pemuda dan profesional komunitas dalam suasana inspiratif',
     heroTagline: 'Kelola Database Anggota, Iuran Rutin, dan Publikasi Agenda dalam Satu Wadah Digital Terpadu',
     summary:
       'Tingkatkan keterlibatan dan transparansi organisasi Anda. Bangun portal keanggotaan terpusat dengan registrasi online mandiri, pembuatan kartu tanda anggota (KTA) digital ber-QR Code unik, sistem pembayaran iuran terverifikasi otomatis, serta papan pengumuman agenda kegiatan resmi.',
@@ -839,8 +839,8 @@ export const INDUSTRY_SEGMENTS_DATA: Record<string, IndustrySegment> = {
     title: 'Website & Portal Donasi Yayasan Sosial',
     targetSubtitle: 'Yayasan Amal, Lembaga Kemanusiaan, Panti Asuhan, Pondok Pesantren & Organisasi Wakaf',
     categoryBadge: 'Yayasan & Filantropi',
-    heroPhoto: '/reference-client-handshake.png',
-    photoAlt: 'Kesepakatan dan komitmen transparansi amanah donasi untuk lembaga yayasan sosial',
+    heroPhoto: '/img-yayasan-hero.jpg',
+    photoAlt: 'Program kepedulian sosial yayasan dan penyaluran bantuan pendidikan untuk anak-anak',
     heroTagline: 'Tingkatkan Kepercayaan Donatur Melalui Transparansi Laporan Real-Time & Portal Donasi Digital',
     summary:
       'Wujudkan tata kelola filantropi yang akuntabel dan terpercaya. Hadirkan portal digital resmi yayasan dengan sistem donasi online instan (QRIS, VA, E-Wallet), transparansi penyaluran dana per program, buku laporan keuangan tahunan interaktif (3D Flipbook), serta legalitas izin Kemenkumham yang jelas.',
@@ -1034,8 +1034,8 @@ export const INDUSTRY_SEGMENTS_DATA: Record<string, IndustrySegment> = {
     title: 'Website & Sistem Booking Klinik Kesehatan',
     targetSubtitle: 'Klinik Pratama, Dokter Gigi, Fisioterapi, Klinik Kecantikan & Praktek Mandiri Tenaga Medis',
     categoryBadge: 'Kesehatan & Medis',
-    heroPhoto: '/reference-client-handshake.png',
-    photoAlt: 'Konsultasi dan pelayanan kesehatan terpercaya antara dokter dan pasien di klinik modern',
+    heroPhoto: '/img-klinik-hero.jpg',
+    photoAlt: 'Konsultasi medis terpercaya antara dokter dan pasien di ruang periksa klinik modern',
     heroTagline: 'Antrean Pasien Lebih Tertib dengan Jadwal Dokter Real-Time & Booking Janji Temu Online',
     summary:
       'Solusi modern untuk klinik kesehatan, dental care, dan fasilitas medis pratama. Mengakhiri penumpukan antrean pasien di ruang tunggu melalui sistem booking online terstruktur, jadwal praktek dokter real-time, notifikasi WhatsApp pengingat otomatis H-1, serta panduan layanan medis yang informatif.',
@@ -1226,11 +1226,11 @@ export const INDUSTRY_SEGMENTS_DATA: Record<string, IndustrySegment> = {
 
   'umkm': {
     slug: 'umkm',
-    title: 'Website & Solusi Go Digital UMKM Juara',
+    title: 'Website & Solusi Go Digital UMKM Indonesia',
     targetSubtitle: 'Usaha Mikro, Kecil, dan Menengah Seluruh Indonesia Siap Naik Kelas & Banjir Pelanggan',
-    categoryBadge: 'Sentra UMKM Nasional',
-    heroPhoto: '/reference-mobile-desk.jpg',
-    photoAlt: 'Perangkat kerja pemilik UMKM modern dalam mengelola pemasaran digital',
+    categoryBadge: 'UMKM Indonesia',
+    heroPhoto: '/img-umkm-hero.jpg',
+    photoAlt: 'Pelaku usaha UMKM Indonesia memeriksa produk lokal berkualitas siap kirim',
     heroTagline: 'Solusi Lengkap UMKM Go Digital: Website Kilat, Google Bisnisku Terverifikasi & Order WhatsApp',
     summary:
       'Waktunya produk UMKM lokal Anda bersaing di panggung nasional. Kami membangun website berkecepatan tinggi di bawah 0.8 detik, domain resmi .com/id, optimasi titik Google Maps agar mudah ditemukan warga sekitar, serta tombol pemesanan WhatsApp yang langsung menghasilkan konversi penjualan tanpa potongan fee aplikasi.',

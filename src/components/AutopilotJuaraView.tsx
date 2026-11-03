@@ -23,6 +23,9 @@ import {
   Sliders,
   Flame,
   Star,
+  MapPin,
+  Receipt,
+  Key,
 } from 'lucide-react';
 
 interface AutopilotJuaraViewProps {
@@ -59,7 +62,9 @@ export const AutopilotJuaraView: React.FC<AutopilotJuaraViewProps> = ({
       subtitle: 'Bukan Sistem Sewa Platform',
       desc: 'Website, database pelanggan, kode sumber, dan domain resmi sepenuhnya menjadi aset sah bisnis Anda tanpa biaya sewa bulanan yang menjebak.',
       icon: ShieldCheck,
-      color: 'from-lime-500 to-green-600',
+      gradient: 'from-blue-600 to-indigo-700',
+      badgeBorder: 'border-blue-200 dark:border-blue-800',
+      glow: 'group-hover:border-blue-500/60 group-hover:shadow-blue-500/10',
     },
     {
       num: '02',
@@ -67,15 +72,19 @@ export const AutopilotJuaraView: React.FC<AutopilotJuaraViewProps> = ({
       subtitle: 'Standar Internasional',
       desc: 'Tampilan visual berkelas tinggi yang membuat bisnis Anda tampak puluhan kali lipat lebih kredibel di mata investor dan calon konsumen.',
       icon: Sparkles,
-      color: 'from-amber-400 to-lime-500',
+      gradient: 'from-amber-500 to-orange-500',
+      badgeBorder: 'border-amber-200 dark:border-amber-800',
+      glow: 'group-hover:border-amber-500/60 group-hover:shadow-amber-500/10',
     },
     {
       num: '03',
       title: 'Titik Lokasi Terverifikasi',
       subtitle: 'Dominasi Google Maps',
       desc: 'Optimasi akun Google Bisnisku hingga bintang lima agar toko atau kantor fisik Anda selalu direkomendasikan saat orang mencari produk terdekat.',
-      icon: Award,
-      color: 'from-emerald-500 to-teal-600',
+      icon: MapPin,
+      gradient: 'from-rose-500 to-red-600',
+      badgeBorder: 'border-rose-200 dark:border-rose-800',
+      glow: 'group-hover:border-rose-500/60 group-hover:shadow-rose-500/10',
     },
     {
       num: '04',
@@ -83,23 +92,29 @@ export const AutopilotJuaraView: React.FC<AutopilotJuaraViewProps> = ({
       subtitle: 'Menjawab & Closing Otomatis',
       desc: 'Asisten virtual cerdas yang memahami katalog, menghitung ongkir, menjawab pertanyaan tengah malam, dan mengirim link bayar seketika.',
       icon: Bot,
-      color: 'from-green-500 to-emerald-600',
+      gradient: 'from-emerald-500 to-green-600',
+      badgeBorder: 'border-emerald-200 dark:border-emerald-800',
+      glow: 'group-hover:border-emerald-500/60 group-hover:shadow-emerald-500/10',
     },
     {
       num: '05',
       title: 'Otomasi Struk & Kasir',
       subtitle: 'Format Pesanan Rapi',
       desc: 'Pesanan tersusun rapi langsung ke WhatsApp kitchen/gudang dan terhubung ke printer thermal tanpa perlu dicatat manual di buku kertas.',
-      icon: Zap,
-      color: 'from-lime-600 to-green-700',
+      icon: Receipt,
+      gradient: 'from-purple-600 to-violet-700',
+      badgeBorder: 'border-purple-200 dark:border-purple-800',
+      glow: 'group-hover:border-purple-500/60 group-hover:shadow-purple-500/10',
     },
     {
       num: '06',
       title: 'Serah Terima Kunci',
       subtitle: 'Dashboard Kontrol Simpel',
       desc: 'Anda memegang kendali penuh. Kami sediakan panel admin praktis di smartphone untuk cek omset, update harga, dan pantau stok barang.',
-      icon: HeartHandshake,
-      color: 'from-teal-500 to-green-600',
+      icon: Key,
+      gradient: 'from-cyan-500 to-teal-600',
+      badgeBorder: 'border-cyan-200 dark:border-cyan-800',
+      glow: 'group-hover:border-cyan-500/60 group-hover:shadow-cyan-500/10',
     },
   ];
 
@@ -196,8 +211,8 @@ export const AutopilotJuaraView: React.FC<AutopilotJuaraViewProps> = ({
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white/90 bg-white">
               <img
-                src="/reference-client-handshake.png"
-                alt="Kerjasama profesional kesepakatan implementasi sistem autopilot bisnis"
+                src="/img-autopilot-hero.jpg"
+                alt="Pengusaha memantau sistem autopilot penjualan online secara otomatis dari laptop dan smartphone"
                 loading="lazy"
                 decoding="async"
                 className="w-full h-80 sm:h-96 object-cover object-center"
@@ -244,12 +259,15 @@ export const AutopilotJuaraView: React.FC<AutopilotJuaraViewProps> = ({
             return (
               <div
                 key={idx}
-                className="p-6 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-lime-500 dark:hover:border-lime-400 shadow-xs hover:shadow-lg transition-all group flex flex-col justify-between space-y-4"
+                className={`p-6 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200/90 dark:border-zinc-800 shadow-xs hover:shadow-xl transition-all group flex flex-col justify-between space-y-4 ${item.glow}`}
               >
-                <div className="space-y-3">
+                <div className="space-y-3.5">
                   <div className="flex items-center justify-between">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform`}>
-                      <Icon className="w-7 h-7" />
+                    {/* Ducok & Pucok Juara Style Circular Badge with Rich Gradient Icon */}
+                    <div className="w-14 h-14 rounded-full bg-slate-50 dark:bg-zinc-800/90 border-2 border-zinc-200/80 dark:border-zinc-700 shadow-md flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br ${item.gradient} text-white shadow-sm`}>
+                        <Icon className="w-5 h-5 text-white stroke-[2.3]" />
+                      </div>
                     </div>
                     <span className="font-mono text-2xl font-black text-zinc-300 dark:text-zinc-700">
                       {item.num}

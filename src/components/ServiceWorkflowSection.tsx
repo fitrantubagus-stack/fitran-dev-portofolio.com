@@ -62,7 +62,7 @@ export const ServiceWorkflowSection: React.FC<ServiceWorkflowSectionProps> = ({
   ];
 
   return (
-    <section className={`rounded-3xl bg-white dark:bg-[#111319] text-zinc-950 dark:text-white border border-zinc-200/90 dark:border-zinc-800 shadow-sm p-6 sm:p-10 lg:p-12 overflow-hidden relative select-none ${className}`}>
+    <section id="alur-rekayasa-eksekusi" className={`rounded-3xl bg-white dark:bg-[#111319] text-zinc-950 dark:text-white border border-zinc-200/90 dark:border-zinc-800 shadow-sm p-6 sm:p-10 lg:p-12 overflow-hidden relative select-none scroll-mt-28 ${className}`}>
       {/* Background Subtle Ambient Glow */}
       <div className="absolute top-0 right-0 w-[450px] h-[450px] rounded-full bg-blue-500/5 blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-emerald-500/5 blur-3xl pointer-events-none" />

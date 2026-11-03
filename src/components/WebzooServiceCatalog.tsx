@@ -66,9 +66,62 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
   initialServiceId = null,
   themePrefix,
 }) => {
-  const [selectedServiceId, setSelectedServiceId] = useState<string | null>(initialServiceId);
-  const [selectedSegmentSlug, setSelectedSegmentSlug] = useState<string | null>(null);
-  const [isAutopilotActive, setIsAutopilotActive] = useState<boolean>(false);
+  // Synchronous State Lazy Initializers (prevents flash & preserves exact sub-page on F5 refresh)
+  const [isAutopilotActive, setIsAutopilotActive] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const path = window.location.pathname.toLowerCase();
+    const params = new URLSearchParams(window.location.search);
+    return (
+      path.endsWith('/layanan/autopilot') ||
+      path.includes('/autopilot') ||
+      params.get('service') === 'autopilot' ||
+      params.get('segment') === 'autopilot'
+    );
+  });
+
+  const [selectedSegmentSlug, setSelectedSegmentSlug] = useState<string | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const path = window.location.pathname.toLowerCase();
+    const params = new URLSearchParams(window.location.search);
+    const segmentParam = (params.get('segment') || '').trim().toLowerCase();
+    const segmentKeys = Object.keys(INDUSTRY_SEGMENTS_DATA);
+    return (
+      segmentKeys.find(
+        (slug) =>
+          path.endsWith(`/layanan/${slug}`) ||
+          path.endsWith(`/${slug}`) ||
+          path.includes(`/layanan/${slug}`) ||
+          segmentParam === slug
+      ) || null
+    );
+  });
+
+  const [selectedServiceId, setSelectedServiceId] = useState<string | null>(() => {
+    if (initialServiceId) return initialServiceId;
+    if (typeof window === 'undefined') return null;
+    const path = window.location.pathname.toLowerCase();
+    if (
+      path.includes('autopilot') ||
+      Object.keys(INDUSTRY_SEGMENTS_DATA).some((s) => path.includes(s))
+    ) {
+      return null;
+    }
+    const params = new URLSearchParams(window.location.search);
+    const serviceParam = (params.get('service') || '').trim().toLowerCase();
+    if (serviceParam) {
+      const match = ALL_SERVICES_CATALOG.find(
+        (s) =>
+          s.id.toLowerCase() === serviceParam ||
+          s.id.toLowerCase().replace(/-/g, '') === serviceParam.replace(/-/g, '') ||
+          s.id.toLowerCase().includes(serviceParam) ||
+          serviceParam.includes(s.id.toLowerCase()) ||
+          s.category.toLowerCase() === serviceParam
+      );
+      return match ? match.id : null;
+    }
+    return null;
+  });
+
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<string>('semua');
   const [showFlipbook, setShowFlipbook] = useState<boolean>(false);
 
@@ -167,7 +220,7 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
     setSelectedSegmentSlug(null);
     setIsAutopilotActive(false);
     if (typeof window !== 'undefined') {
-      window.history.pushState(null, '', `${currentPrefix}/layanan#katalog-lengkap`);
+      window.history.pushState(null, '', `${currentPrefix}/layanan`);
       window.dispatchEvent(new Event('app-route-change'));
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -311,14 +364,14 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
           return (
             <a
               key={srv.id}
-              href={`${currentPrefix}/layanan?service=${srv.id}#katalog-lengkap`}
+              href={`${currentPrefix}/layanan?service=${srv.id}`}
               onClick={(e) => {
                 e.preventDefault();
                 setSelectedServiceId(srv.id);
                 setSelectedSegmentSlug(null);
                 setIsAutopilotActive(false);
                 if (typeof window !== 'undefined') {
-                  window.history.pushState(null, '', `${currentPrefix}/layanan?service=${srv.id}#katalog-lengkap`);
+                  window.history.pushState(null, '', `${currentPrefix}/layanan?service=${srv.id}`);
                 }
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
@@ -512,9 +565,9 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
     },
     {
       slug: 'umkm',
-      title: 'Sentra UMKM Juara',
-      desc: 'Usaha Mikro & Menengah. Go Digital dari nol, website kilat <0.8s, Maps terverifikasi.',
-      badge: 'UMKM Nasional',
+      title: 'UMKM Indonesia',
+      desc: 'Usaha Mikro & Menengah Seluruh Indonesia. Go Digital dari nol, website kilat <0.8s, Maps terverifikasi.',
+      badge: 'UMKM Indonesia',
       icon: ShoppingBag,
       color: 'text-lime-700 dark:text-lime-400 bg-lime-50 dark:bg-lime-950/60 border-lime-200',
     },

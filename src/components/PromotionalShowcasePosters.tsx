@@ -163,7 +163,7 @@ export const WebsiteKilatPromoPoster: React.FC<PromotionalPosterProps> = ({
           </div>
 
           {/* REALISTIC GOOGLE LIGHTHOUSE 100/100 AUDIT SCORECARD */}
-          <div className="p-4 rounded-2xl bg-zinc-900/95 border border-zinc-800 shadow-xl space-y-2.5">
+          <div className="p-3.5 sm:p-4 rounded-2xl bg-zinc-900/95 border border-zinc-800 shadow-xl space-y-2.5">
             <div className="flex items-center justify-between text-xs font-mono">
               <span className="font-bold text-zinc-200 flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5 text-emerald-400" />
@@ -172,30 +172,30 @@ export const WebsiteKilatPromoPoster: React.FC<PromotionalPosterProps> = ({
               <span className="text-[10px] text-emerald-400 font-bold">Lolos Uji Sempurna</span>
             </div>
 
-            <div className="grid grid-cols-4 gap-1.5 sm:gap-2 pt-1 text-center">
-              <div className="px-1 py-1.5 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between">
-                <div className="w-8 h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
+            <div className="grid grid-cols-4 gap-1 sm:gap-2 pt-1 text-center">
+              <div className="p-1 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between min-h-[68px] sm:min-h-[82px]">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
                   100
                 </div>
-                <p className="text-[7.5px] sm:text-[9.5px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">Performa</p>
+                <p className="text-[7px] sm:text-[9.5px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">Performa</p>
               </div>
-              <div className="px-1 py-1.5 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between">
-                <div className="w-8 h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
+              <div className="p-1 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between min-h-[68px] sm:min-h-[82px]">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
                   100
                 </div>
-                <p className="text-[7.5px] sm:text-[9.5px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">Aksesibilitas</p>
+                <p className="text-[6.5px] sm:text-[9px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tighter whitespace-nowrap overflow-visible">Aksesibilitas</p>
               </div>
-              <div className="px-1 py-1.5 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between">
-                <div className="w-8 h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
+              <div className="p-1 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between min-h-[68px] sm:min-h-[82px]">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
                   100
                 </div>
-                <p className="text-[7.5px] sm:text-[9.5px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">Praktik Terbaik</p>
+                <p className="text-[6.5px] sm:text-[9px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">Praktik Terbaik</p>
               </div>
-              <div className="px-1 py-1.5 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between">
-                <div className="w-8 h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
+              <div className="p-1 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between min-h-[68px] sm:min-h-[82px]">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
                   100
                 </div>
-                <p className="text-[7.5px] sm:text-[9.5px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">SEO</p>
+                <p className="text-[7px] sm:text-[9.5px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">SEO</p>
               </div>
             </div>
 

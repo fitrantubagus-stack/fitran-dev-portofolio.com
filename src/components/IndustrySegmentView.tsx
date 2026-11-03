@@ -158,7 +158,7 @@ export const IndustrySegmentView: React.FC<IndustrySegmentViewProps> = ({
     { slug: 'komunitas', label: 'Komunitas & Asosiasi' },
     { slug: 'yayasan', label: 'Yayasan & Filantropi' },
     { slug: 'klinik-kesehatan', label: 'Klinik & Kesehatan' },
-    { slug: 'umkm', label: 'Sentra UMKM Juara' },
+    { slug: 'umkm', label: 'UMKM Indonesia' },
   ];
 
   return (

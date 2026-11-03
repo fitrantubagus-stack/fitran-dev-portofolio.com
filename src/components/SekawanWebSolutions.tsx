@@ -164,13 +164,13 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
       {/* ========================================================================= */}
       {/* 2. SEKAWAN MEDIA INTERACTIVE BENTO GRID (MATCHES USER IMAGE 2 & 3)        */}
       {/* ========================================================================= */}
-      <div className="space-y-6">
+      <div className="space-y-6 scroll-mt-28" id="daya-saing-global">
         <div className="max-w-3xl space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950 text-[#1E3A8A] dark:text-blue-300 font-mono text-[11px] font-bold uppercase tracking-wider">
             <Globe className="w-3.5 h-3.5" />
             <span>Pilar Dampak Pertumbuhan Digital</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-zinc-950 dark:text-white tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-black text-zinc-950 dark:text-white tracking-tight scroll-mt-28">
             Keunggulan Strategis untuk Daya Saing Global
           </h2>
           <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">
@@ -183,42 +183,42 @@ export const SekawanWebSolutions: React.FC<SekawanWebSolutionsProps> = ({
           {/* BENTO 1: TINGKATKAN KEHADIRAN BRAND (Large Left Card with Concentric Orbit Rings) */}
           <div className="lg:col-span-5 rounded-3xl bg-blue-600 text-white p-6 sm:p-10 flex flex-col justify-between shadow-xl relative overflow-hidden">
             {/* Concentric Orbital Ripple Vector Graphics Container */}
-            <div className="relative w-full h-60 sm:h-72 flex items-center justify-center overflow-hidden">
-              <div className="relative w-60 h-60 sm:w-72 sm:h-72 shrink-0">
+            <div className="relative w-full h-52 sm:h-64 flex items-center justify-center overflow-hidden mb-3">
+              <div className="relative w-52 h-52 sm:w-64 sm:h-64 shrink-0">
                 {/* Outer Ring */}
                 <div className="absolute inset-0 rounded-full border border-white/20 animate-spin-slow" />
                 {/* Middle Ring */}
-                <div className="absolute inset-6 rounded-full border border-white/25" />
+                <div className="absolute inset-5 rounded-full border border-white/25" />
                 {/* Inner Ring */}
-                <div className="absolute inset-12 rounded-full border border-white/30" />
+                <div className="absolute inset-10 rounded-full border border-white/30" />
                 {/* Core Pulse Rocket */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-lg">
-                    <Rocket className="w-7 h-7 text-white -rotate-45" />
+                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-lg">
+                    <Rocket className="w-6 h-6 sm:w-7 sm:h-7 text-white -rotate-45" />
                   </div>
                 </div>
 
-                {/* Orbiting Avatar Badges */}
-                <div className="absolute top-2 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                {/* Orbiting Avatar Badges - Strategically positioned in top and upper sides to guarantee zero text collision */}
+                <div className="absolute top-1 left-1/2 -translate-x-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
                   <Briefcase className="w-3.5 h-3.5" />
                 </div>
-                <div className="absolute top-12 left-3 w-7 h-7 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                <div className="absolute top-10 left-2 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
                   <Code2 className="w-3 h-3" />
                 </div>
-                <div className="absolute top-16 right-3 w-7 h-7 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                <div className="absolute top-12 right-2 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
                   <Cpu className="w-3 h-3" />
                 </div>
-                <div className="absolute bottom-5 left-6 w-7 h-7 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                <div className="absolute top-26 left-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
                   <TrendingUp className="w-3 h-3" />
                 </div>
-                <div className="absolute bottom-5 right-6 w-7 h-7 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
+                <div className="absolute top-28 right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white border-2 border-blue-600 shadow-md flex items-center justify-center text-blue-600">
                   <Sparkles className="w-3 h-3" />
                 </div>
               </div>
             </div>
 
-            {/* Bottom Content (Zero Collision with Graphic) */}
-            <div className="relative z-10 space-y-2 pt-4">
+            {/* Bottom Content (Guaranteed Zero Collision with Graphic) */}
+            <div className="relative z-10 space-y-2 pt-2">
               <h3 className="text-xl sm:text-3xl font-black text-white tracking-tight leading-tight">
                 Tingkatkan Kehadiran Brand
               </h3>

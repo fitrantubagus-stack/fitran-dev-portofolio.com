@@ -272,10 +272,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                             Katalog Layanan &amp; Solusi Digital
                           </span>
                           <a
-                            href={`${themePrefix}/layanan#katalog-lengkap`}
+                            href={`${themePrefix}/layanan`}
                             onClick={(e) => {
                               setLayananDropdownOpen(false);
-                              handleNavClick('services', e, `${themePrefix}/layanan#katalog-lengkap`);
+                              handleNavClick('services', e, `${themePrefix}/layanan`);
                             }}
                             className="text-[11px] font-mono text-blue-600 hover:underline font-bold cursor-pointer"
                           >
@@ -291,10 +291,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                             </span>
                             <div className="space-y-1">
                               <a
-                                href={`${themePrefix}/layanan?service=jasa-pembuatan-website#katalog-lengkap`}
+                                href={`${themePrefix}/layanan?service=jasa-pembuatan-website`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e, `${themePrefix}/layanan?service=jasa-pembuatan-website#katalog-lengkap`);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=jasa-pembuatan-website`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -310,10 +310,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                               </a>
 
                               <a
-                                href={`${themePrefix}/layanan?service=jasa-pembuatan-website-custom#katalog-lengkap`}
+                                href={`${themePrefix}/layanan?service=jasa-pembuatan-website-custom`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e, `${themePrefix}/layanan?service=jasa-pembuatan-website-custom#katalog-lengkap`);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=jasa-pembuatan-website-custom`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -329,10 +329,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                               </a>
 
                               <a
-                                href={`${themePrefix}/layanan?service=website-korporat#katalog-lengkap`}
+                                href={`${themePrefix}/layanan?service=website-korporat`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e, `${themePrefix}/layanan?service=website-korporat#katalog-lengkap`);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=website-korporat`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -348,10 +348,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                               </a>
 
                               <a
-                                href={`${themePrefix}/layanan?service=ecommerce-b2b#katalog-lengkap`}
+                                href={`${themePrefix}/layanan?service=ecommerce-b2b`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e, `${themePrefix}/layanan?service=ecommerce-b2b#katalog-lengkap`);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=ecommerce-b2b`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -367,10 +367,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                               </a>
 
                               <a
-                                href={`${themePrefix}/layanan?service=landing-page-kampanye#katalog-lengkap`}
+                                href={`${themePrefix}/layanan?service=landing-page-kampanye`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e, `${themePrefix}/layanan?service=landing-page-kampanye#katalog-lengkap`);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=landing-page-kampanye`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -394,10 +394,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                             </span>
                             <div className="space-y-1">
                               <a
-                                href={`${themePrefix}/layanan?service=aplikasi-custom#katalog-lengkap`}
+                                href={`${themePrefix}/layanan?service=aplikasi-custom`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e, `${themePrefix}/layanan?service=aplikasi-custom#katalog-lengkap`);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=aplikasi-custom`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -413,10 +413,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                               </a>
 
                               <a
-                                href={`${themePrefix}/layanan?service=whatsapp-ai-agent#katalog-lengkap`}
+                                href={`${themePrefix}/layanan?service=whatsapp-ai-agent`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e, `${themePrefix}/layanan?service=whatsapp-ai-agent#katalog-lengkap`);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=whatsapp-ai-agent`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -432,10 +432,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                               </a>
 
                               <a
-                                href={`${themePrefix}/layanan?service=erp-crm-inventory#katalog-lengkap`}
+                                href={`${themePrefix}/layanan?service=erp-crm-inventory`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e, `${themePrefix}/layanan?service=erp-crm-inventory#katalog-lengkap`);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=erp-crm-inventory`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -451,10 +451,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                               </a>
 
                               <a
-                                href={`${themePrefix}/layanan?service=meta-capi-ads-tracking#katalog-lengkap`}
+                                href={`${themePrefix}/layanan?service=meta-capi-ads-tracking`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e, `${themePrefix}/layanan?service=meta-capi-ads-tracking#katalog-lengkap`);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=meta-capi-ads-tracking`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -470,10 +470,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                               </a>
 
                               <a
-                                href={`${themePrefix}/layanan?service=setup-cloud-vps-hardening#katalog-lengkap`}
+                                href={`${themePrefix}/layanan?service=setup-cloud-vps-hardening`}
                                 onClick={(e) => {
                                   setLayananDropdownOpen(false);
-                                  handleNavClick('services', e, `${themePrefix}/layanan?service=setup-cloud-vps-hardening#katalog-lengkap`);
+                                  handleNavClick('services', e, `${themePrefix}/layanan?service=setup-cloud-vps-hardening`);
                                 }}
                                 className="w-full text-left p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/60 flex items-start gap-2.5 transition-colors cursor-pointer group"
                               >
@@ -534,7 +534,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                                 { slug: 'komunitas', label: 'Komunitas' },
                                 { slug: 'yayasan', label: 'Yayasan' },
                                 { slug: 'klinik-kesehatan', label: 'Klinik Medis' },
-                                { slug: 'umkm', label: 'Sentra UMKM' },
+                                { slug: 'umkm', label: 'UMKM Indonesia' },
                               ].map((item) => (
                                 <a
                                   key={item.slug}
@@ -1016,7 +1016,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       onClick={(e) => handleNavClick('services', e, `${themePrefix}/layanan/umkm`)}
                       className="px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-[10px] font-medium"
                     >
-                      UMKM
+                      UMKM Indonesia
                     </a>
                   </div>
                 </div>
