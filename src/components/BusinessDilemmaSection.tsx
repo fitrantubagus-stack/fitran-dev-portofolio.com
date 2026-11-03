@@ -87,36 +87,40 @@ export const BusinessDilemmaSection: React.FC<BusinessDilemmaSectionProps> = ({
           </button>
         </div>
 
-        {/* 2-Column Showcase: Editorial Visual on Left + Dilemma Resolution on Right */}
+        {/* 2-Column Showcase: Compact Editorial Visual on Left + Dilemma Resolution on Right */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Visual Column (Col 5) */}
-          <div className="lg:col-span-5 relative group">
-            <div className="relative rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-700/80 shadow-2xl bg-zinc-950">
-              <img
-                src="/business-dilemma-confused.jpg"
-                alt="Pengusaha sedang memikirkan dilema solusi digital bisnis"
-                className="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-500"
-                loading="lazy"
-              />
+          {/* Visual Column (Col 4 - Compact, Non-Black, Balanced Spacing) */}
+          <div className="lg:col-span-4 flex flex-col items-center">
+            <div className="w-full max-w-[340px] rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-700/80 shadow-md bg-white dark:bg-zinc-900 group">
+              <div className="px-3.5 py-2 bg-zinc-50 dark:bg-zinc-800/80 border-b border-zinc-200/80 dark:border-zinc-700 flex items-center justify-between text-[11px] font-mono text-zinc-500">
+                <span className="font-bold text-zinc-700 dark:text-zinc-300">Dilema &amp; Riset Bisnis</span>
+                <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold">UMKM &amp; Korporat</span>
+              </div>
 
-              {/* Subtle gradient vignette */}
-              <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-transparent pointer-events-none" />
+              <div className="relative overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+                <img
+                  src="/business-dilemma-confused.jpg"
+                  alt="Pengusaha sedang memikirkan dilema solusi digital bisnis"
+                  className="w-full h-48 sm:h-52 object-cover object-center group-hover:scale-102 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
 
-              {/* Floating Overlay Badge */}
-              <div className="absolute bottom-4 left-4 right-4 p-3.5 rounded-xl bg-zinc-950/90 backdrop-blur-md border border-zinc-700/80 text-white space-y-1">
-                <div className="flex items-center gap-1.5 text-amber-400 font-mono text-[11px] font-bold">
+              {/* Clean, Non-Black Insight Banner placed UNDER the photo (NOT covering it!) */}
+              <div className="p-3.5 bg-amber-50/80 dark:bg-amber-950/30 border-t border-amber-200/70 dark:border-amber-900/40 text-xs text-amber-900 dark:text-amber-200 space-y-1">
+                <div className="flex items-center gap-1.5 font-mono text-[11px] font-bold text-amber-800 dark:text-amber-400">
                   <ShieldAlert className="w-3.5 h-3.5" />
                   <span>Realita Lapangan:</span>
                 </div>
-                <p className="text-xs text-zinc-200 leading-snug">
-                  <strong className="text-white font-bold">78% Pemilik Bisnis &amp; UMKM</strong> mengeluhkan sistem yang kaku dan biaya langganan membengkak sebelum beralih ke arsitektur mandiri.
+                <p className="text-[11px] text-zinc-700 dark:text-zinc-300 leading-snug">
+                  <strong className="text-zinc-900 dark:text-white font-bold">78% Pemilik Bisnis &amp; UMKM</strong> mengeluhkan sistem kaku dan biaya sewa lisensi tahunan yang membengkak sebelum beralih ke arsitektur mandiri.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Dilemma vs Solution Matrix (Col 7) */}
-          <div className="lg:col-span-7 space-y-4">
+          {/* Dilemma vs Solution Matrix (Col 8) */}
+          <div className="lg:col-span-8 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               {DILEMMAS.map((d, idx) => (
                 <div

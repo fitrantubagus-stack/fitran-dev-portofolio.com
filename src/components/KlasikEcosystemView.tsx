@@ -33,6 +33,7 @@ import { MateriArticleVisual } from './MateriArticleVisuals';
 import { FitranPixelLogo, FitranPixelIcon, TealBot, BlueBot, OrangeBot } from './FitranPixelLogo';
 import { WebsiteKilatPromoPoster, CybersecurityOperationsPoster, MetaCapiPromoPoster } from './PromotionalShowcasePosters';
 import { BusinessDilemmaSection } from './BusinessDilemmaSection';
+import { AboutMeDetailedSection } from './AboutMeDetailedSection';
 import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
 import { SpotifyPlaylist } from './SpotifyPlaylist';
 import { ToolLogo } from './ToolLogo';
@@ -2955,131 +2956,16 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       )}
 
       {/* ========================================================================= */}
-      {/* VIEW 7: DEDICATED ABOUT TENTANG SAYA (ALA FIKRAN.DEV/ABOUT)               */}
+      {/* VIEW 7: DEDICATED ABOUT TENTANG SAYA (LENGKAP 5 PERAN ENGINEERING)        */}
       {/* ========================================================================= */}
       {activePage === 'about' && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10">
-          {/* About Mascot Banner */}
-          <div className="p-6 rounded-3xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-md bg-[#1E3A8A] flex items-center justify-center text-white text-[10px] font-black">FD</div>
-                <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-300">fitran.dev Engineer Profile</span>
-              </div>
-              <h2 className="text-xl sm:text-2xl font-black text-zinc-950 dark:text-white">Tubagus Fitran Badruttamam</h2>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-xl">
-                Fullstack Developer & AI Engineer dari Cilegon, Indonesia. Membangun software terukur dengan komitmen 100% kepemilikan source code milik klien.
-              </p>
-            </div>
-            <FitranMascot variant="bot" size="md" className="shrink-0" />
-          </div>
-          <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5">
-            <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-1">
-              <span className="hover:underline cursor-pointer" onClick={() => navigateTo('home')}>Beranda</span>
-              <span>/</span>
-              <span className="text-[#1E3A8A] dark:text-blue-400 font-semibold">Tubagus Fitran Badruttamam</span>
-            </nav>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
-              Tubagus Fitran Badruttamam
-            </h1>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
-              Fullstack Developer &amp; AI Engineer dari Cilegon, Indonesia.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-            <div className="lg:col-span-8 space-y-6 text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
-              <div className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-4">
-                <h2 className="text-xl font-bold text-zinc-950 dark:text-white">
-                  Fokus pada AI agent dan automation
-                </h2>
-                <p>
-                  Saya membantu bisnis merapikan proses operasional dan layanan pelanggan melalui AI agent dan otomasi. Pekerjaan ini didukung oleh fondasi rekayasa perangkat lunak (fullstack development) dan technical marketing saat dibutuhkan.
-                </p>
-                <p>
-                  Prinsip kerja saya sederhana: mulai dari konteks nyata dan batas pekerjaan yang disepakati tertulis. Saya tidak menawarkan AI untuk hal yang cukup diselesaikan dengan aturan pasti.
-                </p>
-              </div>
-
-              <div className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-4">
-                <h2 className="text-xl font-bold text-zinc-950 dark:text-white">
-                  Engineering sebagai fondasi
-                </h2>
-                <p>
-                  Sebagai mahasiswa S1 Teknik Informatika di Universitas Muhammadiyah Banten dengan fokus Data &amp; Backend, setiap baris kode dibangun dengan standar tinggi: waktu muat di bawah 1 detik, 5 lapisan keamanan terstruktur, dan kepemilikan kode sumber 100% milik Anda tanpa vendor lock-in.
-                </p>
-              </div>
-
-              {/* 4 Prinsip Rekayasa */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
-                  <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-400">01 KECEPATAN</span>
-                  <p className="font-bold text-xs text-zinc-900 dark:text-white">Render &lt; 1 Detik (PageSpeed 95+)</p>
-                  <p className="text-[11px] text-zinc-500">Setiap milidetik dihemat demi kenyamanan pengunjung.</p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
-                  <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-400">02 KEAMANAN</span>
-                  <p className="font-bold text-xs text-zinc-900 dark:text-white">5 Lapisan Keamanan Aktif</p>
-                  <p className="text-[11px] text-zinc-500">TLS 1.3, Zero-Trust VPS, sanitasi anti-SQLi &amp; anti-XSS.</p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
-                  <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-400">03 TRANSPARANSI</span>
-                  <p className="font-bold text-xs text-zinc-900 dark:text-white">Harga Pasti Mulai 500rb</p>
-                  <p className="text-[11px] text-zinc-500">Tidak ada biaya tersembunyi di tengah jalan.</p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
-                  <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-400">04 OWNERSHIP</span>
-                  <p className="font-bold text-xs text-zinc-900 dark:text-white">100% Hak Milik Klien</p>
-                  <p className="text-[11px] text-zinc-500">Kode sumber dan akses domain sepenuhnya milik Anda.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="lg:col-span-4 space-y-6">
-              <div className="p-6 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 text-center space-y-4">
-                <div className="flex justify-center">
-                  <ProfileAvatar size="hero" showBadge={true} />
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg text-zinc-950 dark:text-white">Tubagus Fitran Badruttamam</h3>
-                  <p className="text-xs text-zinc-500">Cilegon, Banten · Remote Ready</p>
-                </div>
-                <button
-                  onClick={() => handleWhatsAppConsultation()}
-                  className="w-full py-2.5 px-4 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <MessageSquare className="w-3.5 h-3.5" />
-                  <span>Chat via WhatsApp</span>
-                </button>
-              </div>
-
-              {/* Verified Badges */}
-              <div className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-3 text-xs">
-                <p className="font-mono text-[11px] font-bold uppercase tracking-wider text-zinc-400">
-                  AFILIASI &amp; KREDENSIAL
-                </p>
-                <div className="space-y-2">
-                  <p className="font-semibold text-zinc-900 dark:text-white">✓ Google Developer Program (Verified ID)</p>
-                  <p className="font-semibold text-zinc-900 dark:text-white">✓ GDG on Campus &amp; Maps Innovators</p>
-                  <p className="font-semibold text-zinc-900 dark:text-white">✓ 2× Medali Emas Sains Nasional (Grade A+)</p>
-                  <p className="font-semibold text-zinc-900 dark:text-white">✓ Penulis Terpilih Buku Perpusnas RI</p>
-                </div>
-                <div className="pt-2">
-                  <a
-                    href={CERTIFICATES_DRIVE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block text-center py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 font-bold text-[11px] hover:opacity-80 transition-opacity"
-                  >
-                    Buka Google Drive Sertifikat
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <AboutMeDetailedSection
+            onWhatsAppInquiry={handleWhatsAppConsultation}
+            onNavigateHome={() => navigateTo('home')}
+            onNavigateServices={() => navigateTo('services')}
+            themePrefix={themePrefix}
+          />
         </div>
       )}
 
