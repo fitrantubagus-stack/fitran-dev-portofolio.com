@@ -172,30 +172,30 @@ export const WebsiteKilatPromoPoster: React.FC<PromotionalPosterProps> = ({
               <span className="text-[10px] text-emerald-400 font-bold">Lolos Uji Sempurna</span>
             </div>
 
-            <div className="grid grid-cols-4 gap-2 pt-1 text-center">
-              <div className="p-2 rounded-xl bg-zinc-950 border border-emerald-900/60">
+            <div className="grid grid-cols-4 gap-1.5 sm:gap-2 pt-1 text-center">
+              <div className="px-1 py-1.5 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between">
                 <div className="w-8 h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
                   100
                 </div>
-                <p className="text-[9px] font-mono text-zinc-400 mt-1">Performa</p>
+                <p className="text-[7.5px] sm:text-[9.5px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">Performa</p>
               </div>
-              <div className="p-2 rounded-xl bg-zinc-950 border border-emerald-900/60">
+              <div className="px-1 py-1.5 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between">
                 <div className="w-8 h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
                   100
                 </div>
-                <p className="text-[9px] font-mono text-zinc-400 mt-1">Aksesibilitas</p>
+                <p className="text-[7.5px] sm:text-[9.5px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">Aksesibilitas</p>
               </div>
-              <div className="p-2 rounded-xl bg-zinc-950 border border-emerald-900/60">
+              <div className="px-1 py-1.5 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between">
                 <div className="w-8 h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
                   100
                 </div>
-                <p className="text-[9px] font-mono text-zinc-400 mt-1">Praktik Terbaik</p>
+                <p className="text-[7.5px] sm:text-[9.5px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">Praktik Terbaik</p>
               </div>
-              <div className="p-2 rounded-xl bg-zinc-950 border border-emerald-900/60">
+              <div className="px-1 py-1.5 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between">
                 <div className="w-8 h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
                   100
                 </div>
-                <p className="text-[9px] font-mono text-zinc-400 mt-1">SEO</p>
+                <p className="text-[7.5px] sm:text-[9.5px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">SEO</p>
               </div>
             </div>
 

@@ -200,10 +200,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* ===================================================================== */}
         {/* CENTER NAVBAR: CONDITIONAL RENDERING BASED ON THEME                   */}
         {/* ===================================================================== */}
-        <div className="mx-auto pointer-events-auto relative">
+        <div className="mx-auto pointer-events-auto relative max-w-full">
           {designTheme === 'arcade' ? (
             /* EXACT CORPORATION FLOATING NAVBAR (Interactive Multi-Page Hub) */
-            <nav className="flex items-center gap-2 sm:gap-5 px-3 sm:px-5 py-2 rounded-full bg-white/95 dark:bg-[#111319]/95 border border-zinc-200/90 dark:border-zinc-800 shadow-[0_12px_36px_rgba(0,0,0,0.12)] backdrop-blur-md transition-all">
+            <nav className="flex items-center justify-between sm:justify-start gap-1.5 sm:gap-5 px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-white/95 dark:bg-[#111319]/95 border border-zinc-200/90 dark:border-zinc-800 shadow-[0_12px_36px_rgba(0,0,0,0.12)] backdrop-blur-md transition-all max-w-full">
               {/* Brand Logo & Name */}
               <a
                 href={themePrefix}
@@ -211,7 +211,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="flex items-center hover:opacity-90 transition-opacity cursor-pointer shrink-0 pr-1"
                 title="fitran.dev • Beranda Corporation"
               >
-                <FitranPixelLogo size="sm" />
+                <span className="hidden sm:inline-flex">
+                  <FitranPixelLogo size="sm" />
+                </span>
+                <span className="inline-flex sm:hidden">
+                  <FitranPixelLogo size="xs" />
+                </span>
               </a>
 
               {/* Desktop Nav Links */}
@@ -646,7 +651,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
 
               {/* Right Controls: Dark Mode Toggle + WhatsApp Konsultasi Button + Theme Switcher */}
-              <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 pl-1">
+              <div className="flex items-center gap-1 sm:gap-2.5 shrink-0 pl-1">
                 {/* Dark Mode Icon Button */}
                 <button
                   type="button"
@@ -666,11 +671,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   type="button"
                   onClick={handleWhatsAppClick}
-                  className="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#059669] hover:bg-[#047857] text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md cursor-pointer shrink-0"
+                  className="w-8 h-8 sm:w-auto px-2 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#059669] hover:bg-[#047857] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md cursor-pointer shrink-0"
                   title="Konsultasi Langsung via WhatsApp"
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
-                  <span className="whitespace-nowrap">Konsultasi</span>
+                  <span className="hidden sm:inline whitespace-nowrap">Konsultasi</span>
                 </button>
 
                 {/* Theme Selector (Strictly Icon + Exact Name) */}
@@ -681,12 +686,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                       e.stopPropagation();
                       setThemeMenuOpen((prev) => !prev);
                     }}
-                    className="px-2.5 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer shrink-0"
+                    className="w-8 h-8 sm:w-auto px-2 sm:px-2.5 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 flex items-center justify-center gap-1.5 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer shrink-0"
                     title="Pilih Tema: portofolio-me, profesional, corporation"
                   >
                     <Building2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                    <span className="font-mono text-xs font-bold">corporation</span>
-                    <ChevronDown className="w-3 h-3 opacity-60" />
+                    <span className="hidden sm:inline font-mono text-xs font-bold">corporation</span>
+                    <ChevronDown className="w-3 h-3 opacity-60 hidden sm:inline" />
                   </button>
 
                   <AnimatePresence>
@@ -733,7 +738,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                     e.stopPropagation();
                     setMobileMenuOpen(!mobileMenuOpen);
                   }}
-                  className="md:hidden w-8 h-8 rounded-full flex items-center justify-center hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
+                  className="md:hidden w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 shrink-0 transition-colors cursor-pointer shadow-xs"
+                  aria-label="Menu Navigasi"
+                  title="Menu Navigasi"
                 >
                   {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
                 </button>
@@ -799,7 +806,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     e.stopPropagation();
                     setThemeMenuOpen((prev) => !prev);
                   }}
-                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  className={`flex items-center justify-center gap-1.5 w-8 h-8 sm:w-auto px-2 sm:px-2.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     designTheme === 'clipboard'
                       ? 'bg-amber-100 text-zinc-900 border border-zinc-900'
                       : 'bg-cyan-50 dark:bg-zinc-800 text-cyan-800 dark:text-cyan-300 border border-cyan-200/80 dark:border-zinc-700'
@@ -811,10 +818,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   ) : (
                     <Briefcase className="w-3.5 h-3.5" />
                   )}
-                  <span className="font-mono text-xs font-bold">
+                  <span className="hidden sm:inline font-mono text-xs font-bold">
                     {designTheme === 'modern' ? 'portofolio-me' : 'profesional'}
                   </span>
-                  <ChevronDown className="w-3 h-3 opacity-60" />
+                  <ChevronDown className="w-3 h-3 opacity-60 hidden sm:inline" />
                 </button>
 
                 <AnimatePresence>
