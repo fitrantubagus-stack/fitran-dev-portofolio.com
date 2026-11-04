@@ -687,7 +687,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                     <span className="text-[#1E3A8A] dark:text-blue-400">&amp; AI Engineer</span>
                   </h1>
                   <p className="text-lg sm:text-xl font-medium text-zinc-800 dark:text-zinc-200 max-w-2xl leading-relaxed">
-                    Merancang AI agent &amp; automation, aplikasi web performa tinggi (<span className="text-[#1E3A8A] dark:text-blue-400 font-bold">&lt;0.8s</span>), sistem keamanan server 5 lapis, serta technical marketing (Meta CAPI &amp; Google Ads).
+                    Merancang sistem website dengan backend terintegrasi, serta dapat menggabungkan technical Meta chatbot, integrasi API Meta, atau Google Ads untuk memikat calon pelanggan dan mengembangkan skala bisnis Anda.
                   </p>
                 </div>
 
@@ -803,7 +803,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                       className="w-full py-2.5 px-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-950 font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-xs"
                     >
                       <FileText className="w-3.5 h-3.5" />
-                      <span>Buka Curriculum Vitae Resmi (PDF)</span>
+                      <span>Curriculum Vitae (CV Tubagus Fitran Badruttamam)</span>
                     </button>
 
                     <div className="grid grid-cols-2 gap-2 text-xs">

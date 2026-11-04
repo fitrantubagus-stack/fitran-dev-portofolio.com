@@ -186,8 +186,25 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full py-2 px-3 sm:py-2.5 sm:px-8 transition-all pointer-events-none bg-[#FAFAFA]/90 dark:bg-[#09090B]/90 backdrop-blur-md sm:bg-transparent sm:backdrop-blur-none border-b border-zinc-200/40 dark:border-zinc-800/40 sm:border-b-0">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
+    <header className="sticky top-0 z-50 w-full py-1.5 px-3 sm:py-2.5 sm:px-8 transition-all pointer-events-none bg-[#FAFAFA]/95 dark:bg-[#09090B]/95 backdrop-blur-md sm:bg-transparent sm:backdrop-blur-none border-b border-zinc-200/40 dark:border-zinc-800/40 sm:border-b-0">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-2">
+        {/* MOBILE TOP ROW: Brand Logo + Asia/Jakarta Timezone (Always visible on mobile across all themes) */}
+        <div className="flex sm:hidden items-center justify-between w-full px-1 py-0.5 text-xs font-mono text-zinc-700 dark:text-zinc-300 pointer-events-auto">
+          <a
+            href={themePrefix}
+            onClick={(e) => handleNavClick('home', e, themePrefix)}
+            className="flex items-center gap-1.5 cursor-pointer hover:opacity-90 transition-opacity"
+            title="fitran.dev — Beranda"
+          >
+            <FitranPixelLogo size="xs" />
+          </a>
+          <div className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-600 dark:text-zinc-400 bg-white/80 dark:bg-zinc-800/90 px-2.5 py-0.5 rounded-full border border-zinc-200/80 dark:border-zinc-700/80 shadow-2xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="font-semibold">Asia/Jakarta</span>
+            {wibTime && <span className="text-zinc-400 dark:text-zinc-500">• {wibTime}</span>}
+          </div>
+        </div>
+
         {/* LEFT: Desktop fitran.dev Pixel Logo + Timezone Label (Theme 1 & 2 only) */}
         {designTheme !== 'arcade' && (
           <div className="hidden sm:flex items-center gap-3 text-xs font-sans font-medium text-zinc-700 dark:text-zinc-300 pointer-events-auto shrink-0">
@@ -199,7 +216,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <FitranPixelLogo size="sm" />
             </a>
-            <span>Asia/Jakarta</span>
+            <div className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>Asia/Jakarta</span>
+              {wibTime && <span className="text-zinc-400 font-mono text-[10px]">({wibTime})</span>}
+            </div>
           </div>
         )}
 
@@ -1172,6 +1193,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             ) : (
               <div className="space-y-1">
+                {/* Mobile Official fitran.dev Brand Header */}
+                <div className="flex items-center justify-between pb-2 mb-2 border-b border-zinc-100 dark:border-zinc-800">
+                  <FitranPixelLogo size="xs" />
+                  <span className="text-[10px] font-mono text-zinc-500">Asia/Jakarta • GMT+7</span>
+                </div>
                 {defaultNavItems.map((item) => (
                   <a
                     key={item.id}

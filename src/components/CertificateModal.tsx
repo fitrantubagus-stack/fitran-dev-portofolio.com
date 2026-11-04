@@ -382,17 +382,6 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
                     <Sparkles className="w-3.5 h-3.5" />
                     <span>HOLOGRAPHIC CREDENTIAL #{currentIndex + 1}</span>
                   </span>
-
-                  {cert.isVerifiedMatch && (
-                    <motion.span
-                      animate={{ scale: [1, 1.04, 1] }}
-                      transition={{ duration: 2.2, repeat: Infinity }}
-                      className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 font-mono text-xs font-bold uppercase"
-                    >
-                      <ShieldCheck className="w-3.5 h-3.5" />
-                      <span>✓ SESUAI DOKUMEN ASLI</span>
-                    </motion.span>
-                  )}
                 </div>
 
                 <h1 className="font-heading font-black text-2xl sm:text-3xl lg:text-4xl tracking-tight leading-tight bg-gradient-to-r from-white via-cyan-200 to-indigo-200 bg-clip-text text-transparent">
@@ -868,13 +857,6 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
                   <FileCheck2 className="w-3.5 h-3.5 stroke-[2.5]" />
                   <span>DOKUMEN SERTIFIKASI #{currentIndex + 1}</span>
                 </span>
-
-                {cert.isVerifiedMatch && (
-                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-300 text-black border-2 border-black font-mono text-xs font-black uppercase shadow-[3px_3px_0px_#000]">
-                    <ShieldCheck className="w-3.5 h-3.5 stroke-[2.5]" />
-                    <span>✓ SESUAI DOKUMEN ASLI</span>
-                  </span>
-                )}
               </div>
 
               <h1

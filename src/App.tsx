@@ -443,15 +443,11 @@ export default function App() {
                           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
                               <div>
-                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-orange-200 dark:border-orange-900/60 bg-orange-50/70 dark:bg-orange-950/30 text-orange-800 dark:text-orange-300 font-mono text-xs mb-2">
-                                  <Terminal className="w-3.5 h-3.5" />
-                                  <span>Interactive 3D CLI Environment</span>
-                                </div>
                                 <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-zinc-950 dark:text-white tracking-tight">
-                                  Fitran Code v2.1 • 3D Terminal
+                                  Terminal Interaktif: Eksplorasi Kode &amp; Profil Fitran
                                 </h2>
-                                <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
-                                  A fully interactive, 3D perspective developer terminal inspired by the official Claude Code CLI interface. Type commands directly or tilt with your mouse cursor.
+                                <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl leading-relaxed">
+                                  Ini adalah terminal code untuk mengetahui informasi tentang saya. Silakan pilih opsi yang tersedia atau ketik langsung di terminal — sistem akan menganalisis pertanyaan, melalui proses coding/tool use, dan menyajikan jawaban teks lengkap seperti Claude Code CLI asli.
                                 </p>
                               </div>
 
@@ -543,15 +539,11 @@ export default function App() {
                       <div className="py-10 bg-white/95 dark:bg-[#09090B]/95">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
                           <div className="border-b border-zinc-200 dark:border-zinc-800 pb-6">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-orange-200 dark:border-orange-900/60 bg-orange-50/70 dark:bg-orange-950/30 text-orange-800 dark:text-orange-300 font-mono text-xs mb-2">
-                              <Terminal className="w-3.5 h-3.5" />
-                              <span>Fitran Code v2.1 • Experimental Lab</span>
-                            </div>
                             <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white font-heading tracking-tight">
-                              Claude Code &amp; Antigravity CLI Developer Studio
+                              Terminal Interaktif: Eksplorasi Kode &amp; Profil Fitran
                             </h1>
                             <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-2 max-w-3xl leading-relaxed font-mono">
-                              Modeled after official developer terminal startup experiences: Claude Code 8-bit orange mascot with responsive eye-blinking, crescent moon &amp; stippled cloud pixel art, and Antigravity CLI rainbow pixel architecture with interactive command execution.
+                              Ini adalah terminal code untuk mengetahui informasi tentang saya. Silakan pilih atau ketik perintah: sistem akan menganalisis, melalui proses codingan internal, hingga menghasilkan jawaban teks yang lengkap selayaknya Claude Code asli.
                             </p>
                           </div>
                         </div>

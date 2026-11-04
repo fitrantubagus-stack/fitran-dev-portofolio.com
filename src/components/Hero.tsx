@@ -589,7 +589,7 @@ export const Hero: React.FC<HeroProps> = ({
                   className="inline-flex items-center gap-1.5 font-bold text-[#1B2A4A] dark:text-[#D4AF37] hover:underline cursor-pointer"
                 >
                   <FileText className="w-3.5 h-3.5" />
-                  <span>CURRICULUM VITAE RESMI (PDF)</span>
+                  <span>Curriculum Vitae (CV Tubagus Fitran Badruttamam)</span>
                 </button>
               )}
             </div>

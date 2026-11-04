@@ -1027,23 +1027,6 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
                     <CertificatePreview cert={cert} size="compact" />
                   </div>
 
-                  {/* Verified Match Status Pill */}
-                  {cert.isVerifiedMatch && (
-                    <div className="mb-2 flex items-center gap-1.5">
-                      <span
-                        className={`px-2.5 py-0.5 text-[10px] font-mono font-black ${
-                          isAnimasi
-                            ? 'rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40'
-                            : isKlasik
-                            ? 'rounded-none bg-[#1C1917] text-[#E5C158] border border-[#B48A3E]'
-                            : 'rounded-md bg-yellow-300 text-black border-2 border-black shadow-[2px_2px_0px_#000]'
-                        }`}
-                      >
-                        ✓ SESUAI DOKUMEN ASLI
-                      </span>
-                    </div>
-                  )}
-
                   {/* Title */}
                   <div
                     className={`mb-2.5 p-2.5 transition-colors ${

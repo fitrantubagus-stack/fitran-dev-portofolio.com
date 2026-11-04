@@ -364,31 +364,6 @@ export const IsometricTFMonogram: React.FC<{ className?: string }> = ({ classNam
           ref={canvasRef}
           className="relative z-10 w-full h-full block touch-none filter drop-shadow-sm transition-transform duration-300 group-hover:scale-[1.02]"
         />
-
-
-        {/* Signature "Follows your cursor" arrow tag from screenshot */}
-        <div className="absolute bottom-2 right-3 flex items-start gap-1.5 pointer-events-none text-zinc-500 dark:text-zinc-400">
-          <svg
-            className="w-5 h-5 -rotate-12 text-zinc-400 dark:text-zinc-500 shrink-0 mt-0.5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M7 17L17 7" />
-            <path d="M7 7h10v10" />
-          </svg>
-          <div className="flex flex-col font-mono text-[11px] leading-tight">
-            <span className="font-semibold text-zinc-700 dark:text-zinc-300">
-              {language === 'id' ? 'mengikuti kursormu' : 'follows your cursor'}
-            </span>
-            <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
-              {language === 'id' ? '• klik untuk putar 360°' : '• click to rotate 360°'}
-            </span>
-          </div>
-        </div>
       </div>
     </div>
   );
