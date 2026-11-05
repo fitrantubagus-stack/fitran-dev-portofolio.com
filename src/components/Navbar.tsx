@@ -652,7 +652,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                           <Bot className="w-4 h-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors shrink-0 mt-0.5" />
                           <div>
                             <p className="font-bold text-zinc-900 dark:text-white">AI untuk Bisnis</p>
-                            <p className="text-[11px] text-zinc-400">8 Bab Fondasi, RAG &amp; WhatsApp Agent</p>
+                            <p className="text-[11px] text-zinc-400">9 Bab Fondasi, RAG &amp; WhatsApp Agent</p>
                           </div>
                         </a>
 
@@ -667,7 +667,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                           <TrendingUp className="w-4 h-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors shrink-0 mt-0.5" />
                           <div>
                             <p className="font-bold text-zinc-900 dark:text-white">Digital Marketing</p>
-                            <p className="text-[11px] text-zinc-400">8 Bab Ads, GTM &amp; Conversions API</p>
+                            <p className="text-[11px] text-zinc-400">9 Bab Ads, GTM &amp; Conversions API</p>
                           </div>
                         </a>
 
@@ -682,7 +682,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                           <Zap className="w-4 h-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors shrink-0 mt-0.5" />
                           <div>
                             <p className="font-bold text-zinc-900 dark:text-white">Vibe Coding</p>
-                            <p className="text-[11px] text-zinc-400">6 Bab Claude Code CLI &amp; Tooling</p>
+                            <p className="text-[11px] text-zinc-400">10 Bab Claude Code CLI &amp; Uji Beban</p>
                           </div>
                         </a>
 

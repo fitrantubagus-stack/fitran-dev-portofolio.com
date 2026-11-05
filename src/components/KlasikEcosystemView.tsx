@@ -219,6 +219,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
   const [activeSubchapterId, setActiveSubchapterId] = useState<string>('ai-00-1');
   const [materiSearch, setMateriSearch] = useState<string>('');
   const [openChapters, setOpenChapters] = useState<Record<string, boolean>>({ 'ai-00': true, 'mkt-00': true, 'vc-00': true });
+  const [activeTocSection, setActiveTocSection] = useState<string>('untuk-siapa');
 
     // Synchronize document.title dynamically
   useEffect(() => {
@@ -255,13 +256,30 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
         setSelectedArticle(null);
       }
 
-      // Sync learning track from path or query
+      // Sync learning track from path or query (Immediate react without reload)
+      let detectedTrack: 'ai' | 'digital-marketing' | 'vibe-coding' | null = null;
       if (fullUrl.includes('digital-marketing') || fullUrl.includes('meta-') || fullUrl.includes('google-') || fullUrl.includes('tracking-')) {
-        setActiveTrackId('digital-marketing');
+        detectedTrack = 'digital-marketing';
       } else if (fullUrl.includes('vibe-coding') || fullUrl.includes('vc-')) {
-        setActiveTrackId('vibe-coding');
+        detectedTrack = 'vibe-coding';
       } else if (fullUrl.includes('/belajar/ai') || fullUrl.includes('track=ai')) {
-        setActiveTrackId('ai');
+        detectedTrack = 'ai';
+      }
+
+      if (detectedTrack) {
+        setActiveTrackId((prev) => {
+          if (prev !== detectedTrack) {
+            const firstCh = (KLASIK_LEARNING_CHAPTERS || []).find((c) => c && c.trackId === detectedTrack);
+            if (firstCh) {
+              setActiveChapterId(firstCh.id);
+              if (firstCh.subchapters?.[0]?.id) {
+                setActiveSubchapterId(firstCh.subchapters[0].id);
+              }
+              setOpenChapters((o) => ({ ...o, [firstCh.id]: true }));
+            }
+          }
+          return detectedTrack!;
+        });
       }
 
       // Sync learning subchapter from URL hash (e.g. #/ai-00-1 or #ai-00-1)
@@ -294,7 +312,13 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
 
     syncFromLocation();
     window.addEventListener('popstate', syncFromLocation);
-    return () => window.removeEventListener('popstate', syncFromLocation);
+    window.addEventListener('app-route-change', syncFromLocation);
+    window.addEventListener('locationchange', syncFromLocation);
+    return () => {
+      window.removeEventListener('popstate', syncFromLocation);
+      window.removeEventListener('app-route-change', syncFromLocation);
+      window.removeEventListener('locationchange', syncFromLocation);
+    };
   }, [activePage]);
 
   // Filter States
@@ -1303,20 +1327,20 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div
                 onClick={() => {
                   setActiveTrackId('ai');
                   navigateTo('learning');
                 }}
-                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/60 transition-all cursor-pointer group space-y-2"
+                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/60 transition-all cursor-pointer group space-y-2 shadow-xs hover:shadow-md"
               >
-                <p className="font-mono text-xs font-bold text-purple-600 dark:text-purple-400">PILAR 01 · 8 BAB</p>
+                <p className="font-mono text-xs font-bold text-purple-600 dark:text-purple-400">PILAR 01 · 9 BAB PRAKTIS</p>
                 <h3 className="font-bold text-base text-zinc-950 dark:text-white group-hover:text-purple-600 transition-colors">
-                  AI untuk Bisnis
+                  AI untuk Bisnis &amp; Otomasi
                 </h3>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                  Fondasi LLM, prompt engineering, RAG knowledge base, hingga WhatsApp AI Agent produksi.
+                  Fondasi praktis, teknik instruksi terstruktur, integrasi dokumen usaha, hingga bot WhatsApp pencatat pesanan otomatis.
                 </p>
               </div>
 
@@ -1325,14 +1349,14 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   setActiveTrackId('digital-marketing');
                   navigateTo('learning');
                 }}
-                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-cyan-500/60 transition-all cursor-pointer group space-y-2"
+                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-cyan-500/60 transition-all cursor-pointer group space-y-2 shadow-xs hover:shadow-md"
               >
-                <p className="font-mono text-xs font-bold text-cyan-600 dark:text-cyan-400">PILAR 02 · 8 BAB</p>
+                <p className="font-mono text-xs font-bold text-cyan-600 dark:text-cyan-400">PILAR 02 · 9 BAB TERARAH</p>
                 <h3 className="font-bold text-base text-zinc-950 dark:text-white group-hover:text-cyan-600 transition-colors">
-                  Meta Ads &amp; Google Ads
+                  Meta Ads &amp; Iklan Hemat Budget
                 </h3>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                  Cara kerja lelang, struktur akun, creative testing, keyword intent, dan optimasi mingguan.
+                  Cara kerja lelang iklan, struktur akun anti-boncos, uji konten kreatif lewat HP, dan penargetan pembeli area lokal terdekat.
                 </p>
               </div>
 
@@ -1341,27 +1365,59 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   setActiveTrackId('digital-marketing');
                   navigateTo('learning');
                 }}
-                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/60 transition-all cursor-pointer group space-y-2"
+                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/60 transition-all cursor-pointer group space-y-2 shadow-xs hover:shadow-md"
               >
-                <p className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">PILAR 03 · 8 BAB</p>
+                <p className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">PILAR 03 · 9 BAB TELEMETRI</p>
                 <h3 className="font-bold text-base text-zinc-950 dark:text-white group-hover:text-emerald-600 transition-colors">
-                  Tracking &amp; CAPI
+                  Tracking Akurat &amp; Server CAPI
                 </h3>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                  Pixel, GTM, GA4, Meta Conversions API (CAPI), dan cara membaca atribusi konversi.
+                  Pixel, GTM, GA4, dan Meta Conversions API kebal pemblokir iklan browser agar pembacaan omset iklan selalu presisi.
+                </p>
+              </div>
+
+              <div
+                onClick={() => {
+                  setActiveTrackId('vibe-coding');
+                  navigateTo('learning');
+                }}
+                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-teal-500/60 transition-all cursor-pointer group space-y-2 shadow-xs hover:shadow-md"
+              >
+                <p className="font-mono text-xs font-bold text-teal-600 dark:text-teal-400">PILAR 04 · 10 BAB REKAYASA</p>
+                <h3 className="font-bold text-base text-zinc-950 dark:text-white group-hover:text-teal-600 transition-colors">
+                  Vibe Coding &amp; Bikin Web Kilat
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                  Metode rekayasa masa kini: merancang aplikasi web dan alur kerja otomatis cepat dengan bantuan Claude Code CLI.
+                </p>
+              </div>
+
+              <div
+                onClick={() => {
+                  setActiveTrackId('vibe-coding');
+                  navigateTo('learning');
+                }}
+                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-blue-500/60 transition-all cursor-pointer group space-y-2 shadow-xs hover:shadow-md"
+              >
+                <p className="font-mono text-xs font-bold text-blue-600 dark:text-blue-400">PILAR 05 · TAHAN BANTING</p>
+                <h3 className="font-bold text-base text-zinc-950 dark:text-white group-hover:text-blue-600 transition-colors">
+                  Keamanan Server &amp; Anti Jebol
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                  Setup VPS Linux mandiri, enkripsi data, sertifikat SSL gratis, dan uji tekan agar website tidak down saat promo besar.
                 </p>
               </div>
 
               <div
                 onClick={() => navigateTo('kamus')}
-                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-amber-500/60 transition-all cursor-pointer group space-y-2"
+                className="p-5 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 hover:border-amber-500/60 transition-all cursor-pointer group space-y-2 shadow-xs hover:shadow-md"
               >
                 <p className="font-mono text-xs font-bold text-amber-600 dark:text-amber-400">REFERENSI · 40+ ISTILAH</p>
                 <h3 className="font-bold text-base text-zinc-950 dark:text-white group-hover:text-amber-600 transition-colors">
                   Kamus Istilah Digital
                 </h3>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                  Arti CPA, ROAS, CAPI, AI agent, RAG, dan istilah lain dalam bahasa yang wajar dan lugas.
+                  Arti CPA, ROAS, CAPI, AI agent, RAG, dan istilah teknis lainnya dijelaskan dengan contoh sehari-hari yang mudah dipahami.
                 </p>
               </div>
             </div>
@@ -1976,13 +2032,17 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                         if (firstChapter.subchapters?.[0]?.id) {
                           setActiveSubchapterId(firstChapter.subchapters[0].id);
                         }
+                        setOpenChapters((prev) => ({ ...prev, [firstChapter.id]: true }));
+                      }
+                      if (typeof window !== 'undefined') {
+                        window.history.pushState(null, '', `${themePrefix}/belajar/${t}`);
                       }
                     }}
                     className="px-4 py-2 rounded-xl bg-white dark:bg-[#111319] border border-zinc-300 dark:border-zinc-700 text-xs font-bold text-zinc-900 dark:text-white cursor-pointer focus:outline-hidden focus:border-[#1E3A8A]"
                   >
-                    <option value="ai">AI untuk Bisnis (8 Bab Studio)</option>
-                    <option value="digital-marketing">Digital Marketing &amp; CAPI (8 Bab)</option>
-                    <option value="vibe-coding">Vibe Coding &amp; Tooling (9 Bab)</option>
+                    <option value="ai">AI untuk Bisnis (9 Bab Studio)</option>
+                    <option value="digital-marketing">Digital Marketing &amp; CAPI (9 Bab)</option>
+                    <option value="vibe-coding">Vibe Coding &amp; Tooling (10 Bab)</option>
                   </select>
                 </div>
               </div>
@@ -2114,6 +2174,8 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 practiceSnippet={activeSubchapter?.practice}
                 mistakes={activeSubchapter?.mistakes}
                 explanation={activeSubchapter?.explanation}
+                checklist={activeSubchapter?.checklist}
+                situation={activeSubchapter?.situation}
               />
               <div>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white">
@@ -2221,6 +2283,16 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   </div>
                 </div>
 
+                {/* SECTION: Cara memakai bab ini */}
+                <div id="cara-memakai" className="p-4 sm:p-5 rounded-2xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-900/40 space-y-2">
+                  <h4 className="font-bold text-xs uppercase tracking-wider font-mono text-amber-800 dark:text-amber-300">
+                    Cara Memakai Bab Ini di Lapangan
+                  </h4>
+                  <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">
+                    Pahami konsep utamanya terlebih dahulu, hindari jebakan yang tercantum, lalu terapkan pola kodenya. Anda bisa langsung menguji checklist sebelum sistem digunakan ke pelanggan bisnis Anda.
+                  </p>
+                </div>
+
                 {/* Next / Previous Subchapter Navigation Buttons (Ala Fikran Dev) */}
                 <div className="pt-6 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
                   {prevSubItem ? (
@@ -2297,29 +2369,65 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 </button>
               </div>
 
-              {/* Table of Contents (DI HALAMAN INI) */}
-              <div className="p-4 rounded-2xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 space-y-2 text-xs">
-                <p className="font-mono text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+              {/* Table of Contents (DI HALAMAN INI) — Exact Match to User Screenshot 3 */}
+              <div className="p-5 rounded-2xl bg-[#FBF9F5] dark:bg-[#151821] border border-zinc-200/90 dark:border-zinc-800 space-y-4 text-xs shadow-xs">
+                <p className="font-mono text-[11px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
                   DI HALAMAN INI
                 </p>
-                <div className="space-y-1.5 text-zinc-600 dark:text-zinc-400">
-                  <a href="#untuk-siapa" className="block hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 transition-colors">
+                <div className="space-y-2">
+                  <a
+                    href="#untuk-siapa"
+                    onClick={() => setActiveTocSection('untuk-siapa')}
+                    className={`block transition-all cursor-pointer ${
+                      activeTocSection === 'untuk-siapa'
+                        ? 'border-l-[3px] border-[#8B1E1E] dark:border-red-500 pl-3 text-[#8B1E1E] dark:text-red-400 font-bold text-sm leading-snug'
+                        : 'pl-3.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white text-sm'
+                    }`}
+                  >
                     Untuk siapa bab ini
                   </a>
-                  <a href="#intinya" className="block hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 transition-colors">
+                  <a
+                    href="#intinya"
+                    onClick={() => setActiveTocSection('intinya')}
+                    className={`block transition-all cursor-pointer ${
+                      activeTocSection === 'intinya'
+                        ? 'border-l-[3px] border-[#8B1E1E] dark:border-red-500 pl-3 text-[#8B1E1E] dark:text-red-400 font-bold text-sm leading-snug'
+                        : 'pl-3.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white text-sm'
+                    }`}
+                  >
                     Intinya
                   </a>
-                  <a href="#subbab" className="block hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 transition-colors">
-                    Subbab &amp; Materi
+                  <a
+                    href="#subbab"
+                    onClick={() => setActiveTocSection('subbab')}
+                    className={`block transition-all cursor-pointer ${
+                      activeTocSection === 'subbab'
+                        ? 'border-l-[3px] border-[#8B1E1E] dark:border-red-500 pl-3 text-[#8B1E1E] dark:text-red-400 font-bold text-sm leading-snug'
+                        : 'pl-3.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white text-sm'
+                    }`}
+                  >
+                    Subbab
                   </a>
-                  <a href="#praktik" className="block hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 transition-colors">
-                    Praktik Implementasi
+                  <a
+                    href="#cara-memakai"
+                    onClick={() => setActiveTocSection('cara-memakai')}
+                    className={`block transition-all cursor-pointer ${
+                      activeTocSection === 'cara-memakai'
+                        ? 'border-l-[3px] border-[#8B1E1E] dark:border-red-500 pl-3 text-[#8B1E1E] dark:text-red-400 font-bold text-sm leading-snug'
+                        : 'pl-3.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white text-sm'
+                    }`}
+                  >
+                    Cara memakai bab ini
                   </a>
-                  <a href="#kesalahan" className="block hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 transition-colors">
-                    Kesalahan Fatal
-                  </a>
-                  <a href="#checklist" className="block hover:text-[#1E3A8A] dark:text-blue-400 dark:hover:text-blue-400 transition-colors">
-                    Checklist Verifikasi
+                </div>
+
+                <div className="pt-3 border-t border-zinc-200/70 dark:border-zinc-800">
+                  <a
+                    href={`${themePrefix}/layanan`}
+                    className="font-mono text-xs font-bold text-[#8B1E1E] dark:text-red-400 tracking-wider flex items-center gap-1.5 uppercase hover:underline"
+                  >
+                    <span>LAYANAN TERKAIT</span>
+                    <span>→</span>
                   </a>
                 </div>
               </div>
@@ -2371,7 +2479,7 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300">
                     Kurikulum Resmi fitran.dev
                   </span>
-                  <span className="text-[10px] font-mono text-zinc-500">26 Bab Lengkap Teruji</span>
+                  <span className="text-[10px] font-mono text-zinc-500">28 Bab Lengkap Teruji</span>
                 </div>
                 <h4 className="text-sm font-bold text-zinc-950 dark:text-white mt-1">
                   {activeChapter?.title || 'Kurikulum Resmi'} — Dokumentasi Terverifikasi

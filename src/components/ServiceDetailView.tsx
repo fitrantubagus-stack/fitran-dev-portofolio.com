@@ -39,6 +39,7 @@ import {
   Database,
 } from 'lucide-react';
 import { SubServiceItem } from '../data/servicesCatalogData';
+import { ServicePosterVisual } from './ServicePosterVisual';
 
 interface ServiceDetailViewProps {
   service: SubServiceItem;
@@ -603,25 +604,18 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
             ))}
           </div>
 
-          {/* Right Column: Tailored Canva 3D Promotional Mockup & Live Interactive Prototype */}
+          {/* Right Column: Tailored Official fitran.dev Service Poster & Live Interactive Prototype */}
           <div className="lg:col-span-5 space-y-5">
-            {/* Canva-Style 3D Flyer Showcase (Unobstructed, caption bar underneath) */}
-            <div className="rounded-3xl overflow-hidden border border-zinc-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-md">
-              <div className="relative w-full aspect-[4/3] bg-zinc-100 dark:bg-zinc-900 overflow-hidden">
-                <img
-                  src={getCanvaGraphicForService(service.id, service.category)}
-                  alt={`Mockup Desain Canva 3D - ${service.title}`}
-                  className="w-full h-full object-cover object-center transition-transform hover:scale-103 duration-500"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-4 bg-zinc-50 dark:bg-zinc-900/90 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs">
+            {/* Official Branded Service Poster (Unobstructed, click-to-enlarge lightbox) */}
+            <div className="space-y-2">
+              <ServicePosterVisual serviceId={service.id} category={service.category} className="aspect-[16/10] sm:aspect-[16/10] shadow-lg" />
+              <div className="p-3 bg-zinc-50 dark:bg-zinc-900/90 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 flex items-center justify-between text-xs">
                 <div className="flex items-center gap-1.5 font-mono text-emerald-600 dark:text-emerald-400 font-bold text-[11px]">
                   <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-500" />
-                  <span>Solusi Terverifikasi</span>
+                  <span>Solusi Terverifikasi • 100% Hak Milik</span>
                 </div>
                 <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-wider">
-                  Desain Canva 3D Studio
+                  fitran.dev Official
                 </span>
               </div>
             </div>

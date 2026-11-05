@@ -10,6 +10,7 @@ import { AboutSection } from './components/AboutSection';
 import { ContactFooter } from './components/ContactFooter';
 import { CertificateModal } from './components/CertificateModal';
 import { ProjectModal } from './components/ProjectModal';
+import { ImageLightboxModal, LightboxData } from './components/ImageLightboxModal';
 import { CVModal } from './components/CVModal';
 import { CommandMenu } from './components/CommandMenu';
 import { ClaudeCodeTerminal3D } from './components/ClaudeCodeTerminal3D';
@@ -28,6 +29,27 @@ export const THEME_PREFIXES: Record<DesignTheme, string> = {
   clipboard: '/profesional',
   arcade: '/corporation',
 };
+
+// Global History Patch: Guarantees zero-delay reactive navigation without manual page reload
+if (typeof window !== 'undefined' && !(window as any).__history_events_patched) {
+  (window as any).__history_events_patched = true;
+  const origPush = window.history.pushState;
+  window.history.pushState = function (...args) {
+    const res = origPush.apply(this, args);
+    window.dispatchEvent(new Event('locationchange'));
+    window.dispatchEvent(new Event('app-route-change'));
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    return res;
+  };
+  const origReplace = window.history.replaceState;
+  window.history.replaceState = function (...args) {
+    const res = origReplace.apply(this, args);
+    window.dispatchEvent(new Event('locationchange'));
+    window.dispatchEvent(new Event('app-route-change'));
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    return res;
+  };
+}
 
 export const SECTION_SUBPATHS: Record<SectionId, string> = {
   home: '',
@@ -205,6 +227,18 @@ export default function App() {
   );
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [isCVModalOpen, setIsCVModalOpen] = useState(false);
+  const [lightboxData, setLightboxData] = useState<LightboxData | null>(null);
+
+  useEffect(() => {
+    const handleOpenLightbox = (e: Event) => {
+      const custom = e as CustomEvent<LightboxData>;
+      if (custom.detail) {
+        setLightboxData(custom.detail);
+      }
+    };
+    window.addEventListener('open-image-lightbox', handleOpenLightbox);
+    return () => window.removeEventListener('open-image-lightbox', handleOpenLightbox);
+  }, []);
 
   // Sync dark class on <html> and persist
   useEffect(() => {
@@ -320,6 +354,8 @@ export default function App() {
     window.history.pushState(null, '', nextPath);
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new Event('app-route-change'));
+      window.dispatchEvent(new Event('locationchange'));
+      window.dispatchEvent(new PopStateEvent('popstate'));
     }
 
     if (nextPath.includes('#')) {
@@ -611,6 +647,12 @@ export default function App() {
           onSelectTab={(tab) => handleNavigate(tab as SectionId)}
           onSelectProject={(project) => setSelectedProject(project)}
           onSelectCert={handleSelectCertificate}
+        />
+
+        {/* Global Image Lightbox Modal for Full Resolution Uncropped Viewing */}
+        <ImageLightboxModal
+          data={lightboxData}
+          onClose={() => setLightboxData(null)}
         />
       </div>
       </TextStyleProvider>

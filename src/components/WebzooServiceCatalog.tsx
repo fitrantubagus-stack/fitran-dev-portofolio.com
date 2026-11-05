@@ -45,6 +45,7 @@ import {
 import { ALL_SERVICES_CATALOG, SubServiceItem } from '../data/servicesCatalogData';
 import { INDUSTRY_SEGMENTS_DATA, IndustrySegment } from '../data/industrySegmentsData';
 import { ServiceDetailView, getCanvaGraphicForService } from './ServiceDetailView';
+import { ServicePosterVisual } from './ServicePosterVisual';
 import { IndustrySegmentView } from './IndustrySegmentView';
 import { AutopilotJuaraView } from './AutopilotJuaraView';
 import { InteractiveFlipbook } from './InteractiveFlipbook';
@@ -382,32 +383,20 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
               } transition-all cursor-pointer group flex flex-col justify-between space-y-5`}
             >
               <div className="space-y-4">
-                {/* Canva-Style 3D Graphic Preview Banner (Unobstructed) */}
-                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800">
-                  <img
-                    src={getCanvaGraphicForService(srv.id, srv.category)}
-                    alt={`Desain Canva 3D ${srv.title}`}
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between">
-                    <span className="px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md text-white font-mono text-[9px] font-bold">
-                      Canva 3D
-                    </span>
-                    <span className="px-2 py-0.5 rounded-md bg-emerald-600/90 text-white font-mono text-[9px] font-bold flex items-center gap-1 shadow-xs">
-                      <CheckCircle2 className="w-2.5 h-2.5" />
-                      Terverifikasi
-                    </span>
-                  </div>
-                </div>
+                {/* Distinct Branded Service Poster (Unobstructed, fitran.dev official, click-to-lightbox) */}
+                <ServicePosterVisual serviceId={srv.id} category={srv.category} />
 
-                {/* Top Bar: Icon + Category Badge */}
+                {/* Top Bar: Icon + Category Badge + Terverifikasi */}
                 <div className="flex items-center justify-between">
                   <div className="w-12 h-12 rounded-2xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 flex items-center justify-center text-[#1E3A8A] dark:text-blue-400 group-hover:scale-105 transition-transform shadow-xs">
                     {renderCatalogIcon(srv.iconName, 'w-6 h-6 stroke-[2.2]')}
                   </div>
 
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 font-mono text-[9px] font-bold flex items-center gap-1">
+                      <CheckCircle2 className="w-2.5 h-2.5 text-emerald-500" />
+                      Terverifikasi
+                    </span>
                     <span className={`px-2.5 py-1 rounded-full font-mono text-[10px] font-bold border uppercase tracking-wider ${categoryBadgeColor}`}>
                       {srv.category}
                     </span>
