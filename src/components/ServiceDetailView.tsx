@@ -47,6 +47,16 @@ interface ServiceDetailViewProps {
   themePrefix?: string;
 }
 
+export const getCanvaGraphicForService = (id: string, category: string): string => {
+  if (id.includes('whatsapp') || id.includes('ai')) return '/canva-service-ai-agent.png';
+  if (id.includes('ecommerce') || id.includes('b2b') || id.includes('grosir')) return '/canva-service-ecommerce.png';
+  if (id.includes('erp') || id.includes('inventori') || id.includes('inventory') || id.includes('dashboard')) return '/canva-service-erp.png';
+  if (id.includes('vps') || id.includes('cloud') || id.includes('server') || id.includes('n8n')) return '/canva-service-cloud-vps.png';
+  if (id.includes('landing') || id.includes('kampanye') || id.includes('capi') || id.includes('ads') || id.includes('seo')) return '/canva-service-landing-page.png';
+  if (id.includes('autopilot')) return '/canva-service-autopilot.png';
+  return '/canva-service-website.png';
+};
+
 export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
   service,
   onBack,
@@ -593,21 +603,49 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
             ))}
           </div>
 
-          {/* Right Column: Tailored Visual Mockup matching service category */}
-          <div className="lg:col-span-5 p-6 rounded-3xl bg-linear-to-b from-blue-50/70 via-sky-50/50 to-white dark:from-zinc-900 dark:via-zinc-900/90 dark:to-[#111319] border border-blue-200 dark:border-zinc-800 shadow-sm space-y-5">
-            {renderVisualMockup()}
-
-            {/* Dynamic Feature Pills Under Mockup */}
-            <div className="flex flex-wrap items-center gap-2 pt-1">
-              {featurePills.map((pill, idx) => (
-                <span
-                  key={idx}
-                  className="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5 shadow-2xs"
-                >
-                  {renderIcon(pill.iconName, 'w-3.5 h-3.5 text-blue-600 dark:text-blue-400')}
-                  <span>{pill.label}</span>
+          {/* Right Column: Tailored Canva 3D Promotional Mockup & Live Interactive Prototype */}
+          <div className="lg:col-span-5 space-y-5">
+            {/* Canva-Style 3D Flyer Showcase (Unobstructed, caption bar underneath) */}
+            <div className="rounded-3xl overflow-hidden border border-zinc-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-md">
+              <div className="relative w-full aspect-[4/3] bg-zinc-100 dark:bg-zinc-900 overflow-hidden">
+                <img
+                  src={getCanvaGraphicForService(service.id, service.category)}
+                  alt={`Mockup Desain Canva 3D - ${service.title}`}
+                  className="w-full h-full object-cover object-center transition-transform hover:scale-103 duration-500"
+                  loading="lazy"
+                />
+              </div>
+              <div className="p-4 bg-zinc-50 dark:bg-zinc-900/90 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs">
+                <div className="flex items-center gap-1.5 font-mono text-emerald-600 dark:text-emerald-400 font-bold text-[11px]">
+                  <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-500" />
+                  <span>Solusi Terverifikasi</span>
+                </div>
+                <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-wider">
+                  Desain Canva 3D Studio
                 </span>
-              ))}
+              </div>
+            </div>
+
+            {/* Interactive Functional Prototype Preview */}
+            <div className="p-6 rounded-3xl bg-linear-to-b from-blue-50/70 via-sky-50/50 to-white dark:from-zinc-900 dark:via-zinc-900/90 dark:to-[#111319] border border-blue-200 dark:border-zinc-800 shadow-sm space-y-4">
+              <div className="flex items-center justify-between pb-2 border-b border-zinc-200/80 dark:border-zinc-800">
+                <span className="font-mono text-[11px] font-bold uppercase text-zinc-500">Live Interactive Prototype</span>
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              </div>
+              {renderVisualMockup()}
+
+              {/* Dynamic Feature Pills Under Mockup */}
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                {featurePills.map((pill, idx) => (
+                  <span
+                    key={idx}
+                    className="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5 shadow-2xs"
+                  >
+                    {renderIcon(pill.iconName, 'w-3.5 h-3.5 text-blue-600 dark:text-blue-400')}
+                    <span>{pill.label}</span>
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>

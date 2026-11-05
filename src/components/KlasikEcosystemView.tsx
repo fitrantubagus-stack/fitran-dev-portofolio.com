@@ -25,6 +25,7 @@ import {
 import { ProfileAvatar } from './ProfileAvatar';
 import { FitranMascot } from './FitranMascot';
 import { MateriCoverBanner } from './MateriCoverBanner';
+import { ClaudeAcademySlide } from './ClaudeAcademySlide';
 import { SekawanEnterpriseLayanan } from './SekawanEnterpriseLayanan';
 import { WebzooServiceCatalog } from './WebzooServiceCatalog';
 import { SekawanWebSolutions } from './SekawanWebSolutions';
@@ -2102,6 +2103,17 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
                 readTime="5 MENIT BACA"
                 mascotVariant={activeTrackId === 'ai' ? 'idea' : activeTrackId === 'digital-marketing' ? 'rocket' : 'code'}
                 className="mb-6"
+              />
+
+              {/* Claude Academy Style Editorial Slide & Concept Visual */}
+              <ClaudeAcademySlide
+                chapterTitle={activeChapter?.title}
+                subchapterTitle={activeSubchapter?.title}
+                subchapterNum={activeSubchapter?.num}
+                trackId={activeTrackId}
+                practiceSnippet={activeSubchapter?.practice}
+                mistakes={activeSubchapter?.mistakes}
+                explanation={activeSubchapter?.explanation}
               />
               <div>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white">

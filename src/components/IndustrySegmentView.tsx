@@ -246,15 +246,20 @@ export const IndustrySegmentView: React.FC<IndustrySegmentViewProps> = ({
               {segment.summary}
             </p>
 
-            {/* ROI Highlight Card */}
+            {/* ROI Highlight Card with proper vector icon */}
             <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-start gap-4 max-w-xl">
-              <div className="w-12 h-12 rounded-xl bg-white text-[#0B3B82] flex items-center justify-center font-black font-mono text-base shrink-0 shadow-xs">
-                {segment.roiHighlight.stat}
+              <div className="w-12 h-12 rounded-xl bg-white text-[#0B3B82] flex items-center justify-center shrink-0 shadow-sm">
+                <BadgePercent className="w-6 h-6 text-[#0B3B82]" />
               </div>
-              <div className="space-y-0.5">
-                <span className="text-xs font-mono font-bold text-blue-200 uppercase tracking-wide">
-                  {segment.roiHighlight.label}
-                </span>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="px-2.5 py-0.5 rounded-md bg-white text-[#0B3B82] font-black font-mono text-xs shadow-xs">
+                    {segment.roiHighlight.stat}
+                  </span>
+                  <span className="text-xs font-mono font-bold text-blue-200 uppercase tracking-wide">
+                    {segment.roiHighlight.label}
+                  </span>
+                </div>
                 <p className="text-xs text-white/90 leading-relaxed font-normal">
                   {segment.roiHighlight.explanation}
                 </p>
@@ -284,22 +289,25 @@ export const IndustrySegmentView: React.FC<IndustrySegmentViewProps> = ({
             </div>
           </div>
 
-          {/* Right Column: Real authentic user photo (Zero text inside image) */}
+          {/* Right Column: Real authentic user photo (Zero text inside image, clean dedicated bar underneath) */}
           <div className="lg:col-span-5 relative">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white/80 bg-white">
-              <img
-                src={segment.heroPhoto}
-                alt={segment.photoAlt}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-80 sm:h-96 object-cover object-center"
-              />
-              <div className="absolute bottom-0 inset-x-0 p-5 bg-gradient-to-t from-black/80 via-black/40 to-transparent text-white">
-                <div className="flex items-center gap-2 text-emerald-400 font-mono text-xs font-bold mb-0.5">
-                  <CheckCircle2 className="w-4 h-4" />
+            <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white/90 bg-white dark:bg-zinc-900 flex flex-col">
+              <div className="relative w-full h-72 sm:h-80 overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+                <img
+                  src={segment.heroPhoto}
+                  alt={segment.photoAlt}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover object-center transition-transform hover:scale-105 duration-500"
+                />
+              </div>
+              {/* Clean caption bar underneath photo — NEVER covering or obstructing the picture */}
+              <div className="p-4 sm:p-5 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border-t border-zinc-100 dark:border-zinc-800 space-y-1">
+                <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-mono text-xs font-bold">
+                  <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-500" />
                   <span>Solusi Terverifikasi</span>
                 </div>
-                <p className="text-xs text-zinc-200 font-normal">
+                <p className="text-xs text-zinc-700 dark:text-zinc-300 font-semibold leading-relaxed">
                   {segment.heroTagline}
                 </p>
               </div>
@@ -619,17 +627,17 @@ export const IndustrySegmentView: React.FC<IndustrySegmentViewProps> = ({
       </div>
 
       {/* ========================================================================= */}
-      {/* 10. BOTTOM CONSULTATION BANNER                                            */}
+      {/* 10. BOTTOM CONSULTATION BANNER (Adaptive Light/Dark Mode)                 */}
       {/* ========================================================================= */}
-      <div className="p-8 sm:p-10 rounded-3xl bg-linear-to-br from-zinc-900 to-black text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl border border-zinc-800">
+      <div className="p-8 sm:p-10 rounded-3xl bg-linear-to-br from-blue-50 via-indigo-50/60 to-white dark:from-zinc-900 dark:to-black text-zinc-950 dark:text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl border border-blue-200/80 dark:border-zinc-800">
         <div className="space-y-2 text-center sm:text-left">
-          <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 font-mono text-[10px] font-bold uppercase">
+          <span className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 font-mono text-[10px] font-bold uppercase border border-blue-200/80 dark:border-blue-500/30">
             Konsultasi Gratis
           </span>
-          <h4 className="text-xl sm:text-2xl font-black text-white">
+          <h4 className="text-xl sm:text-2xl font-black text-zinc-950 dark:text-white">
             Punya Kebutuhan Khusus untuk Usaha Anda?
           </h4>
-          <p className="text-xs text-zinc-400 max-w-xl">
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-xl">
             Ceritakan spesifikasi unik Anda. Kami siap merancang arsitektur kustom yang pas dengan alur kerja tim Anda.
           </p>
         </div>
@@ -638,9 +646,9 @@ export const IndustrySegmentView: React.FC<IndustrySegmentViewProps> = ({
           onClick={() =>
             onWhatsAppInquiry(`Halo mas Fitran, saya ingin konsultasi kebutuhan kustom untuk segmen ${segment.title}!`)
           }
-          className="px-6 py-3.5 rounded-2xl bg-white text-zinc-950 font-black text-xs sm:text-sm flex items-center gap-2 hover:bg-zinc-100 transition-all shadow-lg shrink-0 cursor-pointer"
+          className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-emerald-500/25 shrink-0 cursor-pointer transition-all hover:scale-105"
         >
-          <PhoneCall className="w-4 h-4 text-emerald-600" />
+          <PhoneCall className="w-4 h-4 text-white" />
           <span>Hubungi via WhatsApp</span>
         </button>
       </div>

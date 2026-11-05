@@ -557,31 +557,31 @@ export const AutopilotJuaraView: React.FC<AutopilotJuaraViewProps> = ({
           </div>
         </div>
 
-        {/* Right: Direct Consultation Card */}
-        <div className="lg:col-span-5 p-6 sm:p-8 rounded-3xl bg-linear-to-br from-zinc-900 to-black text-white space-y-6 shadow-xl border border-zinc-800">
+        {/* Right: Direct Consultation Card (Adaptive Light/Dark Mode) */}
+        <div className="lg:col-span-5 p-6 sm:p-8 rounded-3xl bg-linear-to-br from-lime-50 via-emerald-50/50 to-white dark:from-zinc-900 dark:to-black text-zinc-950 dark:text-white space-y-6 shadow-xl border border-lime-300/80 dark:border-zinc-800">
           <div className="space-y-2">
-            <span className="px-3 py-1 rounded-full bg-lime-400 text-black font-mono text-[11px] font-black uppercase">
+            <span className="px-3 py-1 rounded-full bg-lime-400 text-black font-mono text-[11px] font-black uppercase border border-lime-500 shadow-xs">
               Konsultasi Strategis 1-on-1
             </span>
-            <h4 className="text-xl font-black text-white">
+            <h4 className="text-xl font-black text-zinc-950 dark:text-white">
               Siap Mengubah Bisnis Anda Menjadi Mesin Penjual Otomatis?
             </h4>
-            <p className="text-xs text-zinc-400 leading-relaxed">
+            <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
               Jadwalkan sesi diskusi gratis dengan Tubagus Fitran Badruttamam. Kami akan memetakan alur bisnis Anda dan merancang sistem autopilot yang paling efisien.
             </p>
           </div>
 
-          <div className="space-y-2 text-xs text-zinc-300">
+          <div className="space-y-2 text-xs text-zinc-700 dark:text-zinc-300">
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-lime-400 shrink-0" />
+              <Check className="w-4 h-4 text-emerald-600 dark:text-lime-400 shrink-0" />
               <span>Audit alur penjualan saat ini secara cuma-cuma</span>
             </div>
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-lime-400 shrink-0" />
+              <Check className="w-4 h-4 text-emerald-600 dark:text-lime-400 shrink-0" />
               <span>Simulasi demo live AI WhatsApp sebelum deal</span>
             </div>
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-lime-400 shrink-0" />
+              <Check className="w-4 h-4 text-emerald-600 dark:text-lime-400 shrink-0" />
               <span>Perhitungan estimasi pengembalian modal (ROI)</span>
             </div>
           </div>
