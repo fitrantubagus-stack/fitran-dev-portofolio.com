@@ -15,6 +15,7 @@ import { CVModal } from './components/CVModal';
 import { CommandMenu } from './components/CommandMenu';
 import { ClaudeCodeTerminal3D } from './components/ClaudeCodeTerminal3D';
 import { ScrollReveal } from './components/ScrollReveal';
+import { InteractiveFeatureGrid } from './components/InteractiveFeatureGrid';
 import { SpotifyPlaylist } from './components/SpotifyPlaylist';
 import { KlasikEcosystemView } from './components/KlasikEcosystemView';
 import { CERTIFICATES_DATA, getCertPreviewPath } from './data/portfolioData';
@@ -472,6 +473,19 @@ export default function App() {
 
                       <ScrollReveal variant="fade-up" delay={40}>
                         <LogoMarquee />
+                      </ScrollReveal>
+
+                      {/* 4 Feature Cards Grid (Inspirasi ngodingpakeai & desainpakeai) */}
+                      <ScrollReveal variant="fade-up" delay={50}>
+                        <div className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-[#0B0F19]/90 py-14">
+                          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <InteractiveFeatureGrid
+                              onSelectFeature={() => {
+                                handleNavigate('services');
+                              }}
+                            />
+                          </div>
+                        </div>
                       </ScrollReveal>
 
                       <ScrollReveal variant="zoom-in" delay={60}>

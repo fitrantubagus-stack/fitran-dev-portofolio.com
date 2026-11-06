@@ -34,6 +34,7 @@ import { MateriArticleVisual } from './MateriArticleVisuals';
 import { FitranPixelLogo, FitranPixelIcon, TealBot, BlueBot, OrangeBot } from './FitranPixelLogo';
 import { WebsiteKilatPromoPoster, CybersecurityOperationsPoster, MetaCapiPromoPoster } from './PromotionalShowcasePosters';
 import { BusinessDilemmaSection } from './BusinessDilemmaSection';
+import { InteractiveFeatureGrid } from './InteractiveFeatureGrid';
 import { AboutMeDetailedSection } from './AboutMeDetailedSection';
 import { GoogleDeveloperLogo } from './GoogleDeveloperLogo';
 import { SpotifyPlaylist } from './SpotifyPlaylist';
@@ -888,6 +889,21 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           <BusinessDilemmaSection
             onWhatsAppInquiry={handleWhatsAppConsultation}
             onNavigateServices={() => navigateTo('services')}
+          />
+
+          {/* 2.8 4 PILAR FITUR CERDAS (INSPIRASI DESAIN LINE-ART NGODINGPAKEAI & DESAINPAKEAI) */}
+          <InteractiveFeatureGrid
+            onSelectFeature={(id) => {
+              if (id === 'plan') {
+                navigateTo('services');
+              } else if (id === 'desainpakeai') {
+                navigateTo('services');
+              } else if (id === 'andalai') {
+                handleWhatsAppConsultation('Konsultasi Integrasi AI Agent & WhatsApp Automation');
+              } else if (id === 'template') {
+                navigateTo('services');
+              }
+            }}
           />
 
           {/* 3. KAPABILITAS */}
