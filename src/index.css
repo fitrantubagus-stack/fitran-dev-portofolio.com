@@ -164,3 +164,24 @@
 .animate-page-enter {
   animation: pageEnter 150ms ease-out forwards;
 }
+
+/* Continuous QRIS Laser Scanner Beam */
+@keyframes laserSweep {
+  0% {
+    top: 6%;
+    opacity: 0.75;
+  }
+  50% {
+    top: 90%;
+    opacity: 1;
+  }
+  100% {
+    top: 6%;
+    opacity: 0.75;
+  }
+}
+
+.animate-laser-sweep {
+  animation: laserSweep 2s ease-in-out infinite;
+}
+

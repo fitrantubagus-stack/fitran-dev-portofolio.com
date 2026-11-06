@@ -475,12 +475,12 @@ export default function App() {
                         <LogoMarquee />
                       </ScrollReveal>
 
-                      {/* 4 Feature Cards Grid (Inspirasi ngodingpakeai & desainpakeai) */}
+                      {/* 4 Pilar Fitur Cerdas Inovatif Fitran.dev (9s Boost Cycle) */}
                       <ScrollReveal variant="fade-up" delay={50}>
                         <div className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-[#0B0F19]/90 py-14">
                           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                             <InteractiveFeatureGrid
-                              onSelectFeature={() => {
+                              onSelectFeature={(id) => {
                                 handleNavigate('services');
                               }}
                             />
