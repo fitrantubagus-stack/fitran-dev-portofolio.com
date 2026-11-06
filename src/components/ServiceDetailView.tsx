@@ -1,4 +1,5 @@
 import React from 'react';
+import { InteractiveIsometricPipeline } from './InteractiveIsometricPipeline';
 import {
   Globe,
   Code2,
@@ -693,23 +694,9 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
           </p>
         </div>
 
-        {/* Visual Workflow Infographic Banner (Compact, Non-Black) */}
-        <div className="rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 shadow-sm relative group max-w-4xl mx-auto">
-          <div className="px-3.5 py-2 bg-zinc-100 dark:bg-zinc-800/80 border-b border-zinc-200 dark:border-zinc-700/80 flex items-center justify-between text-xs font-mono text-zinc-600 dark:text-zinc-400">
-            <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Pipeline Rekayasa Arsitektur Sistem</span>
-            </span>
-            <span className="text-[11px] text-zinc-500 dark:text-zinc-400">Tahap 1 s/d 4 Terverifikasi SLA</span>
-          </div>
-          <div className="relative overflow-hidden bg-zinc-950">
-            <img
-              src="/engineering-workflow-real.jpg"
-              alt="Dokumentasi Riil Kolaborasi Tim Rekayasa Perangkat Lunak dan Perencanaan Arsitektur Digital Fitran Dev"
-              className="w-full max-h-52 sm:max-h-64 object-cover object-center group-hover:scale-101 transition-transform duration-500"
-              loading="lazy"
-            />
-          </div>
+        {/* Interactive 3D Workflow Stage — Replacing Static Photo with Animated Isometric Pipeline */}
+        <div className="max-w-5xl mx-auto">
+          <InteractiveIsometricPipeline />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

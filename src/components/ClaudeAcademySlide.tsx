@@ -87,63 +87,69 @@ export const ClaudeAcademySlide: React.FC<ClaudeAcademySlideProps> = ({
       return (
         <div
           onClick={handleVisualClick}
-          className="relative w-full aspect-[16/9] sm:aspect-[21/9] bg-gradient-to-br from-[#121826] via-[#1A2234] to-[#251B38] p-5 sm:p-7 flex flex-col justify-between text-white cursor-pointer group overflow-hidden select-none"
+          className="relative w-full min-h-[280px] bg-gradient-to-br from-[#121826] via-[#1A2234] to-[#251B38] p-6 sm:p-8 flex flex-col justify-between text-white cursor-pointer group rounded-2xl overflow-hidden select-none"
         >
           {/* Ambient Glow */}
           <div className="absolute -top-10 -right-10 w-64 h-64 bg-amber-500/15 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
           <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-purple-500/15 rounded-full blur-3xl pointer-events-none" />
 
           {/* Top Tag & Maximize Pill */}
-          <div className="relative z-10 flex items-center justify-between">
+          <div className="relative z-10 flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 rounded-md bg-amber-500/20 border border-amber-400/30 text-amber-300 font-mono text-[10px] font-bold tracking-wider uppercase">
+              <span className="px-3 py-1 rounded-lg bg-amber-500/20 border border-amber-400/30 text-amber-300 font-mono text-[11px] font-bold tracking-wider uppercase">
                 ALUR KNOWLEDGE &amp; AI AGENT
               </span>
-              <span className="text-[11px] font-mono text-zinc-400 hidden sm:inline">
+              <span className="text-xs font-mono text-zinc-300 hidden sm:inline">
                 SOP Bisnis → Guardrails → WhatsApp Real-Time
               </span>
             </div>
-            <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white font-mono text-[10px] transition-colors">
-              <Maximize2 className="w-3 h-3" />
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-mono text-xs transition-colors">
+              <Maximize2 className="w-3.5 h-3.5 text-amber-400" />
               <span>Perbesar Visual</span>
             </div>
           </div>
 
-          {/* Center Graphic: Interactive Flow Diagram */}
-          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3 my-auto py-2">
-            <div className="p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md space-y-1">
-              <div className="flex items-center justify-between text-[10px] font-mono text-amber-400 font-bold">
+          {/* Center Graphic: Spacious Interactive Flow Cards */}
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-4 my-auto py-2">
+            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-2 hover:border-amber-400/40 transition-colors">
+              <div className="flex items-center justify-between text-[11px] font-mono text-amber-400 font-bold">
                 <span>01. DATA BISNIS</span>
-                <Bot className="w-3.5 h-3.5" />
+                <Bot className="w-4 h-4" />
               </div>
-              <p className="text-xs font-bold text-white">Dokumen &amp; SOP Perusahaan</p>
-              <p className="text-[10px] text-zinc-300 leading-tight">Buku katalog, harga, jam operasional, dan aturan toko</p>
+              <p className="text-sm font-bold text-white">Dokumen &amp; SOP Perusahaan</p>
+              <p className="text-xs text-zinc-300 leading-relaxed font-normal">
+                Buku katalog produk, daftar harga grosir, jam operasional, dan aturan resmi toko.
+              </p>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/5 border border-amber-500/30 backdrop-blur-md space-y-1 shadow-sm">
-              <div className="flex items-center justify-between text-[10px] font-mono text-amber-300 font-bold">
+            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-amber-500/40 backdrop-blur-md space-y-2 shadow-sm hover:border-amber-400 transition-colors">
+              <div className="flex items-center justify-between text-[11px] font-mono text-amber-300 font-bold">
                 <span>02. FILTER PENGAMAN</span>
-                <ShieldCheck className="w-3.5 h-3.5" />
+                <ShieldCheck className="w-4 h-4 text-amber-400" />
               </div>
-              <p className="text-xs font-bold text-white">Guardrails &amp; Validasi</p>
-              <p className="text-[10px] text-zinc-300 leading-tight">Cegah bot ngawur, tolak pertanyaan di luar lingkup bisnis</p>
+              <p className="text-sm font-bold text-white">Guardrails &amp; Validasi</p>
+              <p className="text-xs text-zinc-300 leading-relaxed font-normal">
+                Mencegah bot menjawab ngawur dan menolak pertanyaan di luar lingkup bisnis Anda.
+              </p>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/5 border border-emerald-500/30 backdrop-blur-md space-y-1">
-              <div className="flex items-center justify-between text-[10px] font-mono text-emerald-400 font-bold">
+            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-emerald-500/40 backdrop-blur-md space-y-2 hover:border-emerald-400 transition-colors">
+              <div className="flex items-center justify-between text-[11px] font-mono text-emerald-400 font-bold">
                 <span>03. JAWABAN AKURAT</span>
-                <Zap className="w-3.5 h-3.5" />
+                <Zap className="w-4 h-4 text-emerald-400" />
               </div>
-              <p className="text-xs font-bold text-white">Respon Sopan &amp; Tepat</p>
-              <p className="text-[10px] text-zinc-300 leading-tight">Pelanggan puas, otomatis kirim rincian ongkir &amp; rekening</p>
+              <p className="text-sm font-bold text-white">Respon Sopan &amp; Tepat</p>
+              <p className="text-xs text-zinc-300 leading-relaxed font-normal">
+                Pelanggan puas, otomatis hitung tarif ekspedisi dan kirim rincian kuitansi closing.
+              </p>
             </div>
           </div>
 
           {/* Bottom Footer Details */}
-          <div className="relative z-10 flex items-center justify-between text-[10px] font-mono text-zinc-400 border-t border-white/10 pt-2">
+          <div className="relative z-10 flex items-center justify-between text-xs font-mono text-zinc-300 border-t border-white/10 pt-3 mt-4">
             <span>Standar Modul: {subchapterTitle}</span>
-            <span className="text-emerald-400 font-bold flex items-center gap-1">
-              <Check className="w-3 h-3" /> Teruji di Lapangan
+            <span className="text-emerald-400 font-bold flex items-center gap-1.5">
+              <Check className="w-4 h-4" /> Teruji di Lapangan
             </span>
           </div>
         </div>
@@ -154,62 +160,68 @@ export const ClaudeAcademySlide: React.FC<ClaudeAcademySlideProps> = ({
       return (
         <div
           onClick={handleVisualClick}
-          className="relative w-full aspect-[16/9] sm:aspect-[21/9] bg-gradient-to-br from-[#0D1F38] via-[#102B4E] to-[#1F193D] p-5 sm:p-7 flex flex-col justify-between text-white cursor-pointer group overflow-hidden select-none"
+          className="relative w-full min-h-[280px] bg-gradient-to-br from-[#0D1F38] via-[#102B4E] to-[#1F193D] p-6 sm:p-8 flex flex-col justify-between text-white cursor-pointer group rounded-2xl overflow-hidden select-none"
         >
           {/* Ambient Glow */}
           <div className="absolute -top-10 -right-10 w-64 h-64 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
 
           {/* Top Tag & Maximize Pill */}
-          <div className="relative z-10 flex items-center justify-between">
+          <div className="relative z-10 flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 rounded-md bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 font-mono text-[10px] font-bold tracking-wider uppercase">
+              <span className="px-3 py-1 rounded-lg bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 font-mono text-[11px] font-bold tracking-wider uppercase">
                 SERVER-SIDE TRACKING &amp; CAPI
               </span>
-              <span className="text-[11px] font-mono text-zinc-400 hidden sm:inline">
-                Browser Pixel + Server Handshake (EMQ 9.4)
+              <span className="text-xs font-mono text-zinc-300 hidden sm:inline">
+                Browser Pixel + Server Handshake (EMQ 9.8)
               </span>
             </div>
-            <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white font-mono text-[10px] transition-colors">
-              <Maximize2 className="w-3 h-3" />
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-mono text-xs transition-colors">
+              <Maximize2 className="w-3.5 h-3.5 text-cyan-400" />
               <span>Perbesar Visual</span>
             </div>
           </div>
 
           {/* Center Graphic */}
-          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3 my-auto py-2">
-            <div className="p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md space-y-1">
-              <div className="flex items-center justify-between text-[10px] font-mono text-cyan-400 font-bold">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-4 my-auto py-2">
+            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-2 hover:border-cyan-400/40 transition-colors">
+              <div className="flex items-center justify-between text-[11px] font-mono text-cyan-400 font-bold">
                 <span>01. PENGUNJUNG WEB</span>
-                <TrendingUp className="w-3.5 h-3.5" />
+                <TrendingUp className="w-4 h-4" />
               </div>
-              <p className="text-xs font-bold text-white">Aktivitas &amp; Klik Beli</p>
-              <p className="text-[10px] text-zinc-300 leading-tight">Pengunjung buka produk, masukkan keranjang, atau checkout</p>
+              <p className="text-sm font-bold text-white">Aktivitas &amp; Klik Beli</p>
+              <p className="text-xs text-zinc-300 leading-relaxed font-normal">
+                Pengunjung membuka produk, memasukkan ke keranjang, atau menyelesaikan checkout.
+              </p>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/5 border border-cyan-500/30 backdrop-blur-md space-y-1 shadow-sm">
-              <div className="flex items-center justify-between text-[10px] font-mono text-cyan-300 font-bold">
+            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-cyan-500/40 backdrop-blur-md space-y-2 shadow-sm hover:border-cyan-400 transition-colors">
+              <div className="flex items-center justify-between text-[11px] font-mono text-cyan-300 font-bold">
                 <span>02. JALUR DUA ARAH</span>
-                <Layers className="w-3.5 h-3.5" />
+                <Layers className="w-4 h-4 text-cyan-400" />
               </div>
-              <p className="text-xs font-bold text-white">Browser + Server CAPI</p>
-              <p className="text-[10px] text-zinc-300 leading-tight">Data dikirim via server mandiri, kebal iOS ad-blocker</p>
+              <p className="text-sm font-bold text-white">Browser + Server CAPI</p>
+              <p className="text-xs text-zinc-300 leading-relaxed font-normal">
+                Data dikirim melalui server mandiri berdedikasi, 100% kebal ad-blocker iOS 14+.
+              </p>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/5 border border-emerald-500/30 backdrop-blur-md space-y-1">
-              <div className="flex items-center justify-between text-[10px] font-mono text-emerald-400 font-bold">
+            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-emerald-500/40 backdrop-blur-md space-y-2 hover:border-emerald-400 transition-colors">
+              <div className="flex items-center justify-between text-[11px] font-mono text-emerald-400 font-bold">
                 <span>03. ATRIBUSI IKLAN</span>
-                <Zap className="w-3.5 h-3.5" />
+                <Zap className="w-4 h-4 text-emerald-400" />
               </div>
-              <p className="text-xs font-bold text-white">ROAS &amp; Omset Akurat</p>
-              <p className="text-[10px] text-zinc-300 leading-tight">Algoritma Meta/Google belajar cepat, biaya iklan jadi hemat</p>
+              <p className="text-sm font-bold text-white">ROAS &amp; Omset Akurat</p>
+              <p className="text-xs text-zinc-300 leading-relaxed font-normal">
+                Algoritma iklan belajar cepat dengan sinyal presisi, menurunkan biaya iklan hingga 40%.
+              </p>
             </div>
           </div>
 
           {/* Bottom Footer Details */}
-          <div className="relative z-10 flex items-center justify-between text-[10px] font-mono text-zinc-400 border-t border-white/10 pt-2">
+          <div className="relative z-10 flex items-center justify-between text-xs font-mono text-zinc-300 border-t border-white/10 pt-3 mt-4">
             <span>Standar Modul: {subchapterTitle}</span>
-            <span className="text-cyan-400 font-bold flex items-center gap-1">
-              <Check className="w-3 h-3" /> Skor EMQ 8.5+ Terjamin
+            <span className="text-cyan-400 font-bold flex items-center gap-1.5">
+              <Check className="w-4 h-4" /> Skor EMQ 9.8+ Terjamin
             </span>
           </div>
         </div>
@@ -220,62 +232,68 @@ export const ClaudeAcademySlide: React.FC<ClaudeAcademySlideProps> = ({
     return (
       <div
         onClick={handleVisualClick}
-        className="relative w-full aspect-[16/9] sm:aspect-[21/9] bg-gradient-to-br from-[#0F231D] via-[#133027] to-[#1C4538] p-5 sm:p-7 flex flex-col justify-between text-white cursor-pointer group overflow-hidden select-none"
+        className="relative w-full min-h-[280px] bg-gradient-to-br from-[#0F231D] via-[#133027] to-[#1C4538] p-6 sm:p-8 flex flex-col justify-between text-white cursor-pointer group rounded-2xl overflow-hidden select-none"
       >
         {/* Ambient Glow */}
         <div className="absolute -top-10 -right-10 w-64 h-64 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
 
         {/* Top Tag & Maximize Pill */}
-        <div className="relative z-10 flex items-center justify-between">
+        <div className="relative z-10 flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-1 rounded-md bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 font-mono text-[10px] font-bold tracking-wider uppercase">
+            <span className="px-3 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 font-mono text-[11px] font-bold tracking-wider uppercase">
               VIBE CODING &amp; HIGH-SPEED PROTOTYPING
             </span>
-            <span className="text-[11px] font-mono text-zinc-400 hidden sm:inline">
+            <span className="text-xs font-mono text-zinc-300 hidden sm:inline">
               Prompt Arsitektural → Audit Mandiri → Deploy Kilat
             </span>
           </div>
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white font-mono text-[10px] transition-colors">
-            <Maximize2 className="w-3 h-3" />
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-mono text-xs transition-colors">
+            <Maximize2 className="w-3.5 h-3.5 text-emerald-400" />
             <span>Perbesar Visual</span>
           </div>
         </div>
 
         {/* Center Graphic */}
-        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3 my-auto py-2">
-          <div className="p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md space-y-1">
-            <div className="flex items-center justify-between text-[10px] font-mono text-emerald-400 font-bold">
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-4 my-auto py-2">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-2 hover:border-emerald-400/40 transition-colors">
+            <div className="flex items-center justify-between text-[11px] font-mono text-emerald-400 font-bold">
               <span>01. RANCANG SPESIFIKASI</span>
-              <Terminal className="w-3.5 h-3.5" />
+              <Terminal className="w-4 h-4" />
             </div>
-            <p className="text-xs font-bold text-white">Arahan Spesifik &amp; Jelas</p>
-            <p className="text-[10px] text-zinc-300 leading-tight">Jelaskan alur data dan kebutuhan fitur dengan bahasa sederhana</p>
+            <p className="text-sm font-bold text-white">Arahan Spesifik &amp; Jelas</p>
+            <p className="text-xs text-zinc-300 leading-relaxed font-normal">
+              Menjelaskan alur data dan kebutuhan fitur dengan bahasa sederhana tanpa ambiguitas.
+            </p>
           </div>
 
-          <div className="p-3 rounded-xl bg-white/5 border border-emerald-500/30 backdrop-blur-md space-y-1 shadow-sm">
-            <div className="flex items-center justify-between text-[10px] font-mono text-emerald-300 font-bold">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-emerald-500/40 backdrop-blur-md space-y-2 shadow-sm hover:border-emerald-400 transition-colors">
+            <div className="flex items-center justify-between text-[11px] font-mono text-emerald-300 font-bold">
               <span>02. REKAYASA KODE</span>
-              <Code2 className="w-3.5 h-3.5" />
+              <Code2 className="w-4 h-4 text-emerald-400" />
             </div>
-            <p className="text-xs font-bold text-white">Claude Code CLI Helper</p>
-            <p className="text-[10px] text-zinc-300 leading-tight">Ketik kode bersih, pasang komponen modular, tanpa file berantakan</p>
+            <p className="text-sm font-bold text-white">Claude Code CLI Helper</p>
+            <p className="text-xs text-zinc-300 leading-relaxed font-normal">
+              Menulis kode bersih, memasang komponen modular, tanpa file sampah atau duplikasi.
+            </p>
           </div>
 
-          <div className="p-3 rounded-xl bg-white/5 border border-teal-500/30 backdrop-blur-md space-y-1">
-            <div className="flex items-center justify-between text-[10px] font-mono text-teal-400 font-bold">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-teal-500/40 backdrop-blur-md space-y-2 hover:border-teal-400 transition-colors">
+            <div className="flex items-center justify-between text-[11px] font-mono text-teal-400 font-bold">
               <span>03. UJI OTOMATIS</span>
-              <ShieldCheck className="w-3.5 h-3.5" />
+              <ShieldCheck className="w-4 h-4 text-teal-400" />
             </div>
-            <p className="text-xs font-bold text-white">Siap Tayang ke Publik</p>
-            <p className="text-[10px] text-zinc-300 leading-tight">Bebas error, kecepatan load dibawah 1 detik, siap dipakai</p>
+            <p className="text-sm font-bold text-white">Siap Tayang ke Publik</p>
+            <p className="text-xs text-zinc-300 leading-relaxed font-normal">
+              Bebas error kompilasi, kecepatan load di bawah 1 detik, dan 100% siap dipakai pelanggan.
+            </p>
           </div>
         </div>
 
         {/* Bottom Footer Details */}
-        <div className="relative z-10 flex items-center justify-between text-[10px] font-mono text-zinc-400 border-t border-white/10 pt-2">
+        <div className="relative z-10 flex items-center justify-between text-xs font-mono text-zinc-300 border-t border-white/10 pt-3 mt-4">
           <span>Standar Modul: {subchapterTitle}</span>
-          <span className="text-emerald-400 font-bold flex items-center gap-1">
-            <Check className="w-3 h-3" /> Bebas Istilah Rumit
+          <span className="text-emerald-400 font-bold flex items-center gap-1.5">
+            <Check className="w-4 h-4" /> Bebas Istilah Rumit
           </span>
         </div>
       </div>
@@ -296,7 +314,7 @@ export const ClaudeAcademySlide: React.FC<ClaudeAcademySlideProps> = ({
   const checklistCount = checklist.length > 0 ? checklist.length : 3;
 
   return (
-    <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0E1117] shadow-lg overflow-hidden space-y-6 p-6 sm:p-8">
+    <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0E1117] shadow-lg overflow-hidden space-y-8 sm:space-y-10 p-6 sm:p-8">
       {/* 1. ACADEMY HEADER BAR */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-100 dark:border-zinc-800/80 pb-4">
         <div className="flex items-center gap-2.5">
@@ -339,7 +357,7 @@ export const ClaudeAcademySlide: React.FC<ClaudeAcademySlideProps> = ({
       </div>
 
       {/* 3. CLAUDE ACADEMY 3-PANEL CONCEPT CARDS (✓, ✕, ?) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 pt-2">
         {/* Card 1: Pola Terbaik (Best Practice) */}
         <div
           onClick={() => setActiveTab('pattern')}

@@ -14,6 +14,7 @@ import {
   Lock,
   Maximize2,
 } from 'lucide-react';
+import { InteractiveIsometricPipeline } from './InteractiveIsometricPipeline';
 
 interface ServiceWorkflowSectionProps {
   onWhatsAppInquiry: (topic?: string, budget?: string) => void;
@@ -93,58 +94,9 @@ export const ServiceWorkflowSection: React.FC<ServiceWorkflowSectionProps> = ({
           </button>
         </div>
 
-        {/* High-Tech Workflow Diagram Visual Showcase — Fully Visible, Click to Expand */}
-        <div className="max-w-4xl mx-auto rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/80 shadow-md relative group">
-          <div className="px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800/80 border-b border-zinc-200 dark:border-zinc-700/80 flex items-center justify-between text-xs font-mono text-zinc-600 dark:text-zinc-400">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-zinc-800 dark:text-zinc-200 font-bold">Dokumentasi Alur Kerja • High-Performance Standard</span>
-            </div>
-            <span className="hidden sm:inline text-emerald-600 dark:text-emerald-400 text-[11px] font-bold">ISO-Grade Security &amp; OWASP Top 10</span>
-          </div>
-
-          <div
-            onClick={() =>
-              window.dispatchEvent(
-                new CustomEvent('open-image-lightbox', {
-                  detail: {
-                    src: '/engineering-workflow-real.jpg',
-                    title: 'Alur Pengerjaan Rekayasa Perangkat Lunak Digital',
-                    alt: 'Dokumentasi Alur Kerja Proyek',
-                  },
-                })
-              )
-            }
-            className="relative overflow-hidden bg-zinc-950 cursor-pointer"
-            title="Klik untuk melihat gambar ukuran penuh"
-          >
-            <img
-              src="/engineering-workflow-real.jpg"
-              alt="Dokumentasi Riil Kolaborasi Tim Rekayasa Perangkat Lunak dan Perencanaan Arsitektur Digital Fitran Dev"
-              className="w-full max-h-72 object-contain sm:object-cover object-center group-hover:scale-101 transition-transform duration-500"
-              loading="lazy"
-            />
-
-            {/* Click to Expand Pill */}
-            <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md text-white font-mono text-[10px] font-bold flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity shadow-sm">
-              <Maximize2 className="w-3 h-3 text-emerald-400" />
-              <span>Klik untuk Perbesar</span>
-            </div>
-          </div>
-
-          {/* Clean Quality Guarantee Bar Placed UNDER the Photo (Zero text obstructing image) */}
-          <div className="p-4 bg-zinc-100 dark:bg-zinc-800/80 border-t border-zinc-200 dark:border-zinc-700/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2 text-zinc-800 dark:text-zinc-200">
-              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-              <span className="text-xs">
-                <strong>Jaminan Kualitas:</strong> 100% Hak Milik Source Code, Bebas Sewa Tahunan, dan Garansi Resmi 30 Hari.
-              </span>
-            </div>
-            <div className="flex items-center gap-2 font-mono text-[10px] text-zinc-500 dark:text-zinc-400 shrink-0">
-              <span className="px-2.5 py-1 rounded-md bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-emerald-600 dark:text-emerald-400 font-bold">&lt;0.8s LCP</span>
-              <span className="px-2.5 py-1 rounded-md bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-blue-600 dark:text-blue-400 font-bold">Lighthouse 100</span>
-            </div>
-          </div>
+        {/* High-Tech Interactive 3D Workflow Stage — Replacing Static Photo with Animated Isometric Pipeline */}
+        <div className="max-w-5xl mx-auto">
+          <InteractiveIsometricPipeline />
         </div>
 
         {/* 5-Stage Interactive Workflow Cards Grid (Clean, Non-Black) */}
