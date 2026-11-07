@@ -9,6 +9,7 @@ import {
   KLASIK_BLOG_POSTS,
   ServicePackage,
   LearningChapter,
+  SubchapterItem,
   LearningTrack,
   BlogPost,
   SecurityLayer,
@@ -891,20 +892,8 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
             onNavigateServices={() => navigateTo('services')}
           />
 
-          {/* 2.8 4 PILAR FITUR CERDAS (INSPIRASI INOVATIF FITRAN.DEV 9S BOOST CYCLE) */}
-          <InteractiveFeatureGrid
-            onSelectFeature={(id) => {
-              if (id === 'fullstack-kilat') {
-                navigateTo('services');
-              } else if (id === 'whatsapp-agent') {
-                handleWhatsAppConsultation('Konsultasi Integrasi WhatsApp AI Agent 24/7');
-              } else if (id === 'meta-capi-tracking') {
-                handleWhatsAppConsultation('Konsultasi Setup Meta Conversions API (CAPI)');
-              } else if (id === 'vps-hardening-speed') {
-                navigateTo('services');
-              }
-            }}
-          />
+          {/* 2.8 4 PILAR FITUR CERDAS DI BERANDA (/corporation = 4 Kartu) */}
+          <InteractiveFeatureGrid />
 
           {/* 3. KAPABILITAS */}
           <section className="space-y-6">
@@ -2524,23 +2513,6 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
           </div>
         </div>
         )}
-
-        {/* 4 Pilar Fitur Cerdas Inovatif (9s Boost Cycle) - Terpasang di /corporation/belajar */}
-        <div className="mt-12 pt-10 border-t border-zinc-200 dark:border-zinc-800">
-          <InteractiveFeatureGrid
-            onSelectFeature={(id) => {
-              if (id === 'fullstack-kilat') {
-                navigateTo('services');
-              } else if (id === 'whatsapp-agent') {
-                handleWhatsAppConsultation('Konsultasi Integrasi WhatsApp AI Agent 24/7');
-              } else if (id === 'meta-capi-tracking') {
-                handleWhatsAppConsultation('Konsultasi Setup Meta Conversions API (CAPI)');
-              } else if (id === 'vps-hardening-speed') {
-                navigateTo('services');
-              }
-            }}
-          />
-        </div>
       </div>
     )}
 
@@ -2549,21 +2521,6 @@ export const KlasikEcosystemView: React.FC<KlasikEcosystemViewProps> = ({
       {/* ========================================================================= */}
       {activePage === 'services' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-12 sm:pb-12 space-y-10">
-          {/* 4 Pilar Fitur Cerdas Inovatif (9s Boost Cycle) */}
-          <InteractiveFeatureGrid
-            onSelectFeature={(id) => {
-              if (id === 'fullstack-kilat') {
-                navigateTo('services');
-              } else if (id === 'whatsapp-agent') {
-                handleWhatsAppConsultation('Konsultasi Integrasi WhatsApp AI Agent 24/7');
-              } else if (id === 'meta-capi-tracking') {
-                handleWhatsAppConsultation('Konsultasi Setup Meta Conversions API (CAPI)');
-              } else if (id === 'vps-hardening-speed') {
-                navigateTo('services');
-              }
-            }}
-          />
-
           <WebzooServiceCatalog
             onWhatsAppInquiry={handleWhatsAppConsultation}
             onNavigateHome={() => navigateTo('home')}

@@ -31,8 +31,8 @@ export interface SubServiceItem {
   duration: string;
   iconName: string;
   badge?: string;
-  overview: string;
-  keyBenefits: string[];
+  overview?: string;
+  keyBenefits?: string[];
   mockupType?: 'website' | 'ecommerce' | 'mobile' | 'ai' | 'database' | 'terminal' | 'analytics';
   featureSectionTitle?: string;
   featureSectionSubtitle?: string;

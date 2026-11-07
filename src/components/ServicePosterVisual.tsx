@@ -325,7 +325,7 @@ export const ServicePosterVisual: React.FC<ServicePosterVisualProps> = ({
   return (
     <div
       onClick={handleClick}
-      className={`relative w-full aspect-[16/10] sm:aspect-[16/10] rounded-2xl overflow-hidden border ${config.borderAccent} bg-linear-to-br ${config.themeGradient} p-4 sm:p-5 flex flex-col justify-between text-white shadow-md hover:shadow-xl transition-all cursor-pointer group select-none ${className}`}
+      className={`relative w-full min-h-[225px] sm:min-h-[240px] rounded-2xl overflow-hidden border ${config.borderAccent} bg-linear-to-br ${config.themeGradient} p-4 sm:p-5 flex flex-col justify-between gap-3 text-white shadow-md hover:shadow-xl transition-all cursor-pointer group select-none ${className}`}
     >
       {/* Ambient Radial Glow */}
       <div
@@ -334,8 +334,8 @@ export const ServicePosterVisual: React.FC<ServicePosterVisualProps> = ({
       <div className="absolute inset-0 bg-radial from-transparent via-black/10 to-black/30 pointer-events-none" />
 
       {/* TOP HEADER: Official Logo + Category Pill */}
-      <div className="relative z-10 flex items-center justify-between gap-2 border-b border-white/10 pb-2.5">
-        <div className="flex items-center gap-1.5">
+      <div className="relative z-10 flex items-center justify-between gap-2 border-b border-white/15 pb-2.5">
+        <div className="flex items-center gap-1.5 shrink-0">
           <div className="w-6 h-6 rounded-md bg-white text-[#0B1E3D] flex items-center justify-center font-black text-[10px] shadow-xs">
             FD
           </div>
@@ -344,11 +344,11 @@ export const ServicePosterVisual: React.FC<ServicePosterVisualProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5">
-          <span className="px-2 py-0.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white font-mono text-[9px] font-bold tracking-wider uppercase">
+        <div className="flex items-center gap-1.5 min-w-0">
+          <span className="px-2 py-0.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white font-mono text-[9px] font-bold tracking-wider uppercase truncate">
             {config.badge}
           </span>
-          <div className="w-5 h-5 rounded-md bg-white/10 flex items-center justify-center text-white/80 group-hover:bg-white group-hover:text-black transition-colors">
+          <div className="w-5 h-5 rounded-md bg-white/10 flex items-center justify-center text-white/80 group-hover:bg-white group-hover:text-black transition-colors shrink-0">
             <Maximize2 className="w-3 h-3" />
           </div>
         </div>
@@ -356,18 +356,18 @@ export const ServicePosterVisual: React.FC<ServicePosterVisualProps> = ({
 
       {/* CENTER: Main Title & Distinct Service Motif */}
       <div className="relative z-10 grid grid-cols-12 gap-3 items-center my-auto py-1">
-        <div className="col-span-8 space-y-1">
+        <div className="col-span-8 space-y-1.5">
           <span className={`font-mono text-[10px] font-bold uppercase tracking-wider block ${config.textAccent}`}>
             {config.category}
           </span>
-          <h3 className="font-black text-sm sm:text-base text-white leading-snug tracking-tight line-clamp-2">
+          <h3 className="font-black text-sm sm:text-base text-white leading-snug tracking-tight">
             {config.title}
           </h3>
-          <div className="flex items-center gap-2 pt-1">
+          <div className="flex flex-wrap items-center gap-2 pt-1">
             <span className="px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-md text-white font-mono text-xs font-black">
               {config.highlightStat}
             </span>
-            <span className="text-[10px] text-white/80 font-medium">
+            <span className="text-[10px] text-white/85 font-medium">
               {config.highlightLabel}
             </span>
           </div>
@@ -375,20 +375,20 @@ export const ServicePosterVisual: React.FC<ServicePosterVisualProps> = ({
 
         {/* Distinct Vector 3D Graphic Container */}
         <div className="col-span-4 flex justify-end">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
             {config.icon}
           </div>
         </div>
       </div>
 
       {/* BOTTOM FOOTER: Official Contact Details (Email & Phone) */}
-      <div className="relative z-10 pt-2 border-t border-white/10 flex flex-wrap items-center justify-between text-[10px] font-mono text-white/90">
-        <span className="flex items-center gap-1 hover:text-emerald-300 transition-colors">
-          <Mail className="w-3 h-3 text-emerald-400" />
+      <div className="relative z-10 pt-2.5 border-t border-white/15 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-[10px] font-mono text-white/95">
+        <span className="flex items-center gap-1.5 hover:text-emerald-300 transition-colors">
+          <Mail className="w-3 h-3 text-emerald-400 shrink-0" />
           <span>fitranbadrttmamtb@gmail.com</span>
         </span>
-        <span className="flex items-center gap-1 hover:text-emerald-300 transition-colors">
-          <Phone className="w-3 h-3 text-emerald-400" />
+        <span className="flex items-center gap-1.5 hover:text-emerald-300 transition-colors font-bold">
+          <Phone className="w-3 h-3 text-emerald-400 shrink-0" />
           <span>087722100276</span>
         </span>
       </div>

@@ -92,7 +92,7 @@ export const InteractiveToolsShowcase: React.FC = () => {
       {/* 3D FANNED DECK CAROUSEL (Responsive on Mobile & Desktop) */}
       <div
         onMouseLeave={() => setHoveredIndex(null)}
-        className="w-full overflow-x-auto no-scrollbar py-8 sm:py-12 px-2 flex justify-start sm:justify-center touch-pan-x"
+        className="w-full overflow-x-auto no-scrollbar pt-14 pb-6 sm:pt-16 sm:pb-10 px-2 flex justify-start sm:justify-center touch-pan-x"
       >
         {/* The Card Fan Deck - Centered on Desktop, Smoothly Scrollable with End Paddings on Mobile */}
         <div className="flex items-center -space-x-3.5 sm:-space-x-6 px-10 sm:px-6 min-w-max mx-auto py-4">

@@ -498,23 +498,6 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
             'Bandingkan alur kerja, spesifikasi teknis, dan estimasi waktu untuk solusi bisnis lainnya. Klik kartu untuk membuka detail solusi.'
           )}
         </div>
-
-        {/* SAAS SOLUTIONS SHOWCASE & SEKAWAN WEB SOLUTIONS */}
-        <SaaSSolutionsShowcase onWhatsAppInquiry={onWhatsAppInquiry} />
-
-        {showFlipbook && (
-          <div className="pt-2 animate-fade-in">
-            <InteractiveFlipbook onClose={() => setShowFlipbook(false)} />
-          </div>
-        )}
-
-        <SekawanWebSolutions
-          onWhatsAppInquiry={onWhatsAppInquiry}
-          onOpenFlipbook={() => {
-            setShowFlipbook(true);
-            window.scrollTo({ top: 400, behavior: 'smooth' });
-          }}
-        />
       </div>
     );
   }
@@ -720,6 +703,11 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
       </div>
 
       {/* ========================================================================= */}
+      {/* 1.6 2 KARTU ANIMASI SKEMA VEKTOR KHUSUS /LAYANAN                          */}
+      {/* ========================================================================= */}
+      <SaaSSolutionsShowcase onWhatsAppInquiry={onWhatsAppInquiry} mode="cards-only" />
+
+      {/* ========================================================================= */}
       {/* 1.8 HIGH-TECH 3D WORKFLOW & ROADMAP INFOGRAPHIC SHOWCASE                   */}
       {/* ========================================================================= */}
       <ServiceWorkflowSection onWhatsAppInquiry={onWhatsAppInquiry} />
@@ -853,9 +841,9 @@ export const WebzooServiceCatalog: React.FC<WebzooServiceCatalogProps> = ({
       )}
 
       {/* ========================================================================= */}
-      {/* 2.5 SAAS INTERACTIVE BENTO GRID & PRICING TABLE (NGODINGPAKEAI.COM STYLE) */}
+      {/* 2.5 SAAS PRICING TABLE                                                    */}
       {/* ========================================================================= */}
-      <SaaSSolutionsShowcase onWhatsAppInquiry={onWhatsAppInquiry} />
+      <SaaSSolutionsShowcase onWhatsAppInquiry={onWhatsAppInquiry} mode="pricing-only" />
 
       {/* 3D INTERACTIVE FLIPBOOK EXPANDED VIEW */}
       {showFlipbook && (

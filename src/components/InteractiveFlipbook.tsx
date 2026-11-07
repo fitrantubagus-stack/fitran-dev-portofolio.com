@@ -323,24 +323,24 @@ export const InteractiveFlipbook: React.FC<InteractiveFlipbookProps> = ({
         <button
           onClick={handlePrevPage}
           disabled={spreadIndex === 0 || flipDirection !== null}
-          className={`absolute left-3 sm:left-6 z-40 w-11 h-11 rounded-full bg-white/90 hover:bg-white dark:bg-zinc-900/90 text-zinc-800 dark:text-zinc-100 shadow-xl flex items-center justify-center transition-all cursor-pointer ${
+          className={`absolute left-1.5 sm:left-6 z-40 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/90 hover:bg-white dark:bg-zinc-900/90 text-zinc-800 dark:text-zinc-100 shadow-xl flex items-center justify-center transition-all cursor-pointer ${
             spreadIndex === 0 ? 'opacity-20 cursor-not-allowed' : 'hover:scale-110 active:scale-95'
           }`}
           title="Halaman Sebelumnya"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
 
         {/* Floating Right Paddle */}
         <button
           onClick={handleNextPage}
           disabled={spreadIndex === MATERI_SPREADS.length - 1 || flipDirection !== null}
-          className={`absolute right-3 sm:right-6 z-40 w-11 h-11 rounded-full bg-white/90 hover:bg-white dark:bg-zinc-900/90 text-zinc-800 dark:text-zinc-100 shadow-xl flex items-center justify-center transition-all cursor-pointer ${
+          className={`absolute right-1.5 sm:right-6 z-40 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/90 hover:bg-white dark:bg-zinc-900/90 text-zinc-800 dark:text-zinc-100 shadow-xl flex items-center justify-center transition-all cursor-pointer ${
             spreadIndex === MATERI_SPREADS.length - 1 ? 'opacity-20 cursor-not-allowed' : 'hover:scale-110 active:scale-95'
           }`}
           title="Halaman Selanjutnya"
         >
-          <ChevronRight className="w-6 h-6" />
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
 
         {/* 3D BOOK SPREAD WRAPPER */}
@@ -358,7 +358,7 @@ export const InteractiveFlipbook: React.FC<InteractiveFlipbookProps> = ({
           {/* LEFT PAGE (Interactive Click to Flip Back) */}
           <div
             onClick={handlePrevPage}
-            className={`relative p-6 sm:p-9 flex flex-col justify-between border-r border-zinc-300/80 min-h-[500px] sm:min-h-[560px] cursor-pointer transition-transform duration-500 ease-out ${
+            className={`relative px-8 py-6 sm:p-9 flex flex-col justify-between border-r border-zinc-300/80 min-h-[500px] sm:min-h-[560px] cursor-pointer transition-transform duration-500 ease-out ${
               flipDirection === 'prev' ? 'rotate-y-[-15deg] shadow-2xl' : ''
             }`}
             style={{
@@ -399,7 +399,7 @@ export const InteractiveFlipbook: React.FC<InteractiveFlipbookProps> = ({
           {/* RIGHT PAGE (Interactive Click to Flip Forward with 3D Page Turn) */}
           <div
             onClick={handleNextPage}
-            className={`relative p-6 sm:p-9 flex flex-col justify-between min-h-[500px] sm:min-h-[560px] cursor-pointer transition-transform duration-500 ease-out ${
+            className={`relative px-8 py-6 sm:p-9 flex flex-col justify-between min-h-[500px] sm:min-h-[560px] cursor-pointer transition-transform duration-500 ease-out ${
               flipDirection === 'next' ? 'rotate-y-[-45deg] scale-98 shadow-2xl origin-left' : ''
             }`}
             style={{

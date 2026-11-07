@@ -86,6 +86,7 @@ export interface BlogPost {
   readTime: string;
   date: string;
   featured?: boolean;
+  icon?: string;
   content: {
     intro: string;
     keyTakeaways: string[];

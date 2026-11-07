@@ -1,25 +1,5 @@
 import React, { useState } from 'react';
-import {
-  CheckCircle2,
-  XCircle,
-  HelpCircle,
-  Code2,
-  Sparkles,
-  BookOpen,
-  ArrowRight,
-  Terminal,
-  Cpu,
-  Layers,
-  Copy,
-  Check,
-  Maximize2,
-  ShieldCheck,
-  Zap,
-  TrendingUp,
-  Bot,
-  AlertTriangle,
-  Lightbulb,
-} from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 
 interface ClaudeAcademySlideProps {
   chapterTitle?: string;
@@ -34,535 +14,389 @@ interface ClaudeAcademySlideProps {
 }
 
 export const ClaudeAcademySlide: React.FC<ClaudeAcademySlideProps> = ({
-  chapterTitle = 'Fondasi Rekayasa Perangkat Lunak',
-  subchapterTitle = 'Standar Kode Bersih & Pola Produksi',
   subchapterNum = '01',
   trackId = 'ai',
-  practiceSnippet,
-  mistakes,
-  explanation,
   checklist = [],
-  situation,
 }) => {
-  const [activeTab, setActiveTab] = useState<'pattern' | 'antipattern' | 'checklist'>('pattern');
-  const [copied, setCopied] = useState<boolean>(false);
-  const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
+  const [hoveredCard, setHoveredCard] = useState<'pattern' | 'audit' | null>(null);
 
-  const handleCopy = () => {
-    if (!practiceSnippet) return;
-    navigator.clipboard?.writeText(practiceSnippet);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const toggleCheck = (idx: number) => {
-    setCheckedItems((prev) => ({ ...prev, [idx]: !prev[idx] }));
-  };
-
-  const trackBadgeLabel =
-    trackId === 'ai'
-      ? 'FITRAN AI ACADEMY'
-      : trackId === 'digital-marketing'
-      ? 'GROWTH & TRACKING ACADEMY'
-      : 'VIBE CODING & ARCHITECTURE';
-
-  // Dynamic visual banner configuration based on track and chapter
-  const renderDynamicVisual = () => {
-    const isAi = trackId === 'ai';
-    const isMarketing = trackId === 'digital-marketing';
-
-    const handleVisualClick = () => {
-      window.dispatchEvent(
-        new CustomEvent('open-image-lightbox', {
-          detail: {
-            src: '/claude-academy-learning-hub.png',
-            title: `Buku Panduan Modul ${subchapterNum} — ${subchapterTitle}`,
-            alt: chapterTitle,
-          },
-        })
-      );
-    };
-
-    if (isAi) {
-      return (
-        <div
-          onClick={handleVisualClick}
-          className="relative w-full min-h-[280px] bg-gradient-to-br from-[#121826] via-[#1A2234] to-[#251B38] p-6 sm:p-8 flex flex-col justify-between text-white cursor-pointer group rounded-2xl overflow-hidden select-none"
-        >
-          {/* Ambient Glow */}
-          <div className="absolute -top-10 -right-10 w-64 h-64 bg-amber-500/15 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
-          <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-purple-500/15 rounded-full blur-3xl pointer-events-none" />
-
-          {/* Top Tag & Maximize Pill */}
-          <div className="relative z-10 flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-lg bg-amber-500/20 border border-amber-400/30 text-amber-300 font-mono text-[11px] font-bold tracking-wider uppercase">
-                ALUR KNOWLEDGE &amp; AI AGENT
-              </span>
-              <span className="text-xs font-mono text-zinc-300 hidden sm:inline">
-                SOP Bisnis → Guardrails → WhatsApp Real-Time
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-mono text-xs transition-colors">
-              <Maximize2 className="w-3.5 h-3.5 text-amber-400" />
-              <span>Perbesar Visual</span>
-            </div>
-          </div>
-
-          {/* Center Graphic: Spacious Interactive Flow Cards */}
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-4 my-auto py-2">
-            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-2 hover:border-amber-400/40 transition-colors">
-              <div className="flex items-center justify-between text-[11px] font-mono text-amber-400 font-bold">
-                <span>01. DATA BISNIS</span>
-                <Bot className="w-4 h-4" />
-              </div>
-              <p className="text-sm font-bold text-white">Dokumen &amp; SOP Perusahaan</p>
-              <p className="text-xs text-zinc-300 leading-relaxed font-normal">
-                Buku katalog produk, daftar harga grosir, jam operasional, dan aturan resmi toko.
-              </p>
-            </div>
-
-            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-amber-500/40 backdrop-blur-md space-y-2 shadow-sm hover:border-amber-400 transition-colors">
-              <div className="flex items-center justify-between text-[11px] font-mono text-amber-300 font-bold">
-                <span>02. FILTER PENGAMAN</span>
-                <ShieldCheck className="w-4 h-4 text-amber-400" />
-              </div>
-              <p className="text-sm font-bold text-white">Guardrails &amp; Validasi</p>
-              <p className="text-xs text-zinc-300 leading-relaxed font-normal">
-                Mencegah bot menjawab ngawur dan menolak pertanyaan di luar lingkup bisnis Anda.
-              </p>
-            </div>
-
-            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-emerald-500/40 backdrop-blur-md space-y-2 hover:border-emerald-400 transition-colors">
-              <div className="flex items-center justify-between text-[11px] font-mono text-emerald-400 font-bold">
-                <span>03. JAWABAN AKURAT</span>
-                <Zap className="w-4 h-4 text-emerald-400" />
-              </div>
-              <p className="text-sm font-bold text-white">Respon Sopan &amp; Tepat</p>
-              <p className="text-xs text-zinc-300 leading-relaxed font-normal">
-                Pelanggan puas, otomatis hitung tarif ekspedisi dan kirim rincian kuitansi closing.
-              </p>
-            </div>
-          </div>
-
-          {/* Bottom Footer Details */}
-          <div className="relative z-10 flex items-center justify-between text-xs font-mono text-zinc-300 border-t border-white/10 pt-3 mt-4">
-            <span>Standar Modul: {subchapterTitle}</span>
-            <span className="text-emerald-400 font-bold flex items-center gap-1.5">
-              <Check className="w-4 h-4" /> Teruji di Lapangan
-            </span>
-          </div>
-        </div>
-      );
+  const scrollToSection = (sectionId: string) => {
+    if (typeof document === 'undefined') return;
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-
-    if (isMarketing) {
-      return (
-        <div
-          onClick={handleVisualClick}
-          className="relative w-full min-h-[280px] bg-gradient-to-br from-[#0D1F38] via-[#102B4E] to-[#1F193D] p-6 sm:p-8 flex flex-col justify-between text-white cursor-pointer group rounded-2xl overflow-hidden select-none"
-        >
-          {/* Ambient Glow */}
-          <div className="absolute -top-10 -right-10 w-64 h-64 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
-
-          {/* Top Tag & Maximize Pill */}
-          <div className="relative z-10 flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-lg bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 font-mono text-[11px] font-bold tracking-wider uppercase">
-                SERVER-SIDE TRACKING &amp; CAPI
-              </span>
-              <span className="text-xs font-mono text-zinc-300 hidden sm:inline">
-                Browser Pixel + Server Handshake (EMQ 9.8)
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-mono text-xs transition-colors">
-              <Maximize2 className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Perbesar Visual</span>
-            </div>
-          </div>
-
-          {/* Center Graphic */}
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-4 my-auto py-2">
-            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-2 hover:border-cyan-400/40 transition-colors">
-              <div className="flex items-center justify-between text-[11px] font-mono text-cyan-400 font-bold">
-                <span>01. PENGUNJUNG WEB</span>
-                <TrendingUp className="w-4 h-4" />
-              </div>
-              <p className="text-sm font-bold text-white">Aktivitas &amp; Klik Beli</p>
-              <p className="text-xs text-zinc-300 leading-relaxed font-normal">
-                Pengunjung membuka produk, memasukkan ke keranjang, atau menyelesaikan checkout.
-              </p>
-            </div>
-
-            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-cyan-500/40 backdrop-blur-md space-y-2 shadow-sm hover:border-cyan-400 transition-colors">
-              <div className="flex items-center justify-between text-[11px] font-mono text-cyan-300 font-bold">
-                <span>02. JALUR DUA ARAH</span>
-                <Layers className="w-4 h-4 text-cyan-400" />
-              </div>
-              <p className="text-sm font-bold text-white">Browser + Server CAPI</p>
-              <p className="text-xs text-zinc-300 leading-relaxed font-normal">
-                Data dikirim melalui server mandiri berdedikasi, 100% kebal ad-blocker iOS 14+.
-              </p>
-            </div>
-
-            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-emerald-500/40 backdrop-blur-md space-y-2 hover:border-emerald-400 transition-colors">
-              <div className="flex items-center justify-between text-[11px] font-mono text-emerald-400 font-bold">
-                <span>03. ATRIBUSI IKLAN</span>
-                <Zap className="w-4 h-4 text-emerald-400" />
-              </div>
-              <p className="text-sm font-bold text-white">ROAS &amp; Omset Akurat</p>
-              <p className="text-xs text-zinc-300 leading-relaxed font-normal">
-                Algoritma iklan belajar cepat dengan sinyal presisi, menurunkan biaya iklan hingga 40%.
-              </p>
-            </div>
-          </div>
-
-          {/* Bottom Footer Details */}
-          <div className="relative z-10 flex items-center justify-between text-xs font-mono text-zinc-300 border-t border-white/10 pt-3 mt-4">
-            <span>Standar Modul: {subchapterTitle}</span>
-            <span className="text-cyan-400 font-bold flex items-center gap-1.5">
-              <Check className="w-4 h-4" /> Skor EMQ 9.8+ Terjamin
-            </span>
-          </div>
-        </div>
-      );
-    }
-
-    // Fallback: Vibe Coding & Clean Architecture
-    return (
-      <div
-        onClick={handleVisualClick}
-        className="relative w-full min-h-[280px] bg-gradient-to-br from-[#0F231D] via-[#133027] to-[#1C4538] p-6 sm:p-8 flex flex-col justify-between text-white cursor-pointer group rounded-2xl overflow-hidden select-none"
-      >
-        {/* Ambient Glow */}
-        <div className="absolute -top-10 -right-10 w-64 h-64 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
-
-        {/* Top Tag & Maximize Pill */}
-        <div className="relative z-10 flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 font-mono text-[11px] font-bold tracking-wider uppercase">
-              VIBE CODING &amp; HIGH-SPEED PROTOTYPING
-            </span>
-            <span className="text-xs font-mono text-zinc-300 hidden sm:inline">
-              Prompt Arsitektural → Audit Mandiri → Deploy Kilat
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-mono text-xs transition-colors">
-            <Maximize2 className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Perbesar Visual</span>
-          </div>
-        </div>
-
-        {/* Center Graphic */}
-        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-4 my-auto py-2">
-          <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-2 hover:border-emerald-400/40 transition-colors">
-            <div className="flex items-center justify-between text-[11px] font-mono text-emerald-400 font-bold">
-              <span>01. RANCANG SPESIFIKASI</span>
-              <Terminal className="w-4 h-4" />
-            </div>
-            <p className="text-sm font-bold text-white">Arahan Spesifik &amp; Jelas</p>
-            <p className="text-xs text-zinc-300 leading-relaxed font-normal">
-              Menjelaskan alur data dan kebutuhan fitur dengan bahasa sederhana tanpa ambiguitas.
-            </p>
-          </div>
-
-          <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-emerald-500/40 backdrop-blur-md space-y-2 shadow-sm hover:border-emerald-400 transition-colors">
-            <div className="flex items-center justify-between text-[11px] font-mono text-emerald-300 font-bold">
-              <span>02. REKAYASA KODE</span>
-              <Code2 className="w-4 h-4 text-emerald-400" />
-            </div>
-            <p className="text-sm font-bold text-white">Claude Code CLI Helper</p>
-            <p className="text-xs text-zinc-300 leading-relaxed font-normal">
-              Menulis kode bersih, memasang komponen modular, tanpa file sampah atau duplikasi.
-            </p>
-          </div>
-
-          <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-teal-500/40 backdrop-blur-md space-y-2 hover:border-teal-400 transition-colors">
-            <div className="flex items-center justify-between text-[11px] font-mono text-teal-400 font-bold">
-              <span>03. UJI OTOMATIS</span>
-              <ShieldCheck className="w-4 h-4 text-teal-400" />
-            </div>
-            <p className="text-sm font-bold text-white">Siap Tayang ke Publik</p>
-            <p className="text-xs text-zinc-300 leading-relaxed font-normal">
-              Bebas error kompilasi, kecepatan load di bawah 1 detik, dan 100% siap dipakai pelanggan.
-            </p>
-          </div>
-        </div>
-
-        {/* Bottom Footer Details */}
-        <div className="relative z-10 flex items-center justify-between text-xs font-mono text-zinc-300 border-t border-white/10 pt-3 mt-4">
-          <span>Standar Modul: {subchapterTitle}</span>
-          <span className="text-emerald-400 font-bold flex items-center gap-1.5">
-            <Check className="w-4 h-4" /> Bebas Istilah Rumit
-          </span>
-        </div>
-      </div>
-    );
   };
 
-  // Dynamic Card 1: Pola Terbaik
-  const patternTitle = `Langkah Teruji: ${subchapterTitle.split(':')[0]}`;
-  const patternDesc = explanation
-    ? explanation.slice(0, 140) + '...'
-    : 'Menerapkan cara kerja yang sudah terbukti di lapangan agar sistem stabil, tidak mudah error saat ramai, dan mudah diperbaiki di masa depan.';
-
-  // Dynamic Card 2: Jebakan Pemula
-  const mistakeText = mistakes || 'Mengabaikan pengujian awal atau langsung pasang tanpa mengecek apakah sistem siap menghadapi kondisi pelanggan sebenarnya.';
-  const mistakeDesc = mistakeText.length > 140 ? mistakeText.slice(0, 140) + '...' : mistakeText;
-
-  // Dynamic Card 3: Checklist
-  const checklistCount = checklist.length > 0 ? checklist.length : 3;
+  const trackConfig =
+    trackId === 'digital-marketing'
+      ? {
+          badgeLabel: 'GROWTH & TRACKING ACADEMY',
+          leftNodeTag: 'EVENT PIXEL',
+          rightNodeTag: 'EMQ 9.8+',
+          card1Title: 'Pola Atribusi & Server Telemetry',
+          card1Desc:
+            'Alur pengiriman sinyal konversi tervalidasi dari browser dan server agar data iklan akurat 100%.',
+          filterTag: 'DEDUP',
+          guardTag: 'SHA256',
+          card2Title: 'Mitigasi Kebocoran & Audit Tracking',
+          card2Desc: `Cegah duplikasi event dan pastikan ${checklist.length || 3} poin verifikasi GTM/CAPI lolos uji sebelum kampanye jalan.`,
+        }
+      : trackId === 'vibe-coding'
+      ? {
+          badgeLabel: 'VIBE CODING & ARCHITECTURE',
+          leftNodeTag: 'SPEC PRD',
+          rightNodeTag: 'PROD READY',
+          card1Title: 'Pola Arsitektur & Kontrak Kode',
+          card1Desc:
+            'Susun spesifikasi fitur, skema tipe data, dan modularitas komponen sebelum dieksekusi AI coding agent.',
+          filterTag: 'OWASP',
+          guardTag: 'LINT OK',
+          card2Title: 'Mitigasi Regresi & Checklist Rilis',
+          card2Desc: `Hindari celah keamanan dan pastikan ${checklist.length || 3} poin kelayakan produksi terpenuhi sebelum deploy.`,
+        }
+      : {
+          badgeLabel: 'FITRAN AI ACADEMY',
+          leftNodeTag: 'RAG SOP',
+          rightNodeTag: 'AKURAT',
+          card1Title: 'Pola Dianjurkan & Praktik Implementasi',
+          card1Desc:
+            'Alur kerja AI terstruktur berbasis dokumen SOP bisnis agar respons akurat tanpa halusinasi.',
+          filterTag: 'FILTER',
+          guardTag: 'GUARD',
+          card2Title: 'Mitigasi Jebakan & Checklist Uji',
+          card2Desc: `Hindari kesalahan umum implementasi dan pastikan ${checklist.length || 3} poin kesiapan lapangan terpenuhi.`,
+        };
 
   return (
-    <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0E1117] shadow-lg overflow-hidden space-y-8 sm:space-y-10 p-6 sm:p-8">
-      {/* 1. ACADEMY HEADER BAR */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-100 dark:border-zinc-800/80 pb-4">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-500 text-white flex items-center justify-center font-black text-xs shadow-sm">
-            CA
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-[11px] font-black uppercase tracking-wider text-amber-700 dark:text-amber-400">
-                {trackBadgeLabel}
-              </span>
-              <span className="px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 font-mono text-[9px] font-bold">
-                CLAUDE ACADEMY STYLE
-              </span>
-            </div>
-            <p className="text-xs text-zinc-500 font-medium">Metodologi Belajar Interaktif untuk Pemula hingga Mahir</p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 self-start sm:self-auto font-mono text-xs text-zinc-500">
-          <BookOpen className="w-4 h-4 text-amber-600" />
-          <span>Modul {subchapterNum}</span>
-        </div>
-      </div>
-
-      {/* 2. DYNAMIC TOPIC-BASED VISUAL SHOWCASE (UNOBSTRUCTED, CAPTION UNDERNEATH) */}
-      <div className="rounded-2xl overflow-hidden border border-zinc-200/90 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 shadow-sm flex flex-col">
-        {renderDynamicVisual()}
-
-        {/* Clean caption bar placed UNDERNEATH the visual so it NEVER covers or obstructs the image */}
-        <div className="p-4 bg-white dark:bg-[#12151D] border-t border-zinc-100 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-mono font-bold">
-            <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-500" />
-            <span>Standar Rekayasa Web &amp; Arsitektur AI Terverifikasi</span>
-          </div>
-          <span className="text-[11px] text-zinc-500 font-normal">
-            Buku Panduan Belajar fitran.dev • Terstruktur, Mudah Dipahami Pemula
+    <div className="space-y-3.5 select-none">
+      {/* Compact Header Strip */}
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-700 dark:text-amber-400 font-mono text-[10px] font-black uppercase tracking-wider">
+            {trackConfig.badgeLabel} · MODUL {subchapterNum}
           </span>
         </div>
+        <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+          <BookOpen className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+          <span>2 Skema Inti Materi</span>
+        </span>
       </div>
 
-      {/* 3. CLAUDE ACADEMY 3-PANEL CONCEPT CARDS (✓, ✕, ?) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 pt-2">
-        {/* Card 1: Pola Terbaik (Best Practice) */}
+      {/* 2 Simple, Proportional Vector Schematic Cards Inside Materi (/belajar = 2 Cards) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* CARD MATERI 1: POLA IMPLEMENTASI TERUJI */}
         <div
-          onClick={() => setActiveTab('pattern')}
-          className={`p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 ${
-            activeTab === 'pattern'
-              ? 'bg-emerald-50/80 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-700 ring-2 ring-emerald-400/20 shadow-sm'
-              : 'bg-zinc-50/60 dark:bg-zinc-900/40 border-zinc-200/80 dark:border-zinc-800 hover:border-emerald-300'
-          }`}
+          onClick={() => scrollToSection('praktik')}
+          onMouseEnter={() => setHoveredCard('pattern')}
+          onMouseLeave={() => setHoveredCard(null)}
+          className="group relative flex flex-col justify-between rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 hover:border-emerald-500/80 dark:hover:border-emerald-400/80 bg-zinc-50/60 dark:bg-[#151923] p-4 sm:p-5 text-left transition-all duration-300 cursor-pointer shadow-2xs hover:shadow-md hover:-translate-y-0.5"
         >
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-xs">
-                <CheckCircle2 className="w-5 h-5 stroke-[2.5]" />
-              </div>
-              <span className="font-mono text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-400">
-                Pola Dianjurkan
+          {/* Open Vector Schematic 1 */}
+          <div className="relative w-full h-32 sm:h-36 mb-3 flex items-center justify-center overflow-hidden">
+            <svg
+              viewBox="0 0 260 116"
+              className="w-full h-full overflow-visible"
+              aria-hidden="true"
+            >
+              <defs>
+                <pattern id="grid-belajar-1" width="14" height="14" patternUnits="userSpaceOnUse">
+                  <path
+                    d="M 14 0 L 0 0 0 14"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="0.6"
+                    strokeDasharray="2 2"
+                    className="text-zinc-200/90 dark:text-zinc-800/90"
+                  />
+                </pattern>
+              </defs>
+              <rect x="6" y="6" width="248" height="104" rx="10" fill="url(#grid-belajar-1)" />
+
+              {/* Left Node: Context / Input Spec */}
+              <g
+                className="transition-transform duration-500"
+                style={{
+                  transform: hoveredCard === 'pattern' ? 'translateY(-2px)' : 'translateY(0px)',
+                }}
+              >
+                <rect
+                  x="16"
+                  y="28"
+                  width="68"
+                  height="60"
+                  rx="8"
+                  className="fill-white dark:fill-[#0E1117] stroke-zinc-700 dark:stroke-zinc-300"
+                  strokeWidth="1.6"
+                />
+                <text
+                  x="50"
+                  y="43"
+                  textAnchor="middle"
+                  className="fill-emerald-600 dark:fill-emerald-400 font-mono text-[8.5px] font-black"
+                >
+                  {trackConfig.leftNodeTag}
+                </text>
+                <rect x="25" y="51" width="50" height="4" rx="2" className="fill-zinc-400 dark:fill-zinc-500" />
+                <rect x="25" y="60" width="38" height="4" rx="2" className="fill-emerald-500/70" />
+                <rect x="25" y="69" width="44" height="4" rx="2" className="fill-zinc-300 dark:fill-zinc-600" />
+              </g>
+
+              {/* Animated Flow Line 1 */}
+              <line
+                x1="84"
+                y1="58"
+                x2="110"
+                y2="58"
+                stroke="#10B981"
+                strokeWidth="1.8"
+                strokeDasharray="3 3"
+              >
+                <animate
+                  attributeName="stroke-dashoffset"
+                  from="12"
+                  to="0"
+                  dur="1s"
+                  repeatCount="indefinite"
+                />
+              </line>
+
+              {/* Center Node: Validation Gate */}
+              <circle
+                cx="130"
+                cy="58"
+                r="19"
+                className="fill-white dark:fill-[#0E1117] stroke-emerald-500"
+                strokeWidth="1.8"
+              />
+              <path
+                d="M 124 58 L 128.5 62.5 L 137 53.5"
+                fill="none"
+                stroke="#10B981"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+
+              {/* Animated Flow Line 2 */}
+              <line
+                x1="149"
+                y1="58"
+                x2="176"
+                y2="58"
+                stroke="#10B981"
+                strokeWidth="1.8"
+                strokeDasharray="3 3"
+              >
+                <animate
+                  attributeName="stroke-dashoffset"
+                  from="12"
+                  to="0"
+                  dur="1s"
+                  repeatCount="indefinite"
+                />
+              </line>
+
+              {/* Right Node: Stable Production Output */}
+              <g
+                className="transition-transform duration-500"
+                style={{
+                  transform: hoveredCard === 'pattern' ? 'scale(1.05)' : 'scale(1)',
+                  transformOrigin: '210px 58px',
+                }}
+              >
+                <rect
+                  x="176"
+                  y="28"
+                  width="68"
+                  height="60"
+                  rx="8"
+                  className="fill-white dark:fill-[#0E1117] stroke-emerald-600 dark:stroke-emerald-400"
+                  strokeWidth="1.75"
+                />
+                <rect x="184" y="37" width="52" height="15" rx="4" fill="#10B981" />
+                <text
+                  x="210"
+                  y="47"
+                  textAnchor="middle"
+                  className="fill-white font-mono text-[8px] font-black"
+                >
+                  {trackConfig.rightNodeTag}
+                </text>
+                <path
+                  d="M 186 73 L 196 67 L 206 70 L 220 60 L 234 58"
+                  fill="none"
+                  stroke="#10B981"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </g>
+            </svg>
+          </div>
+
+          <div className="space-y-1">
+            <div className="flex items-center justify-between gap-2">
+              <h4 className="font-heading font-extrabold text-sm sm:text-base text-zinc-950 dark:text-white leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                {trackConfig.card1Title}
+              </h4>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-mono text-[9px] font-bold uppercase shrink-0">
+                Praktik
               </span>
             </div>
-            <h4 className="font-bold text-sm text-zinc-950 dark:text-white leading-snug">
-              {patternTitle}
-            </h4>
-            <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed font-normal">
-              {patternDesc}
+            <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal">
+              {trackConfig.card1Desc}
             </p>
-          </div>
-          <div className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1 pt-1">
-            <span>Buka Pola Ini</span>
-            <ArrowRight className="w-3.5 h-3.5" />
           </div>
         </div>
 
-        {/* Card 2: Anti-Pattern / Jebakan (Pitfall) */}
+        {/* CARD MATERI 2: MITIGASI JEBAKAN & CHECKLIST VERIFIKASI */}
         <div
-          onClick={() => setActiveTab('antipattern')}
-          className={`p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 ${
-            activeTab === 'antipattern'
-              ? 'bg-rose-50/80 dark:bg-rose-950/40 border-rose-300 dark:border-rose-700 ring-2 ring-rose-400/20 shadow-sm'
-              : 'bg-zinc-50/60 dark:bg-zinc-900/40 border-zinc-200/80 dark:border-zinc-800 hover:border-rose-300'
-          }`}
+          onClick={() => scrollToSection('kesalahan')}
+          onMouseEnter={() => setHoveredCard('audit')}
+          onMouseLeave={() => setHoveredCard(null)}
+          className="group relative flex flex-col justify-between rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 hover:border-amber-500/80 dark:hover:border-amber-400/80 bg-zinc-50/60 dark:bg-[#151923] p-4 sm:p-5 text-left transition-all duration-300 cursor-pointer shadow-2xs hover:shadow-md hover:-translate-y-0.5"
         >
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-xl bg-rose-500 text-white flex items-center justify-center shadow-xs">
-                <XCircle className="w-5 h-5 stroke-[2.5]" />
-              </div>
-              <span className="font-mono text-[10px] font-black uppercase text-rose-700 dark:text-rose-400">
-                Jebakan Pemula
-              </span>
-            </div>
-            <h4 className="font-bold text-sm text-zinc-950 dark:text-white leading-snug">
-              Kesalahan yang Harus Dihindari
-            </h4>
-            <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed font-normal">
-              {mistakeDesc}
-            </p>
-          </div>
-          <div className="text-[11px] font-bold text-rose-700 dark:text-rose-400 flex items-center gap-1 pt-1">
-            <span>Hindari Kesalahan Ini</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </div>
-        </div>
+          {/* Open Vector Schematic 2 */}
+          <div className="relative w-full h-32 sm:h-36 mb-3 flex items-center justify-center overflow-hidden">
+            <svg
+              viewBox="0 0 260 116"
+              className="w-full h-full overflow-visible"
+              aria-hidden="true"
+            >
+              <defs>
+                <pattern id="grid-belajar-2" width="14" height="14" patternUnits="userSpaceOnUse">
+                  <path
+                    d="M 14 0 L 0 0 0 14"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="0.6"
+                    strokeDasharray="2 2"
+                    className="text-zinc-200/90 dark:text-zinc-800/90"
+                  />
+                </pattern>
+              </defs>
+              <rect x="6" y="6" width="248" height="104" rx="10" fill="url(#grid-belajar-2)" />
 
-        {/* Card 3: Deep Dive / Pertanyaan Kritis */}
-        <div
-          onClick={() => setActiveTab('checklist')}
-          className={`p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 ${
-            activeTab === 'checklist'
-              ? 'bg-indigo-50/80 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-700 ring-2 ring-indigo-400/20 shadow-sm'
-              : 'bg-zinc-50/60 dark:bg-zinc-900/40 border-zinc-200/80 dark:border-zinc-800 hover:border-indigo-300'
-          }`}
-        >
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-xs">
-                <HelpCircle className="w-5 h-5 stroke-[2.5]" />
-              </div>
-              <span className="font-mono text-[10px] font-black uppercase text-indigo-700 dark:text-indigo-400">
-                Audit Kritis
+              {/* Left: Erratic Anomaly Wave */}
+              <path
+                d="M 18 58 L 32 58 L 40 36 L 48 80 L 56 44 L 64 70 L 74 58 L 96 58"
+                fill="none"
+                stroke="#F43F5E"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+
+              {/* Center: Circuit Breaker Filter Shield */}
+              <g
+                className="transition-transform duration-500"
+                style={{
+                  transform: hoveredCard === 'audit' ? 'scale(1.06)' : 'scale(1)',
+                  transformOrigin: '122px 58px',
+                }}
+              >
+                <rect
+                  x="96"
+                  y="28"
+                  width="52"
+                  height="60"
+                  rx="10"
+                  className="fill-white dark:fill-[#0E1117] stroke-amber-500"
+                  strokeWidth="2"
+                />
+                <text
+                  x="122"
+                  y="50"
+                  textAnchor="middle"
+                  className="fill-amber-600 dark:fill-amber-400 font-mono text-[8.5px] font-black"
+                >
+                  {trackConfig.filterTag}
+                </text>
+                <rect
+                  x="105"
+                  y="59"
+                  width="34"
+                  height="15"
+                  rx="4"
+                  className="fill-amber-500/15"
+                />
+                <text
+                  x="122"
+                  y="69"
+                  textAnchor="middle"
+                  className="fill-amber-700 dark:fill-amber-300 font-mono text-[7.5px] font-bold"
+                >
+                  {trackConfig.guardTag}
+                </text>
+              </g>
+
+              {/* Smooth Stabilized Wave to Right Checklist */}
+              <line
+                x1="148"
+                y1="58"
+                x2="174"
+                y2="58"
+                stroke="#10B981"
+                strokeWidth="2"
+                strokeDasharray="3 3"
+              >
+                <animate
+                  attributeName="stroke-dashoffset"
+                  from="12"
+                  to="0"
+                  dur="1s"
+                  repeatCount="indefinite"
+                />
+              </line>
+
+              {/* Right: Verified Audit Checklist Box */}
+              <rect
+                x="174"
+                y="26"
+                width="68"
+                height="64"
+                rx="9"
+                className="fill-white dark:fill-[#0E1117] stroke-zinc-700 dark:stroke-zinc-300"
+                strokeWidth="1.6"
+              />
+              {[40, 58, 76].map((cy, idx) => (
+                <g key={idx}>
+                  <circle cx="187" cy={cy} r="4.5" fill="#10B981" />
+                  <path
+                    d={`M 185 ${cy} L 186.5 ${cy + 1.5} L 189.5 ${cy - 1.5}`}
+                    fill="none"
+                    stroke="#FFFFFF"
+                    strokeWidth="1.3"
+                    strokeLinecap="round"
+                  />
+                  <rect
+                    x="196"
+                    y={cy - 2}
+                    width="36"
+                    height="4"
+                    rx="2"
+                    className="fill-zinc-600 dark:fill-zinc-300"
+                  />
+                </g>
+              ))}
+            </svg>
+          </div>
+
+          <div className="space-y-1">
+            <div className="flex items-center justify-between gap-2">
+              <h4 className="font-heading font-extrabold text-sm sm:text-base text-zinc-950 dark:text-white leading-snug group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                {trackConfig.card2Title}
+              </h4>
+              <span className="px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 font-mono text-[9px] font-bold uppercase shrink-0">
+                Checklist
               </span>
             </div>
-            <h4 className="font-bold text-sm text-zinc-950 dark:text-white leading-snug">
-              Checklist Uji Lapangan
-            </h4>
-            <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed font-normal">
-              {checklistCount} poin kunci pemeriksaan: Pastikan sistem berjalan mulus sebelum diperkenalkan ke calon pembeli.
+            <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal">
+              {trackConfig.card2Desc}
             </p>
-          </div>
-          <div className="text-[11px] font-bold text-indigo-700 dark:text-indigo-400 flex items-center gap-1 pt-1">
-            <span>Buka Checklist ({checklistCount})</span>
-            <ArrowRight className="w-3.5 h-3.5" />
           </div>
         </div>
       </div>
-
-      {/* 4. DYNAMIC INTERACTIVE DETAIL PANEL BASED ON SELECTED TAB */}
-      {activeTab === 'pattern' && (
-        <div className="space-y-4 animate-fade-in">
-          {situation && (
-            <div className="p-4 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 flex items-start gap-3">
-              <Lightbulb className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-              <div className="space-y-1 text-xs">
-                <p className="font-bold text-zinc-900 dark:text-white">Situasi di Lapangan:</p>
-                <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">{situation}</p>
-              </div>
-            </div>
-          )}
-
-          {practiceSnippet && (
-            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#0B0F19] overflow-hidden shadow-inner text-xs">
-              <div className="px-4 py-2.5 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between text-zinc-400 font-mono text-[11px]">
-                <div className="flex items-center gap-2">
-                  <Terminal className="w-4 h-4 text-emerald-400" />
-                  <span className="text-zinc-200 font-bold">{subchapterTitle} — Panduan Kode &amp; Prompt Praktis</span>
-                </div>
-                <button
-                  onClick={handleCopy}
-                  className="px-2.5 py-1 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[10px] flex items-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  {copied ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="text-emerald-400">Tersalin!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" />
-                      <span>Salin Snippet</span>
-                    </>
-                  )}
-                </button>
-              </div>
-              <div className="p-4 text-zinc-200 font-mono text-xs overflow-x-auto leading-relaxed max-h-72">
-                <pre className="whitespace-pre-wrap">{practiceSnippet}</pre>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {activeTab === 'antipattern' && (
-        <div className="p-5 rounded-2xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/60 space-y-3 text-xs animate-fade-in">
-          <div className="flex items-center gap-2 text-rose-700 dark:text-rose-400 font-bold">
-            <AlertTriangle className="w-4 h-4" />
-            <span className="font-mono uppercase tracking-wider text-[11px]">Bedah Kesalahan &amp; Cara Mengatasinya</span>
-          </div>
-          <p className="text-zinc-800 dark:text-zinc-200 leading-relaxed text-sm">
-            {mistakes || 'Banyak pemula terburu-buru meluncurkan sistem tanpa pengujian di perangkat yang berbeda atau mengabaikan perlindungan kata sandi.'}
-          </p>
-          <div className="pt-2 border-t border-rose-200 dark:border-rose-900/40 flex items-center justify-between text-[11px] text-zinc-600 dark:text-zinc-400">
-            <span className="font-semibold text-rose-700 dark:text-rose-400">Solusi fitran.dev:</span>
-            <span>Gunakan standar pengujian bertahap sebelum merilis ke publik.</span>
-          </div>
-        </div>
-      )}
-
-      {activeTab === 'checklist' && (
-        <div className="p-5 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/60 space-y-3 text-xs animate-fade-in">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-indigo-700 dark:text-indigo-400 font-bold">
-              <ShieldCheck className="w-4 h-4" />
-              <span className="font-mono uppercase tracking-wider text-[11px]">Daftar Periksa Kelayakan Produksi</span>
-            </div>
-            <span className="font-mono text-[10px] text-indigo-600 dark:text-indigo-400 font-bold">
-              {Object.values(checkedItems).filter(Boolean).length} / {checklist.length || 3} Terverifikasi
-            </span>
-          </div>
-
-          <div className="space-y-2 pt-1">
-            {(checklist.length > 0
-              ? checklist
-              : [
-                  'Semua fitur utama sudah diuji pada smartphone dan laptop.',
-                  'Waktu muat halaman cepat (di bawah 1 detik) tanpa gambar pecah.',
-                  'Data kontak, nomor WhatsApp, dan nomor rekening sudah benar 100%.',
-                ]
-            ).map((item, idx) => {
-              const isDone = !!checkedItems[idx];
-              return (
-                <div
-                  key={idx}
-                  onClick={() => toggleCheck(idx)}
-                  className={`p-3 rounded-xl border flex items-start gap-3 cursor-pointer transition-all ${
-                    isDone
-                      ? 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-200'
-                      : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 hover:border-indigo-300'
-                  }`}
-                >
-                  <div
-                    className={`w-4 h-4 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
-                      isDone
-                        ? 'bg-emerald-600 border-emerald-600 text-white'
-                        : 'border-zinc-400 dark:border-zinc-600'
-                    }`}
-                  >
-                    {isDone && <Check className="w-3 h-3 stroke-[3]" />}
-                  </div>
-                  <span className={`text-xs leading-relaxed ${isDone ? 'line-through opacity-80' : ''}`}>
-                    {item}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

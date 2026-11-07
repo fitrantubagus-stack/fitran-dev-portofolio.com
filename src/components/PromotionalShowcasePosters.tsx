@@ -172,30 +172,30 @@ export const WebsiteKilatPromoPoster: React.FC<PromotionalPosterProps> = ({
               <span className="text-[10px] text-emerald-400 font-bold">Lolos Uji Sempurna</span>
             </div>
 
-            <div className="grid grid-cols-4 gap-1 sm:gap-2 pt-1 text-center">
-              <div className="p-1 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between min-h-[68px] sm:min-h-[82px]">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-center">
+              <div className="p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between min-h-[72px] sm:min-h-[82px]">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
                   100
                 </div>
-                <p className="text-[7px] sm:text-[9.5px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">Performa</p>
+                <p className="text-[10px] font-sans font-semibold text-zinc-300 mt-1 leading-tight">Performa</p>
               </div>
-              <div className="p-1 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between min-h-[68px] sm:min-h-[82px]">
+              <div className="p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between min-h-[72px] sm:min-h-[82px]">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
                   100
                 </div>
-                <p className="text-[6.5px] sm:text-[9px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tighter whitespace-nowrap overflow-visible">Aksesibilitas</p>
+                <p className="text-[10px] font-sans font-semibold text-zinc-300 mt-1 leading-tight">Aksesibilitas</p>
               </div>
-              <div className="p-1 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between min-h-[68px] sm:min-h-[82px]">
+              <div className="p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between min-h-[72px] sm:min-h-[82px]">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
                   100
                 </div>
-                <p className="text-[6.5px] sm:text-[9px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">Praktik Terbaik</p>
+                <p className="text-[10px] font-sans font-semibold text-zinc-300 mt-1 leading-tight">Praktik Terbaik</p>
               </div>
-              <div className="p-1 sm:p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between min-h-[68px] sm:min-h-[82px]">
+              <div className="p-2 rounded-xl bg-zinc-950 border border-emerald-900/60 flex flex-col items-center justify-between min-h-[72px] sm:min-h-[82px]">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-emerald-500 mx-auto flex items-center justify-center font-mono font-black text-xs text-emerald-400">
                   100
                 </div>
-                <p className="text-[7px] sm:text-[9.5px] font-sans font-semibold text-zinc-300 mt-1 leading-tight tracking-tight">SEO</p>
+                <p className="text-[10px] font-sans font-semibold text-zinc-300 mt-1 leading-tight">SEO</p>
               </div>
             </div>
 
@@ -269,7 +269,7 @@ export const CybersecurityOperationsPoster: React.FC<PromotionalPosterProps> = (
       {/* Top Header: Brand Emblem & Cybersecurity Badge */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800/80 pb-6">
         <div className="space-y-3">
-          <div className="flex items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2.5">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-700/80 text-blue-700 dark:text-blue-300 font-mono text-[11px] font-bold uppercase tracking-wider">
               <ShieldCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
               <span>5 LAPISAN KEAMANAN TERSTRUKTUR · FITRAN DEV PROTOCOL</span>
@@ -301,15 +301,15 @@ export const CybersecurityOperationsPoster: React.FC<PromotionalPosterProps> = (
 
       {/* REALISTIC LIVE TERMINAL SCANNER (Replacing the bare empty UI) */}
       <div className="rounded-2xl bg-zinc-950 border border-zinc-800 p-4 font-mono text-xs space-y-2 shadow-inner text-white">
-        <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2 text-zinc-400 text-[11px]">
-          <div className="flex items-center gap-2">
-            <Terminal className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-zinc-200">security-daemon@fitran-dev-soc:~$ status --strict</span>
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800/80 pb-2 text-zinc-400 text-[11px]">
+          <div className="flex items-center gap-2 min-w-0">
+            <Terminal className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <span className="text-zinc-200 truncate">security-daemon@fitran-dev-soc:~$ status --strict</span>
           </div>
-          <span className="text-emerald-400 text-[10px]">ALL DEFENSE LAYERS ACTIVE</span>
+          <span className="text-emerald-400 text-[10px] shrink-0">ALL DEFENSE LAYERS ACTIVE</span>
         </div>
 
-        <div className="space-y-1 text-zinc-300 text-[11px] pt-1">
+        <div className="space-y-1 text-zinc-300 text-[11px] pt-1 break-words">
           <p><span className="text-emerald-400">[KERNEL]</span> Linux 6.8.0-Hardened (x86_64) · Uptime: 99.99% Nominal</p>
           <p><span className="text-emerald-400">[FIREWALL]</span> UFW: ALLOW 80/tcp, ALLOW 443/tcp · DENY ALL OTHER INBOUND</p>
           <p><span className="text-blue-400">[ACTIVE]</span> {SECURITY_LAYERS[activeLayer].terminalLog}</p>

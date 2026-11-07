@@ -509,7 +509,7 @@ export const ClaudeCodeTerminal3D: React.FC<{ className?: string }> = ({ classNa
               <p className="text-[#D97757] font-bold text-sm sm:text-base pt-1">
                 Welcome to Claude Code v2.1.268
               </p>
-              <p className="text-zinc-600">
+              <p className="text-zinc-600 truncate">
                 ....................................................................................
               </p>
             </div>

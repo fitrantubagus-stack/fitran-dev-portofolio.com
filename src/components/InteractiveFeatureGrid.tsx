@@ -1,50 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  Sparkles,
-  ArrowRight,
-  CheckCircle2,
-  Cpu,
-  Layers,
-  Code2,
-  ExternalLink,
-  Bot,
-  Zap,
-  Target,
-  FileCode2,
-  Globe,
-  Check,
-  TrendingUp,
-  Activity,
-  ShieldCheck,
-  Server,
-  Play,
-  Pause,
-  RotateCcw,
-  QrCode,
-  Lock,
-  Lightbulb,
-  CheckSquare,
-} from 'lucide-react';
+import React, { useState } from 'react';
 
 interface FeatureCardItem {
   id: string;
-  number: string;
-  badge: string;
-  badgeColor: string;
   title: string;
-  tagline: string;
   description: string;
   accentColor: string;
-  ringColor: string;
   hoverBorder: string;
-  actionText: string;
   serviceQuery: string;
-  renderIllustration: (
-    isBoosted: boolean,
-    phase: number,
-    progress: number,
-    isHovered: boolean
-  ) => React.ReactNode;
+  badgeText?: string;
+  renderSchematic: (isHovered: boolean) => React.ReactNode;
 }
 
 interface InteractiveFeatureGridProps {
@@ -56,94 +20,22 @@ export const InteractiveFeatureGrid: React.FC<InteractiveFeatureGridProps> = ({
   onSelectFeature,
   className = '',
 }) => {
-  const [activeBoostIdx, setActiveBoostIdx] = useState<number>(0);
-  const [isPaused, setIsPaused] = useState<boolean>(false);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-  const [boostProgress, setBoostProgress] = useState<number>(0);
-
-  // Typewriter state for Card 2
-  const [typedPrompt, setTypedPrompt] = useState<string>('');
-  const [promptStep, setPromptStep] = useState<number>(0);
-  const PROMPTS = [
-    'Berapa ongkir 5 box ke Surabaya?',
-    'Katalog harga grosir kain batik?',
-    'Minta rincian invoice dan rekening?',
-  ];
-
-  // 9-Second Boost Engine via requestAnimationFrame with performance.now()
-  const TOTAL_CYCLE_MS = 9000;
-  const cycleStartRef = useRef<number>(performance.now());
-  const lastTimeRef = useRef<number>(performance.now());
-
-  useEffect(() => {
-    cycleStartRef.current = performance.now();
-  }, [activeBoostIdx]);
-
-  useEffect(() => {
-    let animId: number;
-
-    const tick = (now: number) => {
-      const delta = Math.min(100, now - lastTimeRef.current);
-      lastTimeRef.current = now;
-
-      if (!isPaused && hoveredCard === null) {
-        const elapsed = (now - cycleStartRef.current) % TOTAL_CYCLE_MS;
-        const pct = Math.min(100, (elapsed / TOTAL_CYCLE_MS) * 100);
-        setBoostProgress(pct);
-
-        if (elapsed < delta * 1.5 && pct < 5) {
-          // cycle completed
-        }
-      }
-      animId = requestAnimationFrame(tick);
-    };
-
-    animId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(animId);
-  }, [isPaused, hoveredCard]);
-
-  // Handle stage advances every 9 seconds
-  useEffect(() => {
-    if (isPaused || hoveredCard !== null) return;
-    const timer = setInterval(() => {
-      setActiveBoostIdx((prev) => (prev + 1) % 4);
-    }, TOTAL_CYCLE_MS);
-    return () => clearInterval(timer);
-  }, [isPaused, hoveredCard]);
-
-  // Typewriter effect for WhatsApp Prompt
-  useEffect(() => {
-    const fullText = PROMPTS[promptStep % PROMPTS.length];
-    let charIdx = 0;
-    let timer: NodeJS.Timeout;
-
-    const typeChar = () => {
-      if (charIdx <= fullText.length) {
-        setTypedPrompt(fullText.slice(0, charIdx));
-        charIdx++;
-        timer = setTimeout(typeChar, 45);
-      } else {
-        timer = setTimeout(() => {
-          setPromptStep((prev) => (prev + 1) % PROMPTS.length);
-        }, 3000);
-      }
-    };
-
-    timer = setTimeout(typeChar, 300);
-    return () => clearTimeout(timer);
-  }, [promptStep]);
-
-  // Phase computation: 0 = 0-3s, 1 = 3-6s, 2 = 6-9s
-  const boostPhase = boostProgress < 33.3 ? 0 : boostProgress < 66.6 ? 1 : 2;
 
   const handleCardClick = (card: FeatureCardItem) => {
     if (onSelectFeature) {
       onSelectFeature(card.id);
     } else if (typeof window !== 'undefined') {
+      const p = window.location.pathname.toLowerCase();
+      const prefix = p.startsWith('/portofolio-me')
+        ? '/portofolio-me'
+        : p.startsWith('/profesional')
+        ? '/profesional'
+        : '/corporation';
       window.history.pushState(
         null,
         '',
-        `/corporation/layanan?service=${card.serviceQuery}`
+        `${prefix}/layanan?service=${card.serviceQuery}`
       );
       window.dispatchEvent(new Event('app-route-change'));
       window.dispatchEvent(new Event('locationchange'));
@@ -154,529 +46,829 @@ export const InteractiveFeatureGrid: React.FC<InteractiveFeatureGridProps> = ({
 
   const FEATURE_CARDS: FeatureCardItem[] = [
     // -------------------------------------------------------------------------
-    // CARD 1: ARSITEKTUR FULLSTACK & WEBSITE KILAT (<0.8s LCP)
-    // Inspired by ngodingpakeai.com (Idea Bulb -> Arrow -> Clean PRD / Specs Checklist)
+    // CARD 1: WEB & SISTEM KILAT (<0.8s LCP, 100% HAK MILIK)
+    // Original Schematic: Modular Browser Wireframe + Speed Gauge Arc Locking 99+
     // -------------------------------------------------------------------------
     {
       id: 'fullstack-kilat',
-      number: '01',
-      badge: '100% HAK MILIK',
-      badgeColor: '#2563EB',
-      title: 'Arsitektur Fullstack & Website Kilat',
-      tagline: '<0.8s LCP · Next.js 15 & TS · 100% Hak Milik · Zero Sewa',
+      title: 'Web & Sistem Kilat',
       description:
-        'Rekayasa aplikasi web berkecepatan instan dengan waktu muat <0.8 detik. Seluruh source code dan arsitektur diserahkan penuh tanpa biaya sewa kode tahunan.',
-      accentColor: '#3B82F6',
-      ringColor: 'rgba(59, 130, 246, 0.28)',
-      hoverBorder: 'border-blue-500 dark:border-blue-400',
-      actionText: 'Konsultasi Website Kilat',
-      serviceQuery: 'jasa-pembuatan-website-custom',
-      renderIllustration: (isBoosted, phase, progress, isHovered) => {
-        const active = isBoosted || isHovered;
-        return (
-          <div className="relative w-full h-full flex items-center justify-between gap-3 p-4 select-none">
-            {/* Left: Glowing Blueprint / Idea Bulb */}
-            <div className="flex flex-col items-center justify-center shrink-0 w-20">
-              <div
-                className={`relative w-12 h-12 rounded-2xl flex items-center justify-center border-2 transition-all duration-500 ${
-                  active
-                    ? 'border-blue-500 bg-blue-500/15 shadow-lg shadow-blue-500/20 scale-105'
-                    : 'border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800'
-                }`}
-              >
-                <Lightbulb
-                  className={`w-6 h-6 transition-colors duration-300 ${
-                    active ? 'text-blue-500' : 'text-zinc-400'
-                  }`}
-                />
-                {active && (
-                  <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-blue-500 animate-ping" />
-                )}
-              </div>
-              <span className="font-mono text-[9px] font-bold text-zinc-500 dark:text-zinc-400 mt-1.5 text-center leading-tight">
-                Blueprint Kilat
-              </span>
-            </div>
+        'Bangun website dan aplikasi kustom dengan kecepatan muat <0.8 detik. 100% source code jadi hak milik penuh tanpa sewa bulanan.',
+      accentColor: '#2563EB',
+      hoverBorder: 'hover:border-blue-500/80 dark:hover:border-blue-400/80',
+      serviceQuery: 'jasa-pembuatan-website',
+      badgeText: '<0.8s LCP',
+      renderSchematic: (isHovered) => (
+        <svg
+          viewBox="0 0 260 130"
+          className="w-full h-full overflow-visible select-none"
+          aria-hidden="true"
+        >
+          <defs>
+            <pattern id="grid-card-1" width="16" height="16" patternUnits="userSpaceOnUse">
+              <path
+                d="M 16 0 L 0 0 0 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.6"
+                strokeDasharray="2 2"
+                className="text-zinc-200/90 dark:text-zinc-800/90"
+              />
+            </pattern>
+          </defs>
+          <rect x="8" y="6" width="244" height="118" rx="12" fill="url(#grid-card-1)" />
 
-            {/* Middle: Dynamic Arrow / Circuit Connector */}
-            <div className="flex-1 flex items-center justify-center relative">
-              <div className="w-full h-0.5 bg-zinc-300 dark:bg-zinc-700 relative">
-                <div
-                  className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-blue-500 transition-all duration-300 ${
-                    active ? 'opacity-100 scale-100 animate-pulse' : 'opacity-40 scale-75'
-                  }`}
-                  style={{
-                    left: active ? `${Math.min(90, Math.max(10, progress))}%` : '50%',
-                  }}
-                />
-              </div>
-              <ArrowRight className="w-3.5 h-3.5 text-blue-500 absolute -right-1" />
-            </div>
+          {/* Left: Clean Browser Architecture Frame */}
+          <g
+            className="transition-transform duration-500 ease-out"
+            style={{ transform: isHovered ? 'translateY(-2px)' : 'translateY(0px)' }}
+          >
+            <rect
+              x="22"
+              y="22"
+              width="126"
+              height="86"
+              rx="8"
+              className="fill-white dark:fill-[#151923] stroke-zinc-700 dark:stroke-zinc-300"
+              strokeWidth="1.75"
+            />
+            {/* Browser Top Bar */}
+            <line
+              x1="22"
+              y1="36"
+              x2="148"
+              y2="36"
+              className="stroke-zinc-300 dark:stroke-zinc-700"
+              strokeWidth="1.2"
+            />
+            <circle cx="31" cy="29" r="2" fill="#EF4444" />
+            <circle cx="38" cy="29" r="2" fill="#F59E0B" />
+            <circle cx="45" cy="29" r="2" fill="#10B981" />
+            <rect
+              x="54"
+              y="26.5"
+              width="58"
+              height="5"
+              rx="2.5"
+              className="fill-zinc-200 dark:fill-zinc-700"
+            />
 
-            {/* Right: Clean Architecture Specs Card (ngodingpakeai PRD Style) */}
-            <div
-              className={`w-40 sm:w-44 rounded-xl border-2 p-2.5 transition-all duration-500 bg-white dark:bg-[#131722] shadow-xs ${
-                active ? 'border-blue-500/80 shadow-md scale-[1.02]' : 'border-zinc-300 dark:border-zinc-700'
-              }`}
+            {/* Animated UI Layout Blocks Inside Browser */}
+            <rect
+              x="30"
+              y="43"
+              width="72"
+              height="10"
+              rx="3"
+              className="fill-blue-500/20 stroke-blue-600 dark:stroke-blue-400"
+              strokeWidth="1.3"
             >
-              <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-zinc-100 dark:border-zinc-800">
-                <span className="font-mono text-[10px] font-black text-blue-600 dark:text-blue-400">
-                  SPECS 100%
-                </span>
-                <span className="font-mono text-[8px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold">
-                  &lt;0.8s LCP
-                </span>
-              </div>
+              <animate
+                attributeName="width"
+                values="58;76;58"
+                dur="4s"
+                repeatCount="indefinite"
+              />
+            </rect>
+            <rect
+              x="30"
+              y="58"
+              width="50"
+              height="18"
+              rx="3"
+              className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-400 dark:stroke-zinc-600"
+              strokeWidth="1.2"
+            />
+            <rect
+              x="86"
+              y="58"
+              width="52"
+              height="18"
+              rx="3"
+              className="fill-blue-50 dark:fill-blue-950/60 stroke-blue-500/70"
+              strokeWidth="1.2"
+            />
+            {/* Bottom Code Ownership Bar */}
+            <rect
+              x="30"
+              y="82"
+              width="108"
+              height="16"
+              rx="4"
+              className="fill-emerald-500/10 stroke-emerald-500/60"
+              strokeWidth="1.2"
+            />
+            <circle cx="39" cy="90" r="3.5" fill="#10B981" />
+            <path
+              d="M 37.3 90 L 38.6 91.4 L 41 88.6"
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth="1.3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <rect x="47" y="88" width="54" height="4" rx="2" fill="#10B981" opacity="0.75" />
+          </g>
 
-              {/* 3 Verified Task Items with Animated Checkmarks */}
-              <div className="space-y-1.5">
-                {[
-                  { label: 'Next.js 15 & TS Modular', done: true },
-                  { label: 'Lighthouse Score 100', done: active },
-                  { label: '100% Hak Milik Client', done: active && phase >= 1 },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-1.5 text-[9px] font-mono">
-                    <CheckCircle2
-                      className={`w-3.5 h-3.5 shrink-0 transition-colors ${
-                        item.done ? 'text-emerald-500' : 'text-zinc-300 dark:text-zinc-600'
-                      }`}
-                    />
-                    <span
-                      className={`truncate ${
-                        item.done
-                          ? 'text-zinc-900 dark:text-zinc-100 font-bold'
-                          : 'text-zinc-400 dark:text-zinc-500'
-                      }`}
-                    >
-                      {item.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        );
-      },
+          {/* Animated Connection Line */}
+          <path
+            d="M 148 65 L 172 65"
+            fill="none"
+            stroke="#3B82F6"
+            strokeWidth="1.75"
+            strokeDasharray="3 3"
+          >
+            <animate
+              attributeName="stroke-dashoffset"
+              from="12"
+              to="0"
+              dur="1.2s"
+              repeatCount="indefinite"
+            />
+          </path>
+
+          {/* Right: Floating Speed Score Node */}
+          <g
+            className="transition-transform duration-500 ease-out"
+            style={{ transform: isHovered ? 'scale(1.06)' : 'scale(1)', transformOrigin: '206px 65px' }}
+          >
+            <rect
+              x="170"
+              y="31"
+              width="72"
+              height="68"
+              rx="12"
+              className="fill-white dark:fill-[#151923] stroke-zinc-700 dark:stroke-zinc-300"
+              strokeWidth="1.75"
+            />
+            {/* Speedometer Arc */}
+            <path
+              d="M 184 72 A 22 22 0 0 1 228 72"
+              fill="none"
+              className="stroke-zinc-200 dark:stroke-zinc-700"
+              strokeWidth="4.5"
+              strokeLinecap="round"
+            />
+            <path
+              d="M 184 72 A 22 22 0 0 1 228 72"
+              fill="none"
+              stroke="#10B981"
+              strokeWidth="4.5"
+              strokeLinecap="round"
+              strokeDasharray="69"
+              strokeDashoffset="6"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="22;4;22"
+                dur="3.6s"
+                repeatCount="indefinite"
+              />
+            </path>
+            <text
+              x="206"
+              y="72"
+              textAnchor="middle"
+              className="fill-zinc-900 dark:fill-white font-mono text-[13px] font-black"
+            >
+              100
+            </text>
+            <text
+              x="206"
+              y="88"
+              textAnchor="middle"
+              className="fill-emerald-600 dark:fill-emerald-400 font-mono text-[8.5px] font-bold"
+            >
+              SPEED
+            </text>
+          </g>
+        </svg>
+      ),
     },
 
     // -------------------------------------------------------------------------
-    // CARD 2: WHATSAPP AI AGENT CLOSING 24/7
-    // Inspired by ngodingpakeai.com (Canvas Prompt Bar -> Generated Live UI)
+    // CARD 2: AI WHATSAPP 24/7
+    // Original Schematic: Incoming Chat Bubble -> AI SOP Brain -> Auto Invoice
     // -------------------------------------------------------------------------
     {
       id: 'whatsapp-agent',
-      number: '02',
-      badge: 'AUTO CLOSING 24/7',
-      badgeColor: '#10B981',
-      title: 'WhatsApp AI Agent Closing 24/7',
-      tagline: 'SOP Guardrails · Hitung Ongkir Otomatis · Invoice Closing Digital',
+      title: 'AI WhatsApp 24/7',
       description:
-        'Agent AI terlatih dengan guardrails SOP bisnis. Menjawab calon pembeli instan, menghitung tarif ongkir otomatis, dan menerbitkan kuitansi closing 24 jam nonstop.',
+        'Agent AI cerdas berpanduan SOP bisnis yang membalas chat instan, cek ongkir otomatis, dan menerbitkan invoice closing 24 jam.',
       accentColor: '#10B981',
-      ringColor: 'rgba(16, 185, 129, 0.28)',
-      hoverBorder: 'border-emerald-500 dark:border-emerald-400',
-      actionText: 'Uji Coba AI Agent WhatsApp',
+      hoverBorder: 'hover:border-emerald-500/80 dark:hover:border-emerald-400/80',
       serviceQuery: 'whatsapp-ai-agent',
-      renderIllustration: (isBoosted, phase, progress, isHovered) => {
-        const active = isBoosted || isHovered;
-        return (
-          <div className="relative w-full h-full flex flex-col justify-between p-3.5 select-none">
-            {/* Top Device / App Bar */}
-            <div className="flex items-center justify-between pb-1.5 border-b border-zinc-200/80 dark:border-zinc-800">
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="font-mono text-[9px] font-bold text-zinc-800 dark:text-zinc-200">
-                  WhatsApp AI Assistant
-                </span>
-              </div>
-              <span className="font-mono text-[8px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold">
-                Online 24/7
-              </span>
-            </div>
+      renderSchematic: (isHovered) => (
+        <svg
+          viewBox="0 0 260 130"
+          className="w-full h-full overflow-visible select-none"
+          aria-hidden="true"
+        >
+          <defs>
+            <pattern id="grid-card-2" width="16" height="16" patternUnits="userSpaceOnUse">
+              <path
+                d="M 16 0 L 0 0 0 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.6"
+                strokeDasharray="2 2"
+                className="text-zinc-200/90 dark:text-zinc-800/90"
+              />
+            </pattern>
+          </defs>
+          <rect x="8" y="6" width="244" height="118" rx="12" fill="url(#grid-card-2)" />
 
-            {/* Interactive Prompt / Message Input Bar (ngodingpakeai Style) */}
-            <div className="px-2.5 py-2 rounded-xl border border-emerald-500/40 bg-emerald-50/60 dark:bg-emerald-950/30 flex items-center gap-2 shadow-2xs">
-              <Bot className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-              <p className="font-mono text-[10px] text-zinc-900 dark:text-zinc-100 font-medium truncate flex-1">
-                {typedPrompt}
-                <span className="inline-block w-1.5 h-3 bg-emerald-500 ml-0.5 animate-pulse align-middle" />
-              </p>
-            </div>
+          {/* Left: Incoming Customer Chat Bubble */}
+          <g
+            className="transition-transform duration-500"
+            style={{ transform: isHovered ? 'translateX(2px)' : 'translateX(0px)' }}
+          >
+            <rect
+              x="16"
+              y="36"
+              width="66"
+              height="44"
+              rx="9"
+              className="fill-white dark:fill-[#151923] stroke-zinc-700 dark:stroke-zinc-300"
+              strokeWidth="1.75"
+            />
+            <circle cx="28" cy="50" r="4" fill="#10B981" />
+            <rect
+              x="36"
+              y="47"
+              width="36"
+              height="4.5"
+              rx="2"
+              className="fill-zinc-700 dark:fill-zinc-300"
+            />
+            <rect
+              x="24"
+              y="58"
+              width="48"
+              height="4"
+              rx="2"
+              className="fill-zinc-300 dark:fill-zinc-600"
+            >
+              <animate
+                attributeName="width"
+                values="28;48;28"
+                dur="3.2s"
+                repeatCount="indefinite"
+              />
+            </rect>
+            <rect
+              x="24"
+              y="66"
+              width="34"
+              height="4"
+              rx="2"
+              className="fill-emerald-500/60"
+            />
+          </g>
 
-            {/* Generated Response & Digital Invoice Ticket */}
-            <div className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#131722] flex items-center justify-between shadow-xs">
-              <div className="space-y-0.5 min-w-0">
-                <div className="flex items-center gap-1 font-mono text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
-                  <CheckCircle2 className="w-3 h-3 shrink-0" />
-                  <span>SOP Terverifikasi · JNE Rp 24.000</span>
-                </div>
-                <p className="font-mono text-[8px] text-zinc-400 truncate">
-                  Invoice #INV-8821 Terbit Otomatis
-                </p>
-              </div>
+          {/* Animated Signal Line 1 */}
+          <line
+            x1="82"
+            y1="58"
+            x2="106"
+            y2="58"
+            stroke="#10B981"
+            strokeWidth="1.75"
+            strokeDasharray="3 3"
+          >
+            <animate
+              attributeName="stroke-dashoffset"
+              from="12"
+              to="0"
+              dur="1s"
+              repeatCount="indefinite"
+            />
+          </line>
 
-              <span className="px-2 py-0.5 rounded-md bg-emerald-600 text-white font-mono text-[8px] font-bold shrink-0">
-                Lunas Closing
-              </span>
-            </div>
-          </div>
-        );
-      },
+          {/* Center: AI SOP Guardrail Node */}
+          <g
+            className="transition-transform duration-500"
+            style={{
+              transform: isHovered ? 'scale(1.08)' : 'scale(1)',
+              transformOrigin: '130px 58px',
+            }}
+          >
+            <circle
+              cx="130"
+              cy="58"
+              r="26"
+              className="fill-emerald-500/10 stroke-emerald-500/40"
+              strokeWidth="1.2"
+            >
+              <animate attributeName="r" values="24;28;24" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <rect
+              x="110"
+              y="38"
+              width="40"
+              height="40"
+              rx="11"
+              className="fill-white dark:fill-[#151923] stroke-emerald-600 dark:stroke-emerald-400"
+              strokeWidth="2"
+            />
+            <text
+              x="130"
+              y="56"
+              textAnchor="middle"
+              className="fill-emerald-600 dark:fill-emerald-400 font-mono text-[11px] font-black"
+            >
+              AI
+            </text>
+            <text
+              x="130"
+              y="68"
+              textAnchor="middle"
+              className="fill-zinc-500 dark:fill-zinc-400 font-mono text-[7.5px] font-bold"
+            >
+              24/7
+            </text>
+          </g>
+
+          {/* Animated Signal Line 2 */}
+          <line
+            x1="154"
+            y1="58"
+            x2="176"
+            y2="58"
+            stroke="#10B981"
+            strokeWidth="1.75"
+            strokeDasharray="3 3"
+          >
+            <animate
+              attributeName="stroke-dashoffset"
+              from="12"
+              to="0"
+              dur="1s"
+              repeatCount="indefinite"
+            />
+          </line>
+
+          {/* Right: Automated Closing Invoice Card */}
+          <g
+            className="transition-transform duration-500"
+            style={{ transform: isHovered ? 'translateY(-3px)' : 'translateY(0px)' }}
+          >
+            <rect
+              x="176"
+              y="26"
+              width="68"
+              height="68"
+              rx="9"
+              className="fill-white dark:fill-[#151923] stroke-zinc-700 dark:stroke-zinc-300"
+              strokeWidth="1.75"
+            />
+            <rect
+              x="184"
+              y="34"
+              width="34"
+              height="10"
+              rx="3"
+              className="fill-emerald-500/15"
+            />
+            <text
+              x="201"
+              y="41.5"
+              textAnchor="middle"
+              className="fill-emerald-600 dark:fill-emerald-400 font-mono text-[7.5px] font-black"
+            >
+              INVOICE
+            </text>
+            <rect
+              x="184"
+              y="50"
+              width="50"
+              height="4"
+              rx="2"
+              className="fill-zinc-300 dark:fill-zinc-700"
+            />
+            <rect
+              x="184"
+              y="58"
+              width="38"
+              height="4"
+              rx="2"
+              className="fill-zinc-300 dark:fill-zinc-700"
+            />
+            <rect
+              x="184"
+              y="70"
+              width="52"
+              height="15"
+              rx="4"
+              fill="#10B981"
+            />
+            <text
+              x="210"
+              y="80"
+              textAnchor="middle"
+              className="fill-white font-mono text-[8px] font-black"
+            >
+              ✓ CLOSING
+            </text>
+          </g>
+        </svg>
+      ),
     },
 
     // -------------------------------------------------------------------------
-    // CARD 3: META CAPI & SERVER-SIDE TELEMETRY
-    // Crisp QRIS Laser Scan + Server-Side Bypass + EMQ 9.8+
+    // CARD 3: META CAPI ANTI-BLOKIR
+    // Original Schematic: Dual-Path Telemetry (Blocked Browser vs Server CAPI Pipe)
     // -------------------------------------------------------------------------
     {
       id: 'meta-capi-telemetry',
-      number: '03',
-      badge: 'EMQ 9.8+ ACCURATE',
-      badgeColor: '#EA580C',
-      title: 'Meta CAPI & Server-Side Telemetry',
-      tagline: 'QRIS Scan · Deduplikasi Hash · Kebal Ad-Blocker iOS 14+',
+      title: 'Meta CAPI Anti-Blokir',
       description:
-        'Infrastruktur pelacakan konversi sisi server kebal ad-blocker dan proteksi privasi iOS. Sinkronisasi ganda browser dan server menghasilkan skor EMQ 9.8+ terjamin.',
+        'Pelacakan konversi sisi server yang menembus ad-blocker & iOS 14+. Data iklan tercatat akurat dengan skor EMQ 9.8+.',
       accentColor: '#EA580C',
-      ringColor: 'rgba(234, 88, 12, 0.28)',
-      hoverBorder: 'border-orange-500 dark:border-orange-400',
-      actionText: 'Setup Server-Side CAPI',
-      serviceQuery: 'meta-capi-google-ads-tracking',
-      renderIllustration: (isBoosted, phase, progress, isHovered) => {
-        const active = isBoosted || isHovered;
-        return (
-          <div className="relative w-full h-full flex items-center justify-between gap-3 p-3.5 select-none">
-            {/* Left: QRIS Card with Glowing Laser Sweep */}
-            <div className="relative w-28 sm:w-32 h-28 rounded-xl border-2 border-orange-500/70 bg-white dark:bg-[#131722] p-2 flex flex-col items-center justify-between shadow-sm overflow-hidden shrink-0">
-              {/* Laser Scan Line */}
-              <div className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-orange-500 to-transparent shadow-[0_0_8px_#f97316] animate-laser-sweep z-20 pointer-events-none" />
+      hoverBorder: 'hover:border-orange-500/80 dark:hover:border-orange-400/80',
+      serviceQuery: 'meta-capi-ads-tracking',
+      renderSchematic: (isHovered) => (
+        <svg
+          viewBox="0 0 260 130"
+          className="w-full h-full overflow-visible select-none"
+          aria-hidden="true"
+        >
+          <defs>
+            <pattern id="grid-card-3" width="16" height="16" patternUnits="userSpaceOnUse">
+              <path
+                d="M 16 0 L 0 0 0 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.6"
+                strokeDasharray="2 2"
+                className="text-zinc-200/90 dark:text-zinc-800/90"
+              />
+            </pattern>
+          </defs>
+          <rect x="8" y="6" width="244" height="118" rx="12" fill="url(#grid-card-3)" />
 
-              <div className="w-full flex items-center justify-between text-[7px] font-mono font-black text-orange-600 dark:text-orange-400 border-b border-zinc-100 dark:border-zinc-800 pb-0.5">
-                <span>QRIS TELEMETRI</span>
-                <span>CAPI 2.0</span>
-              </div>
+          {/* Left: Event Source Node */}
+          <rect
+            x="18"
+            y="42"
+            width="52"
+            height="46"
+            rx="9"
+            className="fill-white dark:fill-[#151923] stroke-zinc-700 dark:stroke-zinc-300"
+            strokeWidth="1.75"
+          />
+          <rect x="26" y="51" width="36" height="5" rx="2.5" className="fill-orange-500" />
+          <rect
+            x="26"
+            y="61"
+            width="26"
+            height="4"
+            rx="2"
+            className="fill-zinc-300 dark:fill-zinc-600"
+          />
+          <text
+            x="44"
+            y="78"
+            textAnchor="middle"
+            className="fill-zinc-500 dark:fill-zinc-400 font-mono text-[7.5px] font-bold"
+          >
+            EVENT
+          </text>
 
-              {/* QR Pattern Representation */}
-              <div className="grid grid-cols-4 gap-1 p-1 bg-zinc-50 dark:bg-zinc-900 rounded-md my-auto">
-                {Array.from({ length: 16 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className={`w-2 h-2 rounded-[2px] transition-colors duration-300 ${
-                      i % 3 === 0
-                        ? 'bg-orange-500'
-                        : i % 2 === 0
-                        ? 'bg-zinc-800 dark:bg-zinc-200'
-                        : 'bg-zinc-300 dark:bg-zinc-700'
-                    }`}
-                  />
-                ))}
-              </div>
+          {/* Upper Path: Standard Browser Pixel (Blocked by AdBlocker X) */}
+          <path
+            d="M 70 53 C 95 32, 118 32, 136 32"
+            fill="none"
+            className="stroke-zinc-300 dark:stroke-zinc-700"
+            strokeWidth="1.5"
+            strokeDasharray="3 3"
+          />
+          <circle
+            cx="144"
+            cy="32"
+            r="9"
+            className="fill-rose-50 dark:fill-rose-950/80 stroke-rose-400"
+            strokeWidth="1.4"
+          />
+          <path
+            d="M 141 29 L 147 35 M 147 29 L 141 35"
+            stroke="#F43F5E"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          />
 
-              <span className="font-mono text-[7px] text-zinc-400 font-bold uppercase">
-                sha256(event_id)
-              </span>
-            </div>
+          {/* Lower Path: Server-Side CAPI Bypass Pipe (Active Glowing Flow) */}
+          <path
+            d="M 70 76 C 102 96, 148 96, 182 74"
+            fill="none"
+            stroke="#EA580C"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+          />
+          {/* Flowing Telemetry Packet */}
+          <circle r="4" fill="#EA580C">
+            <animateMotion
+              dur="2.2s"
+              repeatCount="indefinite"
+              path="M 70 76 C 102 96, 148 96, 182 74"
+            />
+          </circle>
 
-            {/* Right: Server-Side Telemetry Output Box */}
-            <div className="flex-1 space-y-2 min-w-0">
-              <div className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#131722] shadow-2xs">
-                <div className="text-[8px] font-mono text-zinc-400">Server Deduplikasi</div>
-                <div className="font-mono text-[10px] font-black text-orange-600 dark:text-orange-400 truncate">
-                  fbclid + user_data
-                </div>
-              </div>
+          {/* Server CAPI Pill on Lower Path */}
+          <rect
+            x="104"
+            y="80"
+            width="50"
+            height="18"
+            rx="9"
+            className="fill-white dark:fill-[#151923] stroke-orange-500"
+            strokeWidth="1.5"
+          />
+          <text
+            x="129"
+            y="91.5"
+            textAnchor="middle"
+            className="fill-orange-600 dark:fill-orange-400 font-mono text-[8px] font-black"
+          >
+            CAPI
+          </text>
 
-              <div className="p-2 rounded-xl border border-orange-500/30 bg-orange-50/70 dark:bg-orange-950/30 flex items-center justify-between">
-                <span className="font-mono text-[9px] font-bold text-orange-800 dark:text-orange-300">
-                  Skor EMQ
-                </span>
-                <span className="font-mono text-[11px] font-black text-orange-600 dark:text-orange-400">
-                  9.8 / 10
-                </span>
-              </div>
-
-              <div className="flex items-center gap-1.5 text-[8px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
-                <ShieldCheck className="w-3.5 h-3.5 shrink-0 text-emerald-500" />
-                <span className="truncate">Kebal iOS 14+ Ad-Blocker</span>
-              </div>
-            </div>
-          </div>
-        );
-      },
+          {/* Right: Verified Conversion Attribution Node */}
+          <g
+            className="transition-transform duration-500"
+            style={{
+              transform: isHovered ? 'scale(1.06)' : 'scale(1)',
+              transformOrigin: '212px 64px',
+            }}
+          >
+            <rect
+              x="182"
+              y="34"
+              width="62"
+              height="60"
+              rx="11"
+              className="fill-white dark:fill-[#151923] stroke-zinc-700 dark:stroke-zinc-300"
+              strokeWidth="1.75"
+            />
+            <rect
+              x="190"
+              y="42"
+              width="46"
+              height="14"
+              rx="4"
+              className="fill-orange-500/15"
+            />
+            <text
+              x="213"
+              y="51.5"
+              textAnchor="middle"
+              className="fill-orange-600 dark:fill-orange-400 font-mono text-[8px] font-black"
+            >
+              EMQ 9.8
+            </text>
+            <circle cx="213" cy="74" r="10" className="fill-emerald-500/15 stroke-emerald-500" strokeWidth="1.5" />
+            <path
+              d="M 209 74 L 212 77 L 217.5 71"
+              fill="none"
+              stroke="#10B981"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </g>
+        </svg>
+      ),
     },
 
     // -------------------------------------------------------------------------
-    // CARD 4: CLOUD VPS HARDENING & ENGINE SPEED (SVG Tachometer Needle)
+    // CARD 4: CLOUD VPS KEBAL HACK
+    // Original Schematic: 5-Layer Hexagonal Shield + Protected Server Rack Core
     // -------------------------------------------------------------------------
     {
       id: 'vps-hardening-speed',
-      number: '04',
-      badge: 'SPEED 100 · HARDENED',
-      badgeColor: '#7C3AED',
-      title: 'Cloud VPS Hardening & Engine Speed',
-      tagline: '5 Lapis Keamanan · SVG Speed Needle 100 · n8n Self-Hosted',
+      title: 'Cloud VPS Kebal Hack',
       description:
-        'Server mandiri tangguh dengan proteksi 5 lapis (Firewall UFW, Fail2ban, Zero-Trust VPN), jarum speedometer mengunci di skor 100/100, dan otomasi alur kerja n8n tanpa limitasi.',
-      accentColor: '#8B5CF6',
-      ringColor: 'rgba(139, 92, 246, 0.28)',
-      hoverBorder: 'border-purple-500 dark:border-purple-400',
-      actionText: 'Audit Keamanan & Kecepatan VPS',
+        'Server Linux mandiri dengan 5 lapis proteksi (Firewall UFW, Fail2ban, SSH Key, Zero-Trust) dan otomasi n8n tanpa batas.',
+      accentColor: '#7C3AED',
+      hoverBorder: 'hover:border-purple-500/80 dark:hover:border-purple-400/80',
       serviceQuery: 'setup-cloud-vps-hardening',
-      renderIllustration: (isBoosted, phase, progress, isHovered) => {
-        const active = isBoosted || isHovered;
-        let speedScore = 100;
-        if (isBoosted) {
-          if (phase === 0) {
-            speedScore = Math.min(88, Math.round((progress / 33.3) * 88));
-          } else if (phase === 1) {
-            speedScore = Math.min(98, 88 + Math.round(((progress - 33.3) / 33.3) * 10));
-          } else {
-            speedScore = 100;
-          }
-        } else if (isHovered) {
-          speedScore = 100;
-        } else {
-          speedScore = 98;
-        }
+      renderSchematic: (isHovered) => (
+        <svg
+          viewBox="0 0 260 130"
+          className="w-full h-full overflow-visible select-none"
+          aria-hidden="true"
+        >
+          <defs>
+            <pattern id="grid-card-4" width="16" height="16" patternUnits="userSpaceOnUse">
+              <path
+                d="M 16 0 L 0 0 0 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.6"
+                strokeDasharray="2 2"
+                className="text-zinc-200/90 dark:text-zinc-800/90"
+              />
+            </pattern>
+          </defs>
+          <rect x="8" y="6" width="244" height="118" rx="12" fill="url(#grid-card-4)" />
 
-        // Needle rotation: -90deg (0) to +90deg (100)
-        const needleAngle = -90 + (speedScore / 100) * 180;
+          {/* Outer Protective Perimeter Ring */}
+          <circle
+            cx="130"
+            cy="65"
+            r="46"
+            fill="none"
+            className="stroke-purple-500/35 dark:stroke-purple-400/35"
+            strokeWidth="1.5"
+            strokeDasharray="5 4"
+          >
+            <animateTransform
+              attributeName="transform"
+              type="rotate"
+              from="0 130 65"
+              to="360 130 65"
+              dur="18s"
+              repeatCount="indefinite"
+            />
+          </circle>
 
-        return (
-          <div className="relative w-full h-full flex flex-col justify-between p-3.5 select-none">
-            {/* Terminal Header */}
-            <div className="flex items-center justify-between pb-1 border-b border-zinc-200/80 dark:border-zinc-800">
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-red-400" />
-                <span className="w-2 h-2 rounded-full bg-yellow-400" />
-                <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                <span className="font-mono text-[9px] text-zinc-400 ml-1">vps.fitran.dev</span>
-              </div>
-              <span className="font-mono text-[8px] text-emerald-600 dark:text-emerald-400 font-bold">
-                5 Lapis UFW
-              </span>
-            </div>
+          {/* Left & Right Security Layer Tags */}
+          <g>
+            <rect
+              x="20"
+              y="32"
+              width="52"
+              height="22"
+              rx="6"
+              className="fill-white dark:fill-[#151923] stroke-zinc-600 dark:stroke-zinc-400"
+              strokeWidth="1.4"
+            />
+            <text
+              x="46"
+              y="46"
+              textAnchor="middle"
+              className="fill-zinc-800 dark:fill-zinc-200 font-mono text-[8.5px] font-black"
+            >
+              UFW 5X
+            </text>
 
-            {/* Real SVG Tachometer Dial with Dynamic Needle */}
-            <div className="relative flex flex-col items-center justify-center my-auto">
-              <svg viewBox="0 0 160 85" className="w-36 h-20 overflow-visible">
-                <defs>
-                  <linearGradient id="vpsSpeedGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#3B82F6" />
-                    <stop offset="50%" stopColor="#8B5CF6" />
-                    <stop offset="100%" stopColor="#10B981" />
-                  </linearGradient>
-                </defs>
+            <rect
+              x="20"
+              y="76"
+              width="52"
+              height="22"
+              rx="6"
+              className="fill-white dark:fill-[#151923] stroke-zinc-600 dark:stroke-zinc-400"
+              strokeWidth="1.4"
+            />
+            <text
+              x="46"
+              y="90"
+              textAnchor="middle"
+              className="fill-purple-600 dark:fill-purple-400 font-mono text-[8.5px] font-black"
+            >
+              SSH KEY
+            </text>
 
-                {/* Track Arc Background */}
-                <path
-                  d="M 20 80 A 60 60 0 0 1 140 80"
-                  fill="none"
-                  stroke="currentColor"
-                  className="text-zinc-200 dark:text-zinc-800"
-                  strokeWidth="8"
-                  strokeLinecap="round"
-                />
+            <rect
+              x="188"
+              y="32"
+              width="52"
+              height="22"
+              rx="6"
+              className="fill-white dark:fill-[#151923] stroke-zinc-600 dark:stroke-zinc-400"
+              strokeWidth="1.4"
+            />
+            <text
+              x="214"
+              y="46"
+              textAnchor="middle"
+              className="fill-emerald-600 dark:fill-emerald-400 font-mono text-[8.5px] font-black"
+            >
+              TLS 1.3
+            </text>
 
-                {/* Active Score Arc */}
-                <path
-                  d="M 20 80 A 60 60 0 0 1 140 80"
-                  fill="none"
-                  stroke="url(#vpsSpeedGrad)"
-                  strokeWidth="8"
-                  strokeLinecap="round"
-                  strokeDasharray="188.5"
-                  strokeDashoffset={188.5 - (speedScore / 100) * 188.5}
-                  className="transition-all duration-300 ease-out"
-                />
+            <rect
+              x="188"
+              y="76"
+              width="52"
+              height="22"
+              rx="6"
+              className="fill-white dark:fill-[#151923] stroke-zinc-600 dark:stroke-zinc-400"
+              strokeWidth="1.4"
+            />
+            <text
+              x="214"
+              y="90"
+              textAnchor="middle"
+              className="fill-zinc-800 dark:fill-zinc-200 font-mono text-[8.5px] font-black"
+            >
+              FAIL2BAN
+            </text>
+          </g>
 
-                {/* Dial Center Pivot */}
-                <circle cx="80" cy="80" r="5" fill="#8B5CF6" className="shadow-xs" />
-                <circle cx="80" cy="80" r="2" fill="#FFFFFF" />
+          {/* Connector Lines to Center Shield */}
+          <line x1="72" y1="43" x2="96" y2="54" stroke="#8B5CF6" strokeWidth="1.3" strokeDasharray="2 2" />
+          <line x1="72" y1="87" x2="96" y2="76" stroke="#8B5CF6" strokeWidth="1.3" strokeDasharray="2 2" />
+          <line x1="188" y1="43" x2="164" y2="54" stroke="#10B981" strokeWidth="1.3" strokeDasharray="2 2" />
+          <line x1="188" y1="87" x2="164" y2="76" stroke="#10B981" strokeWidth="1.3" strokeDasharray="2 2" />
 
-                {/* Rotating Physical Needle */}
-                <g
-                  style={{
-                    transformOrigin: '80px 80px',
-                    transform: `rotate(${needleAngle}deg)`,
-                    transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                  }}
-                >
-                  <polygon points="78,80 82,80 80.8,24 79.2,24" fill="#8B5CF6" />
-                </g>
-
-                {/* Dial Ticks */}
-                <text x="18" y="93" className="fill-zinc-400 font-mono text-[7px]">
-                  0
-                </text>
-                <text x="76" y="16" className="fill-zinc-400 font-mono text-[7px]">
-                  50
-                </text>
-                <text x="135" y="93" className="fill-emerald-500 font-mono text-[7px] font-bold">
-                  100
-                </text>
-              </svg>
-
-              {/* Digital Score Output */}
-              <div className="text-center -mt-2">
-                <span className="font-mono text-sm font-black text-zinc-950 dark:text-white">
-                  {speedScore} / 100
-                </span>
-                <span className="text-[8px] font-mono text-emerald-600 dark:text-emerald-400 ml-1 font-bold">
-                  Lighthouse Max
-                </span>
-              </div>
-            </div>
-
-            {/* Bottom 5 Security Shields Strip */}
-            <div className="flex items-center justify-between text-[8px] font-mono text-zinc-500 dark:text-zinc-400 pt-1 border-t border-zinc-100 dark:border-zinc-800">
-              <span className="flex items-center gap-1 font-bold text-purple-600 dark:text-purple-400">
-                <Lock className="w-2.5 h-2.5" /> Zero-Trust VPN
-              </span>
-              <span className="text-emerald-600 dark:text-emerald-400 font-bold">
-                ✓ Bebas Biaya SaaS
-              </span>
-            </div>
-          </div>
-        );
-      },
+          {/* Center: Hardened Server Shield Core */}
+          <g
+            className="transition-transform duration-500"
+            style={{
+              transform: isHovered ? 'scale(1.08)' : 'scale(1)',
+              transformOrigin: '130px 65px',
+            }}
+          >
+            <path
+              d="M 130 27 L 160 39 L 160 66 C 160 85, 146 98, 130 104 C 114 98, 100 85, 100 66 L 100 39 Z"
+              className="fill-white dark:fill-[#151923] stroke-purple-600 dark:stroke-purple-400"
+              strokeWidth="2"
+              strokeLinejoin="round"
+            />
+            {/* Server Blades Inside Shield */}
+            <rect
+              x="114"
+              y="47"
+              width="32"
+              height="9"
+              rx="2.5"
+              className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-400 dark:stroke-zinc-600"
+              strokeWidth="1"
+            />
+            <circle cx="120" cy="51.5" r="1.8" fill="#10B981" />
+            <rect
+              x="114"
+              y="60"
+              width="32"
+              height="9"
+              rx="2.5"
+              className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-400 dark:stroke-zinc-600"
+              strokeWidth="1"
+            />
+            <circle cx="120" cy="64.5" r="1.8" fill="#10B981" />
+            {/* Verified Lock Dot at Bottom of Shield */}
+            <circle cx="130" cy="82" r="7" fill="#10B981" />
+            <path
+              d="M 127 82 L 129.2 84.2 L 133.5 79.8"
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </g>
+        </svg>
+      ),
     },
   ];
 
   return (
     <section className={`w-full ${className}`}>
-      {/* Section Header with Timeline Progress Bar */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-mono font-bold mb-2">
-            <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-            <span>4 PILAR TEKNOLOGI &amp; ARSITEKTUR DIGITAL</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white font-heading tracking-tight">
-            Standar Rekayasa Web &amp; AI fitran.dev
-          </h2>
-          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl font-normal">
-            Bukan sekadar template siap pakai. Setiap produk dibangun dengan fondasi kode bersih,
-            tracking presisi kebal ad-blocker, dan otomasi AI 24/7.
-          </p>
-        </div>
-
-        {/* Global Boost Timeline Controller (9 Detik) */}
-        <div className="flex items-center gap-3 bg-zinc-100/80 dark:bg-zinc-800/80 p-2 rounded-2xl border border-zinc-200/80 dark:border-zinc-700/80 self-start sm:self-auto shrink-0 shadow-2xs">
-          <button
-            onClick={() => setIsPaused(!isPaused)}
-            className="w-8 h-8 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-200 flex items-center justify-center hover:scale-105 transition-transform cursor-pointer"
-            title={isPaused ? 'Lanjutkan Animasi (Auto-Play)' : 'Jeda Animasi (Pause)'}
-          >
-            {isPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
-          </button>
-
-          <div className="flex items-center gap-1.5 font-mono text-[11px]">
-            {FEATURE_CARDS.map((c, i) => (
-              <button
-                key={c.id}
-                onClick={() => {
-                  setActiveBoostIdx(i);
-                  setBoostProgress(0);
-                }}
-                className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer font-bold ${
-                  activeBoostIdx === i
-                    ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 shadow-xs'
-                    : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
-                }`}
-              >
-                0{i + 1}
-              </button>
-            ))}
-          </div>
-        </div>
+      {/* Clean, Minimal Section Header */}
+      <div className="mb-6 text-center max-w-2xl mx-auto space-y-1.5">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/25 text-orange-600 dark:text-orange-400 text-[11px] font-mono font-bold">
+          <span>✦ 4 PILAR EKOSISTEM FITRAN.DEV</span>
+        </span>
+        <h2 className="text-2xl sm:text-3xl font-black text-zinc-950 dark:text-white tracking-tight">
+          Solusi Digital Siap Pakai untuk Skala Bisnis
+        </h2>
       </div>
 
-      {/* 4 Cards Grid — Spacious, Roomy, Zero Text Cutoff */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-        {FEATURE_CARDS.map((card, idx) => {
-          const isBoosted = activeBoostIdx === idx;
+      {/* 4 Simple, Proportional Cards Grid (Clean Vector Schematic + Title + Description) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {FEATURE_CARDS.map((card) => {
           const isHovered = hoveredCard === card.id;
 
           return (
             <div
               key={card.id}
               onClick={() => handleCardClick(card)}
-              onMouseEnter={() => {
-                setHoveredCard(card.id);
-                setActiveBoostIdx(idx);
-              }}
+              onMouseEnter={() => setHoveredCard(card.id)}
               onMouseLeave={() => setHoveredCard(null)}
-              onTouchStart={() => {
-                setActiveBoostIdx(idx);
-              }}
-              className={`group relative flex flex-col justify-between rounded-3xl border-2 p-5 sm:p-6 text-left transition-all duration-300 cursor-pointer bg-white dark:bg-[#111319] shadow-xs ${
-                isBoosted || isHovered
-                  ? `-translate-y-2 shadow-xl ${card.hoverBorder}`
-                  : 'border-zinc-200/90 dark:border-zinc-800/90 hover:border-zinc-300 dark:hover:border-zinc-700'
-              }`}
-              style={{
-                boxShadow:
-                  isBoosted || isHovered
-                    ? `0 20px 45px -15px ${card.ringColor}, 0 0 0 3px ${card.ringColor}`
-                    : undefined,
-              }}
+              className={`group relative flex flex-col justify-between rounded-2xl border bg-white dark:bg-[#111319] p-5 text-left transition-all duration-300 cursor-pointer border-zinc-200/90 dark:border-zinc-800/90 shadow-xs hover:shadow-lg hover:-translate-y-1 ${card.hoverBorder}`}
             >
-              {/* Individual Card Top Progress Bar */}
-              <div className="absolute top-0 left-0 right-0 h-1 overflow-hidden rounded-t-3xl">
-                <div
-                  className="h-full transition-all duration-75 ease-linear"
-                  style={{
-                    backgroundColor: card.accentColor,
-                    width: isBoosted ? `${boostProgress}%` : '0%',
-                  }}
-                />
-              </div>
-
-              {/* Header Badges */}
-              <div className="flex items-center justify-between gap-2 mb-4">
-                <span className="font-mono text-xs font-black px-2.5 py-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-200/60 dark:border-zinc-700">
-                  PILAR {card.number}
+              {/* Optional subtle pill on first card */}
+              {card.badgeText && (
+                <span className="absolute top-3.5 right-3.5 z-10 px-2.5 py-0.5 rounded-full bg-orange-500 text-white font-mono text-[10px] font-bold tracking-wide shadow-2xs">
+                  {card.badgeText}
                 </span>
+              )}
 
-                <span
-                  className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider text-white shadow-xs"
-                  style={{ backgroundColor: card.badgeColor }}
-                >
-                  {card.badge}
-                </span>
+              {/* 1. Open Vector Schematic Canvas */}
+              <div className="relative w-full h-36 sm:h-40 mb-3 flex items-center justify-center overflow-hidden">
+                {card.renderSchematic(isHovered)}
               </div>
 
-              {/* Roomy Illustration Canvas (Fixed generous height, NO aspect-ratio squeeze) */}
-              <div className="relative w-full h-48 sm:h-52 rounded-2xl overflow-hidden bg-zinc-50/90 dark:bg-[#0B0D13] border border-zinc-200/80 dark:border-zinc-800/80 mb-5 flex items-center justify-center">
-                {card.renderIllustration(isBoosted, boostPhase, boostProgress, isHovered)}
-              </div>
-
-              {/* Title & Tagline & Description */}
-              <div className="space-y-2 flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="font-heading text-lg font-bold text-zinc-950 dark:text-white leading-snug group-hover:text-[#1E3A8A] dark:group-hover:text-blue-400 transition-colors">
-                    {card.title}
-                  </h3>
-                  <p className="font-mono text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 mt-1">
-                    {card.tagline}
-                  </p>
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-2 leading-relaxed font-normal">
-                    {card.description}
-                  </p>
-                </div>
-
-                {/* Bottom Action Strip */}
-                <div className="pt-3 mt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-xs font-bold text-zinc-500 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">
-                  <span className="text-[11px] font-mono flex items-center gap-1.5">
-                    <span
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{ backgroundColor: card.accentColor }}
-                    />
-                    <span>{card.actionText}</span>
-                  </span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform" />
-                </div>
+              {/* 2. Clean 1-Line Title & 2-3 Line Description */}
+              <div className="space-y-1.5">
+                <h3 className="font-heading text-base sm:text-lg font-extrabold text-zinc-950 dark:text-white leading-snug group-hover:text-[#1E3A8A] dark:group-hover:text-blue-400 transition-colors">
+                  {card.title}
+                </h3>
+                <p className="text-xs sm:text-[13px] text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal">
+                  {card.description}
+                </p>
               </div>
             </div>
           );

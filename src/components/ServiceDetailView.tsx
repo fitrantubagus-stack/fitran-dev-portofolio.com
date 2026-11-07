@@ -325,30 +325,30 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
           </div>
 
           <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden font-mono text-[10px]">
-            <div className="grid grid-cols-4 bg-zinc-50 dark:bg-zinc-900 p-2 font-bold text-zinc-500">
-              <span>ID Transaksi</span>
-              <span>SKU Barang</span>
-              <span>Gudang</span>
-              <span className="text-right">Approval</span>
+            <div className="grid grid-cols-4 gap-1.5 bg-zinc-50 dark:bg-zinc-900 p-2 font-bold text-zinc-500">
+              <span className="truncate">ID Transaksi</span>
+              <span className="truncate">SKU Barang</span>
+              <span className="truncate">Gudang</span>
+              <span className="text-right truncate">Approval</span>
             </div>
             <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
-              <div className="grid grid-cols-4 p-2">
-                <span className="text-blue-600 font-bold">TRX-8941</span>
-                <span>Baja C75 (+500)</span>
-                <span>Cikarang</span>
-                <span className="text-right text-emerald-600 font-bold">Approved</span>
+              <div className="grid grid-cols-4 gap-1.5 p-2">
+                <span className="text-blue-600 font-bold truncate">TRX-8941</span>
+                <span className="truncate">Baja C75 (+500)</span>
+                <span className="truncate">Cikarang</span>
+                <span className="text-right text-emerald-600 font-bold truncate">Approved</span>
               </div>
-              <div className="grid grid-cols-4 p-2 bg-zinc-50/50 dark:bg-zinc-900/50">
-                <span className="text-blue-600 font-bold">TRX-8942</span>
-                <span>Baut M8 (-120)</span>
-                <span>Surabaya</span>
-                <span className="text-right text-amber-600 font-bold">Pending</span>
+              <div className="grid grid-cols-4 gap-1.5 p-2 bg-zinc-50/50 dark:bg-zinc-900/50">
+                <span className="text-blue-600 font-bold truncate">TRX-8942</span>
+                <span className="truncate">Baut M8 (-120)</span>
+                <span className="truncate">Surabaya</span>
+                <span className="text-right text-amber-600 font-bold truncate">Pending</span>
               </div>
-              <div className="grid grid-cols-4 p-2">
-                <span className="text-blue-600 font-bold">TRX-8943</span>
-                <span>Semen 50kg (+1K)</span>
-                <span>Medan</span>
-                <span className="text-right text-emerald-600 font-bold">Approved</span>
+              <div className="grid grid-cols-4 gap-1.5 p-2">
+                <span className="text-blue-600 font-bold truncate">TRX-8943</span>
+                <span className="truncate">Semen 50kg (+1K)</span>
+                <span className="truncate">Medan</span>
+                <span className="text-right text-emerald-600 font-bold truncate">Approved</span>
               </div>
             </div>
           </div>
@@ -390,7 +390,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
             </div>
           </div>
 
-          <div className="p-2.5 rounded-xl bg-[#0B0F19] text-zinc-300 font-mono text-[10px] space-y-1">
+          <div className="p-2.5 rounded-xl bg-[#0B0F19] text-zinc-300 font-mono text-[10px] space-y-1 break-words">
             <p className="text-emerald-400">[200 OK] Purchase (ID: ev_948201) -&gt; Meta Graph API v20.0 (14ms)</p>
             <p className="text-blue-400">[200 OK] Lead (ID: ev_948202) -&gt; Telegram Webhook Dispatched</p>
           </div>
@@ -442,7 +442,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
             <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
             <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
           </div>
-          <div className="px-3 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 text-[10px] font-mono text-zinc-500">
+          <div className="px-3 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 text-[10px] font-mono text-zinc-500 truncate max-w-[180px] sm:max-w-none">
             https://{service.id}.fitran.dev
           </div>
         </div>
@@ -473,7 +473,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
     <div id="katalog-lengkap" className="space-y-12 animate-fade-in scroll-mt-24">
       {/* 1. TOP BREADCRUMB & BACK ACTION */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
-        <nav className="flex items-center gap-2 text-xs font-mono text-zinc-500">
+        <nav className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs font-mono text-zinc-500">
           <a
             href={`${themePrefix}`}
             onClick={(e) => {
@@ -609,7 +609,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
           <div className="lg:col-span-5 space-y-5">
             {/* Official Branded Service Poster (Unobstructed, click-to-enlarge lightbox) */}
             <div className="space-y-2">
-              <ServicePosterVisual serviceId={service.id} category={service.category} className="aspect-[16/10] sm:aspect-[16/10] shadow-lg" />
+              <ServicePosterVisual serviceId={service.id} category={service.category} className="shadow-lg" />
               <div className="p-3 bg-zinc-50 dark:bg-zinc-900/90 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 flex items-center justify-between text-xs">
                 <div className="flex items-center gap-1.5 font-mono text-emerald-600 dark:text-emerald-400 font-bold text-[11px]">
                   <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-500" />
@@ -694,29 +694,9 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({
           </p>
         </div>
 
-        {/* Interactive 3D Workflow Stage — Replacing Static Photo with Animated Isometric Pipeline */}
-        <div className="max-w-5xl mx-auto">
-          <InteractiveIsometricPipeline />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {workflow.map((stage) => (
-            <div
-              key={stage.step}
-              className="p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 space-y-3 relative"
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-xs font-bold text-[#1E3A8A] dark:text-blue-400">
-                  Tahap 0{stage.step}
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-bold">
-                  {stage.duration}
-                </span>
-              </div>
-              <h4 className="font-bold text-sm text-zinc-950 dark:text-white">{stage.title}</h4>
-              <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">{stage.desc}</p>
-            </div>
-          ))}
+        {/* Full-Width Interactive 4-Stage Pipeline */}
+        <div className="w-full">
+          <InteractiveIsometricPipeline stages={workflow} />
         </div>
       </div>
 

@@ -59,9 +59,9 @@ export const MateriCoverBanner: React.FC<MateriCoverBannerProps> = ({
       </div>
 
       {/* Bottom Footer: Reading Time Tag */}
-      <div className="relative z-10 pt-2 border-t border-zinc-800/80 flex items-center justify-between text-[11px] font-mono text-zinc-400">
-        <span className="font-bold tracking-wider text-emerald-400">{readTime}</span>
-        <span className="text-zinc-500 text-[10px]">Dokumentasi Resmi fitran.dev</span>
+      <div className="relative z-10 pt-2.5 border-t border-white/20 flex items-center justify-between text-[11px] font-mono text-white/90">
+        <span className="font-bold tracking-wider text-emerald-300">{readTime}</span>
+        <span className="text-blue-100/90 text-[10px]">Dokumentasi Resmi fitran.dev</span>
       </div>
     </div>
   );

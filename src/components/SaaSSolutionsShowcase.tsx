@@ -1,272 +1,437 @@
 import React, { useState } from 'react';
-import {
-  Sparkles,
-  Check,
-  ArrowRight,
-  Bot,
-  Zap,
-  Code2,
-  Cpu,
-  Layers,
-  Layout,
-  Terminal,
-  FileCode,
-  ShieldCheck,
-  CheckCircle2,
-  Workflow,
-  MessageSquare,
-  ChevronRight,
-  TrendingUp,
-  Clock,
-  Download,
-  Flame,
-  Star,
-} from 'lucide-react';
-import { ToolLogo } from './ToolLogo';
+import { Sparkles, Check, ArrowRight, Bot, CheckCircle2, Flame } from 'lucide-react';
 
 interface SaaSSolutionsShowcaseProps {
   onWhatsAppInquiry: (serviceName?: string, budget?: string) => void;
   className?: string;
+  mode?: 'cards-only' | 'pricing-only' | 'full';
 }
 
 export const SaaSSolutionsShowcase: React.FC<SaaSSolutionsShowcaseProps> = ({
   onWhatsAppInquiry,
   className = '',
+  mode = 'full',
 }) => {
-  // Model selector state for AndalAI card
-  const [selectedModel, setSelectedModel] = useState<'claude' | 'deepseek' | 'gpt4' | 'gemini'>('claude');
-  
-  // Interactive plan step toggle for Bikin Plan card
-  const [activePlanStep, setActivePlanStep] = useState<number>(2);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
-  const AI_MODELS = {
-    claude: {
-      name: 'Claude 3.7 Sonnet',
-      company: 'Anthropic',
-      role: 'Reasoning & Architecture',
-      badge: 'Extended Thinking',
-      description: 'Penalaran arsitektur sistem tingkat tinggi, refactoring kode bebas bug, dan API design.',
-      score: '98.5% Benchmark Reasoning',
+  const LAYANAN_SCHEMATIC_CARDS = [
+    {
+      id: 'erd-database-architecture',
+      badge: 'ARSITEKTUR DATA',
+      title: 'Perancangan Skema Database & API Modular',
+      description:
+        'Pemetaan relasi tabel PostgreSQL (ERD), indeks performa tinggi, dan kontrak REST API yang rapi sebelum proses coding dimulai.',
+      hoverBorder: 'hover:border-indigo-500/80 dark:hover:border-indigo-400/80',
+      topic: 'Konsultasi Perancangan Database & Arsitektur Sistem',
+      renderSchematic: (isHovered: boolean) => (
+        <svg
+          viewBox="0 0 340 135"
+          className="w-full h-full overflow-visible select-none"
+          aria-hidden="true"
+        >
+          <defs>
+            <pattern id="grid-layanan-1" width="16" height="16" patternUnits="userSpaceOnUse">
+              <path
+                d="M 16 0 L 0 0 0 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.6"
+                strokeDasharray="2 2"
+                className="text-zinc-200/90 dark:text-zinc-800/90"
+              />
+            </pattern>
+          </defs>
+          <rect x="8" y="6" width="324" height="123" rx="12" fill="url(#grid-layanan-1)" />
+
+          {/* Left Table: USERS (PK) */}
+          <g
+            className="transition-transform duration-500"
+            style={{ transform: isHovered ? 'translateY(-2px)' : 'translateY(0px)' }}
+          >
+            <rect
+              x="22"
+              y="26"
+              width="82"
+              height="78"
+              rx="8"
+              className="fill-white dark:fill-[#151923] stroke-zinc-700 dark:stroke-zinc-300"
+              strokeWidth="1.75"
+            />
+            <rect
+              x="22"
+              y="26"
+              width="82"
+              height="18"
+              rx="8"
+              className="fill-indigo-500/15"
+            />
+            <text
+              x="63"
+              y="38"
+              textAnchor="middle"
+              className="fill-indigo-600 dark:fill-indigo-400 font-mono text-[8.5px] font-black"
+            >
+              TBL_CLIENT
+            </text>
+            <circle cx="33" cy="54" r="3" fill="#6366F1" />
+            <rect x="41" y="52" width="52" height="4" rx="2" className="fill-zinc-700 dark:fill-zinc-300" />
+            <circle cx="33" cy="67" r="2.5" className="fill-zinc-400" />
+            <rect x="41" y="65" width="44" height="4" rx="2" className="fill-zinc-300 dark:fill-zinc-600" />
+            <circle cx="33" cy="80" r="2.5" className="fill-zinc-400" />
+            <rect x="41" y="78" width="36" height="4" rx="2" className="fill-zinc-300 dark:fill-zinc-600" />
+          </g>
+
+          {/* Animated Relational Connectors (1-to-Many) */}
+          <path
+            d="M 104 54 C 122 54, 122 44, 138 44"
+            fill="none"
+            stroke="#6366F1"
+            strokeWidth="1.8"
+            strokeDasharray="3 3"
+          >
+            <animate
+              attributeName="stroke-dashoffset"
+              from="12"
+              to="0"
+              dur="1.2s"
+              repeatCount="indefinite"
+            />
+          </path>
+          <path
+            d="M 104 67 C 122 67, 122 92, 138 92"
+            fill="none"
+            stroke="#10B981"
+            strokeWidth="1.8"
+            strokeDasharray="3 3"
+          >
+            <animate
+              attributeName="stroke-dashoffset"
+              from="12"
+              to="0"
+              dur="1.2s"
+              repeatCount="indefinite"
+            />
+          </path>
+
+          {/* Center Table: ORDERS (FK) */}
+          <g
+            className="transition-transform duration-500"
+            style={{
+              transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+              transformOrigin: '178px 65px',
+            }}
+          >
+            <rect
+              x="138"
+              y="22"
+              width="82"
+              height="38"
+              rx="8"
+              className="fill-white dark:fill-[#151923] stroke-indigo-500"
+              strokeWidth="1.75"
+            />
+            <text
+              x="179"
+              y="36"
+              textAnchor="middle"
+              className="fill-indigo-600 dark:fill-indigo-400 font-mono text-[8px] font-black"
+            >
+              TBL_ORDERS
+            </text>
+            <rect x="148" y="43" width="62" height="4" rx="2" className="fill-zinc-400 dark:fill-zinc-500" />
+            <rect x="148" y="50" width="44" height="4" rx="2" className="fill-indigo-500/60" />
+
+            <rect
+              x="138"
+              y="72"
+              width="82"
+              height="38"
+              rx="8"
+              className="fill-white dark:fill-[#151923] stroke-emerald-500"
+              strokeWidth="1.75"
+            />
+            <text
+              x="179"
+              y="86"
+              textAnchor="middle"
+              className="fill-emerald-600 dark:fill-emerald-400 font-mono text-[8px] font-black"
+            >
+              TBL_STOCK
+            </text>
+            <rect x="148" y="93" width="62" height="4" rx="2" className="fill-zinc-400 dark:fill-zinc-500" />
+            <rect x="148" y="100" width="48" height="4" rx="2" className="fill-emerald-500/60" />
+          </g>
+
+          {/* Right Connectors to ACID / API Contract Node */}
+          <path d="M 220 41 L 248 58" fill="none" stroke="#6366F1" strokeWidth="1.6" />
+          <path d="M 220 91 L 248 74" fill="none" stroke="#10B981" strokeWidth="1.6" />
+
+          {/* Right Node: ACID Verified Badge */}
+          <g
+            className="transition-transform duration-500"
+            style={{
+              transform: isHovered ? 'translateX(2px)' : 'translateX(0px)',
+            }}
+          >
+            <rect
+              x="248"
+              y="38"
+              width="68"
+              height="56"
+              rx="10"
+              className="fill-white dark:fill-[#151923] stroke-zinc-700 dark:stroke-zinc-300"
+              strokeWidth="1.75"
+            />
+            <circle cx="282" cy="56" r="9" className="fill-emerald-500/15 stroke-emerald-500" strokeWidth="1.5" />
+            <path
+              d="M 278.5 56 L 281 58.5 L 286 53.5"
+              fill="none"
+              stroke="#10B981"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <text
+              x="282"
+              y="79"
+              textAnchor="middle"
+              className="fill-zinc-900 dark:fill-white font-mono text-[8.5px] font-black"
+            >
+              ACID SAFE
+            </text>
+          </g>
+        </svg>
+      ),
     },
-    deepseek: {
-      name: 'DeepSeek R1',
-      company: 'DeepSeek',
-      role: 'Algorithmic Verification',
-      badge: 'Open Weights Math',
-      description: 'Verifikasi logika bisnis, optimasi kompleksitas query SQL, dan kalkulasi data berat.',
-      score: '96.8% Algorithmic Logic',
+    {
+      id: 'webhook-payment-orchestration',
+      badge: 'OTOMASI TRANSAKSI',
+      title: 'Integrasi Payment QRIS, Kurir & Multi-AI',
+      description:
+        'Orkestrasi pembayaran otomatis (QRIS/Virtual Account), hitung tarif kurir instan, dan sinkronisasi multi-model AI dalam satu ekosistem.',
+      hoverBorder: 'hover:border-teal-500/80 dark:hover:border-teal-400/80',
+      topic: 'Konsultasi Integrasi Payment Gateway & Otomasi Bisnis',
+      renderSchematic: (isHovered: boolean) => (
+        <svg
+          viewBox="0 0 340 135"
+          className="w-full h-full overflow-visible select-none"
+          aria-hidden="true"
+        >
+          <defs>
+            <pattern id="grid-layanan-2" width="16" height="16" patternUnits="userSpaceOnUse">
+              <path
+                d="M 16 0 L 0 0 0 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.6"
+                strokeDasharray="2 2"
+                className="text-zinc-200/90 dark:text-zinc-800/90"
+              />
+            </pattern>
+          </defs>
+          <rect x="8" y="6" width="324" height="123" rx="12" fill="url(#grid-layanan-2)" />
+
+          {/* Left: Checkout Trigger */}
+          <rect
+            x="22"
+            y="42"
+            width="68"
+            height="50"
+            rx="9"
+            className="fill-white dark:fill-[#151923] stroke-zinc-700 dark:stroke-zinc-300"
+            strokeWidth="1.75"
+          />
+          <rect x="32" y="52" width="48" height="6" rx="3" className="fill-teal-500" />
+          <rect x="32" y="63" width="34" height="4" rx="2" className="fill-zinc-300 dark:fill-zinc-600" />
+          <text
+            x="56"
+            y="81"
+            textAnchor="middle"
+            className="fill-zinc-600 dark:fill-zinc-400 font-mono text-[8px] font-black"
+          >
+            ORDER IN
+          </text>
+
+          {/* Animated Input Stream */}
+          <line
+            x1="90"
+            y1="67"
+            x2="134"
+            y2="67"
+            stroke="#14B8A6"
+            strokeWidth="2"
+            strokeDasharray="3 3"
+          >
+            <animate
+              attributeName="stroke-dashoffset"
+              from="12"
+              to="0"
+              dur="0.9s"
+              repeatCount="indefinite"
+            />
+          </line>
+
+          {/* Center: Webhook Router Hub */}
+          <g
+            className="transition-transform duration-500"
+            style={{
+              transform: isHovered ? 'scale(1.07)' : 'scale(1)',
+              transformOrigin: '162px 67px',
+            }}
+          >
+            <circle cx="162" cy="67" r="28" className="fill-teal-500/10 stroke-teal-500/40" strokeWidth="1.2">
+              <animate attributeName="r" values="25;30;25" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <rect
+              x="140"
+              y="45"
+              width="44"
+              height="44"
+              rx="12"
+              className="fill-white dark:fill-[#151923] stroke-teal-600 dark:stroke-teal-400"
+              strokeWidth="2"
+            />
+            <text
+              x="162"
+              y="65"
+              textAnchor="middle"
+              className="fill-teal-600 dark:fill-teal-400 font-mono text-[9.5px] font-black"
+            >
+              API
+            </text>
+            <text
+              x="162"
+              y="76"
+              textAnchor="middle"
+              className="fill-zinc-500 dark:fill-zinc-400 font-mono text-[7px] font-bold"
+            >
+              ROUTER
+            </text>
+          </g>
+
+          {/* 3 Output Branches to QRIS, Logistics, and CRM */}
+          <path d="M 184 55 L 236 33" fill="none" stroke="#14B8A6" strokeWidth="1.6" strokeDasharray="3 3">
+            <animate attributeName="stroke-dashoffset" from="12" to="0" dur="1.1s" repeatCount="indefinite" />
+          </path>
+          <path d="M 184 67 L 236 67" fill="none" stroke="#3B82F6" strokeWidth="1.6" strokeDasharray="3 3">
+            <animate attributeName="stroke-dashoffset" from="12" to="0" dur="1.1s" repeatCount="indefinite" />
+          </path>
+          <path d="M 184 79 L 236 101" fill="none" stroke="#F59E0B" strokeWidth="1.6" strokeDasharray="3 3">
+            <animate attributeName="stroke-dashoffset" from="12" to="0" dur="1.1s" repeatCount="indefinite" />
+          </path>
+
+          {/* Right Nodes */}
+          <g
+            className="transition-transform duration-500"
+            style={{ transform: isHovered ? 'translateX(3px)' : 'translateX(0px)' }}
+          >
+            <rect
+              x="236"
+              y="20"
+              width="80"
+              height="25"
+              rx="6"
+              className="fill-white dark:fill-[#151923] stroke-teal-500/80"
+              strokeWidth="1.5"
+            />
+            <circle cx="248" cy="32.5" r="3" fill="#10B981" />
+            <text x="281" y="35.5" textAnchor="middle" className="fill-zinc-900 dark:fill-white font-mono text-[8px] font-black">
+              QRIS LUNAS
+            </text>
+
+            <rect
+              x="236"
+              y="54.5"
+              width="80"
+              height="25"
+              rx="6"
+              className="fill-white dark:fill-[#151923] stroke-blue-500/80"
+              strokeWidth="1.5"
+            />
+            <circle cx="248" cy="67" r="3" fill="#3B82F6" />
+            <text x="281" y="70" textAnchor="middle" className="fill-zinc-900 dark:fill-white font-mono text-[8px] font-black">
+              RESI KURIR
+            </text>
+
+            <rect
+              x="236"
+              y="89"
+              width="80"
+              height="25"
+              rx="6"
+              className="fill-white dark:fill-[#151923] stroke-amber-500/80"
+              strokeWidth="1.5"
+            />
+            <circle cx="248" cy="101.5" r="3" fill="#F59E0B" />
+            <text x="281" y="104.5" textAnchor="middle" className="fill-zinc-900 dark:fill-white font-mono text-[8px] font-black">
+              NOTIF WA
+            </text>
+          </g>
+        </svg>
+      ),
     },
-    gpt4: {
-      name: 'GPT-4o Omnimodal',
-      company: 'OpenAI',
-      role: 'Vision & Multimodal',
-      badge: 'Multimodal Master',
-      description: 'Ekstraksi dokumen, analisis mockup UI visual, dan pemrosesan multi-format teks & media.',
-      score: '95.2% Vision Accuracy',
-    },
-    gemini: {
-      name: 'Gemini 2.0 Flash',
-      company: 'Google',
-      role: 'Ultra Low-Latency',
-      badge: 'Sub-300ms Speed',
-      description: 'Kecepatan inferensi instan untuk WhatsApp Bot 24/7 dan otomasi event-driven webhook.',
-      score: '<280ms First Token',
-    },
-  };
+  ];
 
   return (
-    <div className={`space-y-16 select-none ${className}`}>
+    <div className={`space-y-14 select-none ${className}`}>
       {/* ========================================================================= */}
-      {/* 1. SAAS INTERACTIVE BENTO GRID (MATCHING NGODINGPAKEAI.COM INTERACTION)   */}
+      {/* 1. 2-CARD SIMPLE VECTOR SCHEMATIC SHOWCASE FOR /LAYANAN                   */}
       {/* ========================================================================= */}
-      <div className="space-y-6">
-        <div className="max-w-3xl space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900/60 text-orange-700 dark:text-orange-400 font-mono text-[11px] font-bold uppercase tracking-wider">
-            <Flame className="w-3.5 h-3.5 text-orange-500" />
-            <span>Rekayasa Produk Digital Modern ala SaaS</span>
+      {mode !== 'pricing-only' && (
+        <div className="space-y-5">
+          <div className="max-w-2xl space-y-1.5">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900/60 text-orange-700 dark:text-orange-400 font-mono text-[11px] font-bold uppercase tracking-wider">
+              <Flame className="w-3.5 h-3.5 text-orange-500" />
+              <span>FONDASI TEKNIS &amp; OTOMASI SISTEM</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black text-zinc-950 dark:text-white tracking-tight">
+              Arsitektur Terstruktur dari Database hingga Transaksi
+            </h2>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-zinc-950 dark:text-white tracking-tight">
-            Alat &amp; Alur Kerja Terintegrasi untuk Eksekusi Kilat
-          </h2>
-          <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">
-            Dari perencanaan PRD terstruktur, UI canvas responsif, hingga orkestrasi multi-model AI terbaik untuk membangun sistem bisnis yang tangguh dan siap scale.
-          </p>
-        </div>
 
-        {/* 4-Card SaaS Bento Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          {/* BENTO 1: BIKIN PLAN & PRD (Span 7) - Matches Image 3 "Bikin Plan" */}
-          <div className="lg:col-span-7 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 p-6 sm:p-8 flex flex-col justify-between shadow-xs hover:shadow-md transition-all relative overflow-hidden bg-dot-grid">
-            <div className="space-y-4 relative z-10">
-              <div className="flex items-center justify-between gap-3">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-500 text-white font-mono text-[10px] font-black uppercase tracking-wider shadow-xs">
-                  <Sparkles className="w-3 h-3" />
-                  <span>UPDATE BARU</span>
-                </span>
-                <span className="text-[11px] font-mono text-zinc-500">
-                  Sprint Planning Engine
-                </span>
-              </div>
-
-              <div>
-                <h3 className="text-xl sm:text-2xl font-black text-zinc-950 dark:text-white tracking-tight">
-                  Bikin PRD, Arsitektur Database &amp; Task Lebih Terstruktur
-                </h3>
-                <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 mt-1 leading-relaxed font-normal">
-                  Tidak ada lagi spekulasi liar. Semua spesifikasi teknis, skema relasi data, dan integrasi API dipetakan sebelum coding dimulai.
-                </p>
-              </div>
-
-              {/* Interactive Step Timeline Cards */}
-              <div className="space-y-2 pt-2">
-                {[
-                  {
-                    step: 1,
-                    title: '1. Analisis Kebutuhan Bisnis & Scope PRD',
-                    desc: 'Definisi metrik kunci, persona pembeli, dan alur konversi utama.',
-                    done: true,
-                  },
-                  {
-                    step: 2,
-                    title: '2. Perancangan Skema PostgreSQL & API Contract',
-                    desc: 'Relasi foreign keys, indeks performa, dan autentikasi aman JWT.',
-                    done: true,
-                  },
-                  {
-                    step: 3,
-                    title: '3. Integrasi AI Agent WhatsApp & Webhook Hub',
-                    desc: 'RAG retrieval knowledge base produk & auto dispatch tiket customer.',
-                    done: activePlanStep >= 2,
-                  },
-                  {
-                    step: 4,
-                    title: '4. Testing, CAPI Tracking & Deployment ke Cloudflare',
-                    desc: 'Uji beban latency <0.8 detik, verifikasi event purchase, dan live launch.',
-                    done: activePlanStep >= 3,
-                  },
-                ].map((item) => (
-                  <div
-                    key={item.step}
-                    onClick={() => setActivePlanStep(item.step)}
-                    className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 ${
-                      item.step === activePlanStep
-                        ? 'bg-blue-50/80 dark:bg-blue-950/40 border-blue-500 shadow-xs'
-                        : 'bg-white/80 dark:bg-zinc-900/60 border-zinc-200/80 dark:border-zinc-800 hover:border-zinc-300'
-                    }`}
-                  >
-                    <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-xs font-bold ${
-                        item.done
-                          ? 'bg-emerald-500 text-white'
-                          : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400'
-                      }`}
-                    >
-                      {item.done ? <Check className="w-3.5 h-3.5" /> : item.step}
-                    </div>
-                    <div className="space-y-0.5">
-                      <h4 className="text-xs font-bold text-zinc-950 dark:text-white">
-                        {item.title}
-                      </h4>
-                      <p className="text-[11px] text-zinc-500">{item.desc}</p>
-                    </div>
+          {/* 2 Simple Animated Schematic Cards (Distinct to /layanan) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {LAYANAN_SCHEMATIC_CARDS.map((card) => {
+              const isHovered = hoveredId === card.id;
+              return (
+                <div
+                  key={card.id}
+                  onClick={() => onWhatsAppInquiry(card.topic)}
+                  onMouseEnter={() => setHoveredId(card.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                  className={`group relative flex flex-col justify-between rounded-2xl border bg-white dark:bg-[#111319] p-5 sm:p-6 text-left transition-all duration-300 cursor-pointer border-zinc-200/90 dark:border-zinc-800/90 shadow-xs hover:shadow-lg hover:-translate-y-1 ${card.hoverBorder}`}
+                >
+                  {/* Open Vector Schematic Canvas */}
+                  <div className="relative w-full h-36 sm:h-40 mb-3 flex items-center justify-center overflow-hidden">
+                    {card.renderSchematic(isHovered)}
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Bottom Action Strip */}
-            <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs mt-4">
-              <span className="font-mono text-zinc-500 text-[11px] flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                <span>Format Standar Markdown &amp; PDF</span>
-              </span>
-              <button
-                onClick={() => onWhatsAppInquiry('Konsultasi Perencanaan PRD & Arsitektur')}
-                className="px-3.5 py-1.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 font-bold text-xs flex items-center gap-1.5 hover:bg-blue-600 transition-colors cursor-pointer"
-              >
-                <span>Mulai Konsultasi Plan</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-
-          {/* BENTO 2: MULTI-MODEL AI ENGINE (Span 5) - Matches Image 3 "AndalAI" */}
-          <div className="lg:col-span-5 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200 dark:border-zinc-800 p-6 sm:p-8 flex flex-col justify-between shadow-xs hover:shadow-md transition-all relative">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-mono text-[10px] font-bold uppercase tracking-wider">
-                  <Bot className="w-3 h-3" />
-                  <span>AndalAI Multi-Model Engine</span>
-                </span>
-                <span className="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400">
-                  {AI_MODELS[selectedModel].score}
-                </span>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-black text-zinc-950 dark:text-white tracking-tight">
-                  Pilih AI Terbaik Sesuai Karakter Masalah
-                </h3>
-                <p className="text-xs text-zinc-700 dark:text-zinc-300 mt-1 leading-relaxed font-normal">
-                  Tidak bergantung pada satu vendor. Kami mengorkestrasi model terkuat di kelasnya untuk efisiensi biaya dan performa maksimal.
-                </p>
-              </div>
-
-              {/* Model Selector Tabs */}
-              <div className="grid grid-cols-2 gap-2 pt-1">
-                {(Object.keys(AI_MODELS) as Array<keyof typeof AI_MODELS>).map((key) => {
-                  const m = AI_MODELS[key];
-                  const isSelected = selectedModel === key;
-                  return (
-                    <button
-                      key={key}
-                      onClick={() => setSelectedModel(key)}
-                      className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
-                        isSelected
-                          ? 'bg-blue-50 dark:bg-blue-950/60 border-blue-500 shadow-xs'
-                          : 'bg-zinc-50/60 dark:bg-zinc-900/40 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-zinc-900 dark:text-white">
-                          {m.name.split(' ')[0]}
-                        </span>
-                        {isSelected && <Zap className="w-3 h-3 text-blue-600 fill-blue-600" />}
-                      </div>
-                      <p className="text-[10px] font-mono text-zinc-500 mt-0.5 truncate">{m.role}</p>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Active Model Specification Box */}
-              <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-2">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-extrabold text-xs text-zinc-950 dark:text-white">
-                    {AI_MODELS[selectedModel].name}
-                  </h4>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
-                    {AI_MODELS[selectedModel].badge}
-                  </span>
+                  {/* Title, Badge & Concise Description */}
+                  <div className="space-y-1.5">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <h3 className="font-heading text-base sm:text-lg font-extrabold text-zinc-950 dark:text-white leading-snug group-hover:text-[#1E3A8A] dark:group-hover:text-blue-400 transition-colors">
+                        {card.title}
+                      </h3>
+                      <span className="px-2.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-mono text-[10px] font-bold shrink-0">
+                        {card.badge}
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-[13px] text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal">
+                      {card.description}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                  {AI_MODELS[selectedModel].description}
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 text-[11px] font-mono text-zinc-500 flex items-center justify-between">
-              <span>Latency: &lt; 400ms</span>
-              <span className="text-blue-600 dark:text-blue-400 font-bold">Zero Data Leak Policy</span>
-            </div>
+              );
+            })}
           </div>
         </div>
-      </div>
+      )}
 
       {/* ========================================================================= */}
-      {/* 2. SAAS PRICING TABLE (MATCHING NGODINGPAKEAI.COM WITH # PALING WORTH)    */}
+      {/* 2. SAAS PRICING TABLE                                                     */}
       {/* ========================================================================= */}
-      <div id="pricing-plans" className="space-y-6 pt-4">
+      {mode !== 'cards-only' && (
+      <div id="pricing-plans" className="space-y-6 pt-2">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900 text-emerald-700 dark:text-emerald-300 font-mono text-[11px] font-bold uppercase tracking-wider">
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
@@ -280,7 +445,7 @@ export const SaaSSolutionsShowcase: React.FC<SaaSSolutionsShowcaseProps> = ({
           </p>
         </div>
 
-        {/* 3 Pricing Columns - Matching Image 2 */}
+        {/* 3 Pricing Columns */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch pt-2">
           {/* PLAN 1: STARTER */}
           <div className="p-7 sm:p-8 rounded-3xl bg-white dark:bg-[#111319] border border-zinc-200/90 dark:border-zinc-800 shadow-xs flex flex-col justify-between space-y-6">
@@ -375,9 +540,8 @@ export const SaaSSolutionsShowcase: React.FC<SaaSSolutionsShowcaseProps> = ({
             </button>
           </div>
 
-          {/* PLAN 3: BUNDLE PRO + AI AGENT (MATCHES # Paling Worth BADGE FROM IMAGE 2) */}
+          {/* PLAN 3: BUNDLE PRO + AI AGENT */}
           <div className="p-7 sm:p-8 rounded-3xl bg-white dark:bg-[#111319] border-2 border-orange-500 ring-2 ring-orange-500/20 shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden">
-            {/* # Paling Worth Pill Badge at top right */}
             <div className="absolute top-4 right-4">
               <span className="px-3 py-1 rounded-full bg-linear-to-r from-orange-500 to-amber-500 text-white font-mono text-[10px] font-black uppercase tracking-wider shadow-md flex items-center gap-1">
                 <Sparkles className="w-3 h-3" />
@@ -448,6 +612,7 @@ export const SaaSSolutionsShowcase: React.FC<SaaSSolutionsShowcaseProps> = ({
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 };

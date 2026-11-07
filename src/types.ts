@@ -36,12 +36,15 @@ export interface CertificateItem {
     | 'Claude Academy'
     | 'Dicoding'
     | 'Belajar Era Digital'
-    | 'Indonesia Baik';
+    | 'Indonesia Baik'
+    | 'Google Developer Program'
+    | 'Perpustakaan Nasional RI';
   issuerFullName: string;
   category: 'cloud-ai' | 'marketing' | 'academic' | 'publications';
   date: string;
   validUntil?: string;
   certId?: string;
+  credentialId?: string;
   grade?: string;
   field?: string;
   level?: string;

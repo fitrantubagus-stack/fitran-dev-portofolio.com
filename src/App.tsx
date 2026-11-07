@@ -475,15 +475,11 @@ export default function App() {
                         <LogoMarquee />
                       </ScrollReveal>
 
-                      {/* 4 Pilar Fitur Cerdas Inovatif Fitran.dev (9s Boost Cycle) */}
+                      {/* 4 Pilar Fitur Cerdas Inovatif Fitran.dev */}
                       <ScrollReveal variant="fade-up" delay={50}>
-                        <div className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-[#0B0F19]/90 py-14">
+                        <div className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-[#0B0F19]/90 py-12">
                           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <InteractiveFeatureGrid
-                              onSelectFeature={(id) => {
-                                handleNavigate('services');
-                              }}
-                            />
+                            <InteractiveFeatureGrid />
                           </div>
                         </div>
                       </ScrollReveal>
